@@ -1,57 +1,55 @@
-"""Finite-difference diagnostics, NOT a proof of smooth forcing or NS breakdown.
+"""Finite-difference diagnostics, not proofs of smoothness or NS blow-up.
 
-R(u,p)=u_t+(u.grad)u-nu*Delta(u)+grad(p). Computing f=R and then
-checking R-f with the same stencil is a tautology, not independent evidence.
-The manufactured-solution tests instead supply an independently derived force.
+R(u,p)=u_t+(u.grad)u-nu*Delta u+grad p is the force required by a field.
+R(u,p)-f is independent evidence only when f is independently supplied.
 """
 from __future__ import annotations
 from typing import Callable
 import math
 import numpy as np
+from .coordinates import _finite
+from .quadrature import unit_rule
 
 VectorField = Callable[[float, float, float, float], np.ndarray]
 ScalarField = Callable[[float, float, float, float], float]
+TimeDomain = tuple[float | None, float | None] | None
 TimeBounds = tuple[float | None, float | None] | None
 
 
-def _vector(value) -> np.ndarray:
-    a = np.asarray(value, dtype=float)
-    if a.shape != (3,) or not np.all(np.isfinite(a)):
+def finite_vector(value: object) -> np.ndarray:
+    v = np.asarray(value, dtype=float)
+    if v.shape != (3,) or not np.all(np.isfinite(v)):
         raise ValueError("field must return a finite length-3 vector")
-    return a
+    return v
 
 
-def _step(eps: float) -> float:
-    eps = float(eps)
-    if not math.isfinite(eps) or eps <= 0:
-        raise ValueError("finite-difference step must be finite and positive")
-    return eps
+_vector = finite_vector
 
 
-def _point(x, y, z, t):
-    values = tuple(float(v) for v in (x, y, z, t))
-    if not all(math.isfinite(v) for v in values):
-        raise ValueError("evaluation point must be finite")
-    return values
+def _step(center: float, eps: float) -> tuple[float, float]:
+    center, eps = _finite(center, "coordinate"), _finite(eps, "eps")
+    if eps <= 0:
+        raise ValueError("finite-difference step must be positive")
+    minus, plus = center - eps, center + eps
+    if not (math.isfinite(minus) and math.isfinite(plus) and minus < center < plus):
+        raise ValueError("finite-difference stencil is not representable")
+    return minus, plus
 
 
-def _shift(xyz, axis, eps):
-    plus, minus = list(xyz), list(xyz)
-    plus[axis] += eps
-    minus[axis] -= eps
-    if plus[axis] == xyz[axis] or minus[axis] == xyz[axis]:
-        raise ValueError("finite-difference step is below coordinate resolution")
-    return plus, minus
+def _sample(u: VectorField, point) -> np.ndarray:
+    if not all(math.isfinite(float(v)) for v in point):
+        raise ValueError("sample point must be finite")
+    return finite_vector(u(*point))
 
 
 def jacobian_numeric(u: VectorField, x: float, y: float, z: float, t: float,
                      *, eps: float = 1e-5) -> np.ndarray:
-    x, y, z, t = _point(x, y, z, t)
-    eps = _step(eps)
-    J = np.empty((3, 3))
+    J = np.zeros((3, 3))
     for axis in range(3):
-        p, m = _shift((x, y, z), axis, eps)
-        J[:, axis] = (_vector(u(*p, t)) - _vector(u(*m, t))) / (2 * eps)
+        minus, plus = _step((x, y, z)[axis], eps)
+        p, m = [x, y, z, t], [x, y, z, t]
+        p[axis], m[axis] = plus, minus
+        J[:, axis] = (_sample(u, p) - _sample(u, m)) / (plus - minus)
     return J
 
 
@@ -62,109 +60,165 @@ def divergence_numeric(u: VectorField, x: float, y: float, z: float, t: float,
 
 def laplacian_vector_numeric(u: VectorField, x: float, y: float, z: float, t: float,
                              *, eps: float = 1e-4) -> np.ndarray:
-    x, y, z, t = _point(x, y, z, t)
-    eps = _step(eps)
-    center, out = _vector(u(x, y, z, t)), np.zeros(3)
+    center = _sample(u, (x, y, z, t))
+    out = np.zeros(3)
     for axis in range(3):
-        p, m = _shift((x, y, z), axis, eps)
-        out += (_vector(u(*p, t)) - 2 * center + _vector(u(*m, t))) / eps**2
-    return out
+        c = (x, y, z)[axis]
+        minus, plus = _step(c, eps)
+        p, m = [x, y, z, t], [x, y, z, t]
+        p[axis], m[axis] = plus, minus
+        hp, hm = plus - c, c - minus
+        out += 2 * ((_sample(u, p) - center) / hp - (center - _sample(u, m)) / hm) / (hp + hm)
+    return finite_vector(out)
+
+
+def _validated_domain(domain: TimeDomain) -> tuple[float | None, float | None]:
+    if domain is None:
+        return None, None
+    if len(domain) != 2:
+        raise ValueError("time domain must be a pair (lower, upper)")
+    lower, upper = domain
+    lower = None if lower is None else _finite(lower, "lower time bound")
+    upper = None if upper is None else _finite(upper, "upper time bound")
+    if lower is not None and upper is not None and lower >= upper:
+        raise ValueError("lower time bound must be smaller than upper")
+    return lower, upper
 
 
 def time_derivative_numeric(u: VectorField, x: float, y: float, z: float, t: float,
                             *, eps: float = 1e-5,
+                            time_domain: TimeDomain = None,
                             time_bounds: TimeBounds = None) -> np.ndarray:
-    """Second-order stencil; bounds are [lower,upper), None means unbounded.
+    """Second-order time derivative respecting either open domain or [lower,upper) bounds.
 
-    Uses a forward stencil at the included lower endpoint and a shortened
-    central stencil inside the domain. Never evaluates at the excluded upper
-    endpoint when bounds are supplied. Too-small floating steps fail loudly.
+    ``time_domain`` keeps both finite endpoints open (legacy v0.2 diagnostics).
+    ``time_bounds`` permits the lower endpoint and uses a forward stencil there.
+    Supplying both is rejected.
     """
-    x, y, z, t = _point(x, y, z, t)
-    dt = _step(eps)
-    forward = False
+    if time_domain is not None and time_bounds is not None:
+        raise ValueError("supply only one of time_domain or time_bounds")
+    t, eps = _finite(t, "t"), _finite(eps, "eps")
+    if eps <= 0:
+        raise ValueError("eps must be positive")
+
     if time_bounds is not None:
-        lower, upper = time_bounds
-        if any(b is not None and not math.isfinite(b) for b in time_bounds):
-            raise ValueError("time bounds must be finite or None")
-        if lower is not None and upper is not None and lower >= upper:
-            raise ValueError("lower time bound must be smaller than upper")
+        lower, upper = _validated_domain(time_bounds)
         if (lower is not None and t < lower) or (upper is not None and t >= upper):
             raise ValueError("time lies outside [lower, upper)")
+        forward = lower is not None and t == lower
+        dt = eps
         if upper is not None:
             dt = min(dt, (upper - t) / 4)
+        if lower is not None and not forward:
+            dt = min(dt, (t - lower) / 4)
+        if dt <= 0 or t + dt == t or (not forward and t - dt == t):
+            raise ValueError("time stencil is below floating resolution; use tau/analytic data")
+        if forward:
+            return (-3 * _sample(u, (x, y, z, t))
+                    + 4 * _sample(u, (x, y, z, t + dt))
+                    - _sample(u, (x, y, z, t + 2*dt))) / (2*dt)
+        return (_sample(u, (x, y, z, t + dt)) - _sample(u, (x, y, z, t - dt))) / (2*dt)
+
+    if time_domain is not None:
+        lower, upper = _validated_domain(time_domain)
+        if (lower is not None and t <= lower) or (upper is not None and t >= upper):
+            raise ValueError("center must be inside the open time domain")
+        dt = eps
         if lower is not None:
-            forward = t == lower
-            if not forward:
-                dt = min(dt, (t - lower) / 4)
-    if t + dt == t or t - dt == t:
-        raise ValueError("time stencil is below floating resolution; use tau/analytic data")
-    if forward:
-        return (-3 * _vector(u(x, y, z, t)) + 4 * _vector(u(x, y, z, t + dt))
-                - _vector(u(x, y, z, t + 2 * dt))) / (2 * dt)
-    return (_vector(u(x, y, z, t + dt)) - _vector(u(x, y, z, t - dt))) / (2 * dt)
+            dt = min(dt, (t - lower) / 4)
+        if upper is not None:
+            dt = min(dt, (upper - t) / 4)
+        minus, plus = _step(t, dt)
+        if (lower is not None and minus <= lower) or (upper is not None and plus >= upper):
+            raise ValueError("time stencil crosses the field domain; use analytic derivatives")
+        return (_sample(u, (x, y, z, plus)) - _sample(u, (x, y, z, minus))) / (plus - minus)
+
+    minus, plus = _step(t, eps)
+    return (_sample(u, (x, y, z, plus)) - _sample(u, (x, y, z, minus))) / (plus - minus)
 
 
 def gradient_scalar_numeric(p: ScalarField, x: float, y: float, z: float, t: float,
                             *, eps: float = 1e-5) -> np.ndarray:
-    x, y, z, t = _point(x, y, z, t)
-    eps = _step(eps)
-    g = np.empty(3)
+    _finite(t, "t")
+    out = np.zeros(3)
     for axis in range(3):
-        xp, xm = _shift((x, y, z), axis, eps)
-        vp, vm = float(p(*xp, t)), float(p(*xm, t))
-        if not math.isfinite(vp) or not math.isfinite(vm):
-            raise ValueError("pressure must be finite")
-        g[axis] = (vp - vm) / (2 * eps)
-    return g
+        minus, plus = _step((x, y, z)[axis], eps)
+        xp, xm = [x, y, z, t], [x, y, z, t]
+        xp[axis], xm[axis] = plus, minus
+        out[axis] = (_finite(p(*xp), "pressure") - _finite(p(*xm), "pressure")) / (plus - minus)
+    return out
+
+
+def navier_stokes_terms_numeric(u: VectorField, p: ScalarField,
+    x: float, y: float, z: float, t: float, *, viscosity: float = 1.0,
+    eps_space: float = 1e-4, eps_time: float = 1e-5,
+    time_domain: TimeDomain = None, time_bounds: TimeBounds = None) -> dict[str, np.ndarray]:
+    viscosity = _finite(viscosity, "viscosity")
+    if viscosity < 0:
+        raise ValueError("viscosity must be nonnegative")
+    uv = _sample(u, (x, y, z, t))
+    return {
+        "time": time_derivative_numeric(u, x, y, z, t, eps=eps_time,
+                                         time_domain=time_domain, time_bounds=time_bounds),
+        "advection": jacobian_numeric(u, x, y, z, t, eps=eps_space) @ uv,
+        "viscous": -viscosity * laplacian_vector_numeric(u, x, y, z, t, eps=eps_space),
+        "pressure": gradient_scalar_numeric(p, x, y, z, t, eps=eps_space),
+    }
 
 
 def navier_stokes_residual_numeric(u: VectorField, p: ScalarField,
-                                   x: float, y: float, z: float, t: float, *,
-                                   viscosity: float = 1.0, eps_space: float = 1e-4,
-                                   eps_time: float = 1e-5,
-                                   time_bounds: TimeBounds = (0.0, 1.0)) -> np.ndarray:
-    """Required force R(u,p); default time domain matches this repository.
-
-    Set time_bounds=None for manufactured fields defined on all real times.
-    Step-refinement checks are required before interpreting a numerical value.
-    """
-    if not math.isfinite(viscosity) or viscosity <= 0:
-        raise ValueError("Navier-Stokes viscosity must be finite and positive")
-    point = _point(x, y, z, t)
-    uv = _vector(u(*point))
-    ut = time_derivative_numeric(u, *point, eps=eps_time, time_bounds=time_bounds)
-    J = jacobian_numeric(u, *point, eps=eps_space)
-    lap = laplacian_vector_numeric(u, *point, eps=eps_space)
-    gp = gradient_scalar_numeric(p, *point, eps=eps_space)
-    return ut + J @ uv - viscosity * lap + gp
+    x: float, y: float, z: float, t: float, *, viscosity: float = 1.0,
+    eps_space: float = 1e-4, eps_time: float = 1e-5,
+    time_domain: TimeDomain = None, time_bounds: TimeBounds = None) -> np.ndarray:
+    terms = navier_stokes_terms_numeric(u, p, x, y, z, t, viscosity=viscosity,
+        eps_space=eps_space, eps_time=eps_time, time_domain=time_domain, time_bounds=time_bounds)
+    return finite_vector(sum(terms.values(), np.zeros(3)))
 
 
 def reconstruct_forcing_numeric(u: VectorField, p: ScalarField,
-                                 x: float, y: float, z: float, t: float, *,
-                                 viscosity: float = 1.0, eps_space: float = 1e-4,
-                                 eps_time: float = 1e-5,
-                                 time_bounds: TimeBounds = (0.0, 1.0)) -> np.ndarray:
-    return navier_stokes_residual_numeric(
-        u, p, x, y, z, t, viscosity=viscosity, eps_space=eps_space,
-        eps_time=eps_time, time_bounds=time_bounds)
+    x: float, y: float, z: float, t: float, *, viscosity: float = 1.0,
+    eps_space: float = 1e-4, eps_time: float = 1e-5,
+    time_domain: TimeDomain = None, time_bounds: TimeBounds = None) -> np.ndarray:
+    return navier_stokes_residual_numeric(u, p, x, y, z, t, viscosity=viscosity,
+        eps_space=eps_space, eps_time=eps_time, time_domain=time_domain, time_bounds=time_bounds)
 
 
-def forced_ns_closure_error_numeric(u: VectorField, p: ScalarField,
-                                    forcing: VectorField, x: float, y: float,
-                                    z: float, t: float, *, viscosity: float = 1.0,
-                                    eps_space: float = 1e-4, eps_time: float = 1e-5,
-                                    time_bounds: TimeBounds = (0.0, 1.0)) -> np.ndarray:
-    return navier_stokes_residual_numeric(
-        u, p, x, y, z, t, viscosity=viscosity, eps_space=eps_space,
-        eps_time=eps_time, time_bounds=time_bounds) - _vector(forcing(x, y, z, t))
+def forced_ns_closure_error_numeric(u: VectorField, p: ScalarField, forcing: VectorField,
+    x: float, y: float, z: float, t: float, *, viscosity: float = 1.0,
+    eps_space: float = 1e-4, eps_time: float = 1e-5,
+    time_domain: TimeDomain = None, time_bounds: TimeBounds = None) -> np.ndarray:
+    return navier_stokes_residual_numeric(u, p, x, y, z, t, viscosity=viscosity,
+        eps_space=eps_space, eps_time=eps_time, time_domain=time_domain, time_bounds=time_bounds) - _sample(forcing, (x, y, z, t))
 
 
 def loglog_slope(xs: np.ndarray, ys: np.ndarray) -> float:
     xs, ys = np.asarray(xs, dtype=float), np.asarray(ys, dtype=float)
-    if xs.ndim != 1 or xs.shape != ys.shape or xs.size < 2:
-        raise ValueError("xs and ys must be equal-length 1D arrays with at least 2 samples")
+    if xs.ndim != 1 or xs.shape != ys.shape or len(xs) < 2:
+        raise ValueError("xs and ys must have equal 1D shapes and at least two samples")
     if (not np.all(np.isfinite(xs)) or not np.all(np.isfinite(ys))
-            or np.any(xs <= 0) or np.any(ys == 0) or np.unique(xs).size < 2):
-        raise ValueError("need finite xs>0, nonzero ys, and distinct xs")
-    return float(np.polyfit(np.log(xs), np.log(np.abs(ys)), 1)[0])
+            or np.any(xs <= 0) or np.any(ys == 0)):
+        raise ValueError("finite xs>0 and nonzero finite ys are required")
+    lx, ly = np.log(xs), np.log(np.abs(ys))
+    lx, ly = lx - lx.mean(), ly - ly.mean()
+    denominator = float(lx @ lx)
+    if denominator <= 0:
+        raise ValueError("xs must contain at least two distinct values")
+    return float(lx @ ly / denominator)
+
+
+def kinetic_energy_axisymmetric(u: Callable[[float, float, float], np.ndarray], t: float, *,
+    radius: float, z_min: float, z_max: float, n: int = 32) -> float:
+    """Integral of |u|^2/2 over a finite cylinder, including the 2*pi*r measure."""
+    radius = _finite(radius, "radius")
+    z_min, z_max, t = _finite(z_min, "z_min"), _finite(z_max, "z_max"), _finite(t, "t")
+    if radius <= 0 or z_max <= z_min:
+        raise ValueError("positive radius and z_min<z_max are required")
+    nodes, weights = unit_rule(n)
+    total = 0.0
+    for R, wR in zip(nodes, weights):
+        r = radius * float(R)
+        for Z, wZ in zip(nodes, weights):
+            z = z_min + (z_max - z_min) * float(Z)
+            v = finite_vector(u(r, z, t))
+            total += float(wR*wZ) * r * float(v @ v)
+    return math.pi * radius * (z_max - z_min) * total

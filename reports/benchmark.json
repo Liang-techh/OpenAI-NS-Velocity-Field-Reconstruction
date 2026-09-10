@@ -1,0 +1,118 @@
+{
+  "kind": "local-benchmark-not-proof",
+  "sources": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "baseline_commit": "b0d964ab4a69c25863078830faf76296550ae4ea",
+    "paper_url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf",
+    "paper_equations_checked": [
+      "4.1-4.7",
+      "5.1",
+      "5.27",
+      "Lemma A.2"
+    ],
+    "upstream_lean_repository": "openai/NavierStokesAndEuler",
+    "upstream_commit_metadata_observed": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "lean_source_reviewed": false,
+    "lean_compiled": false,
+    "paper_hash_verified": false
+  },
+  "environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "platform": "Linux"
+  },
+  "near_singularity_root_cases": [
+    {
+      "tau_represented": 1.0000000000287557e-06,
+      "eta": 0.6,
+      "h": 0.005,
+      "expected_q": 1.5625000000449307e-06,
+      "baseline_q": 1.5624999915031523e-06,
+      "new_q": 1.562500000044883e-06,
+      "baseline_relative_error": 5.466738173254271e-09,
+      "new_relative_error": 3.0531133177191805e-14
+    },
+    {
+      "tau_represented": 1.000000082740371e-10,
+      "eta": 0.6,
+      "h": 0.005,
+      "expected_q": 1.5625001292818297e-10,
+      "baseline_q": 1.5624657123680663e-10,
+      "new_q": 1.5625001292817819e-10,
+      "baseline_relative_error": 2.202682298602099e-05,
+      "new_relative_error": 3.064215547965432e-14
+    },
+    {
+      "tau_represented": 9.999778782798785e-13,
+      "eta": 0.6,
+      "h": 0.005,
+      "expected_q": 1.5624654348123101e-12,
+      "baseline_q": 1.5399903574575546e-12,
+      "new_q": 1.5624654348122625e-12,
+      "baseline_relative_error": 0.014384367714000201,
+      "new_relative_error": 3.0531133177191805e-14
+    },
+    {
+      "tau_represented": 9.992007221626409e-15,
+      "eta": 0.6,
+      "h": 0.005,
+      "expected_q": 1.5612511283791264e-14,
+      "baseline_q": 3.8413716652030416e-14,
+      "new_q": 1.5612511283790787e-14,
+      "baseline_relative_error": 1.4604444444444447,
+      "new_relative_error": 3.0531133177191805e-14
+    }
+  ],
+  "quadrature": {
+    "integrand": "U(X,eta)=eta*exp(-X)",
+    "X": 2.0,
+    "eta": 0.6,
+    "exact_average": 0.2593994150290162,
+    "methods": {
+      "baseline_trapezoid_801": {
+        "value": 0.2593995501328641,
+        "absolute_error": 1.3510384788695262e-07,
+        "seconds_per_1000_calls_median": 0.11323403899996265,
+        "seconds_per_1000_calls_repeats": [
+          0.11975052900015726,
+          0.11681589199997688,
+          0.11256795400004194,
+          0.11323403899996265,
+          0.11221621400000004
+        ]
+      },
+      "gauss_legendre_32": {
+        "value": 0.2593994150290162,
+        "absolute_error": 0.0,
+        "seconds_per_1000_calls_median": 0.009461351000027207,
+        "seconds_per_1000_calls_repeats": [
+          0.009619160000056581,
+          0.009461351000027207,
+          0.009373277999884522,
+          0.009386038000002372,
+          0.00952336499994999
+        ]
+      },
+      "optional_analytic_primitive": {
+        "value": 0.2593994150290162,
+        "absolute_error": 0.0,
+        "seconds_per_1000_calls_median": 0.0004909809999844583,
+        "seconds_per_1000_calls_repeats": [
+          0.0004909809999844583,
+          0.0005066539999916131,
+          0.00048594299983051314,
+          0.0005032589999700576,
+          0.0004907909999474214
+        ]
+      }
+    },
+    "number": 1000,
+    "repeat": 5,
+    "timing_statistic": "median"
+  },
+  "limitations": [
+    "One smooth integrand; no universal quadrature accuracy or timing guarantee.",
+    "Both numeric methods use the same callbacks; the optional analytic path is separate.",
+    "The benchmark does not validate the paper-specific profiles."
+  ]
+}

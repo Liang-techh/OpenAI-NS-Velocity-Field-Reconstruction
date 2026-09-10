@@ -1,8 +1,8 @@
-"""Similarity geometry, Eq. (4.1); binary64 numerics are not proof certificates.
+"""Similarity chart, Eqs. (4.1)-(4.2); floating-point evaluation, not a proof.
 
-Use the ``*_from_tau`` entry points near the singularity: forming t=1-tau
-loses tau altogether below machine resolution. d=tau/q is stored separately
-from eta, since 1-eta**2 can also suffer cancellation near the chart endpoints.
+Use the ``*_from_tau`` functions near t=1: forming t=1-tau loses tau below
+machine precision. We solve on the physical branch in log-scaled coordinates
+and keep d=tau/q, rather than subtracting two almost equal numbers.
 """
 from __future__ import annotations
 
@@ -24,101 +24,135 @@ class SimilarityPoint:
     L: float
 
 
-def validate_h(h: float) -> float:
-    h = float(h)
-    if not math.isfinite(h) or not 0 < h < 0.5:
-        raise ValueError("chart requires finite 0 < h < 1/2; full paper uses h < 1/100")
+def _finite(value: float, name: str) -> float:
+    value = float(value)
+    if not math.isfinite(value):
+        raise ValueError(f"{name} must be finite")
+    return value
+
+
+def _validate_h(h: float) -> float:
+    h = _finite(h, "h")
+    if not 0.0 < h < 0.5:
+        raise ValueError("h must satisfy 0 < h < 1/2 (geometry domain)")
     return h
 
 
-def solve_q_from_tau(z: float, tau: float, h: float, *, rtol: float = 1e-13,
-                     max_iter: int = 200) -> float:
-    """Solve q-z^2 q^(2h)=tau using a dimensionless, bracketed bisection.
+# Public compatibility name used by the newer Stage-1/2 modules on main.
+def validate_h(h: float) -> float:
+    return _validate_h(h)
 
-    Scale by max(tau, |z|^(1/D)); this avoids a unit-sized bracket and an
-    absolute 1e-13 stopping threshold for roots many orders smaller than 1.
-    expm1 evaluates the equation without subtracting almost equal terms.
-    """
-    z, tau, h = float(z), float(tau), validate_h(h)
-    if not math.isfinite(z) or not math.isfinite(tau) or tau <= 0:
-        raise ValueError("z must be finite and tau must be finite and positive")
-    if not math.isfinite(rtol) or not 4 * sys.float_info.epsilon <= rtol < 1:
-        raise ValueError("rtol must be at least 4 machine epsilons and smaller than 1")
+
+def _tau(t: float) -> float:
+    t = _finite(t, "t")
+    if t >= 1.0:
+        raise ValueError("t must be less than 1; use the tau API near t=1")
+    return 1.0 - t
+
+
+def solve_q_from_tau(z: float, tau: float, h: float, *,
+                     rtol: float = 1e-13, max_iter: int = 200) -> float:
+    """Solve q-z^2*q^(2h)=tau, with a relative (not unit-scale) tolerance."""
+    z, tau, h = _finite(z, "z"), _finite(tau, "tau"), _validate_h(h)
+    rtol = _finite(rtol, "rtol")
+    if tau <= 0:
+        raise ValueError("tau must be positive")
+    if not 4 * sys.float_info.epsilon <= rtol < 1:
+        raise ValueError("rtol must be between 4*machine_epsilon and 1")
     if isinstance(max_iter, bool) or not isinstance(max_iter, int) or max_iter < 1:
         raise ValueError("max_iter must be a positive integer")
     if z == 0:
         return tau
-    p = 2 * h
-    log_endpoint = 2 * math.log(abs(z)) / (1 - p)
-    log_scale = max(math.log(tau), log_endpoint)
-    try:
-        scale = math.exp(log_scale)
-    except OverflowError as exc:
-        raise ArithmeticError("q lies outside binary64 range") from exc
-    if not math.isfinite(scale) or scale <= 0:
-        raise ArithmeticError("q scale is not representable")
-    a = tau / scale
-    log_b = min(0.0, 2 * math.log(abs(z)) - (1 - p) * math.log(scale))
+    k = 1.0 - 2.0 * h
+    log_tau = math.log(tau)
+    log_axis = 2.0 * math.log(abs(z)) / k
+    log_scale = max(log_tau, log_axis)
+    if log_scale > math.log(sys.float_info.max):
+        raise OverflowError("q is outside floating-point range")
+    scale = tau if log_tau >= log_axis else math.exp(log_axis)
+    log_gamma = k * (log_axis - log_scale)
+    log_a = log_tau - log_scale
 
     def residual(y: float) -> float:
-        return y * (-math.expm1(log_b + (p - 1) * math.log(y))) - a
+        return -math.expm1(log_gamma - k * y) - math.exp(log_a - y)
 
-    lo, hi = 1.0, 2.0
-    if residual(lo) >= 0:  # endpoint and root coincide to floating precision
+    if residual(0.0) == 0.0:
         return scale
-    for _ in range(max_iter):
+    lo, hi = 0.0, math.log(2.0)
+    for _ in range(2048):
         if residual(hi) > 0:
             break
-        hi *= 2
-        if not math.isfinite(hi):
-            raise ArithmeticError("unable to bracket q in binary64")
+        hi *= 2.0
+        if log_scale + hi > math.log(sys.float_info.max):
+            hi = math.log(sys.float_info.max) - log_scale
+            if hi <= 0 or residual(hi) <= 0:
+                raise OverflowError("q is outside floating-point range")
+            break
     else:
-        raise RuntimeError("solve_q could not bracket the root")
+        raise RuntimeError("could not bracket q")
     for _ in range(max_iter):
-        mid = lo + (hi - lo) / 2
+        mid = lo + (hi - lo) * 0.5
         if residual(mid) <= 0:
             lo = mid
         else:
             hi = mid
-        if hi - lo <= rtol * mid:
-            q = scale * (lo + (hi - lo) / 2)
+        if hi - lo <= math.log1p(rtol):
+            y = (lo + hi) * 0.5
+            q = scale * math.exp(y)
             if not math.isfinite(q) or q <= 0:
-                raise ArithmeticError("q is not representable")
+                raise OverflowError("q is outside floating-point range")
             return q
-    raise RuntimeError("solve_q did not converge")
+    raise RuntimeError("solve_q did not converge; increase max_iter")
 
 
-def solve_q(z: float, t: float, h: float, *, rtol: float = 1e-13,
-            max_iter: int = 200) -> float:
-    """Compatibility entry point for finite t<1."""
-    return solve_q_from_tau(z, 1 - float(t), h, rtol=rtol, max_iter=max_iter)
+def solve_q(z: float, t: float, h: float, *,
+            rtol: float = 1e-13, max_iter: int = 200) -> float:
+    return solve_q_from_tau(z, _tau(t), h, rtol=rtol, max_iter=max_iter)
 
 
 def similarity_coordinates_from_tau(r: float, z: float, tau: float,
                                     h: float) -> SimilarityPoint:
-    r, z, tau = float(r), float(z), float(tau)
-    h = validate_h(h)
-    if not math.isfinite(r) or r < 0:
-        raise ValueError("cylindrical radius must be finite and nonnegative")
+    r = _finite(r, "r")
+    if r < 0:
+        raise ValueError("cylindrical radius r must be nonnegative")
     q = solve_q_from_tau(z, tau, h)
+    h, tau, z = float(h), float(tau), float(z)
     A, D = 0.5 + h, 0.5 - h
     eta = z / q**D
-    if abs(eta) > 1 + 1e-12:
+    if abs(eta) > 1.0 + 1e-10:
         raise ArithmeticError("computed eta left the physical chart")
-    eta = min(1.0, max(-1.0, eta))  # endpoint rounding only
+    d = tau / q
+    L = (1.0 - 2.0 * h) + 2.0 * h * d
     X = 0.5 * (r / math.sqrt(q))**2
     if not math.isfinite(X):
-        raise ArithmeticError("X lies outside binary64 range")
-    return SimilarityPoint(tau, q, eta, X, h, A, D, tau / q,
-                           1 - 2 * h * eta**2)
+        raise OverflowError("X is outside floating-point range")
+    return SimilarityPoint(tau, q, eta, X, h, A, D, d, L)
 
 
 def similarity_coordinates(r: float, z: float, t: float, h: float) -> SimilarityPoint:
-    return similarity_coordinates_from_tau(r, z, 1 - float(t), h)
+    return similarity_coordinates_from_tau(r, z, _tau(t), h)
 
 
-def coordinate_identity_error(r: float, z: float, t: float,
-                              h: float) -> tuple[float, float]:
-    """Absolute errors; the second includes endpoint cancellation in 1-eta^2."""
+def coordinate_identity_error(r: float, z: float, t: float, h: float) -> tuple[float, float]:
     s = similarity_coordinates(r, z, t, h)
-    return abs(z - s.q**s.D * s.eta), abs(s.tau - s.q * (1 - s.eta**2))
+    return abs(float(z) - s.q**s.D * s.eta), abs(s.tau - s.q * (1 - s.eta**2))
+
+
+def coordinate_derivatives(s: SimilarityPoint) -> dict[str, float]:
+    """Analytic q, eta and X derivatives from Lemma 4.1, at fixed r,z,t."""
+    qL, qDL = s.q * s.L, s.q**s.D * s.L
+    return {"q_t": -1.0 / s.L, "q_z": 2 * s.eta * s.q / qDL,
+            "eta_t": s.D * s.eta / qL, "eta_z": s.d / qDL,
+            "X_t": s.X / qL, "X_z": -2 * s.eta * s.X / qDL,
+            "X_r": math.sqrt(2 * s.X) / math.sqrt(s.q)}
+
+
+def weighted_profile_derivatives(s: SimilarityPoint, b: float, f: float,
+                                 f_X: float, f_eta: float) -> dict[str, float]:
+    """Derivatives of q**b*f(X,eta), given analytic profile partials, Eq. (4.2)."""
+    b, f = _finite(b, "b"), _finite(f, "f")
+    f_X, f_eta = _finite(f_X, "f_X"), _finite(f_eta, "f_eta")
+    T = (-b * f + s.D * s.eta * f_eta + s.X * f_X) / s.L
+    Z = (2 * b * s.eta * f + s.d * f_eta - 2 * s.eta * s.X * f_X) / s.L
+    return {"t": s.q**(b - 1) * T, "z": s.q**(b - s.D) * Z,
+            "r": s.q**(b - 0.5) * math.sqrt(2 * s.X) * f_X}

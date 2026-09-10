@@ -1,25 +1,67 @@
-"""C-infinity cutoffs for experiments; not a certified paper cutoff schedule."""
+"""C-infinity experimental cutoffs, not the paper's recursively chosen schedule."""
 from __future__ import annotations
+from dataclasses import dataclass
 import math
+import numpy as np
+from .coordinates import _finite
+
+
+def _transition(s: float) -> tuple[float, float]:
+    s = _finite(s,"s")
+    if s <= 0.5:
+        return 1.0, 0.0
+    if s >= 1.0:
+        return 0.0, 0.0
+    v = 2*s-1
+    log_ratio = -1/v + 1/(1-v)
+    a = math.exp(-abs(log_ratio))
+    value = a/(1+a) if log_ratio >= 0 else 1/(1+a)
+    derivative = 0.0 if a == 0 else -2*a/(1+a)**2 * (1/v**2 + 1/(1-v)**2)
+    return value, derivative
+
+
+def standard_cutoff(s: float) -> float:
+    """Equals one for s<=1/2 and zero for s>=1, flat at both joins."""
+    return _transition(s)[0]
+
+
+def standard_cutoff_derivative(s: float) -> float:
+    return _transition(s)[1]
+
+
+def smooth_cutoff(s: float) -> float:
+    """Compatibility name used by the Section-10 geometry module on main."""
+    return standard_cutoff(s)
 
 
 def smooth_step(s: float) -> float:
-    """0 on (-inf,0], 1 on [1,inf); flat to every order at both edges."""
-    s = float(s)
-    if not math.isfinite(s):
-        raise ValueError("cutoff argument must be finite")
+    """0 on (-inf,0], 1 on [1,inf); C-infinity transition in between."""
+    s = _finite(s, "s")
     if s <= 0:
         return 0.0
     if s >= 1:
         return 1.0
-    log_ratio = 1 / s - 1 / (1 - s)
+    log_ratio = 1/s - 1/(1-s)
     if log_ratio >= 0:
         e = math.exp(-log_ratio)
-        return e / (1 + e)
-    return 1 / (1 + math.exp(log_ratio))
+        return e/(1+e)
+    return 1/(1+math.exp(log_ratio))
 
 
-def smooth_cutoff(s: float) -> float:
-    """One for s<=1/2, zero for s>=1, with a C-infinity transition."""
-    # Avoid cancellation near the zero edge, unlike 1-smooth_step(2*s-1).
-    return smooth_step(2 * (1 - float(s)))
+@dataclass(frozen=True)
+class CompactSpatialCutoff:
+    """Axisymmetric C-infinity cutoff in r^2+z^2 with an analytic gradient."""
+    radius: float = 2.0
+
+    def __post_init__(self) -> None:
+        if _finite(self.radius,"radius") <= 0:
+            raise ValueError("radius must be positive")
+
+    def __call__(self, x: float, y: float, z: float, t: float) -> float:
+        xyz = [_finite(v,n) for v,n in zip((x,y,z),("x","y","z"))]
+        return standard_cutoff(sum((v/self.radius)**2 for v in xyz))
+
+    def gradient(self, x: float, y: float, z: float, t: float) -> np.ndarray:
+        xyz = np.array([_finite(v,n) for v,n in zip((x,y,z),("x","y","z"))])
+        s = float(np.dot(xyz/self.radius,xyz/self.radius))
+        return standard_cutoff_derivative(s)*2*xyz/self.radius**2
