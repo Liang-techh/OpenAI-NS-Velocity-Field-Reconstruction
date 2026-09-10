@@ -1,96 +1,118 @@
-"""Profile interfaces for the leading OpenAI Navier--Stokes vortex.
+"""Leading profile interface; Eqs. (4.3)-(4.7).
 
-The paper proves existence of specially constructed smooth profiles E(X,eta), U(X,eta),
-and Pi(X,eta).  They are not a single elementary closed-form tuple.  This module therefore
-keeps the paper-exact kinematic formulas separate from whatever concrete profile constructor
-is plugged in.
-
-Equation references: (4.3), (4.6), (4.7).
+F=E/sqrt(2X) is the smooth quantity on the axis. The exact primitives
+can be supplied; otherwise cached Gaussian quadrature is used on [0,1].
+No concrete profile in this module instantiates Theorem 4.6.
 """
-
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Callable
+import math
 import numpy as np
+from .coordinates import _finite, _validate_h
+from .quadrature import unit_rule
 
 ScalarFn = Callable[[float, float], float]
 
 
 @dataclass(frozen=True)
 class LeadingProfile:
-    """A concrete leading profile with the derivatives needed by Eq. (4.7).
-
-    Parameters
-    ----------
-    E:
-        Azimuthal similarity profile E(X, eta).
-    U:
-        Axial similarity profile U(X, eta).
-    dU_deta:
-        Partial derivative of U with respect to eta.
-    Pi:
-        Optional pressure profile. It is not needed to evaluate velocity, but is
-        carried so the same object can later feed the residual verifier.
-    name:
-        Provenance/status label.
-    paper_exact:
-        True only for a profile built from the paper's complete profile construction.
-    """
-
     E: ScalarFn
     U: ScalarFn
     dU_deta: ScalarFn
     Pi: ScalarFn | None = None
     name: str = "unnamed-profile"
     paper_exact: bool = False
+    F: ScalarFn | None = None
+    average_U: ScalarFn | None = None
+    average_dU_deta: ScalarFn | None = None
+    provenance: str | None = None
 
-    def radial_average_U(self, X: float, eta: float, *, n: int = 801) -> float:
-        """A_X(U) = X^-1 integral_0^X U(x,eta) dx, Eq. (4.6)."""
-        X = float(X)
-        if X < 0:
-            raise ValueError("X must be nonnegative")
-        if X == 0.0:
-            return float(self.U(0.0, eta))
-        n = max(3, int(n))
-        if n % 2 == 0:
-            n += 1
-        xs = np.linspace(0.0, X, n)
-        vals = np.array([self.U(float(x), eta) for x in xs], dtype=float)
-        return float(np.trapezoid(vals, xs) / X)
+    def __post_init__(self) -> None:
+        for name in ("E", "U", "dU_deta"):
+            if not callable(getattr(self, name)):
+                raise TypeError(f"{name} must be callable")
+        for name in ("Pi", "F", "average_U", "average_dU_deta"):
+            v = getattr(self, name)
+            if v is not None and not callable(v):
+                raise TypeError(f"{name} must be callable or None")
+        if self.paper_exact and not (self.provenance and self.provenance.strip()):
+            raise ValueError("paper_exact requires explicit provenance; a flag is not a proof")
 
-    def radial_average_dU_deta(self, X: float, eta: float, *, n: int = 801) -> float:
-        """d_eta A_X(U), evaluated by differentiating under the radial integral."""
-        X = float(X)
-        if X < 0:
-            raise ValueError("X must be nonnegative")
-        if X == 0.0:
-            return float(self.dU_deta(0.0, eta))
-        n = max(3, int(n))
-        if n % 2 == 0:
-            n += 1
-        xs = np.linspace(0.0, X, n)
-        vals = np.array([self.dU_deta(float(x), eta) for x in xs], dtype=float)
-        return float(np.trapezoid(vals, xs) / X)
+    @staticmethod
+    def _point(X: float, eta: float) -> tuple[float, float]:
+        X, eta = _finite(X, "X"), _finite(eta, "eta")
+        if X < 0 or abs(eta) > 1 + 1e-10:
+            raise ValueError("profile domain requires X>=0 and |eta|<=1")
+        return X, eta
 
-    def V0(self, X: float, eta: float, h: float, *, n: int = 801) -> float:
-        """Radial flux V0 = r u_r from the exact incompressibility identity (4.7)."""
-        X = float(X)
-        eta = float(eta)
-        if X == 0.0:
-            return 0.0
-        D = 0.5 - h
-        d = 1.0 - eta * eta
-        L = 1.0 - 2.0 * h * eta * eta
-        U = float(self.U(X, eta))
+    def _average(self, fn: ScalarFn, exact: ScalarFn | None,
+                 X: float, eta: float, n: int) -> float:
+        X, eta = self._point(X, eta)
+        # Validate the quadrature order even when an exact primitive is available.
+        nodes, weights = unit_rule(n)
+        if X == 0:
+            return _finite(fn(0.0, eta), "axis profile value")
+        if exact is not None:
+            return _finite(exact(X, eta), "radial average")
+        values = np.array([fn(float(X * node), eta) for node in nodes], dtype=float)
+        if values.shape != nodes.shape or not np.all(np.isfinite(values)):
+            raise ValueError("profile must return finite scalars")
+        # Integrate U(X*s,eta) ds: no ill-conditioned division by X.
+        return float(weights @ values)
+
+    def radial_average_U(self, X: float, eta: float, *, n: int = 32) -> float:
+        return self._average(self.U, self.average_U, X, eta, n)
+
+    def radial_average_dU_deta(self, X: float, eta: float, *, n: int = 32) -> float:
+        return self._average(self.dU_deta, self.average_dU_deta, X, eta, n)
+
+    def radial_flux_factor(self, X: float, eta: float, h: float, *,
+                           lam: float = 0.0, n: int = 32,
+                           d: float | None = None, L: float | None = None) -> float:
+        """V_n/X from the streamfunction, Eqs. (4.7), (5.2), (5.27).
+
+        Positive-order coefficients have D+lambda_n, not merely D.
+        Optional d,L preserve small tau/q when eta rounds to an endpoint.
+        """
+        X, eta = self._point(X, eta)
+        h, lam = _validate_h(h), _finite(lam, "lam")
+        d = 1 - eta**2 if d is None else _finite(d, "d")
+        L = 1 - 2*h*eta**2 if L is None else _finite(L, "L")
+        if d < -1e-10 or L <= 0:
+            raise ValueError("invalid physical-chart d or L")
+        U = _finite(self.U(X, eta), "U")
         AU = self.radial_average_U(X, eta, n=n)
         dAU = self.radial_average_dU_deta(X, eta, n=n)
-        return (X / L) * (2.0 * eta * U - 2.0 * D * eta * AU - d * dAU)
+        return (2*eta*U - 2*(0.5-h+lam)*eta*AU - d*dAU) / L
+
+    def V0(self, X: float, eta: float, h: float, *, n: int = 32) -> float:
+        X, eta = self._point(X, eta)
+        return X * self.radial_flux_factor(X, eta, h, n=n)
+
+    def smooth_swirl_factor(self, X: float, eta: float) -> float:
+        X, eta = self._point(X, eta)
+        if self.F is not None:
+            return _finite(self.F(X, eta), "F")
+        if X == 0:
+            raise ValueError("supply smooth F=E/sqrt(2X) to evaluate an axis limit")
+        return _finite(self.E(X, eta), "E") / math.sqrt(2*X)
 
     def pressure_radial_derivative(self, X: float, eta: float) -> float:
-        """Pi_X = E^2/(2X), Eq. (4.7), with the smooth-axis limit left to profile data."""
-        X = float(X)
-        if X <= 0.0:
-            raise ValueError("use the smooth profile-specific axis limit at X=0")
-        e = float(self.E(X, eta))
-        return e * e / (2.0 * X)
+        return self.smooth_swirl_factor(X, eta)**2
+
+
+def toy_gaussian_profile() -> LeadingProfile:
+    """Explicit analytic TEST fixture, not the paper's constructed leading profile."""
+    def avg(X: float) -> float:
+        return 1.0 if X == 0 else -math.expm1(-X) / X
+    def F(X: float, eta: float) -> float:
+        return math.exp(-X) * (1 + 0.1*eta**2)
+    return LeadingProfile(
+        E=lambda X,e: math.sqrt(2*X)*F(X,e),
+        U=lambda X,e: e*math.exp(-X), dU_deta=lambda X,e: math.exp(-X),
+        Pi=lambda X,e: -0.5*math.exp(-2*X)*(1+0.1*e**2)**2,
+        name="toy-gaussian-not-openai", F=F,
+        average_U=lambda X,e: e*avg(X), average_dU_deta=lambda X,e: avg(X),
+        provenance="Repository analytic diagnostic fixture, not Theorem 4.6.",
+    )

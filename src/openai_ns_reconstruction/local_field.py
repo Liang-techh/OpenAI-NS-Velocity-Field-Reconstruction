@@ -21,65 +21,73 @@ from dataclasses import dataclass
 from typing import Callable, Sequence
 import math
 import numpy as np
+from .coordinates import _finite
+from .verify import finite_vector, jacobian_numeric
 
 VectorField = Callable[[float, float, float, float], np.ndarray]
 ScalarField = Callable[[float, float, float, float], float]
 
 
 def curl_numeric(A: VectorField, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> np.ndarray:
-    """Centered-difference curl of a Cartesian vector potential."""
-    def d(axis: int) -> np.ndarray:
-        p = [x, y, z]
-        m = [x, y, z]
-        p[axis] += eps
-        m[axis] -= eps
-        return (np.asarray(A(*p, t), float) - np.asarray(A(*m, t), float)) / (2.0 * eps)
-
-    d_dx = d(0)
-    d_dy = d(1)
-    d_dz = d(2)
-    return np.array([
-        d_dy[2] - d_dz[1],
-        d_dz[0] - d_dx[2],
-        d_dx[1] - d_dy[0],
-    ])
+    """Diagnostic curl; prefer an analytic callback for nested residuals."""
+    J = jacobian_numeric(A,x,y,z,t,eps=eps)
+    return np.array([J[2,1]-J[1,2],J[0,2]-J[2,0],J[1,0]-J[0,1]])
 
 
 def azimuthal_vector(B: float, x: float, y: float) -> np.ndarray:
+    B, x, y = _finite(B,"B"), _finite(x,"x"), _finite(y,"y")
     r = math.hypot(x, y)
     if r == 0.0:
+        if B != 0:
+            raise ValueError("smooth azimuthal velocity must vanish on the axis")
         return np.zeros(3)
     return float(B) * np.array([-y / r, x / r, 0.0])
 
 
 @dataclass(frozen=True)
 class LocalField:
-    """Executable form of u_loc = curl(A) + B e_theta."""
+    """u_loc=curl(A)+B*e_theta, with an optional analytic curl.
+
+    Divergence-freeness requires B to be axisymmetric and axis-regular.
+    Arbitrary Cartesian callbacks are NOT automatically incompressible.
+    """
 
     vector_potential: VectorField
     azimuthal_scalar: ScalarField
+    analytic_curl: VectorField | None = None
 
     def velocity(self, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> np.ndarray:
-        return curl_numeric(self.vector_potential, x, y, z, t, eps=eps) + azimuthal_vector(
+        poloidal = (finite_vector(self.analytic_curl(x,y,z,t)) if self.analytic_curl is not None
+                    else curl_numeric(self.vector_potential,x,y,z,t,eps=eps))
+        return poloidal + azimuthal_vector(
             self.azimuthal_scalar(x, y, z, t), x, y
         )
 
 
 @dataclass(frozen=True)
 class LocalizedField:
-    """Executable form of Eq. (10.4): u = curl(c A) + c B e_theta."""
+    """Eq. (10.4), retaining grad(c) cross A.
+
+    For the direct swirl to remain divergence-free, c*B must be
+    independent of theta. Prefer an axisymmetric cutoff, not an arbitrary one.
+    """
 
     local: LocalField
     cutoff: ScalarField
+    cutoff_gradient: VectorField | None = None
 
     def localized_potential(self, x: float, y: float, z: float, t: float) -> np.ndarray:
-        return float(self.cutoff(x, y, z, t)) * np.asarray(
-            self.local.vector_potential(x, y, z, t), dtype=float
-        )
+        return _finite(self.cutoff(x,y,z,t),"cutoff") * finite_vector(self.local.vector_potential(x,y,z,t))
 
     def velocity(self, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> np.ndarray:
-        c = float(self.cutoff(x, y, z, t))
-        return curl_numeric(self.localized_potential, x, y, z, t, eps=eps) + c * azimuthal_vector(
+        c = _finite(self.cutoff(x,y,z,t),"cutoff")
+        if self.local.analytic_curl is not None and self.cutoff_gradient is not None:
+            poloidal = c*finite_vector(self.local.analytic_curl(x,y,z,t)) + np.cross(
+                finite_vector(self.cutoff_gradient(x,y,z,t)),
+                finite_vector(self.local.vector_potential(x,y,z,t)))
+        else:
+            poloidal = curl_numeric(self.localized_potential,x,y,z,t,eps=eps)
+        return poloidal + c * azimuthal_vector(
             self.local.azimuthal_scalar(x, y, z, t), x, y
         )
 
@@ -88,12 +96,12 @@ def sum_vector_fields(fields: Sequence[VectorField]) -> VectorField:
     def total(x: float, y: float, z: float, t: float) -> np.ndarray:
         out = np.zeros(3)
         for f in fields:
-            out += np.asarray(f(x, y, z, t), dtype=float)
+            out += finite_vector(f(x,y,z,t))
         return out
     return total
 
 
 def sum_scalar_fields(fields: Sequence[ScalarField]) -> ScalarField:
     def total(x: float, y: float, z: float, t: float) -> float:
-        return float(sum(float(f(x, y, z, t)) for f in fields))
+        return float(sum(_finite(f(x,y,z,t),"scalar field") for f in fields))
     return total

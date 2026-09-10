@@ -23,8 +23,12 @@
     {
       "id": "stage-0-similarity-geometry",
       "status": "paper-exact",
-      "artifacts": ["src/openai_ns_reconstruction/coordinates.py"],
-      "paper_locations": ["Eq. (4.1)"],
+      "artifacts": [
+        "src/openai_ns_reconstruction/coordinates.py"
+      ],
+      "paper_locations": [
+        "Eq. (4.1)"
+      ],
       "missing_for_paper_exact": []
     },
     {
@@ -32,20 +36,32 @@
       "status": "formal-structure",
       "artifacts": [
         "src/openai_ns_reconstruction/profiles.py",
-        "src/openai_ns_reconstruction/velocity.py"
+        "src/openai_ns_reconstruction/velocity.py",
+        "src/openai_ns_reconstruction/moments.py",
+        "src/openai_ns_reconstruction/quadrature.py"
       ],
-      "paper_locations": ["Eqs. (4.3)-(4.7)", "Theorem 4.6", "Appendices A/B/C"],
+      "paper_locations": [
+        "Eqs. (4.3)-(4.7)",
+        "Theorem 4.6",
+        "Appendices A/B/C"
+      ],
       "missing_for_paper_exact": [
         "construct the paper's concrete E/U/Pi profile data",
         "record all existential parameter choices",
         "verify support, moments, matching and cone conditions"
-      ]
+      ],
+      "implementation_scope": "Moment solvers are pointwise primitives; actual paper profile and uniform bounds remain missing."
     },
     {
       "id": "stage-2-all-order-background",
       "status": "formal-structure",
-      "artifacts": ["src/openai_ns_reconstruction/background.py"],
-      "paper_locations": ["Eqs. (5.1)-(5.6)", "Eq. (5.27)"],
+      "artifacts": [
+        "src/openai_ns_reconstruction/background.py"
+      ],
+      "paper_locations": [
+        "Eqs. (5.1)-(5.6)",
+        "Eq. (5.27)"
+      ],
       "missing_for_paper_exact": [
         "recursive coefficient solver",
         "compact moment corrections",
@@ -56,7 +72,10 @@
       "id": "stage-3-to-6-oscillatory-corrections",
       "status": "pending",
       "artifacts": [],
-      "paper_locations": ["Sections 6-9", "Eq. (9.21)"],
+      "paper_locations": [
+        "Sections 6-9",
+        "Eq. (9.21)"
+      ],
       "missing_for_paper_exact": [
         "dyadic charts and transported phases",
         "stress-cone decomposition",
@@ -68,8 +87,13 @@
     {
       "id": "stage-7-final-localization",
       "status": "formal-structure",
-      "artifacts": ["src/openai_ns_reconstruction/local_field.py"],
-      "paper_locations": ["Eq. (10.4)", "Section 10"],
+      "artifacts": [
+        "src/openai_ns_reconstruction/local_field.py"
+      ],
+      "paper_locations": [
+        "Eq. (10.4)",
+        "Section 10"
+      ],
       "missing_for_paper_exact": [
         "paper-specific spatial/time cutoff",
         "completed local field inputs",
@@ -79,11 +103,27 @@
     {
       "id": "stage-8-independent-verification",
       "status": "diagnostic-only",
-      "artifacts": ["src/openai_ns_reconstruction/verify.py"],
-      "paper_locations": ["Eqs. (10.20)-(10.21)", "Section 10"],
+      "artifacts": [
+        "src/openai_ns_reconstruction/verify.py",
+        "src/openai_ns_reconstruction/diagnostics.py",
+        "src/openai_ns_reconstruction/status.py",
+        "src/openai_ns_reconstruction/cli.py"
+      ],
+      "paper_locations": [
+        "Eqs. (10.20)-(10.21)",
+        "Section 10"
+      ],
       "missing_for_paper_exact": [
         "verification tooling is diagnostic by design and is not itself a paper construction layer"
       ]
     }
-  ]
+  ],
+  "status_scope_note": "paper-exact on a formula layer means correspondence to a symbolic paper formula, not exact Float64 evaluation, a Lean certificate, or a complete velocity instance.",
+  "paper_exact_velocity_available": false,
+  "review_limits": {
+    "lean_source_reviewed": false,
+    "lean_compiled": false,
+    "paper_hash_verified": false
+  },
+  "integration_base_commit": "b01aaeebc6ec8a39f6692109b6a3c81b92cd0f32"
 }

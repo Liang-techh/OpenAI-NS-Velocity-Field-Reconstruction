@@ -2,6 +2,29 @@
 
 The target is not merely to reproduce the blow-up exponent.  The target is an executable counterpart of the velocity field used in OpenAI's proof, with every implemented layer tagged by provenance and tested independently.
 
+
+## 0.2.0 implementation update — partial, not completed
+
+The historical stage definitions below remain the project goal. The machine-readable
+current ledger is returned by `python -m openai_ns_reconstruction status`.
+
+- Stage 0 now has a scale-relative root solver, direct tau APIs and analytic chain rules.
+- Stage 1 has improved quadrature, pressure/axis support and pointwise Appendix A
+  moment primitives. **The actual leading-profile constructor remains missing.**
+- Stage 2 now has an analytic finite background velocity including the derivatives
+  of the q-dependent cutoff; the coefficient recursion remains missing.
+- Stage 7 now supports an analytic localization product rule and a C-infinity
+  experimental spatial cutoff; no smooth-through-t=1 force is instantiated.
+- Stage 8 includes independent manufactured solutions, step refinement, finite-cylinder
+  energy, source/status reports, a completion gate and labelled toy-data exports.
+- Stages 3–6 are still pending. No profile or whole construction is promoted to
+  `paper-exact` by these engineering changes. No Lean compilation was performed.
+
+The original phrase `paper-exact` below describes correspondence of the symbolic
+formula to a paper equation, **not exact floating-point arithmetic or a completed
+paper-instance certificate**. See `NUMERICS.md` and `NEXT_TASKS.md` for the precise
+implementation boundary and next constructive dependencies.
+
 ## Status convention
 
 - **paper-exact** — formula/algorithm is a direct implementation of the published construction.
@@ -117,14 +140,11 @@ at viscosity one, together with the smooth extension through `t=1` described in 
 
 ## Stage 8 — independent verification and visualization — started
 
-`verify.py` provides numerical divergence and residual diagnostics.  Planned additions:
-
-- symbolic/automatic-differentiation backend;
-- convergence studies under spatial/time step refinement;
-- kinetic-energy integration;
-- singular-path exponent extraction;
-- vortex slices and particle trajectories;
-- cross-check table against the official Lean theorem modules.
+`verify.py` provides numerical divergence and residual diagnostics.  Implemented numerical additions include analytic coordinate/background derivatives,
+independent manufactured-solution tests, Taylor–Green refinement, finite-cylinder
+energy, direct-tau exponent probes and labelled NPZ vortex slices. Still missing are
+a general symbolic/automatic-differentiation backend, particle trajectories and a
+reviewed cross-check table against the official Lean theorem modules.
 
 ## Non-negotiable rule
 

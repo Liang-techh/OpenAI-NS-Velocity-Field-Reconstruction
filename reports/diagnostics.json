@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "kind": "numerical-diagnostics-not-proof",
+  "diagnostics_passed": true,
+  "environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "platform": "Linux"
+  },
+  "parameters": {
+    "h": 0.005,
+    "profile": "toy-gaussian-not-openai",
+    "quadrature_nodes": 32,
+    "root_grid_cases": 24,
+    "toy_probe_samples": 40,
+    "background_orders": [
+      0,
+      2
+    ],
+    "background_cutoff_scale": 2.5,
+    "background_point": [
+      0.25,
+      -0.17,
+      0.12,
+      0.7
+    ],
+    "background_eps_space": 1e-05,
+    "taylor_green_point": [
+      0.7,
+      0.4,
+      0.2,
+      0.3
+    ],
+    "viscosity": 0.37
+  },
+  "checks": {
+    "similarity_max_relative_error": {
+      "value": 5.284661597215745e-14,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    "toy_exponent_error": {
+      "value": 0.0,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    "background_curl_error": {
+      "value": 3.11668174214879e-10,
+      "tolerance": 1e-07,
+      "passed": true
+    },
+    "background_divergence": {
+      "value": 1.7976167221434025e-09,
+      "tolerance": 1e-07,
+      "passed": true
+    },
+    "taylor_green_finest_residual": {
+      "value": 2.7337260290058326e-05,
+      "tolerance": 0.0001,
+      "passed": true
+    },
+    "taylor_green_refinement_ratio_error": {
+      "value": 0.001962093242317664,
+      "tolerance": 0.2,
+      "passed": true
+    },
+    "pointwise_moment_residual": {
+      "value": 1.5265566588595902e-14,
+      "tolerance": 1e-12,
+      "passed": true
+    }
+  },
+  "measured_toy_exponent": -0.505,
+  "refinement": {
+    "steps": [
+      0.05,
+      0.025,
+      0.0125
+    ],
+    "residual_norms": [
+      0.00043712799858920627,
+      0.00010933563132314248,
+      2.7337260290058326e-05
+    ],
+    "ratios": [
+      3.9980379067576823,
+      3.999509466678499
+    ]
+  },
+  "construction": {
+    "schema_version": 1,
+    "paper_exact_velocity_available": false,
+    "status": "partial-executable-reconstruction",
+    "remote_publication_performed": false,
+    "limitations": [
+      "The bundled Gaussian profile is a toy, not OpenAI's constructed profile.",
+      "Numerical residual tests are not the paper's proof or a Lean certificate.",
+      "R(u,p) minus the same computed R(u,p) is not an independent forcing check.",
+      "Pointwise moment smallness is not a uniform-in-parameter bound."
+    ],
+    "sources": {
+      "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+      "baseline_commit": "b0d964ab4a69c25863078830faf76296550ae4ea",
+      "integration_base_commit": "b01aaeebc6ec8a39f6692109b6a3c81b92cd0f32",
+      "integration_base_tree_verified": "8788a0faf709c02ece63a41774d29f9754d7a59b",
+      "paper_url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf",
+      "paper_equations_checked": [
+        "4.1-4.7",
+        "5.1",
+        "5.27",
+        "Lemma A.2"
+      ],
+      "upstream_lean_repository": "openai/NavierStokesAndEuler",
+      "upstream_commit_metadata_observed": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "lean_source_reviewed": false,
+      "lean_compiled": false,
+      "paper_hash_verified": false
+    },
+    "stages": [
+      {
+        "id": 0,
+        "name": "similarity geometry",
+        "status": "implemented-numerically",
+        "remaining": "No interval or arbitrary-precision certificate."
+      },
+      {
+        "id": 1,
+        "name": "leading profile",
+        "status": "partial",
+        "implemented": "Kinematics, pressure interface, pointwise moment-solver primitives.",
+        "remaining": "Construct Theorem 4.6 profiles, matching data, cone and moment constraints."
+      },
+      {
+        "id": 2,
+        "name": "all-order background",
+        "status": "formal-structure",
+        "implemented": "Finite analytic cutoff/curl assembly from supplied coefficients.",
+        "remaining": "Coefficient recursion, admissible cutoff schedule, all-order estimates."
+      },
+      {
+        "id": 3,
+        "name": "dyadic charts and transported phases",
+        "status": "pending",
+        "remaining": "Implement Section 6 choices and transported wave data."
+      },
+      {
+        "id": 4,
+        "name": "oscillatory stress realization",
+        "status": "pending",
+        "remaining": "Implement Section 7 stress cone and amplitudes."
+      },
+      {
+        "id": 5,
+        "name": "compact mean corrections",
+        "status": "pending",
+        "remaining": "Section 8 radial inverses and five-equation defect solve."
+      },
+      {
+        "id": 6,
+        "name": "residual-improvement iteration",
+        "status": "pending",
+        "remaining": "Section 9 recursive choices, summation and convergence control."
+      },
+      {
+        "id": 7,
+        "name": "final compact field and force",
+        "status": "formal-structure",
+        "implemented": "Localization product rule and independent residual diagnostics.",
+        "remaining": "Instantiate the field and force smooth through t=1; no force extension supplied."
+      },
+      {
+        "id": 8,
+        "name": "independent verification",
+        "status": "partial",
+        "implemented": "Regression, manufactured solutions, refinement, finite-cylinder energy, labelled data export.",
+        "remaining": "Validate an actual paper instance, uniform estimates and formal cross-checks."
+      }
+    ]
+  }
+}
