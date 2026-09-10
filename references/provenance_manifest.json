@@ -31,14 +31,28 @@
       "id": "stage-1-leading-profile",
       "status": "formal-structure",
       "artifacts": [
+        "src/openai_ns_reconstruction/natural_axis.py",
         "src/openai_ns_reconstruction/profiles.py",
         "src/openai_ns_reconstruction/velocity.py"
       ],
       "paper_locations": ["Eqs. (4.3)-(4.7)", "Theorem 4.6", "Appendices A/B/C"],
+      "official_lean_modules": [
+        "NavierStokes/NaturalAxisData.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean",
+        "NavierStokes/NaturalProfile.lean"
+      ],
+      "completed_subconstruction": [
+        "explicit natural-axis polynomials D/A/d/L/U/H/W/chi",
+        "realGradient and the integral definition of realPhase/realAmplitude",
+        "NaturalProfile rescalePoint/angularProfile/affineProfile mapping from scaled fixed-point fields to E/U/Pi"
+      ],
+      "numerical_caveats": [
+        "realPhase is evaluated by floating-point trapezoidal quadrature; the defining integral is exact but each runtime value is numerical"
+      ],
       "missing_for_paper_exact": [
-        "construct the paper's concrete E/U/Pi profile data",
-        "record all existential parameter choices",
-        "verify support, moments, matching and cone conditions"
+        "materialize the coefficient-space fixed-point fields phi/u/average/pressure used by the natural-profile assembly",
+        "record the constructive existential choices for sigma/Lambda/C and the pressure datum/schedule",
+        "verify the paper's support, moments, matching and cone conditions for the materialized profile"
       ]
     },
     {
