@@ -155,16 +155,25 @@
       "id": "stage-7-final-localization",
       "status": "formal-structure",
       "artifacts": [
-        "src/openai_ns_reconstruction/local_field.py"
+        "src/openai_ns_reconstruction/local_field.py",
+        "src/openai_ns_reconstruction/spatial_localization.py"
       ],
       "paper_locations": [
         "Eq. (10.4)",
-        "Section 10"
+        "Section 10",
+        "NavierStokes/SpatialLocalization.lean"
+      ],
+      "implemented_components": [
+        "official Section 10 spatial support/plateau geometry for cutoffProfile(16 r^2, 4 z), represented by an explicit C-infinity bump with the same support and plateau",
+        "analytic Cartesian gradient of that executable cutoff representative, connected to curl(cA)=c curl(A)+grad(c) cross A and independently cross-checked against numerical curl(cA)"
       ],
       "missing_for_paper_exact": [
-        "paper-specific spatial/time cutoff",
-        "completed local field inputs",
-        "smooth extension through t=1"
+        "exact pointwise realization of the formalization's noncomputable Mathlib ContDiffBump values in the transition collar, or an explicit proof that the chosen executable representative may replace it",
+        "paper-specific time localization/activation and smooth extension through t=1",
+        "completed local field inputs from the unresolved earlier construction stages"
+      ],
+      "numerical_caveats": [
+        "the analytic cutoff gradient is exact for the repository's explicit C-infinity representative; it does not claim equality with Mathlib's noncomputable transition-collar values"
       ]
     },
     {
