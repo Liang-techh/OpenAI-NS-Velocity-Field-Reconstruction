@@ -3,7 +3,7 @@ import math
 import numpy as np
 import pytest
 
-from openai_ns_reconstruction.local_field import LocalField, LocalizedField
+from openai_ns_reconstruction.local_field import LocalField, LocalizedField, curl_numeric
 from openai_ns_reconstruction.spatial_localization import (
     PLATEAU_HALF_HEIGHT,
     PLATEAU_RADIUS_SQUARED,
@@ -12,19 +12,25 @@ from openai_ns_reconstruction.spatial_localization import (
     plateau_contains,
     section10_axisymmetric_cutoff,
     section10_spatial_cutoff,
+    section10_spatial_cutoff_gradient,
     support_cylinder_contains,
     support_is_strictly_inside_period_cube,
     symmetric_smooth_bump,
+    symmetric_smooth_bump_derivative,
 )
 
 
 def test_symmetric_bump_matches_formal_support_and_plateau_axioms():
     for s in (-2.0, -1.0, -0.75, -0.5, -0.1, 0.0, 0.1, 0.5, 0.75, 1.0, 2.0):
         assert symmetric_smooth_bump(s) == pytest.approx(symmetric_smooth_bump(-s))
+        assert symmetric_smooth_bump_derivative(s) == pytest.approx(
+            -symmetric_smooth_bump_derivative(-s)
+        )
     assert symmetric_smooth_bump(-0.5) == 1.0
     assert symmetric_smooth_bump(0.5) == 1.0
     assert symmetric_smooth_bump(-1.0) == 0.0
     assert symmetric_smooth_bump(1.0) == 0.0
+    assert symmetric_smooth_bump_derivative(0.0) == 0.0
 
 
 def test_section10_cutoff_has_official_plateau_and_closed_support_geometry():
@@ -54,6 +60,47 @@ def test_section10_cutoff_is_axisymmetric_and_inside_unit_period_cube():
     assert not support_is_strictly_inside_period_cube(0.3, 0.0, 0.0)
 
 
+def test_section10_analytic_gradient_matches_independent_finite_difference():
+    # Both the radial and axial factors lie strictly inside their transition collars.
+    point = np.array([0.19, 0.05, 0.17], dtype=float)
+    t = 0.4
+    eps = 1.0e-7
+    numeric = np.empty(3)
+    for axis in range(3):
+        plus = point.copy()
+        minus = point.copy()
+        plus[axis] += eps
+        minus[axis] -= eps
+        numeric[axis] = (
+            section10_spatial_cutoff(*plus, t)
+            - section10_spatial_cutoff(*minus, t)
+        ) / (2.0 * eps)
+    analytic = section10_spatial_cutoff_gradient(*point, t)
+    assert np.allclose(analytic, numeric, rtol=2e-7, atol=2e-9)
+
+    # Flat plateau/support regions have exactly zero analytic gradient.
+    assert np.array_equal(section10_spatial_cutoff_gradient(0.0, 0.0, 0.0, t), np.zeros(3))
+    assert np.array_equal(section10_spatial_cutoff_gradient(0.30, 0.0, 0.0, t), np.zeros(3))
+
+
+def test_section10_gradient_wires_into_localized_product_rule():
+    # A=(0,0,-r^2/2) has exact curl=(-y,x,0). With B=0, Eq. (10.4)
+    # reduces to curl(cA), so numerical curl of the product is an independent
+    # check of c curl(A) + grad(c) cross A.
+    potential = lambda x, y, z, t: np.array([0.0, 0.0, -0.5 * (x * x + y * y)])
+    analytic_curl = lambda x, y, z, t: np.array([-y, x, 0.0])
+    local = LocalField(potential, lambda *args: 0.0, analytic_curl=analytic_curl)
+    localized = LocalizedField(
+        local,
+        section10_spatial_cutoff,
+        section10_spatial_cutoff_gradient,
+    )
+    point = (0.19, 0.05, 0.17, 0.4)
+    exact_product_rule = localized.velocity(*point)
+    independently_differenced = curl_numeric(localized.localized_potential, *point, eps=2e-6)
+    assert np.allclose(exact_product_rule, independently_differenced, rtol=2e-5, atol=2e-8)
+
+
 def test_negative_z_exterior_is_zero_and_short_circuits_missing_local_field():
     # Regression guard: the old one-sided smooth_cutoff(s) is not suitable by
     # itself for the official |z|-symmetric compact support.
@@ -71,5 +118,7 @@ def test_negative_z_exterior_is_zero_and_short_circuits_missing_local_field():
 def test_bad_geometry_inputs_fail_loudly():
     with pytest.raises(ValueError):
         section10_spatial_cutoff(float("nan"), 0.0, 0.0, 0.0)
+    with pytest.raises(ValueError):
+        section10_spatial_cutoff_gradient(0.0, float("inf"), 0.0, 0.0)
     with pytest.raises(ValueError):
         section10_axisymmetric_cutoff(-0.1, 0.0, 0.0)
