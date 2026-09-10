@@ -57,7 +57,7 @@ class LeadingProfile:
             n += 1
         xs = np.linspace(0.0, X, n)
         vals = np.array([self.U(float(x), eta) for x in xs], dtype=float)
-        return float(np.trapz(vals, xs) / X)
+        return float(np.trapezoid(vals, xs) / X)
 
     def radial_average_dU_deta(self, X: float, eta: float, *, n: int = 801) -> float:
         """d_eta A_X(U), evaluated by differentiating under the radial integral."""
@@ -71,7 +71,7 @@ class LeadingProfile:
             n += 1
         xs = np.linspace(0.0, X, n)
         vals = np.array([self.dU_deta(float(x), eta) for x in xs], dtype=float)
-        return float(np.trapz(vals, xs) / X)
+        return float(np.trapezoid(vals, xs) / X)
 
     def V0(self, X: float, eta: float, h: float, *, n: int = 801) -> float:
         """Radial flux V0 = r u_r from the exact incompressibility identity (4.7)."""
