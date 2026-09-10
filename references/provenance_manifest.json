@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "target": "OpenAI 2026 Finite Time Blowup for Navier-Stokes executable reconstruction",
+  "sources": {
+    "paper": {
+      "title": "Finite Time Blowup for Navier-Stokes",
+      "url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf"
+    },
+    "official_lean": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "commit_observed_utc": "2026-09-10T13:40:53Z"
+    }
+  },
+  "status_vocabulary": [
+    "paper-exact",
+    "formal-structure",
+    "diagnostic-only",
+    "toy",
+    "pending"
+  ],
+  "layers": [
+    {
+      "id": "stage-0-similarity-geometry",
+      "status": "paper-exact",
+      "artifacts": ["src/openai_ns_reconstruction/coordinates.py"],
+      "paper_locations": ["Eq. (4.1)"],
+      "missing_for_paper_exact": []
+    },
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifacts": [
+        "src/openai_ns_reconstruction/profiles.py",
+        "src/openai_ns_reconstruction/velocity.py"
+      ],
+      "paper_locations": ["Eqs. (4.3)-(4.7)", "Theorem 4.6", "Appendices A/B/C"],
+      "missing_for_paper_exact": [
+        "construct the paper's concrete E/U/Pi profile data",
+        "record all existential parameter choices",
+        "verify support, moments, matching and cone conditions"
+      ]
+    },
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifacts": ["src/openai_ns_reconstruction/background.py"],
+      "paper_locations": ["Eqs. (5.1)-(5.6)", "Eq. (5.27)"],
+      "missing_for_paper_exact": [
+        "recursive coefficient solver",
+        "compact moment corrections",
+        "paper-selected cutoff sequence"
+      ]
+    },
+    {
+      "id": "stage-3-to-6-oscillatory-corrections",
+      "status": "pending",
+      "artifacts": [],
+      "paper_locations": ["Sections 6-9", "Eq. (9.21)"],
+      "missing_for_paper_exact": [
+        "dyadic charts and transported phases",
+        "stress-cone decomposition",
+        "divergence-free oscillatory realization",
+        "mean corrections",
+        "residual-improvement iteration"
+      ]
+    },
+    {
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifacts": ["src/openai_ns_reconstruction/local_field.py"],
+      "paper_locations": ["Eq. (10.4)", "Section 10"],
+      "missing_for_paper_exact": [
+        "paper-specific spatial/time cutoff",
+        "completed local field inputs",
+        "smooth extension through t=1"
+      ]
+    },
+    {
+      "id": "stage-8-independent-verification",
+      "status": "diagnostic-only",
+      "artifacts": ["src/openai_ns_reconstruction/verify.py"],
+      "paper_locations": ["Eqs. (10.20)-(10.21)", "Section 10"],
+      "missing_for_paper_exact": [
+        "verification tooling is diagnostic by design and is not itself a paper construction layer"
+      ]
+    }
+  ]
+}
