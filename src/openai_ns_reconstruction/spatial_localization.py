@@ -69,7 +69,8 @@ def symmetric_smooth_bump_derivative(s: float) -> float:
     (s,) = _finite(s)
     if s == 0.0:
         return 0.0
-    return math.copysign(standard_cutoff_derivative(abs(s)), s)
+    sign = 1.0 if s > 0.0 else -1.0
+    return sign * standard_cutoff_derivative(abs(s))
 
 
 def support_cylinder_contains(x: float, y: float, z: float) -> bool:
