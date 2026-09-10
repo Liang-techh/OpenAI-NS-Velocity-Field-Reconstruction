@@ -90,16 +90,29 @@
       "status": "formal-structure",
       "artifacts": [
         "src/openai_ns_reconstruction/background.py",
+        "src/openai_ns_reconstruction/background_recurrence.py",
         "src/openai_ns_reconstruction/cutoffs.py"
       ],
       "paper_locations": [
         "Eqs. (5.1)-(5.6)",
-        "Eq. (5.27)"
+        "Eq. (5.27)",
+        "Lemma 5.1"
+      ],
+      "implemented_components": [
+        "Eq. (5.2) incompressibility coefficient flux with the D+lambda_n shift",
+        "Eq. (5.27) streamfunction/vector-potential kinematics",
+        "Eq. (5.5) order-n pressure row split into current-linear, lower-order convolution and regular Omega_{n-1}/X source terms",
+        "numerical integration of Eq. (5.5) with the Lemma 5.1 datum Pi_n(0,eta)=0 once phi_n and Omega_{n-1}/X are supplied"
       ],
       "missing_for_paper_exact": [
-        "recursive coefficient solver",
-        "compact moment corrections",
+        "coupled recursive solve of Eqs. (5.3)-(5.4) for phi_n and U_n and the Eq. (5.6) Omega recurrence",
+        "construct the regular Omega_{n-1}/X sources from already completed lower orders rather than supplying them as callbacks",
+        "compact moment corrections from Lemma 5.2",
         "paper-selected cutoff sequence; generic smooth cutoffs are not the recursive construction"
+      ],
+      "numerical_caveats": [
+        "the Eq. (5.5) identity is paper-derived, but solve_pressure_eq_5_5 evaluates its radial integral by finite Gauss-Legendre quadrature",
+        "the pressure-row primitive is not a complete positive-order coefficient until the coupled phi_n/U_n and Omega source construction is supplied"
       ]
     },
     {
