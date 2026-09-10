@@ -47,6 +47,46 @@ class BackgroundCoefficient:
         return 2.0 * self.n * h
 
 
+def coefficient_radial_flux(
+    X: float,
+    eta: float,
+    coefficient: BackgroundCoefficient,
+    *,
+    h: float,
+    quadrature_points: int = 801,
+) -> float:
+    """Return the Section 5 radial-flux coefficient ``V_n(X, eta)``.
+
+    This is the second identity in Eq. (5.2):
+
+        V_n / X = [2 eta U_n
+                   - 2 eta (D + lambda_n) A_X(U_n)
+                   - d partial_eta A_X(U_n)] / L.
+
+    It is the exact kinematic consequence of incompressibility for the nth formal
+    coefficient.  It does *not* construct the recursive positive-order profiles
+    ``U_n`` themselves; callers must provide those through ``coefficient.profile``.
+    For n=0 the formula reduces to the leading-flow identity (4.7).
+    """
+    X = float(X)
+    eta = float(eta)
+    if X < 0.0:
+        raise ValueError("X must be nonnegative")
+    if X == 0.0:
+        return 0.0
+    if not (0.0 < h < 0.5):
+        raise ValueError("h must satisfy 0 < h < 1/2")
+
+    D = 0.5 - h
+    d = 1.0 - eta * eta
+    L = 1.0 - 2.0 * h * eta * eta
+    lam = coefficient.lambda_n(h)
+    U = float(coefficient.profile.U(X, eta))
+    AU = coefficient.profile.radial_average_U(X, eta, n=quadrature_points)
+    dAU = coefficient.profile.radial_average_dU_deta(X, eta, n=quadrature_points)
+    return (X / L) * (2.0 * eta * U - 2.0 * eta * (D + lam) * AU - d * dAU)
+
+
 def coefficient_streamfunction(
     r: float,
     z: float,
