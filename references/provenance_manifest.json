@@ -98,20 +98,29 @@
       "id": "stage-3-to-6-oscillatory-corrections",
       "status": "formal-structure",
       "artifacts": [
-        "src/openai_ns_reconstruction/charts.py"
+        "src/openai_ns_reconstruction/charts.py",
+        "src/openai_ns_reconstruction/phase.py"
       ],
       "paper_locations": [
         "Eqs. (6.1)-(6.6)",
+        "Eqs. (7.1)-(7.8)",
         "Sections 6-9",
         "Eq. (9.21)"
       ],
       "implemented_components": [
-        "fixed dyadic geometry and exact integer covering matrices"
+        "fixed dyadic geometry and exact integer covering matrices",
+        "local Section 7.1 phase/frequency formulas, backward material phase defect, projected evolution operator, and tangent frame for caller-supplied representative base jets",
+        "deterministic allowed tie rule for rounding k*p to a nonzero integer, giving single-valued angular harmonics"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/PhaseCalculus.lean",
+        "NavierStokes/PhaseEstimates.lean"
       ],
       "missing_for_paper_exact": [
-        "slow-support separation and transported phases",
-        "stress-cone decomposition",
-        "divergence-free oscillatory realization",
+        "slow-support separation and instantiate label-dependent phase parameters from paper-exact base fields",
+        "prove/verify the uniform phase/frame/damping estimates (7.9)-(7.11) on all active boxes",
+        "stress-cone decomposition into positive wave covariances",
+        "solve the pulse amplitude equations and realize divergence-free oscillations by supported curls",
         "mean corrections",
         "residual-improvement iteration"
       ]
