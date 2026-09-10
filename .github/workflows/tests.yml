@@ -14,5 +14,22 @@ jobs:
           python-version: '3.11'
       - name: Install
         run: python -m pip install -e '.[dev]'
-      - name: Test
+
+      # Keep a few small slices visible as separate Actions steps.  The connector used by
+      # the maintenance agents can read step conclusions even when raw pytest logs are not
+      # available, which makes a red baseline diagnosable without weakening the full suite.
+      - name: Test coordinates
+        continue-on-error: true
+        run: python -m pytest -q tests/test_coordinates.py
+      - name: Test velocity
+        continue-on-error: true
+        run: python -m pytest -q tests/test_velocity.py
+      - name: Test forcing
+        continue-on-error: true
+        run: python -m pytest -q tests/test_forcing.py
+      - name: Test provenance
+        continue-on-error: true
+        run: python -m pytest -q tests/test_provenance_manifest.py
+
+      - name: Test full suite
         run: python -m pytest -q
