@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "delivery_date": "2026-09-10",
+  "kind": "tested-source-delivery-not-complete-paper-reconstruction",
+  "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+  "initial_baseline_commit": "b0d964ab4a69c25863078830faf76296550ae4ea",
+  "integration_base_commit": "b01aaeebc6ec8a39f6692109b6a3c81b92cd0f32",
+  "integration_base_git_tree_verified": "8788a0faf709c02ece63a41774d29f9754d7a59b",
+  "concurrent_remote_commits_retained": 5,
+  "remote_commit_created": false,
+  "remote_push_performed": false,
+  "pull_request_created": false,
+  "local_environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "platform": "Linux"
+  },
+  "tests": {
+    "initial_baseline_passed": 8,
+    "refreshed_baseline_passed": 12,
+    "optimized_passed": 207,
+    "optimized_failed": 0,
+    "command": "python -m pytest -q -W error"
+  },
+  "packaging": {
+    "editable_install_tested": true,
+    "wheel_built": true,
+    "isolated_wheel_import_and_diagnostics_tested": true
+  },
+  "checks": {
+    "similarity_max_relative_error": {
+      "value": 5.284661597215745e-14,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    "toy_exponent_error": {
+      "value": 0.0,
+      "tolerance": 1e-12,
+      "passed": true
+    },
+    "background_curl_error": {
+      "value": 3.11668174214879e-10,
+      "tolerance": 1e-07,
+      "passed": true
+    },
+    "background_divergence": {
+      "value": 1.7976167221434025e-09,
+      "tolerance": 1e-07,
+      "passed": true
+    },
+    "taylor_green_finest_residual": {
+      "value": 2.7337260290058326e-05,
+      "tolerance": 0.0001,
+      "passed": true
+    },
+    "taylor_green_refinement_ratio_error": {
+      "value": 0.001962093242317664,
+      "tolerance": 0.2,
+      "passed": true
+    },
+    "pointwise_moment_residual": {
+      "value": 1.5265566588595902e-14,
+      "tolerance": 1e-12,
+      "passed": true
+    }
+  },
+  "paper_exact_velocity_available": false,
+  "lean_compiled": false,
+  "remote_ci_run_for_these_changes": false,
+  "strict_completion_gate_exit_code": 2,
+  "near_singularity_regression": {
+    "tau_represented": 9.992007221626409e-15,
+    "eta": 0.6,
+    "h": 0.005,
+    "expected_q": 1.5612511283791264e-14,
+    "baseline_q": 3.8413716652030416e-14,
+    "new_q": 1.5612511283790787e-14,
+    "baseline_relative_error": 1.4604444444444447,
+    "new_relative_error": 3.0531133177191805e-14
+  },
+  "smooth_integrand_numeric_quadrature_speedup_local_median": 11.968062383441543,
+  "remaining_work": [
+    "Theorem 4.6 profile constructor and uniform constraints",
+    "Section 5 coefficient recursion and admissible cutoff schedule",
+    "Sections 6-9 transported waves, stress realization and residual iteration",
+    "Section 10 completed compact field and force smooth through t=1",
+    "Actual upstream Lean source review and compilation"
+  ],
+  "evidence_files": [
+    "reports/pytest.txt",
+    "reports/pytest.xml",
+    "reports/diagnostics.json",
+    "reports/benchmark.json"
+  ],
+  "note": "The final patch and clean-application test are recorded by PATCH_VALIDATION.json alongside the download artifacts."
+}

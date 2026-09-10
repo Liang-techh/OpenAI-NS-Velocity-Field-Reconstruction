@@ -52,3 +52,21 @@ Every future concrete parameter/profile artifact should record:
 5. verification tolerances and truncation depth.
 
 This prevents a numerically convenient surrogate from being mistaken for the published construction.
+
+
+## Source snapshot used by the 0.2.0 delivery
+
+- User repository baseline: `b0d964ab4a69c25863078830faf76296550ae4ea`.
+- Upstream commit metadata observed: `f9e8bc5b38b6e212696e8a30e3e91517af887bbd`.
+- Paper pages inspected for this change include printed pages 24–25
+  (Eqs. 4.1–4.7), 45 (Eq. 5.1), 56 (Eq. 5.27) and 127 (Lemma A.2).
+- No paper-byte checksum was established. No Lean source review or Lean build
+  was completed; the observed upstream SHA is **not** a theorem-level validation.
+- Numerical measurements in `reports/` are local reproduction evidence only.
+- New C-infinity cutoffs and the Gaussian test profile are independent numerical
+  choices, not the paper's complete instantiated parameter/profile data.
+
+- Integration base refreshed to `b01aaeebc6ec8a39f6692109b6a3c81b92cd0f32`;
+  reconstructed Git tree `8788a0faf709c02ece63a41774d29f9754d7a59b` was checked
+  byte-for-byte against the remote tree. The benchmark still intentionally
+  compares against the original `b0d964a` source files.
