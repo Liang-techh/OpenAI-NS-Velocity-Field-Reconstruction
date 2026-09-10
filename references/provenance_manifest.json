@@ -41,6 +41,7 @@
       "status": "formal-structure",
       "artifacts": [
         "src/openai_ns_reconstruction/natural_axis.py",
+        "src/openai_ns_reconstruction/natural_axis_range.py",
         "src/openai_ns_reconstruction/profiles.py",
         "src/openai_ns_reconstruction/velocity.py",
         "src/openai_ns_reconstruction/heat_exterior.py"
@@ -53,28 +54,35 @@
       ],
       "implemented_components": [
         "leading kinematics with caller-supplied profiles",
-        "parameterized heat exterior and centrifugal pressure; numerical quadrature, exterior r>0 only"
+        "parameterized heat exterior and centrifugal pressure; numerical quadrature, exterior r>0 only",
+        "NaturalAxisRange full h/j range, unique H-root bracket, delta=j/10 cutoff width, and sigma=sqrt(m)/20 adapter conditional on a certified positive H^2 margin"
       ],
       "missing_for_paper_exact": [
         "construct the paper's complete E/U/Pi profile data including the regular inner core",
-        "record all existential parameter choices",
-        "verify support, moments, matching and cone conditions",
+        "record all remaining existential parameter choices",
         "materialize the coefficient-space fixed-point fields phi/u/average/pressure used by the natural-profile assembly",
-        "record the constructive existential choices for sigma/Lambda/C and the pressure datum/schedule",
+        "construct the admissible pressure datum/schedule and certify the uniform positive H^2 margin m on the low-|Z| set before instantiating sigma",
+        "record the constructive Lambda/C choices and connect them to the materialized fixed-point fields",
         "verify the paper's support, moments, matching and cone conditions for the materialized profile"
       ],
       "official_lean_modules": [
         "NavierStokes/NaturalAxisData.lean",
         "NavierStokes/NaturalAxisCoefficients.lean",
+        "NavierStokes/NaturalAxisRange.lean",
         "NavierStokes/NaturalProfile.lean"
       ],
       "completed_subconstruction": [
         "explicit natural-axis polynomials D/A/d/L/U/H/W/chi",
         "realGradient and the integral definition of realPhase/realAmplitude",
-        "NaturalProfile rescalePoint/angularProfile/affineProfile mapping from scaled fixed-point fields to E/U/Pi"
+        "NaturalProfile rescalePoint/angularProfile/affineProfile mapping from scaled fixed-point fields to E/U/Pi",
+        "NaturalAxisRange.Parameters with 0<h<=1/100 and 0<j<=1/20",
+        "formal unique-root bracket eta0 in (-j/4,-j/5), numerically locatable without changing the theorem boundary",
+        "exists_cutoff_parameters explicit choices delta=j/10 and sigma=sqrt(m)/20 once the upstream uniform margin m>0 is certified"
       ],
       "numerical_caveats": [
-        "realPhase is evaluated by floating-point trapezoidal quadrature; the defining integral is exact but each runtime value is numerical"
+        "realPhase is evaluated by floating-point trapezoidal quadrature; the defining integral is exact but each runtime value is numerical",
+        "the H-root locator is floating-point bisection inside the formally proved bracket and is not itself a uniqueness certificate",
+        "cutoff sigma construction deliberately requires a supplied certified margin m; sampled minima are not promoted to uniform evidence"
       ]
     },
     {
