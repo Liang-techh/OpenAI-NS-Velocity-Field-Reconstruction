@@ -1,81 +1,102 @@
 # OpenAI NS Velocity Field Reconstruction
 
-Executable reconstruction of the finite-time Navier–Stokes blow-up velocity field described in OpenAI's September 2026 paper **Finite Time Blowup for Navier–Stokes**.
+An independent, **partial** executable reconstruction of the velocity construction in
+OpenAI's September 2026 *Finite Time Blowup for Navier–Stokes*. This is not an OpenAI repository.
 
-> **Goal:** reproduce the paper's velocity construction as an auditable computational object, from the similarity coordinates and leading axisymmetric vortex through the all-order background corrections, oscillatory stress realization, local field, and final compact localization.
+**Current result:** tested similarity kinematics, the parameterized exterior heat swirl,
+fixed dyadic chart geometry, field-composition tools, and reproducible numerical diagnostics.
+**Not yet delivered:** the complete regular leading profile, recursive coefficients,
+transported oscillations, mean corrections, convergent correction sequence, or the final
+compact field with a force proved smooth through the singular time.
 
-## What is implemented now
+A successful demo or a green test suite is **not** a reconstruction of the full counterexample.
+The CLI reports `full_reconstruction: false` and refuses `--require-paper-exact` requests.
 
-The repository starts with the exact kinematic layer used by the paper:
+## Run from a clean checkout
 
-- similarity coordinates from Eq. (4.1), including numerical solution of the implicit concentration scale `q(z,t)`;
-- the leading axisymmetric field from Eqs. (4.3)–(4.7);
-- exact cylindrical-to-Cartesian conversion corresponding to Eq. (4.5);
-- the formal all-order background expansion pattern from Eq. (5.1);
-- explicit data structures for the summed local representation `u_loc = curl(A) + B e_theta` from Eq. (9.21) and localization `u = curl(c A) + c B e_theta` from Eq. (10.4);
-- numerical sanity checks for coordinate identities, incompressibility, and the predicted blow-up scaling.
-
-The difficult profile and correction constructors are deliberately **not replaced by guessed closed forms**. They are tracked as reconstruction stages in `docs/RECONSTRUCTION_PLAN.md`. A result is only labeled `paper-exact` after its choices and identities are tied to the paper/official Lean formalization.
-
-## Core equations
-
-Let
-
-```text
-tau = 1 - t
-A   = 1/2 + h
-D   = 1/2 - h
-z   = q^D eta
-tau = q (1 - eta^2)
-X   = r^2 / (2q)
-```
-
-with `0 < h < 1/100`. Equivalently, `q` is the unique positive solution of
-
-```text
-q - z^2 q^(2h) = tau.
-```
-
-For leading profiles `E(X,eta)` and `U(X,eta)`, define
-
-```text
-A_X(U) = (1/X) integral_0^X U(x,eta) dx
-d       = 1 - eta^2
-L       = 1 - 2 h eta^2
-V0      = X/L * [2 eta U - 2 D eta A_X(U) - d d_eta A_X(U)]
-```
-
-and
-
-```text
-u_theta^(0) = q^(-A) E
-u_z^(0)     = q^(-A) U
-r u_r^(0)   = V0.
-```
-
-At `z=0`, `q=tau`, and along `r=sqrt(2 X_in tau)` the paper proves
-
-```text
-u_theta = tau^(-A) (e0 + O(tau^(2h))) -> +infinity.
-```
-
-## Install
+Requires Python 3.10+; NumPy and SciPy are installed as dependencies.
 
 ```bash
-python -m pip install -e .
-python -m pytest
+python -m pip install -e '.[dev]'
+python -m pytest -q -W error
+ns-reconstruct audit
+ns-reconstruct demo --output artifacts
 ```
 
-Run the leading-field demo:
+`python -m openai_ns_reconstruction` is equivalent to the console command.
+The demo produces `report.json`, `toy_blowup_probe.csv`, `toy_velocity_samples.csv`,
+and `heat_exterior.csv`. The report contains parameters, package/runtime versions,
+source pins, numerical tolerances, and SHA-256 hashes for code and generated data.
+It runs offline after installation. CSV names explicitly distinguish toy samples from
+parameterized paper components. They are not samples of the final counterexample.
+
+To demand a complete paper reconstruction:
 
 ```bash
-python examples/leading_field_demo.py
+ns-reconstruct audit --require-paper-exact
 ```
 
-## Source of truth
+This currently exits **2**, intentionally. It is a conservative completion gate, not a
+formal proof checker. `demo --require-paper-exact` also refuses before generating toy data.
 
-- OpenAI paper: https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf
-- OpenAI Lean formalization: https://github.com/openai/NavierStokesAndEuler
-- OpenAI announcement: https://openai.com/index/navier-stokes-solution/
+## Implemented components
 
-This repository is an independent reconstruction and is not an OpenAI repository.
+| Component | Implementation and boundary |
+|---|---|
+| Similarity coordinates, Eq. (4.1) | Relative-scale root solve, finite-input checks, direct `tau` API |
+| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation |
+| Profile averages | Cached 32-point Gauss–Legendre rule; optional exact-average callbacks |
+| Exterior heat swirl, Appendix A.6 | Adaptive evaluation of H and derivatives, swirl and centrifugal pressure; **r>0 only** |
+| Dyadic geometry, Eqs. (6.1)–(6.6) | Fixed chart scaling, exact integer covering matrices; **no transported-wave construction** |
+| Background/localization | Smooth experimental cutoffs, potential-before-curl composition; recursive input data still missing |
+| Verification | Independent manufactured-solution and refinement checks; bounded-time finite differences |
+| Audit/provenance | Source-pinned ledger, explicit blockers, fail-closed completion gate |
+
+### Near-singularity evaluation
+
+Use `tau=1-t` directly when working close to the singular time. Forming `t=1-tau` in
+binary64 can round to 1 and irreversibly lose small positive tau.
+
+```python
+from openai_ns_reconstruction import similarity_coordinates_from_tau
+from openai_ns_reconstruction.heat_exterior import HeatExterior
+
+s = similarity_coordinates_from_tau(r=1e-50, z=0.0, tau=1e-100, h=0.005)
+print(s.q, s.X)
+
+exterior = HeatExterior(h=0.005, c_inf=1.0)
+print(exterior.swirl_from_tau(r=1.0, tau=0.2))
+print(exterior.pressure_from_tau(r=1.0, tau=0.2))
+```
+
+`HeatExterior` implements a parameterized published exterior component, **not** an
+admissible smooth-axis `LeadingProfile` and not the full field. The numerical code accepts
+`0<h<1/2` where the coordinate formulas make sense; the paper's complete construction
+imposes the stricter `0<h<1/100` and additional parameter conditions.
+
+## Verification boundaries
+
+Finite differences, quadrature, and sampled convergence are diagnostics, not interval bounds
+or Lean certificates. Setting `f=R(u,p)` and checking `R-f` with the same stencil is tautological;
+our regression suite additionally uses independently specified manufactured forces.
+A generic `B(x,y,z,t)e_theta` need not be divergence-free: the direct swirl must be
+axisymmetric, and localization must preserve that property. Prefer the
+`LocalField.from_axisymmetric` and `LocalizedField.from_axisymmetric` factories.
+
+The regular inner core, profile matching/moments/cone constraints, coefficient solvers,
+wave transport and stress realization, mean correction, infinite-order summation, compact
+support, and smooth-force extension remain explicit blockers. See
+[the reconstruction plan](docs/RECONSTRUCTION_PLAN.md),
+[the measured validation report](docs/VALIDATION_2026-09-10.md), and
+[the machine-readable manifest](references/provenance_manifest.json).
+
+## Sources
+
+- Paper: https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf
+- Official Lean source: https://github.com/openai/NavierStokesAndEuler
+- Pinned upstream commit: `f9e8bc5b38b6e212696e8a30e3e91517af887bbd`
+- Announcement: https://openai.com/index/navier-stokes-solution/
+
+Pinning the source commit does not mean its Lean code has been built or its theorem-to-runtime
+mapping verified here. The paper was inspected in rendered pages; its binary hash has not
+been computed. These limitations are recorded rather than filled with guessed provenance.

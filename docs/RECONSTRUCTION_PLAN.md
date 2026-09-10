@@ -1,131 +1,141 @@
 # Reconstruction plan and truth-status ledger
 
-The target is not merely to reproduce the blow-up exponent.  The target is an executable counterpart of the velocity field used in OpenAI's proof, with every implemented layer tagged by provenance and tested independently.
+Updated 2026-09-10. The target remains an executable counterpart of the **entire published
+velocity construction**, not merely the blow-up exponent. Every construction layer needs
+source-mapped choices and independent verification. The goal has not been downgraded.
 
 ## Status convention
 
-- **paper-exact** — formula/algorithm is a direct implementation of the published construction.
-- **formal-structure** — the published algebraic structure is encoded, but one or more recursively chosen profiles/cutoffs/frequencies are still inputs.
-- **diagnostic-only** — a numerical device used for checking or visualization; it is not part of the proof construction.
-- **toy** — illustrative data that must never be presented as OpenAI's velocity field.
+- **paper-exact:** direct published formula/algorithm; floating evaluation is still numerical.
+- **formal-structure:** the structure is encoded but some profiles, parameters or recursive choices are missing.
+- **diagnostic-only:** a numerical checker or experiment, not a proof construction.
+- **toy:** illustrative data that must never be called the OpenAI counterexample.
+- **pending:** no runtime implementation for the claimed layer.
 
-## Stage 0 — similarity geometry — paper-exact
+`references/provenance_manifest.json` preserves the stable source/layer IDs introduced by
+the parallel provenance work. The installed CLI additionally exposes stages 0–8 separately.
+Tests check source-pin consistency. Neither metadata nor a caller's `paper_exact` flag proves
+correctness. A green test run never automatically upgrades a stage.
 
-Implemented in `coordinates.py`.
+## Stage 0 — similarity geometry: implemented formula
 
-From Eq. (4.1):
-
-```text
-A = 1/2 + h,  D = 1/2 - h,  tau = 1-t,
-z = q^D eta,  tau = q(1-eta^2),  X = r^2/(2q).
-```
-
-The code solves the equivalent monotone scalar equation
+`coordinates.py` implements Eq. (4.1):
 
 ```text
-q - z^2 q^(2h) = tau
+A=1/2+h, D=1/2-h, tau=1-t
+z=q^D eta, tau=q(1-eta^2), X=r^2/(2q)
+q-z^2 q^(2h)=tau
 ```
 
-and checks both defining identities numerically.
+The root solve is dimensionless and relative-scaled. `solve_q_from_tau` and
+`similarity_coordinates_from_tau` avoid `1-tau` rounding; `d=tau/q` avoids subtracting
+nearly equal numbers. Tests cover manufactured roots down to q=1e-200.
+This is not a guarantee for every representable input or arbitrary precision.
 
-## Stage 1 — leading axisymmetric velocity — kinematics paper-exact; profile data pending
+## Stage 1 — leading velocity/profile: partial
 
-Implemented in `profiles.py` and `velocity.py`.
-
-From Eqs. (4.3), (4.6), (4.7):
+`profiles.py` and `velocity.py` implement Eqs. (4.3)–(4.7):
 
 ```text
-u_theta^(0) = q^(-A) E
-u_z^(0)     = q^(-A) U
-r u_r^(0)   = V0
-
-A_X(U) = X^-1 integral_0^X U(x,eta) dx
-V0 = X/L [2 eta U - 2D eta A_X(U) - (1-eta^2) d_eta A_X(U)]
-L = 1 - 2h eta^2.
+u_theta=q^(-A) E, u_z=q^(-A) U, r u_r=V0
+AU=(1/X) integral_0^X U(x,eta) dx
+V0=X/L [2 eta U-2D eta AU-(1-eta^2) d_eta AU]
+L=1-2h eta^2, Pi_X=E^2/(2X)
 ```
 
-### Remaining work for a literal OpenAI leading profile
+The radial averages now use cached Gauss–Legendre nodes or user-supplied exact averages.
+Regular-axis profile data can provide `F` with `E=sqrt(2X)F`; invalid nonzero axis swirl
+is rejected instead of silently erased.
 
-Implement the constructive content behind Theorem 4.6 rather than substituting an arbitrary `E,U` pair.  This requires translating the outer heat profile, inner analytic profile, matching moments, shear modification, cone constraints, and the Appendix A/B/C constructions into executable choices.  All numerical constants must be emitted to a provenance manifest.
+**New constructed component:** `heat_exterior.py` implements Appendix A.6, Eqs. (A.32)–(A.38):
+H and its derivatives, exterior K(r,t), E_heat(X,eta), and centrifugal pressure normalized
+at infinity. It includes derivative/ODE checks and independently tested NS balance for
+this exterior-only flow. This component is not smooth at r=0 and cannot stand in for the core.
 
-## Stage 2 — all-order corrected background — formal-structure implemented
+**Still required:** translate Theorem 4.6 and Appendices A/B/C into a regular inner profile,
+matching moments, compact moment corrections, shear modification and admissible cone
+conditions. Emit all constants/choices and generated coefficient hashes. Do not splice a
+Gaussian into the missing core and mark the result complete.
 
-`background.py` encodes the Section 5 expansion with `lambda_n = 2nh` and the Stokes-streamfunction/vector-potential representation.  The exact recursive solver for `(phi_n,U_n,Pi_n,V_n)` from Eqs. (5.2)–(5.6), compact moment correction, and the paper's smooth cutoff sequence remain to be implemented.
+## Stage 2 — all-order background: assembly only
 
-Acceptance criterion: for every requested finite derivative order, the executable residual of the cutoff-summed background must show the predicted super-algebraic decay in `q`, and each coefficient must be reproducible from saved construction parameters.
+`background.py` implements lambda_n=2nh, streamfunction/potential assembly and cutoff sums.
+The generic cutoff in `cutoffs.py` is C-infinity mathematically, replacing the old C1
+smoothstep, but **is not the paper-selected recursive cutoff schedule**.
 
-## Stage 3 — dyadic charts, phases, and transported waves — pending
+Still required: solve Eqs. (5.2)–(5.6) for each coefficient, preserve compact moments,
+and select cutoffs from the paper's estimates.
+Acceptance: reproducible coefficients plus increasing derivative-order evidence for the
+predicted super-algebraic residual decay. Finite-depth plots alone are insufficient.
 
-Translate Section 6 and the phase dynamics used by Section 7:
+## Stage 3 — dyadic charts and transported waves: geometry only
 
-- dyadic scale `Q=2^-ell`, `epsilon=Q^h`, slow scale `S_* = ell^2`;
-- chart coordinates and physical/normalized conversion;
-- slow labels and separated auxiliary-torus supports;
-- transported wavevectors/polarizations and rounded frequencies.
+`charts.py` implements Eqs. (6.1)–(6.6): Q=2^-ell, epsilon=Q^h, S*=ell^2,
+chart/physical conversion, the fixed integer covering matrix and its powers, and normalized
+velocity/pressure/residual scaling. Q is fixed per chart; do not differentiate it as q(z,t).
+Integer matrices use Python integers rather than overflowing int64. Floating fast-phase
+accuracy is not certified by exact integer matrix arithmetic.
 
-No arbitrary frequency list is acceptable for `paper-exact` status.
+Still required: slow labels, separated auxiliary-torus supports, transported
+wavevectors/polarizations, phase dynamics and rounded frequencies. Arbitrary frequency
+lists are not acceptable for `paper-exact` status.
 
-## Stage 4 — oscillatory realization of residual stress — pending
+## Stage 4 — oscillatory stress realization: pending
 
-Translate Section 7, including:
+Implement Section 7: admissible cone, positive covariance decomposition, primary waves,
+amplitude solve, exact divergence-free realization by vector potentials, curl remainder,
+physical evaluation and support separation.
+Acceptance: independently computed averaged quadratic flux realizes the requested stress
+to the stated order, with support and divergence identities checked.
 
-- admissible stress cone;
-- positive covariance representation;
-- amplitude solve around the primary wave field;
-- exact divergence-free realization by vector potentials/curls;
-- curl remainder terms;
-- physical evaluation map and support separation.
+## Stage 5 — compact mean corrections: pending
 
-Acceptance criterion: averaged quadratic momentum flux reproduces the requested stress to the paper's stated order and all added wave velocities are divergence-free by construction.
+Implement Section 8 radial inverses, moment-preserving compact corrections and the
+five-equation defect solve. Preserve all moments and supports needed by the iteration.
+Acceptance: the zero-auxiliary-average defect is cancelled without breaking those constraints.
 
-## Stage 5 — compact mean corrections — pending
+## Stage 6 — residual-improvement iteration: pending
 
-Translate Section 8 radial inverses, moment-preserving compact corrections, and the five-equation defect solve.
-
-Acceptance criterion: zero auxiliary-average residual terms are cancelled while the support and moment conditions required by the later iteration remain exactly satisfied.
-
-## Stage 6 — residual-improvement iteration — pending
-
-Translate Section 9's full correction cycle and summation:
+Implement Section 9, including the recursive correction sequence and summation (9.21):
 
 ```text
-Delta u_j = curl(A_j) + B_j
-A = A0 + sum_j chi(a_j q) A_j
-B e_theta = B0 e_theta + sum_j chi(a_j q) B_j
-u_loc = curl(A) + B e_theta.                    (9.21)
+Delta u_j=curl(A_j)+B_j
+A=A0+sum_j chi(a_j q) A_j
+B e_theta=B0 e_theta+sum_j chi(a_j q) B_j
+u_loc=curl(A)+B e_theta
 ```
 
-The cutoff scales `a_j` must be chosen recursively from the paper's estimates, not manually tuned to plots.
+Choose a_j from estimates, not plot fitting. Acceptance: residuals and every tested derivative
+vanish to increasing order with stable truncation studies. Full convergence still needs
+analytic or formal bounds, not only a numerical experiment.
 
-Acceptance criterion: the local momentum residual and every tested derivative vanish to increasing order at the singularity, with convergence stable under increased truncation depth.
+## Stage 7 — final compact field and force: composition only
 
-## Stage 7 — final compact field and force — composition implemented; paper data pending
+`local_field.py` implements u=curl(cA)+cB e_theta, Eq. (10.4). Apply the cutoff before curl.
+The direct swirl and its localized product must be axisymmetric to preserve divergence.
+Factories encode that restriction; tests include a non-axisymmetric counterexample.
 
-`local_field.py` encodes the final structural operation
+Still required: the completed local field, paper-specific support/cutoffs, force
+f=u_t+(u.grad)u-Delta u+grad p at viscosity one, and the Section 10 smooth extension through t=1.
+A force defined numerically as the residual has **not** thereby been shown smooth.
 
-```text
-u = curl(c A) + c B e_theta.                     (10.4)
-```
+## Stage 8 — independent verification: partial diagnostics
 
-The paper-specific spatial/time cutoff and the completed local fields must still be supplied.  Force reconstruction must use
+Implemented: finite-input and stencil checks, bounded-time differentiation, manufactured
+solutions with independently specified force, space/time refinement, exterior heat balance,
+leading singular-path slope checks, deterministic CSV/JSON output, hashes and an audit CLI.
 
-```text
-f = u_t + (u.grad)u - Delta u + grad p
-```
+Still required: interval or symbolic/AD backends, kinetic energy/compact support checks,
+full corrected-field convergence, trajectories/visualizations of the actual field, and
+source-mapped Lean theorem cross-checks. Upstream is pinned, but no Lean build is claimed.
 
-at viscosity one, together with the smooth extension through `t=1` described in Section 10.
+## Next independently reviewable work packages
 
-## Stage 8 — independent verification and visualization — started
+1. Complete the regular inner/outer leading-profile constructor and matching/cone tests.
+2. Implement one real Section 5 recursive coefficient and its residual/moment tests before generalizing.
+3. Extend fixed charts to transported phases and verified support separation.
+4. Implement the Section 7/8 stress and mean correction operators on independently generated defects.
+5. Add analytic/interval error certificates, then integrate the Section 9/10 correction sequence.
 
-`verify.py` provides numerical divergence and residual diagnostics.  Planned additions:
-
-- symbolic/automatic-differentiation backend;
-- convergence studies under spatial/time step refinement;
-- kinetic-energy integration;
-- singular-path exponent extraction;
-- vortex slices and particle trajectories;
-- cross-check table against the official Lean theorem modules.
-
-## Non-negotiable rule
-
-A toy profile may demonstrate the coordinate geometry, but it must never be called the OpenAI counterexample.  The repository reaches its stated goal only when all stages above are instantiated by the choices in the paper and can regenerate the final field from a clean checkout.
+These are uncompleted work packages, not claims that background jobs have been started.
+Avoid parallel edits to the same path; re-read main and preserve concurrent work before committing.

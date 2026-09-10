@@ -3,6 +3,14 @@ name: tests
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   slice:
@@ -28,17 +36,49 @@ jobs:
       - name: Install
         run: python -m pip install -e '.[dev]'
       - name: Test ${{ matrix.case }}
-        run: python -m pytest -q "${{ matrix.path }}"
+        run: python -m pytest -q -W error "${{ matrix.path }}"
 
   full:
-    name: full-suite
+    name: full-${{ matrix.python }}-${{ matrix.numpy }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: '3.10'
+            numpy: 'numpy<2'
+          - python: '3.13'
+            numpy: 'numpy>=2,<3'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python }}
       - name: Install
-        run: python -m pip install -e '.[dev]'
-      - name: Test full suite
-        run: python -m pytest -q
+        run: python -m pip install '${{ matrix.numpy }}' -e '.[dev]' build
+      - name: Test full suite and dependencies
+        run: |
+          python -m pip check
+          python -m pytest -q -W error
+      - name: Build wheel
+        run: python -m build --wheel
+      - name: Test installed wheel outside the checkout
+        shell: bash
+        run: |
+          python -m venv /tmp/ns-wheel
+          /tmp/ns-wheel/bin/python -m pip install dist/*.whl
+          cd /tmp
+          /tmp/ns-wheel/bin/ns-reconstruct audit
+          if /tmp/ns-wheel/bin/ns-reconstruct audit --require-paper-exact; then
+            echo 'Incomplete reconstruction incorrectly passed the exact gate'
+            exit 1
+          else
+            code=$?
+            test "$code" -eq 2
+          fi
+          /tmp/ns-wheel/bin/ns-reconstruct demo --output "$GITHUB_WORKSPACE/artifacts"
+      - name: Upload numerical diagnostics (not proof certificates)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ns-diagnostics-python-${{ matrix.python }}
+          path: artifacts/

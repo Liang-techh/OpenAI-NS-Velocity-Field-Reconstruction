@@ -1,40 +1,19 @@
-"""All-order axisymmetric background architecture from Section 5.
+"""Section 5 background assembly; recursive coefficients are still caller inputs.
 
-The paper writes the nth coefficient at lambda_n = 2 n h as
-
-    u_theta,n = q^(-A+lambda_n) E_n,
-    u_z,n     = q^(-A+lambda_n) U_n,
-    r u_r,n   = q^(lambda_n) V_n,
-    p_n       = q^(-2A+lambda_n) Pi_n.                 (5.1)
-
-The actual smooth background is assembled with q-dependent cutoffs applied to vector
-potentials before curl.  This module encodes that representation without inventing the
-paper's recursively constructed coefficient profiles.
+lambda_n=2nh. Cutoffs apply to potentials BEFORE curl. The supplied C-infinity
+cutoff is an experimental choice, not the paper's recursively certified schedule.
 """
-
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Callable, Sequence
 import math
 import numpy as np
-
-from .coordinates import similarity_coordinates
+from .coordinates import similarity_coordinates, validate_h
 from .profiles import LeadingProfile
+from .cutoffs import smooth_cutoff
 
 ScalarCutoff = Callable[[float], float]
-
-
-def standard_cutoff(s: float) -> float:
-    """Simple C1 compact cutoff for experiments, not the paper's fixed C-infinity cutoff."""
-    s = float(s)
-    if s <= 0.5:
-        return 1.0
-    if s >= 1.0:
-        return 0.0
-    # smoothstep on [1/2,1], enough for numerical experiments only
-    u = 2.0 * (s - 0.5)
-    return 1.0 - (3.0 * u * u - 2.0 * u * u * u)
+standard_cutoff = smooth_cutoff  # backwards-compatible name; formerly only C1
 
 
 @dataclass(frozen=True)
@@ -43,8 +22,63 @@ class BackgroundCoefficient:
     profile: LeadingProfile
     cutoff_scale: float = 1.0
 
+    def __post_init__(self):
+        if isinstance(self.n, bool) or not isinstance(self.n, int) or self.n < 0:
+            raise ValueError("coefficient index n must be a nonnegative integer")
+        if not math.isfinite(self.cutoff_scale) or self.cutoff_scale <= 0:
+            raise ValueError("cutoff_scale must be finite and positive")
+
     def lambda_n(self, h: float) -> float:
-        return 2.0 * self.n * h
+        return 2 * self.n * validate_h(h)
+
+
+def coefficient_streamfunction(r: float, z: float, t: float,
+                                coefficient: BackgroundCoefficient, *, h: float,
+                                quadrature_points: int = 32) -> float:
+    """S_n=q^(1-A+lambda_n) X A_X(U_n), Eq. (5.27)."""
+    s = similarity_coordinates(r, z, t, h)
+    AU = coefficient.profile.radial_average_U(s.X, s.eta, n=quadrature_points)
+    return s.q**(1 - s.A + coefficient.lambda_n(h)) * s.X * AU
+
+
+def coefficient_vector_potential_cartesian(x: float, y: float, z: float, t: float,
+                                            coefficient: BackgroundCoefficient, *,
+                                            h: float, quadrature_points: int = 32) -> np.ndarray:
+    # S_n/r^2 = 1/2 q^(-A+lambda_n) A_X(U_n), regular even at r=0.
+    s = similarity_coordinates(math.hypot(x, y), z, t, h)
+    AU = coefficient.profile.radial_average_U(s.X, s.eta, n=quadrature_points)
+    factor = 0.5 * s.q**(-s.A + coefficient.lambda_n(h)) * AU
+    return factor * np.array([-y, x, 0.0])
+
+
+def background_potential_cartesian(x: float, y: float, z: float, t: float,
+                                    coefficients: Sequence[BackgroundCoefficient], *,
+                                    h: float = 0.005,
+                                    cutoff: ScalarCutoff = standard_cutoff) -> np.ndarray:
+    s = similarity_coordinates(math.hypot(x, y), z, t, h)
+    total = np.zeros(3)
+    for c in coefficients:
+        weight = 1.0 if c.n == 0 else float(cutoff(c.cutoff_scale * s.q))
+        if weight:
+            total += weight * coefficient_vector_potential_cartesian(x, y, z, t, c, h=h)
+    return total
+
+
+def background_swirl_cartesian(x: float, y: float, z: float, t: float,
+                                coefficients: Sequence[BackgroundCoefficient], *,
+                                h: float = 0.005,
+                                cutoff: ScalarCutoff = standard_cutoff) -> np.ndarray:
+    r = math.hypot(x, y)
+    s = similarity_coordinates(r, z, t, h)
+    B = 0.0
+    for c in coefficients:
+        weight = 1.0 if c.n == 0 else float(cutoff(c.cutoff_scale * s.q))
+        if weight:
+            E = float(c.profile.E(s.X, s.eta))
+            if r == 0 and E != 0:
+                raise ValueError("regular swirl must vanish on the axis")
+            B += weight * s.q**(-s.A + c.lambda_n(h)) * E
+    return np.zeros(3) if r == 0 else B * np.array([-y / r, x / r, 0.0])
 
 
 def coefficient_radial_flux(
@@ -53,7 +87,7 @@ def coefficient_radial_flux(
     coefficient: BackgroundCoefficient,
     *,
     h: float,
-    quadrature_points: int = 801,
+    quadrature_points: int = 32,
 ) -> float:
     """Return the Section 5 radial-flux coefficient ``V_n(X, eta)``.
 
@@ -64,19 +98,16 @@ def coefficient_radial_flux(
                    - d partial_eta A_X(U_n)] / L.
 
     It is the exact kinematic consequence of incompressibility for the nth formal
-    coefficient.  It does *not* construct the recursive positive-order profiles
-    ``U_n`` themselves; callers must provide those through ``coefficient.profile``.
-    For n=0 the formula reduces to the leading-flow identity (4.7).
+    coefficient. It does not construct the recursive positive-order profiles.
+    The concurrent coefficient formula is preserved, using the improved average
+    backend and its default quadrature order. For n=0 this reduces to Eq. (4.7).
     """
-    X = float(X)
-    eta = float(eta)
-    if X < 0.0:
-        raise ValueError("X must be nonnegative")
+    from .profiles import _point
+
+    X, eta = _point(X, eta)
+    h = validate_h(h)
     if X == 0.0:
         return 0.0
-    if not (0.0 < h < 0.5):
-        raise ValueError("h must satisfy 0 < h < 1/2")
-
     D = 0.5 - h
     d = 1.0 - eta * eta
     L = 1.0 - 2.0 * h * eta * eta
@@ -84,94 +115,7 @@ def coefficient_radial_flux(
     U = float(coefficient.profile.U(X, eta))
     AU = coefficient.profile.radial_average_U(X, eta, n=quadrature_points)
     dAU = coefficient.profile.radial_average_dU_deta(X, eta, n=quadrature_points)
-    return (X / L) * (2.0 * eta * U - 2.0 * eta * (D + lam) * AU - d * dAU)
-
-
-def coefficient_streamfunction(
-    r: float,
-    z: float,
-    t: float,
-    coefficient: BackgroundCoefficient,
-    *,
-    h: float,
-    quadrature_points: int = 801,
-) -> float:
-    """Physical Stokes streamfunction S_n in Eq. (5.27).
-
-    F_n = X A_X(U_n),
-    S_n = q^(1-A+lambda_n) F_n.
-    """
-    s = similarity_coordinates(r, z, t, h)
-    AU = coefficient.profile.radial_average_U(s.X, s.eta, n=quadrature_points)
-    F_n = s.X * AU
-    return s.q ** (1.0 - s.A + coefficient.lambda_n(h)) * F_n
-
-
-def coefficient_vector_potential_cartesian(
-    x: float,
-    y: float,
-    z: float,
-    t: float,
-    coefficient: BackgroundCoefficient,
-    *,
-    h: float,
-    quadrature_points: int = 801,
-) -> np.ndarray:
-    """A_n=(S_n/r)e_theta, written smoothly away from the axis, Eq. (5.27)."""
-    r2 = float(x) ** 2 + float(y) ** 2
-    if r2 == 0.0:
-        return np.zeros(3)
-    r = math.sqrt(r2)
-    S_n = coefficient_streamfunction(
-        r, z, t, coefficient, h=h, quadrature_points=quadrature_points
-    )
-    factor = S_n / r2
-    return np.array([-factor * y, factor * x, 0.0], dtype=float)
-
-
-def background_potential_cartesian(
-    x: float,
-    y: float,
-    z: float,
-    t: float,
-    coefficients: Sequence[BackgroundCoefficient],
-    *,
-    h: float = 0.005,
-    cutoff: ScalarCutoff = standard_cutoff,
-) -> np.ndarray:
-    """Cutoff-summed axisymmetric vector potential used before taking curl.
-
-    This mirrors the structural requirement in Sections 5 and 10: cut off the potential,
-    not the poloidal velocity, so divergence-freeness survives after taking curl.
-    """
-    r = math.hypot(x, y)
-    s = similarity_coordinates(r, z, t, h)
-    total = np.zeros(3)
-    for c in coefficients:
-        weight = 1.0 if c.n == 0 else cutoff(c.cutoff_scale * s.q)
-        total += weight * coefficient_vector_potential_cartesian(x, y, z, t, c, h=h)
-    return total
-
-
-def background_swirl_cartesian(
-    x: float,
-    y: float,
-    z: float,
-    t: float,
-    coefficients: Sequence[BackgroundCoefficient],
-    *,
-    h: float = 0.005,
-    cutoff: ScalarCutoff = standard_cutoff,
-) -> np.ndarray:
-    """Cutoff-summed direct azimuthal part B e_theta of the background."""
-    r = math.hypot(x, y)
-    if r == 0.0:
-        return np.zeros(3)
-    s = similarity_coordinates(r, z, t, h)
-    B = 0.0
-    for c in coefficients:
-        weight = 1.0 if c.n == 0 else cutoff(c.cutoff_scale * s.q)
-        lam = c.lambda_n(h)
-        B += weight * s.q ** (-s.A + lam) * float(c.profile.E(s.X, s.eta))
-    e_theta = np.array([-y / r, x / r, 0.0])
-    return B * e_theta
+    value = (X / L) * (2.0 * eta * U - 2.0 * eta * (D + lam) * AU - d * dAU)
+    if not math.isfinite(value):
+        raise ArithmeticError("coefficient radial flux is not finite")
+    return value

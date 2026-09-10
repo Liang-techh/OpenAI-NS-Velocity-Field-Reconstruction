@@ -98,7 +98,8 @@ def real_phase(
         n += 1
     xs = np.linspace(0.0, eta, n)
     vals = np.array([real_gradient(h, j, sigma, float(x)) for x in xs], dtype=float)
-    return float(np.trapezoid(vals, xs))
+    # Same composite trapezoid on NumPy 1.x and 2.x; no removed/new API dependency.
+    return float(np.sum((vals[1:] + vals[:-1]) * np.diff(xs) / 2))
 
 
 def real_amplitude(

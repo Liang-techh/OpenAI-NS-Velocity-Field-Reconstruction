@@ -1,176 +1,170 @@
-"""Numerical diagnostics for reconstructed fields.
+"""Finite-difference diagnostics, NOT a proof of smooth forcing or NS breakdown.
 
-These checks are diagnostics, not substitutes for the Lean proof. They are intended to catch
-implementation mistakes while the executable reconstruction is being built.
-
-Forced Navier--Stokes sign convention used here:
-
-    u_t + (u . grad) u - nu Delta u + grad p = f.
-
-Accordingly, ``navier_stokes_residual_numeric`` is the force required by a supplied ``(u,p)``
-pair, and ``forced_ns_closure_error_numeric`` measures residual minus a candidate force.
+R(u,p)=u_t+(u.grad)u-nu*Delta(u)+grad(p). Computing f=R and then
+checking R-f with the same stencil is a tautology, not independent evidence.
+The manufactured-solution tests instead supply an independently derived force.
 """
-
 from __future__ import annotations
-
 from typing import Callable
+import math
 import numpy as np
 
 VectorField = Callable[[float, float, float, float], np.ndarray]
 ScalarField = Callable[[float, float, float, float], float]
+TimeBounds = tuple[float | None, float | None] | None
 
 
-def divergence_numeric(u: VectorField, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> float:
-    """Centered-difference divergence."""
-    out = 0.0
+def _vector(value) -> np.ndarray:
+    a = np.asarray(value, dtype=float)
+    if a.shape != (3,) or not np.all(np.isfinite(a)):
+        raise ValueError("field must return a finite length-3 vector")
+    return a
+
+
+def _step(eps: float) -> float:
+    eps = float(eps)
+    if not math.isfinite(eps) or eps <= 0:
+        raise ValueError("finite-difference step must be finite and positive")
+    return eps
+
+
+def _point(x, y, z, t):
+    values = tuple(float(v) for v in (x, y, z, t))
+    if not all(math.isfinite(v) for v in values):
+        raise ValueError("evaluation point must be finite")
+    return values
+
+
+def _shift(xyz, axis, eps):
+    plus, minus = list(xyz), list(xyz)
+    plus[axis] += eps
+    minus[axis] -= eps
+    if plus[axis] == xyz[axis] or minus[axis] == xyz[axis]:
+        raise ValueError("finite-difference step is below coordinate resolution")
+    return plus, minus
+
+
+def jacobian_numeric(u: VectorField, x: float, y: float, z: float, t: float,
+                     *, eps: float = 1e-5) -> np.ndarray:
+    x, y, z, t = _point(x, y, z, t)
+    eps = _step(eps)
+    J = np.empty((3, 3))
     for axis in range(3):
-        p = [x, y, z]
-        m = [x, y, z]
-        p[axis] += eps
-        m[axis] -= eps
-        up = np.asarray(u(*p, t), dtype=float)
-        um = np.asarray(u(*m, t), dtype=float)
-        out += (up[axis] - um[axis]) / (2.0 * eps)
-    return float(out)
-
-
-def laplacian_vector_numeric(u: VectorField, x: float, y: float, z: float, t: float, *, eps: float = 1e-4) -> np.ndarray:
-    center = np.asarray(u(x, y, z, t), dtype=float)
-    out = np.zeros(3)
-    for axis in range(3):
-        p = [x, y, z]
-        m = [x, y, z]
-        p[axis] += eps
-        m[axis] -= eps
-        out += (np.asarray(u(*p, t), float) - 2.0 * center + np.asarray(u(*m, t), float)) / (eps * eps)
-    return out
-
-
-def time_derivative_numeric(u: VectorField, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> np.ndarray:
-    return (
-        np.asarray(u(x, y, z, t + eps), dtype=float)
-        - np.asarray(u(x, y, z, t - eps), dtype=float)
-    ) / (2.0 * eps)
-
-
-def jacobian_numeric(u: VectorField, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> np.ndarray:
-    J = np.zeros((3, 3))
-    for axis in range(3):
-        p = [x, y, z]
-        m = [x, y, z]
-        p[axis] += eps
-        m[axis] -= eps
-        J[:, axis] = (np.asarray(u(*p, t), float) - np.asarray(u(*m, t), float)) / (2.0 * eps)
+        p, m = _shift((x, y, z), axis, eps)
+        J[:, axis] = (_vector(u(*p, t)) - _vector(u(*m, t))) / (2 * eps)
     return J
 
 
-def gradient_scalar_numeric(p: ScalarField, x: float, y: float, z: float, t: float, *, eps: float = 1e-5) -> np.ndarray:
-    g = np.zeros(3)
+def divergence_numeric(u: VectorField, x: float, y: float, z: float, t: float,
+                       *, eps: float = 1e-5) -> float:
+    return float(np.trace(jacobian_numeric(u, x, y, z, t, eps=eps)))
+
+
+def laplacian_vector_numeric(u: VectorField, x: float, y: float, z: float, t: float,
+                             *, eps: float = 1e-4) -> np.ndarray:
+    x, y, z, t = _point(x, y, z, t)
+    eps = _step(eps)
+    center, out = _vector(u(x, y, z, t)), np.zeros(3)
     for axis in range(3):
-        xp = [x, y, z]
-        xm = [x, y, z]
-        xp[axis] += eps
-        xm[axis] -= eps
-        g[axis] = (float(p(*xp, t)) - float(p(*xm, t))) / (2.0 * eps)
+        p, m = _shift((x, y, z), axis, eps)
+        out += (_vector(u(*p, t)) - 2 * center + _vector(u(*m, t))) / eps**2
+    return out
+
+
+def time_derivative_numeric(u: VectorField, x: float, y: float, z: float, t: float,
+                            *, eps: float = 1e-5,
+                            time_bounds: TimeBounds = None) -> np.ndarray:
+    """Second-order stencil; bounds are [lower,upper), None means unbounded.
+
+    Uses a forward stencil at the included lower endpoint and a shortened
+    central stencil inside the domain. Never evaluates at the excluded upper
+    endpoint when bounds are supplied. Too-small floating steps fail loudly.
+    """
+    x, y, z, t = _point(x, y, z, t)
+    dt = _step(eps)
+    forward = False
+    if time_bounds is not None:
+        lower, upper = time_bounds
+        if any(b is not None and not math.isfinite(b) for b in time_bounds):
+            raise ValueError("time bounds must be finite or None")
+        if lower is not None and upper is not None and lower >= upper:
+            raise ValueError("lower time bound must be smaller than upper")
+        if (lower is not None and t < lower) or (upper is not None and t >= upper):
+            raise ValueError("time lies outside [lower, upper)")
+        if upper is not None:
+            dt = min(dt, (upper - t) / 4)
+        if lower is not None:
+            forward = t == lower
+            if not forward:
+                dt = min(dt, (t - lower) / 4)
+    if t + dt == t or t - dt == t:
+        raise ValueError("time stencil is below floating resolution; use tau/analytic data")
+    if forward:
+        return (-3 * _vector(u(x, y, z, t)) + 4 * _vector(u(x, y, z, t + dt))
+                - _vector(u(x, y, z, t + 2 * dt))) / (2 * dt)
+    return (_vector(u(x, y, z, t + dt)) - _vector(u(x, y, z, t - dt))) / (2 * dt)
+
+
+def gradient_scalar_numeric(p: ScalarField, x: float, y: float, z: float, t: float,
+                            *, eps: float = 1e-5) -> np.ndarray:
+    x, y, z, t = _point(x, y, z, t)
+    eps = _step(eps)
+    g = np.empty(3)
+    for axis in range(3):
+        xp, xm = _shift((x, y, z), axis, eps)
+        vp, vm = float(p(*xp, t)), float(p(*xm, t))
+        if not math.isfinite(vp) or not math.isfinite(vm):
+            raise ValueError("pressure must be finite")
+        g[axis] = (vp - vm) / (2 * eps)
     return g
 
 
-def navier_stokes_residual_numeric(
-    u: VectorField,
-    p: ScalarField,
-    x: float,
-    y: float,
-    z: float,
-    t: float,
-    *,
-    viscosity: float = 1.0,
-    eps_space: float = 1e-4,
-    eps_time: float = 1e-5,
-) -> np.ndarray:
-    """Return ``u_t + (u.grad)u - nu Delta u + grad p``.
+def navier_stokes_residual_numeric(u: VectorField, p: ScalarField,
+                                   x: float, y: float, z: float, t: float, *,
+                                   viscosity: float = 1.0, eps_space: float = 1e-4,
+                                   eps_time: float = 1e-5,
+                                   time_bounds: TimeBounds = (0.0, 1.0)) -> np.ndarray:
+    """Required force R(u,p); default time domain matches this repository.
 
-    Under the repository's forced-NS convention this quantity is exactly the force ``f``
-    required by the supplied velocity and pressure. The routine is numerical and therefore
-    intended as a reconstruction diagnostic rather than a proof object.
+    Set time_bounds=None for manufactured fields defined on all real times.
+    Step-refinement checks are required before interpreting a numerical value.
     """
-    uv = np.asarray(u(x, y, z, t), dtype=float)
-    ut = time_derivative_numeric(u, x, y, z, t, eps=eps_time)
-    J = jacobian_numeric(u, x, y, z, t, eps=eps_space)
-    adv = J @ uv
-    lap = laplacian_vector_numeric(u, x, y, z, t, eps=eps_space)
-    gp = gradient_scalar_numeric(p, x, y, z, t, eps=eps_space)
-    return ut + adv - float(viscosity) * lap + gp
+    if not math.isfinite(viscosity) or viscosity <= 0:
+        raise ValueError("Navier-Stokes viscosity must be finite and positive")
+    point = _point(x, y, z, t)
+    uv = _vector(u(*point))
+    ut = time_derivative_numeric(u, *point, eps=eps_time, time_bounds=time_bounds)
+    J = jacobian_numeric(u, *point, eps=eps_space)
+    lap = laplacian_vector_numeric(u, *point, eps=eps_space)
+    gp = gradient_scalar_numeric(p, *point, eps=eps_space)
+    return ut + J @ uv - viscosity * lap + gp
 
 
-def reconstruct_forcing_numeric(
-    u: VectorField,
-    p: ScalarField,
-    x: float,
-    y: float,
-    z: float,
-    t: float,
-    *,
-    viscosity: float = 1.0,
-    eps_space: float = 1e-4,
-    eps_time: float = 1e-5,
-) -> np.ndarray:
-    """Numerically reconstruct the force required by a candidate ``(u,p)`` field.
-
-    This is a named Stage-8 entry point for Section 10 work. It deliberately delegates to the
-    residual implementation so the force convention cannot silently diverge from verification.
-    """
+def reconstruct_forcing_numeric(u: VectorField, p: ScalarField,
+                                 x: float, y: float, z: float, t: float, *,
+                                 viscosity: float = 1.0, eps_space: float = 1e-4,
+                                 eps_time: float = 1e-5,
+                                 time_bounds: TimeBounds = (0.0, 1.0)) -> np.ndarray:
     return navier_stokes_residual_numeric(
-        u,
-        p,
-        x,
-        y,
-        z,
-        t,
-        viscosity=viscosity,
-        eps_space=eps_space,
-        eps_time=eps_time,
-    )
+        u, p, x, y, z, t, viscosity=viscosity, eps_space=eps_space,
+        eps_time=eps_time, time_bounds=time_bounds)
 
 
-def forced_ns_closure_error_numeric(
-    u: VectorField,
-    p: ScalarField,
-    forcing: VectorField,
-    x: float,
-    y: float,
-    z: float,
-    t: float,
-    *,
-    viscosity: float = 1.0,
-    eps_space: float = 1e-4,
-    eps_time: float = 1e-5,
-) -> np.ndarray:
-    """Return the defect in the forced equation, ``R(u,p) - f``.
-
-    Once the paper-exact localized field and smooth force are instantiated, this provides an
-    independent numerical closure check without changing either field.
-    """
-    residual = navier_stokes_residual_numeric(
-        u,
-        p,
-        x,
-        y,
-        z,
-        t,
-        viscosity=viscosity,
-        eps_space=eps_space,
-        eps_time=eps_time,
-    )
-    f = np.asarray(forcing(x, y, z, t), dtype=float)
-    if f.shape != (3,):
-        raise ValueError("forcing must return a length-3 vector")
-    return residual - f
+def forced_ns_closure_error_numeric(u: VectorField, p: ScalarField,
+                                    forcing: VectorField, x: float, y: float,
+                                    z: float, t: float, *, viscosity: float = 1.0,
+                                    eps_space: float = 1e-4, eps_time: float = 1e-5,
+                                    time_bounds: TimeBounds = (0.0, 1.0)) -> np.ndarray:
+    return navier_stokes_residual_numeric(
+        u, p, x, y, z, t, viscosity=viscosity, eps_space=eps_space,
+        eps_time=eps_time, time_bounds=time_bounds) - _vector(forcing(x, y, z, t))
 
 
 def loglog_slope(xs: np.ndarray, ys: np.ndarray) -> float:
-    """Least-squares slope of log|y| against log x."""
-    xs = np.asarray(xs, dtype=float)
-    ys = np.asarray(ys, dtype=float)
-    if np.any(xs <= 0) or np.any(np.abs(ys) <= 0):
-        raise ValueError("xs and |ys| must be positive")
+    xs, ys = np.asarray(xs, dtype=float), np.asarray(ys, dtype=float)
+    if xs.ndim != 1 or xs.shape != ys.shape or xs.size < 2:
+        raise ValueError("xs and ys must be equal-length 1D arrays with at least 2 samples")
+    if (not np.all(np.isfinite(xs)) or not np.all(np.isfinite(ys))
+            or np.any(xs <= 0) or np.any(ys == 0) or np.unique(xs).size < 2):
+        raise ValueError("need finite xs>0, nonzero ys, and distinct xs")
     return float(np.polyfit(np.log(xs), np.log(np.abs(ys)), 1)[0])

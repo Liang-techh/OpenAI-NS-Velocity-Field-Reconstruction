@@ -1,96 +1,94 @@
-"""Profile interfaces for the leading OpenAI Navier--Stokes vortex.
+"""Leading-profile interface, Eqs. (4.3), (4.6), (4.7).
 
-The paper proves existence of specially constructed smooth profiles E(X,eta), U(X,eta),
-and Pi(X,eta).  They are not a single elementary closed-form tuple.  This module therefore
-keeps the paper-exact kinematic formulas separate from whatever concrete profile constructor
-is plugged in.
-
-Equation references: (4.3), (4.6), (4.7).
+No arbitrary E,U pair establishes the paper's profile construction. paper_exact
+is caller metadata, NOT a certification gate. Numerical quadrature is diagnostic.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Callable
+import math
 import numpy as np
+from .coordinates import validate_h
 
 ScalarFn = Callable[[float, float], float]
 
 
+@lru_cache(maxsize=16)
+def _gauss_rule(n: int) -> tuple[np.ndarray, np.ndarray]:
+    if isinstance(n, bool) or not isinstance(n, int) or not 2 <= n <= 2048:
+        raise ValueError("quadrature order must be an integer in [2, 2048]")
+    x, w = np.polynomial.legendre.leggauss(n)
+    x, w = (x + 1) / 2, w / 2
+    x.setflags(write=False)
+    w.setflags(write=False)
+    return x, w
+
+
+def _point(X: float, eta: float) -> tuple[float, float]:
+    X, eta = float(X), float(eta)
+    if not math.isfinite(X) or X < 0 or not math.isfinite(eta) or abs(eta) > 1:
+        raise ValueError("profile domain is finite X>=0, |eta|<=1")
+    return X, eta
+
+
 @dataclass(frozen=True)
 class LeadingProfile:
-    """A concrete leading profile with the derivatives needed by Eq. (4.7).
-
-    Parameters
-    ----------
-    E:
-        Azimuthal similarity profile E(X, eta).
-    U:
-        Axial similarity profile U(X, eta).
-    dU_deta:
-        Partial derivative of U with respect to eta.
-    Pi:
-        Optional pressure profile. It is not needed to evaluate velocity, but is
-        carried so the same object can later feed the residual verifier.
-    name:
-        Provenance/status label.
-    paper_exact:
-        True only for a profile built from the paper's complete profile construction.
-    """
-
     E: ScalarFn
     U: ScalarFn
     dU_deta: ScalarFn
     Pi: ScalarFn | None = None
     name: str = "unnamed-profile"
     paper_exact: bool = False
+    # Optional exact average/regular-axis functions avoid all quadrature work.
+    average_U: ScalarFn | None = None
+    average_dU_deta: ScalarFn | None = None
+    F: ScalarFn | None = None  # E=sqrt(2X) F
 
-    def radial_average_U(self, X: float, eta: float, *, n: int = 801) -> float:
-        """A_X(U) = X^-1 integral_0^X U(x,eta) dx, Eq. (4.6)."""
-        X = float(X)
-        if X < 0:
-            raise ValueError("X must be nonnegative")
-        if X == 0.0:
-            return float(self.U(0.0, eta))
-        n = max(3, int(n))
-        if n % 2 == 0:
-            n += 1
-        xs = np.linspace(0.0, X, n)
-        vals = np.array([self.U(float(x), eta) for x in xs], dtype=float)
-        return float(np.trapezoid(vals, xs) / X)
+    def _average(self, fn: ScalarFn, exact: ScalarFn | None,
+                 X: float, eta: float, n: int) -> float:
+        X, eta = _point(X, eta)
+        if X == 0:
+            value = float(fn(0, eta))
+        elif exact is not None:
+            value = float(exact(X, eta))
+        else:
+            nodes, weights = _gauss_rule(n)
+            values = np.asarray([fn(float(X * s), eta) for s in nodes], dtype=float)
+            value = float(weights @ values)
+        if not math.isfinite(value):
+            raise ArithmeticError("profile average is not finite")
+        return value
 
-    def radial_average_dU_deta(self, X: float, eta: float, *, n: int = 801) -> float:
-        """d_eta A_X(U), evaluated by differentiating under the radial integral."""
-        X = float(X)
-        if X < 0:
-            raise ValueError("X must be nonnegative")
-        if X == 0.0:
-            return float(self.dU_deta(0.0, eta))
-        n = max(3, int(n))
-        if n % 2 == 0:
-            n += 1
-        xs = np.linspace(0.0, X, n)
-        vals = np.array([self.dU_deta(float(x), eta) for x in xs], dtype=float)
-        return float(np.trapezoid(vals, xs) / X)
+    def radial_average_U(self, X: float, eta: float, *, n: int = 32) -> float:
+        """A_X(U)=integral_0^1 U(Xs,eta) ds, with its exact axis limit."""
+        return self._average(self.U, self.average_U, X, eta, n)
 
-    def V0(self, X: float, eta: float, h: float, *, n: int = 801) -> float:
-        """Radial flux V0 = r u_r from the exact incompressibility identity (4.7)."""
-        X = float(X)
-        eta = float(eta)
-        if X == 0.0:
+    def radial_average_dU_deta(self, X: float, eta: float, *, n: int = 32) -> float:
+        return self._average(self.dU_deta, self.average_dU_deta, X, eta, n)
+
+    def V0(self, X: float, eta: float, h: float, *, n: int = 32,
+           d: float | None = None) -> float:
+        X, eta = _point(X, eta)
+        h = validate_h(h)
+        if X == 0:
             return 0.0
-        D = 0.5 - h
-        d = 1.0 - eta * eta
-        L = 1.0 - 2.0 * h * eta * eta
-        U = float(self.U(X, eta))
+        d = 1 - eta**2 if d is None else float(d)
+        if not math.isfinite(d) or not 0 <= d <= 1 + 1e-12:
+            raise ValueError("d must be in [0,1]")
         AU = self.radial_average_U(X, eta, n=n)
         dAU = self.radial_average_dU_deta(X, eta, n=n)
-        return (X / L) * (2.0 * eta * U - 2.0 * D * eta * AU - d * dAU)
+        value = X / (1 - 2 * h * eta**2) * (
+            2 * eta * float(self.U(X, eta)) - 2 * (0.5 - h) * eta * AU - d * dAU)
+        if not math.isfinite(value):
+            raise ArithmeticError("radial flux is not finite")
+        return value
 
     def pressure_radial_derivative(self, X: float, eta: float) -> float:
-        """Pi_X = E^2/(2X), Eq. (4.7), with the smooth-axis limit left to profile data."""
-        X = float(X)
-        if X <= 0.0:
-            raise ValueError("use the smooth profile-specific axis limit at X=0")
-        e = float(self.E(X, eta))
-        return e * e / (2.0 * X)
+        X, eta = _point(X, eta)
+        if X == 0:
+            if self.F is None:
+                raise ValueError("axis pressure derivative requires regular profile F")
+            return float(self.F(0, eta))**2
+        return float(self.E(X, eta))**2 / (2 * X)
