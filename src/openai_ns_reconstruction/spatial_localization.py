@@ -9,21 +9,25 @@ formalization commit defines
     cutoffProfile(r2, z) = chi(16 r2) chi(4 z)
 
 where ``chi`` is Mathlib's C-infinity ``ContDiffBump`` with inner radius 1/2
-and outer radius 1.  Consequently the cutoff is one on
+and outer radius 1. Consequently the cutoff is one on
 ``r^2 < 1/32, |z| < 1/8`` and supported in
 ``r^2 <= 1/16, |z| <= 1/4``.
 
 The exact numerical transition values of Mathlib's ``ContDiffBump`` are not
-reimplemented here.  ``section10_spatial_cutoff`` uses this repository's
+reimplemented here. ``section10_spatial_cutoff`` uses this repository's
 explicit C-infinity representative with the *same plateau and support
-geometry*.  It must therefore be treated as ``formal-geometry`` / diagnostic
-in the transition collar, not as a paper-exact scalar cutoff.
+geometry*. ``section10_spatial_cutoff_gradient`` is the exact analytic gradient
+of that representative, so it can be used in the product rule
+``curl(c A) = c curl(A) + grad(c) cross A`` without finite-differencing the
+cutoff. Neither function is promoted to a paper-exact scalar realization in
+the transition collar.
 """
 from __future__ import annotations
 
 import math
+import numpy as np
 
-from .cutoffs import smooth_cutoff
+from .cutoffs import smooth_cutoff, standard_cutoff_derivative
 
 SUPPORT_RADIUS_SQUARED = 1.0 / 16.0
 SUPPORT_HALF_HEIGHT = 1.0 / 4.0
@@ -55,6 +59,20 @@ def symmetric_smooth_bump(s: float) -> float:
     return smooth_cutoff(abs(s))
 
 
+def symmetric_smooth_bump_derivative(s: float) -> float:
+    """Exact derivative of this repository's even representative.
+
+    ``smooth_cutoff`` is flat on a neighborhood of zero, so the derivative at
+    the absolute-value cusp is exactly zero. In the transition collar the sign
+    factor implements d/ds smooth_cutoff(|s|).
+    """
+    (s,) = _finite(s)
+    if s == 0.0:
+        return 0.0
+    sign = 1.0 if s > 0.0 else -1.0
+    return sign * standard_cutoff_derivative(abs(s))
+
+
 def support_cylinder_contains(x: float, y: float, z: float) -> bool:
     """Closed support cylinder from ``SpatialLocalization.supportCylinder``."""
     x, y, z = _finite(x, y, z)
@@ -71,11 +89,42 @@ def section10_spatial_cutoff(x: float, y: float, z: float, t: float = 0.0) -> fl
     """Geometry-faithful representative of the official fixed spatial cutoff.
 
     ``t`` is accepted so the function can be passed directly as a repository
-    ``ScalarField``.  The Section 10 spatial cutoff itself is time-independent.
+    ``ScalarField``. The Section 10 spatial cutoff itself is time-independent.
     """
     x, y, z, _t = _finite(x, y, z, t)
     r2 = radial_square(x, y)
     return symmetric_smooth_bump(16.0 * r2) * symmetric_smooth_bump(4.0 * z)
+
+
+def section10_spatial_cutoff_gradient(
+    x: float, y: float, z: float, t: float = 0.0
+) -> np.ndarray:
+    """Analytic Cartesian gradient of ``section10_spatial_cutoff``.
+
+    For ``c(x,y,z)=b(16(x^2+y^2)) b(4z)`` with even ``b``, the chain rule gives
+    ``(32 x b'_r b_z, 32 y b'_r b_z, 4 b_r b'_z)``. This is the derivative
+    needed by the Section 10 product rule. It is exact for the executable bump
+    representative, not a claim that its transition values equal Mathlib's
+    noncomputable ``ContDiffBump`` pointwise.
+    """
+    x, y, z, _t = _finite(x, y, z, t)
+    r_arg = 16.0 * radial_square(x, y)
+    z_arg = 4.0 * z
+    radial = symmetric_smooth_bump(r_arg)
+    axial = symmetric_smooth_bump(z_arg)
+    radial_derivative = symmetric_smooth_bump_derivative(r_arg)
+    axial_derivative = symmetric_smooth_bump_derivative(z_arg)
+    gradient = np.array(
+        [
+            32.0 * x * radial_derivative * axial,
+            32.0 * y * radial_derivative * axial,
+            4.0 * radial * axial_derivative,
+        ],
+        dtype=float,
+    )
+    if not np.all(np.isfinite(gradient)):
+        raise ArithmeticError("spatial cutoff gradient is not finite")
+    return gradient
 
 
 def section10_axisymmetric_cutoff(r: float, z: float, t: float = 0.0) -> float:
@@ -89,7 +138,7 @@ def section10_axisymmetric_cutoff(r: float, z: float, t: float = 0.0) -> float:
 def support_is_strictly_inside_period_cube(x: float, y: float, z: float) -> bool:
     """Executable counterpart of the formalization's strict cube separation.
 
-    Returns ``False`` outside the support cylinder.  Every supported point has
+    Returns ``False`` outside the support cylinder. Every supported point has
     |x_i| <= 1/4 < 1/2, so translated unit-period copies cannot overlap in the
     central inner cube used by the formalization.
     """
