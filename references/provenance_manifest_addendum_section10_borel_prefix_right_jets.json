@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "03b05491ab38df0c66e3c65669cc39dadd5e4e43",
+  "integrated_prs": [],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Section 10 finite Taylor-Borel prefix right-jet algebra. Computes exact common cutoff plateaus for degrees 0..N and verifies that each finite prefix has the prescribed normal endpoint jet, while refusing to promote this to the infinite SpatialBorelExtension theorem.",
+  "layer": {
+    "id": "stage-7-section10-borel-prefix-right-jets",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section10_borel_prefix_right_jets.py",
+    "test": "tests/test_section10_borel_prefix_right_jets.py",
+    "provenance": "references/SECTION10_BOREL_PREFIX_RIGHT_JETS_PROVENANCE.md",
+    "paper_locations": [
+      "Section 10 endpoint Taylor-Borel extension",
+      "SpatialBorelExtension.rightExtension_time_jets",
+      "SpatialBorelExtension.rightExtension_right_jets",
+      "SpacetimeGluing.smoothExtension_contDiff"
+    ],
+    "verified": {
+      "dense_full_spacetime_jet_shape_gate": true,
+      "finite_prefix_common_unit_plateau": true,
+      "finite_prefix_endpoint_normal_jet_algebra": true,
+      "independent_future_branch_interpolation_regression": true
+    },
+    "not_verified": {
+      "actual_section9_residual_endpoint_limits": true,
+      "analytic_template_bounds": true,
+      "infinite_borel_right_jets": true,
+      "all_order_borel_smoothness": true,
+      "smooth_compact_forcing": true,
+      "bounded_energy_and_blowup_closure": true
+    },
+    "remaining_boundary": "Actual Section 9 residual derivative limits, genuine analytic template bounds and summable derivative tails are still required before the finite-prefix identity can be promoted to the infinite rightExtension_right_jets theorem or smooth force. paper_exact_velocity_available remains false."
+  }
+}
