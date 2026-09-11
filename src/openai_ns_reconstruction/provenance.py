@@ -25,12 +25,12 @@ SOURCES = {
 _STAGE_SOURCES = {
     0: "Eq. (4.1)",
     1: "Thm. 4.6; Appendices A/B/C; heat component A.32-A.38",
-    2: "Section 5; Eqs. (5.1)-(5.7); Eq. (5.27)",
+    2: "Section 5; Eqs. (5.1)-(5.8); Eq. (5.27)",
     3: "Sections 6-7; Eqs. (6.1)-(6.11), (7.1)-(7.11)",
-    4: "Section 7",
+    4: "Section 7; Eqs. (7.24)-(7.30)",
     5: "Section 8",
     6: "Section 9",
-    7: "Section 10; endpoint Taylor-Borel extension",
+    7: "Section 10; Eqs. (10.4), (10.20)-(10.21); endpoint Taylor-Borel extension",
     8: "tests and diagnostic reports",
 }
 
