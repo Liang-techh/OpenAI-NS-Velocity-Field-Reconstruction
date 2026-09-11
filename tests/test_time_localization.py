@@ -1,11 +1,15 @@
 import numpy as np
+import pytest
 
+from openai_ns_reconstruction.endpoint_limit_majorant import EndpointPowerLawMajorant
 from openai_ns_reconstruction.time_localization import (
     EARLY_HALF_WIDTH,
     LATE_START,
+    SECTION10_ENDPOINT,
     activated_pressure,
     activated_residual_formula_numeric,
     activated_velocity,
+    section10_endpoint_localization_transfer,
     time_switch,
     time_switch_derivative,
 )
@@ -77,3 +81,66 @@ def test_activated_residual_formula_matches_independent_residual() -> None:
         eps_time=2e-6,
     )
     assert np.allclose(direct, formula, rtol=2e-5, atol=2e-7)
+
+
+def test_endpoint_majorant_transfer_is_gated_by_official_late_plateau() -> None:
+    majorant = EndpointPowerLawMajorant(
+        derivative_degree=4,
+        spatial_window=3,
+        coefficient=2.0,
+        singularity_exponent=0.25,
+        valid_from=LATE_START,
+        endpoint=SECTION10_ENDPOINT,
+    )
+    certificate = section10_endpoint_localization_transfer(majorant)
+    assert certificate.certified
+    assert certificate.derivative_degree == 4
+    assert certificate.spatial_window == 3
+    for t in (LATE_START, 0.9, np.nextafter(SECTION10_ENDPOINT, 0.0)):
+        assert certificate.correction_coefficients(float(t)) == (1.0, 0.0, 0.0)
+
+    transition_window = EndpointPowerLawMajorant(
+        derivative_degree=1,
+        spatial_window=0,
+        coefficient=1.0,
+        singularity_exponent=0.5,
+        valid_from=0.6,
+        endpoint=SECTION10_ENDPOINT,
+    )
+    with pytest.raises(ValueError, match="t>=3/4"):
+        section10_endpoint_localization_transfer(transition_window)
+
+    wrong_endpoint = EndpointPowerLawMajorant(
+        derivative_degree=1,
+        spatial_window=0,
+        coefficient=1.0,
+        singularity_exponent=0.5,
+        valid_from=0.8,
+        endpoint=1.2,
+    )
+    with pytest.raises(ValueError, match="endpoint=1"):
+        section10_endpoint_localization_transfer(wrong_endpoint)
+
+
+def test_endpoint_plateau_direct_residual_is_unchanged_by_activation() -> None:
+    # Independent cross-check of the structural transfer: evaluate the NS
+    # residual separately on the original and activated fields.  No force is
+    # defined from either residual, so this is not an R-f tautology.
+    point = (0.31, -0.27, 0.19, 0.9)
+    direct_original = navier_stokes_residual_numeric(
+        base_velocity,
+        base_pressure,
+        *point,
+        viscosity=0.3,
+        eps_space=2e-6,
+        eps_time=2e-6,
+    )
+    direct_activated = navier_stokes_residual_numeric(
+        activated_velocity(base_velocity),
+        activated_pressure(base_pressure),
+        *point,
+        viscosity=0.3,
+        eps_space=2e-6,
+        eps_time=2e-6,
+    )
+    assert np.allclose(direct_activated, direct_original, rtol=2e-7, atol=2e-9)
