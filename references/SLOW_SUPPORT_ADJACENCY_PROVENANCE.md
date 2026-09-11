@@ -33,7 +33,7 @@ which are the three official `SlotColoring.width` values. This is the cross-band
 
 ## Independent regression checks
 
-`tests/test_slow_support_adjacency.py` independently checks the official physical spacing formula, verifies one-mesh product support lies inside the two-mesh physical box, constructs a genuine cross-band common physical point and confirms each band uses its own scaling, exercises the sharp same-level grid-gap-four boundary for the two-mesh envelope, and verifies fail-closed behavior outside the dyadic support and radius hypotheses.
+`tests/test_slow_support_adjacency.py` independently checks the official physical spacing formula, verifies one-mesh product support lies inside the two-mesh physical box, constructs a genuine cross-band common physical point and confirms each band uses its own scaling, exercises an interior same-level overlap with the exact integer grid-gap constraint, and verifies fail-closed behavior outside the dyadic support and radius hypotheses. The exact closed-boundary grid-gap-four case is already checked at the discrete level in `tests/test_slot_geometry.py`; this new binary64 physical bridge deliberately does not turn a round-trip equality at a closed-box boundary into a pseudo-rigorous interval certificate.
 
 The cross-band test constructs the physical point first, maps that same point into both charts, and only then chooses the nearest product-grid indices. It does not compare normalized centers from different bands directly.
 
