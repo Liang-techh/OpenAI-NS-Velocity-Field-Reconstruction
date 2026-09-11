@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "8e4003af29f50aa1986ad3f03ced794995c5a372",
+  "integrated_prs": [],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Section 10 finite endpoint-candidate admission bridge. Requires one frozen candidate full-jet family to lie inside every finite pre-endpoint trace enclosure before admitting that same family to the landed finite Taylor-Borel right-jet algebra.",
+  "layer": {
+    "id": "stage-7-section10-endpoint-borel-admission",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section10_endpoint_borel_admission.py",
+    "test": "tests/test_section10_endpoint_borel_admission.py",
+    "provenance": "references/SECTION10_ENDPOINT_BOREL_ADMISSION_PROVENANCE.md",
+    "paper_locations": [
+      "Section 10 endpoint Taylor-Borel extension",
+      "CandidateFromLimits locally uniform endpoint limits",
+      "SpatialBorelExtension.rightExtension_right_jets",
+      "SpacetimeGluing.smoothExtension_contDiff"
+    ],
+    "verified": {
+      "finite_endpoint_trace_enclosure_membership_gate": true,
+      "candidate_frozen_between_left_and_right_checks": true,
+      "rejection_occurs_before_borel_scale_query": true,
+      "finite_prefix_right_jet_admission_after_trace_consistency": true,
+      "independent_analytic_fixture_regression": true
+    },
+    "not_verified": {
+      "source_majorants_derived_from_actual_section9_residual": true,
+      "actual_section9_residual_endpoint_limits": true,
+      "endpoint_limit_uniqueness": true,
+      "analytic_template_bounds": true,
+      "infinite_borel_right_jets": true,
+      "all_order_borel_smoothness": true,
+      "smooth_compact_forcing": true,
+      "bounded_energy_and_blowup_closure": true
+    },
+    "remaining_boundary": "An admitted finite candidate is only consistent with caller-supplied trace balls. Actual Section 9 residual derivative limits, genuine analytic template bounds and summable derivative tails remain required before the candidate can be identified with CandidateFromLimits or promoted to the infinite smooth extension. paper_exact_velocity_available remains false."
+  }
+}
