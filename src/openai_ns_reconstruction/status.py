@@ -142,7 +142,7 @@ STAGES = [
          "squared amplitudes, with independent NumPy determinant/inverse/solve cross-checks on synthetic fixtures."
      ),
      "remaining": (
-         "Construct the actual Eq. (7.27) pulse-integrated covariance columns and prove the uniform Eq. (7.28) analytic "
+         "Construct the actual pulse-integrated covariance columns of Eq. (7.27) and prove the uniform Eq. (7.28) analytic "
          "column-error bound from the real background/phase/damping data; feed those genuine errors through the landed "
          "determinant/inverse stability and positive-amplitude certificate for the real T_{0,*} data, then solve the "
          "amplitude transport/ODE and realize the oscillatory corrections by supported divergence-free curls."
