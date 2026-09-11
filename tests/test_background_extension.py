@@ -113,6 +113,10 @@ def test_eq_5_15_consumes_actual_compact_repair_outputs():
     phi0 = lambda x, e: 1.0 + 0.02 * x
     omega_over_x = lambda x, e: 0.15 + 0.01 * x
 
+    # The compact C-infinity repair bumps are deliberately flat at their joins.
+    # Use a resolved fixed rule here and compare it to adaptive SciPy quadrature;
+    # the earlier 128-node rule under-resolved the first narrow transition by
+    # about 2.4e-5, which the independent oracle correctly exposed.
     out = reconstruct_eq_5_15(
         1,
         X,
@@ -123,7 +127,7 @@ def test_eq_5_15_consumes_actual_compact_repair_outputs():
         omega_over_x,
         h=0.005,
         C=C,
-        quadrature_points=128,
+        quadrature_points=512,
     )
 
     expected_F = quad(lambda x: U(x, eta), 0.0, X, epsabs=2e-11, limit=200)[0]
@@ -135,8 +139,8 @@ def test_eq_5_15_consumes_actual_compact_repair_outputs():
         epsabs=2e-10,
         limit=200,
     )[0]
-    assert math.isclose(out.F, expected_F, rel_tol=2e-8, abs_tol=2e-9)
-    assert math.isclose(out.Pi, expected_Pi, rel_tol=2e-8, abs_tol=2e-9)
+    assert math.isclose(out.F, expected_F, rel_tol=2e-10, abs_tol=2e-10)
+    assert math.isclose(out.Pi, expected_Pi, rel_tol=2e-10, abs_tol=2e-10)
     assert np.all(np.isfinite([out.F, out.V, out.Pi, out.dF_deta]))
 
 
