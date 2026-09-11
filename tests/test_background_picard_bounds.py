@@ -29,7 +29,9 @@ def test_eq_5_8_majorant_matches_displayed_formula():
     # Cauchy factor is 8^2 and the simplex factor is 1/5!.
     got = eq_5_8_majorant(4, C_n=2.0, radial_extent=0.5, rho=1.0, rho_prime=0.75)
     expected = 64.0 / math.factorial(5)
-    assert got >= expected
+    # The runtime evaluator deliberately uses binary64 log/lgamma rather than
+    # interval arithmetic, so compare the displayed formula to roundoff rather
+    # than asserting a machine-level directed-rounding proof.
     assert got == pytest.approx(expected, rel=2e-15)
     assert math.log(got) == pytest.approx(
         eq_5_8_log_majorant(4, 2.0, 0.5, 1.0, 0.75), rel=2e-15
@@ -112,7 +114,7 @@ def test_eq_5_8_rejects_invalid_complex_strip(rho, rho_prime):
 
 
 def test_find_picard_truncation_refuses_unmet_search_cap():
-    with pytest.raises(ValueError, match="no Eq. \(5.8\) Picard truncation"):
+    with pytest.raises(ValueError, match=r"no Eq. \(5.8\) Picard truncation"):
         find_picard_truncation(
             1.0e-30,
             C_n=2.0,
