@@ -62,6 +62,17 @@ def _mul_upper(left: float, right: float, name: str) -> float:
     return math.nextafter(value, math.inf)
 
 
+def _is_finite_representation_error(exc: BaseException) -> bool:
+    """Recognize downstream fail-closed errors caused by non-finite float bounds."""
+
+    if isinstance(exc, (ArithmeticError, OverflowError)):
+        return True
+    if isinstance(exc, ValueError):
+        text = str(exc).lower()
+        return "must be finite" in text or "overflow" in text
+    return False
+
+
 @dataclass(frozen=True)
 class Binary64MajorantObstruction:
     """One positive factorial-majorant term already exceeds binary64 range."""
@@ -246,7 +257,9 @@ def diagnose_actual_schedule_scale_chain(
 
     try:
         operators = analytic.operator_norm_bounds()
-    except ArithmeticError as exc:
+    except Exception as exc:
+        if not _is_finite_representation_error(exc):
+            raise
         return _stopped(
             schedule=schedule,
             family_upper=family_upper,
@@ -265,7 +278,9 @@ def diagnose_actual_schedule_scale_chain(
             data=axis_data,
             amplitude_norm_upper=analytic.amplitude_norm_upper,
         )
-    except ArithmeticError as exc:
+    except Exception as exc:
+        if not _is_finite_representation_error(exc):
+            raise
         return _stopped(
             schedule=schedule,
             family_upper=family_upper,
@@ -283,7 +298,9 @@ def diagnose_actual_schedule_scale_chain(
             remainder_lipschitz=remainder.remainder_lipschitz_upper,
             phase_real_part_sup=neighborhood.axis_phase_real_part_sup_upper,
         )
-    except (ArithmeticError, OverflowError) as exc:
+    except Exception as exc:
+        if not _is_finite_representation_error(exc):
+            raise
         return _stopped(
             schedule=schedule,
             family_upper=family_upper,
