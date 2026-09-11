@@ -86,11 +86,34 @@ def _h_taylor(h: float, j: float, eta: float, order: int) -> tuple[float, ...]:
 
 
 def _chi_taylor(h: float, j: float, sigma: float, eta: float, order: int) -> tuple[float, ...]:
+    """Stable normalized Taylor jet of ``H^2/(H^2+sigma^2)``.
+
+    On the actual theorem schedule ``sigma`` can be tiny and ``chi`` can be
+    extremely close to one.  Forming the derivative coefficients by multiplying
+    ``H^2`` with the reciprocal of ``H^2+sigma^2`` causes catastrophic
+    cancellation: the true nonzero derivatives may round to zero.  The exact
+    identity
+
+        chi = 1 - sigma^2 / (H^2 + sigma^2)
+
+    has the same zeroth value and exposes every positive-order coefficient as
+    ``-sigma^2`` times the reciprocal jet.  We therefore use the direct ratio
+    for order zero and the algebraically identical cancellation-free formula
+    for positive orders.  No numerical differentiation is introduced.
+    """
+
     Hjet = _h_taylor(h, j, eta, order)
     square = _mul(Hjet, Hjet)
+    sigma2 = float(sigma) * float(sigma)
     denominator = list(square)
-    denominator[0] += float(sigma) * float(sigma)
-    return _mul(square, _reciprocal(tuple(denominator)))
+    denominator[0] += sigma2
+    reciprocal = _reciprocal(tuple(denominator))
+
+    out = [square[0] / denominator[0]]
+    out.extend(-sigma2 * reciprocal[r] for r in range(1, order + 1))
+    if not all(math.isfinite(x) for x in out):
+        raise ArithmeticError("chi Taylor jet must remain finite")
+    return tuple(out)
 
 
 def axis_weight(epsilon: float, n: int, m: int) -> float:
