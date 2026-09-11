@@ -1,0 +1,25 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Sections 6-7.1 / Eqs. (7.9)-(7.11); official Lean PhaseEstimates.LocalBaseBounds",
+    "base_main_commit": "671cdf7fa61127469f0fc2f8b4c26b289f44d81b"
+  },
+  "layer": {
+    "id": "stage-3-section7-large-band-localbase-admission",
+    "status": "formal-structure",
+    "capability": "Bind an asymptotic Section 6 slow-label address to already-certified LocalBaseBounds hypotheses using normalized M and M*epsilon^2 ratios plus d*S_*^3, avoiding binary64 Q/epsilon underflow and rejecting sampled or fitted evidence",
+    "paper_locations": [
+      "Section 6.2 / Eq. (6.8) slow labels and S_*^-3 mesh",
+      "Section 7.1 / Eqs. (7.9)-(7.11)",
+      "PhaseEstimates.LocalBaseBounds",
+      "PhaseEstimates.localBase_derivative_errors"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_local_base.py",
+      "tests/test_phase_large_band_local_base.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_LOCAL_BASE_PROVENANCE.md",
+    "remaining_boundary": "No paper-exact Proposition 5.5 background, machine-linked all-box LocalBase theorem, asymptotic Section 6 partition/support construction, field-level vector hypotheses, oscillatory wave, or paper-exact velocity is supplied."
+  }
+}
