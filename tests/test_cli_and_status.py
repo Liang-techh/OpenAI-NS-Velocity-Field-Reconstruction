@@ -19,6 +19,21 @@ def test_status_does_not_promote_toy_or_tests_to_complete(capsys):
     assert construction_status()['stages'][0]['status']!='fake'
 
 
+def test_runtime_status_tracks_current_formal_structure_without_promotion():
+    status=construction_status()
+    stages={stage['id']:stage for stage in status['stages']}
+    assert status['paper_exact_velocity_available'] is False
+    assert status['sources']['pr5_integration_merge_commit']=='c0a08e68b0f65a59a4dca70c50934957a0608475'
+    assert status['sources']['lean_source_reviewed'] is True
+    assert status['sources']['lean_compiled'] is False
+    assert 'NaturalAxisRange' in stages[1]['implemented']
+    assert 'Eq. (5.5)' in stages[2]['implemented']
+    assert 'PhaseEstimates' in stages[3]['implemented']
+    assert 'analytic cutoff gradient' in stages[7]['implemented']
+    assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
+    assert stages[8]['status']=='diagnostic-only'
+
+
 @pytest.mark.parametrize('command',['status','verify'])
 def test_strict_gate_fails_closed(command,capsys):
     assert main([command,'--require-paper-exact'])==2
