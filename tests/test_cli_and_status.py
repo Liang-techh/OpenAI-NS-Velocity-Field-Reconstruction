@@ -27,6 +27,8 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert status['sources']['lean_source_reviewed'] is True
     assert status['sources']['lean_compiled'] is False
     assert 'NaturalAxisRange' in stages[1]['implemented']
+    assert 'PressureDatum.Admissible' in stages[1]['implemented']
+    assert 'outgoing pressure schedule' in stages[1]['remaining']
     assert 'Eq. (5.5)' in stages[2]['implemented']
     assert 'PhaseEstimates' in stages[3]['implemented']
     assert 'analytic cutoff gradient' in stages[7]['implemented']

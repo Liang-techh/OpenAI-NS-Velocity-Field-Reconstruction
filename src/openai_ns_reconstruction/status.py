@@ -39,11 +39,13 @@ STAGES = [
     {"id": 1, "name": "leading profile", "status": "formal-structure",
      "implemented": (
          "Leading kinematics, natural-axis polynomials/rescaling, heat exterior, pointwise moment primitives, "
-         "NaturalAxisRange h/j bounds, unique H-root bracket, delta=j/10 and conditional sigma=sqrt(m)/20."
+         "NaturalAxisRange h/j bounds, unique H-root bracket, delta=j/10 and conditional sigma=sqrt(m)/20, plus an "
+         "explicit B=2 ideal-prefix PressureDatum.Admissible witness with closed-form axis pressure."
      ),
      "remaining": (
-         "Materialize the coefficient-space fixed-point phi/u/average/pressure fields; construct the admissible "
-         "pressure schedule and uniform H^2 margin; instantiate Lambda/C; then verify support, moments, matching and cone conditions."
+         "Materialize the manuscript-compatible outgoing pressure schedule (or an equivalent fully constructive schedule witness), "
+         "certify the low-|Z| uniform H^2 margin, instantiate Lambda/C and the coefficient-space fixed-point "
+         "phi/u/average/pressure fields, then verify support, moments, matching and cone conditions."
      )},
     {"id": 2, "name": "all-order background", "status": "formal-structure",
      "implemented": (
