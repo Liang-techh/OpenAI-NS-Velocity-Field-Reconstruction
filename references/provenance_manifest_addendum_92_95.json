@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "bdba95a806f3ccb243956ff5873812b59a744011",
+  "integrated_prs": [92, 93, 94, 95],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Integration ledger for the four agent increments landed after PR #91. It records only capabilities already present on main and preserves every formal-structure/non-claim boundary; it is not a paper-exact promotion.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_reference_axial_jets.py",
+      "provenance": "references/AXIS_REFERENCE_AXIAL_JETS_PROVENANCE.md",
+      "paper_locations": ["Theorem 4.6", "Appendices A/B/C"],
+      "official_lean_modules": [
+        "NavierStokes/PressureDatum.lean",
+        "NavierStokes/SchedulePressure.lean",
+        "NavierStokes/NaturalAxisData.lean",
+        "NavierStokes/AxisCoefficientSpace.lean",
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisWeightEstimates.lean"
+      ],
+      "landed_capability": "PR #92 materializes arbitrary finite eta-derivative jets for the actual SchedulePressure-derived axial reference coefficient u0[1]=-(1/2) inverseL*zStar by analytic Taylor differentiation; all other radial degrees are exactly zero.",
+      "remaining_boundary": "A complete compatible AxisCoefficientSpace state/global norm witness, coefficientOperators/naturalRemainder backend, genuine Picard iterate/fixed point, materialized phi/u/average/pressure fields, NaturalProfileAssembly, and final support/moment/matching/cone closure remain unresolved."
+    },
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_second_jets.py",
+      "provenance": "references/LEMMA_5_2_SECOND_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.2", "Eqs. (5.14)-(5.16)", "Eqs. (5.2)-(5.7)"],
+      "official_lean_modules": [],
+      "landed_capability": "PR #93 analytically lifts the actual compact Lemma 5.2 U_n/E_n repair corrections to second (X,eta) jets, including mixed and second parameter derivatives, with exact zero jets off support and independent finite-difference regression from repaired function values.",
+      "remaining_boundary": "The unrepaired second jets and hierarchy moment/patch jets remain caller inputs; the semantic bridge from repaired E_n to PositiveAxis phi_n, the regular-flux beta_n=V_n/X second jet, genuine recursively solved history, common analytic strip, converged positive-order Picard hierarchy, infinite cutoff schedule/local finiteness, and Proposition 5.3 all-jets-flat residual closure remain unresolved."
+    },
+    {
+      "id": "stage-6-section9-residual-improvement",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_residual_decay.py",
+      "provenance": "references/SECTION9_RESIDUAL_DECAY_PROVENANCE.md",
+      "paper_locations": ["Eqs. (9.17)-(9.21)", "Proposition 9.9"],
+      "official_lean_modules": [],
+      "landed_capability": "PR #94 encodes the exact Section 9 sigma_j/gain schedule, admissible derivative-loss arithmetic, leading residual exponent, and first-stage power thresholds in rational arithmetic with independent closed-form checks.",
+      "remaining_boundary": "Actual Section 7/8 corrections, theorem-derived C_{j,m}/P_{j,m}/K_m bounds, flat E_{j,m} remainders, locally finite Eq. (9.21) sums, convergence of the correction sequence, and Proposition 9.9 residual flatness are not established; K_m is still an explicit supplied theorem datum rather than a verified bound from the completed fields."
+    },
+    {
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/spatial_localization.py",
+      "provenance": "references/SECTION10_FIXED_CUTOFF_BINDING_PROVENANCE.md",
+      "paper_locations": ["Section 10", "Eq. (10.4)"],
+      "official_lean_modules": ["NavierStokes/SpatialLocalization.lean"],
+      "landed_capability": "PR #95 adds section10_localized_field(local), atomically binding the existing fixed Section 10 support/plateau cutoff to its matching analytic Cartesian gradient and independently checking the transition-collar curl product rule while preserving exterior short-circuiting.",
+      "remaining_boundary": "The executable transition collar is geometry-faithful rather than claimed pointwise identical to the noncomputable Mathlib bump; the supplied LocalField is not yet the completed Sections 4-9 paper field, and actual time-endpoint smooth closure, smooth compact forcing, residual convergence, finite energy, and blow-up certification remain unresolved."
+    }
+  ]
+}
