@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "73ddba6a150bc932f8de7b533e74c80592cd2ef5",
+  "integrated_prs": [
+    102,
+    103,
+    104,
+    105
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Integration ledger for the four Agent 1-4 increments landed after PR #101. It records only capabilities already present on main, cross-links their paper/Lean provenance, and preserves every formal-structure and fail-closed boundary; it is not a paper-exact promotion.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile-coefficient-product",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_product.py",
+      "provenance": "references/AXIS_COEFFICIENT_PRODUCT_PROVENANCE.md",
+      "paper_locations": [
+        "Theorem 4.6",
+        "AxisCoefficientSpace / coefficientOperators fixed-point layer"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisContraction.lean"
+      ],
+      "landed_capability": "PR #102 implements the pinned finite radial convolution and parameter-Leibniz productFamily/jetProduct identity on the actual SchedulePressure-derived AxisCoefficientJetState eta-jets, including exact binomial weights, common-epsilon enforcement, finite-value guards, and independent actual-schedule regression.",
+      "remaining_boundary": "No global all-index weighted norm certificate or genuine AxisSpace membership is constructed; the remaining pinned linear AxisOperators/coefficientOperators primitives, naturalRemainder(x0), the first genuine Picard iterate, converged phi/u fixed point, average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+    },
+    {
+      "id": "stage-2-all-order-background-third-mixed-repair",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_third_mixed_jets.py",
+      "provenance": "references/LEMMA_5_2_THIRD_MIXED_JET_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.2",
+        "Eqs. (5.14)-(5.16)",
+        "Eq. (5.2)"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #103 analytically lifts the compact Lemma 5.2 axial repair through U_XXeta, U_Xetaeta and U_etaetaeta, reusing the landed radial bump derivatives and eta repair-coefficient jets, and feeds the coherent repaired jet directly into the exact Eq. (5.2) beta_n=V_n/X second-jet adapter without production finite differences.",
+      "remaining_boundary": "The unrepaired third-mixed U_n jet and moment/patch eta-jets remain inputs rather than hierarchy-owned data. A genuine converged repaired coefficient hierarchy, automatic lower-history population across orders, a common analytic strip/nonvanishing certificate, infinite recursive cutoff schedule/local finiteness, and Proposition 5.3 all-jets-flat residual decay remain unresolved."
+    },
+    {
+      "id": "stage-6-section9-flat-remainder-ladder",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_flat_remainder.py",
+      "provenance": "references/SECTION9_FLAT_REMAINDER_LADDER_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4",
+        "Lemma 9.8",
+        "Eq. (9.18)",
+        "Proposition 9.9 boundary"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #104 adds a fail-closed theorem-input gate for finite families of E_{j,m}(q) <= C_{j,m,N} q^N witnesses on one common small-q domain and verifies exact contiguous powers N=0..Nmax without mixing stages, derivative orders, or domains; sampled/fitted evidence is not promoted to theorem input.",
+      "remaining_boundary": "No genuine Section 7/8 correction data, actual Section 9 residual sequence, source-theorem machine verification, arbitrary-N/all-orders flatness, Lemma 9.7 common-domain theorem, Eq. (9.21) locally finite shrinking-cutoff sum, Proposition 9.9 convergence, or paper-exact velocity is constructed."
+    },
+    {
+      "id": "stage-7-8-section9-endpoint-ladder-bridge",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_endpoint_ladder_bridge.py",
+      "provenance": "references/SECTION9_ENDPOINT_LADDER_BRIDGE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4 / Lemma 9.8 / Eq. (9.18)",
+        "Section 9 / Proposition 9.9 boundary",
+        "Section 10 endpoint smooth-extension step"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #105 batches separately justified uniform physical-time residual-derivative witnesses across exactly endpoint degrees 0..N on one Section 9 stage and one compact spatial window, rechecks every row through the landed single-degree Section 9-to-10 bridge, packages the admitted majorants into the Section10EndpointMajorantLadder, and explicitly rejects a finite q-flat ladder as insufficient endpoint evidence.",
+      "remaining_boundary": "No genuine Section 7/8 correction data, actual Section 9 residual sequence/common-domain theorem, arbitrary-order uniform physical-time witness family, all-order endpoint limits, genuine Borel glue through t=1, smooth compact forcing, bounded-energy certificate, blow-up closure, or paper-exact velocity is constructed."
+    }
+  ]
+}
