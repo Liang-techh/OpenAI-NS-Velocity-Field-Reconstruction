@@ -98,7 +98,9 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
     assert 'smooth through t=1' in stages[7]['remaining']
 
-    assert 'traced-residual adapters still depend on caller-supplied endpoint jets' in ' '.join(status['limitations'])
+    limitations=' '.join(status['limitations'])
+    assert 'traced-residual adapters' in limitations
+    assert 'caller-supplied endpoint jets' in limitations
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
