@@ -10,7 +10,9 @@ from openai_ns_reconstruction.section9_stage_certificate import (
 )
 
 
-def _certified(value: float, provenance: str = "independent test enclosure") -> CertifiedBoundDatum:
+def _certified(
+    value: float, provenance: str = "independent test enclosure"
+) -> CertifiedBoundDatum:
     return CertifiedBoundDatum(value, "certified-numerical", provenance)
 
 
@@ -62,7 +64,7 @@ def test_eq_918_pointwise_check_keeps_flat_remainder_separate():
     log_power = 1
     flat = 1.0e-3
     exponent = Fraction(2)
-    leading = constant * q ** 2 * (1.0 + abs(math.log(q)))
+    leading = constant * q**2 * (1.0 + abs(math.log(q)))
     oracle_rhs = leading + flat
 
     passed = check_eq_9_18_pointwise(
@@ -149,15 +151,16 @@ def test_certificate_rejects_invalid_paper_parameters():
             log_power=0,
             correction_bound=datum,
         )
-    with pytest.raises(ValueError):
-        check_eq_9_18_pointwise(
-            stage=0,
-            derivative_order=0,
-            h=Fraction(1, 200),
-            q=0.5,
-            derivative_loss=-1,
-            constant=1.0,
-            log_power=0,
-            residual_bound=datum,
-            flat_remainder_bound=_certified(0.0),
-        )
+    for bad_loss in (-1, True, float("nan")):
+        with pytest.raises(ValueError):
+            check_eq_9_18_pointwise(
+                stage=0,
+                derivative_order=0,
+                h=Fraction(1, 200),
+                q=0.5,
+                derivative_loss=bad_loss,
+                constant=1.0,
+                log_power=0,
+                residual_bound=datum,
+                flat_remainder_bound=_certified(0.0),
+            )
