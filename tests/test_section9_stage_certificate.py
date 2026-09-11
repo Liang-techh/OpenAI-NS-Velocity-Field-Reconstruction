@@ -105,7 +105,7 @@ def test_log_domain_check_does_not_underflow_for_tiny_q():
     # valid arithmetic lower endpoint and must compare without evaluating that
     # power in ordinary scale.
     certificate = check_eq_9_18_pointwise(
-        stage=4000198,
+        stage=3999998,
         derivative_order=0,
         h=Fraction(1, 200),
         q=1.0e-250,
