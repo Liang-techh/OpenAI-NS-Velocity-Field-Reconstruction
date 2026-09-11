@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "8c8557a15b9e7090ac9e8eacecf28c6577bfdb1f",
+  "integrated_prs": [118],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Eq. (5.7) first-Picard radial-jet increment. Differentiates the hierarchy-owned genuine G f_n term analytically on positive radius and independently checks the derivative against the integral representation. No converged positive-order coefficient or all-order hierarchy is claimed.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_first_picard_radial_jet.py",
+      "provenance": "references/FIRST_PICARD_RADIAL_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.1", "Eq. (5.7)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #118 exposes the exact positive-radius radial derivative of the hierarchy-owned first Picard term W^(0)_n=G f_n using d_xi W_i=f_i-c_i W_i/xi. The forcing is generated only through the landed contiguous repaired lower-history path, and regression independently differentiates the integral representation.",
+      "remaining_boundary": "The adapter deliberately does not infer an axis derivative or manufacture d_eta W. The next Picard application, full Picard convergence, recursively materialized coefficients, common analytic strip, coefficient bounds, recursive cutoff local-finiteness, and Proposition 5.3 all-jets residual decay remain open. Order zero is still upstream from Issue #1 and paper_exact_velocity_available remains false."
+    }
+  ]
+}
