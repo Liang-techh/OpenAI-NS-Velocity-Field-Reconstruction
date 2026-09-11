@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "2c7de3d069bf280ec7ab6a0c50a3e550017a6b06",
+  "integrated_prs": [113],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 lower-history ownership increment. Packages landed Lemma 5.2 repaired phi/U jets into one contiguous coefficient history, derives beta only via Eq. (5.2), and feeds the owned strict lower history into actualLowerSource / Eq. (5.7). No recursive hierarchy completion is claimed.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history.py",
+      "provenance": "references/REPAIRED_LOWER_HISTORY_PROVIDER_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eqs. (5.3)-(5.7)", "Lemma 5.2", "Eq. (5.14)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean"],
+      "landed_capability": "PR #113 adds a fail-closed contiguous Section-5 coefficient-jet hierarchy. Positive-order entries can own the actual compact Lemma-5.2 repaired phi and axial U jets; beta=V/X is generated only from that owned U through the landed analytic Eq. (5.2) adapter. The hierarchy directly supplies the landed actualLowerSource / Eq. (5.7) bridge for the next recursive order without current-order leakage.",
+      "remaining_boundary": "Order zero remains upstream from Issue #1; positive-order unrepaired/base jets and hierarchy moment/patch eta-jets remain inputs. No converged all-order coefficient hierarchy, common analytic strip, coefficient-bound proof, recursive cutoff local-finiteness theorem, or Proposition 5.3 all-jets residual decay is established. paper_exact_velocity_available remains false."
+    }
+  ]
+}
