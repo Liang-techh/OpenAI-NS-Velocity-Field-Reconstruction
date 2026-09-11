@@ -60,7 +60,7 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'common complex-field sup bound' not in stages[1]['remaining']
     assert 'AxisCoefficientSpace/coefficientOperators/naturalRemainder backend' in stages[1]['remaining']
     assert 'materialize the coefficient-space fixed-point phi/u' in stages[1]['remaining']
-    assert 'derive the corresponding average/pressure fields' in stages[1]['remaining']
+    assert 'Derive the corresponding average/pressure fields' in stages[1]['remaining']
     assert 'former binary64 Lambda/C representation blocker is closed' in stages[1]['remaining']
 
     assert 'Eq. (5.5)' in stages[2]['implemented']
