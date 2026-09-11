@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3bd4b214fb107dcac161564ac0e1086e4446a7cb",
+  "integrated_prs": [98],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Eq. (5.2) derivative-interface increment. Records only the regular-flux second-jet adapter and preserves the unresolved recursive hierarchy boundary; it is not a paper-exact promotion.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_regular_flux_second_jets.py",
+      "provenance": "references/EQ_5_2_REGULAR_FLUX_SECOND_JET_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eqs. (5.3)-(5.7)"],
+      "official_lean_modules": [],
+      "landed_capability": "PR #98 analytically differentiates the exact regular Eq. (5.2) quotient beta_n=V_n/X through second (X,eta) order from an explicit minimal third-mixed U_n jet, including direct axis evaluation and radial-average chain-rule weights, with no production finite differences or sampled division by X.",
+      "remaining_boundary": "The required U_XXeta, U_Xetaeta and U_etaetaeta data still have to come from the genuine converged and Lemma-5.2-repaired coefficient hierarchy; repaired third mixed jets, automatic beta-history population, a common analytic strip/converged positive-order Picard hierarchy, infinite recursive cutoff schedule/local finiteness, and Proposition 5.3 all-jets-flat residual decay remain unresolved."
+    }
+  ]
+}
