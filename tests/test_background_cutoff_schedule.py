@@ -74,7 +74,7 @@ def test_provider_is_called_for_exact_triangular_jet_set() -> None:
 def test_schedule_rejects_nonanalytic_or_malformed_inputs() -> None:
     with pytest.raises(ValueError, match="order zero"):
         local_scale_from_template_bounds(0.1, 0, [1.0, 1.0, 1.0])
-    with pytest.raises(ValueError, match="exactly j\+3"):
+    with pytest.raises(ValueError, match=r"exactly j\+3"):
         local_scale_from_template_bounds(0.1, 1, [1.0, 1.0, 1.0])
     with pytest.raises(ValueError, match="finite and positive"):
         local_scale_from_template_bounds(0.1, 1, [1.0, 1.0, 1.0, 0.0])
@@ -99,7 +99,7 @@ def test_majorant_domain_is_fail_closed() -> None:
     edge = schedule.reciprocal_support_edge(1)
     with pytest.raises(ValueError, match="outside"):
         schedule.majorant_at(1, 0, math.nextafter(edge, math.inf))
-    with pytest.raises(ValueError, match="m <= j\+2"):
+    with pytest.raises(ValueError, match=r"m <= j\+2"):
         schedule.majorant_at(1, 4, 0.5 * edge)
     with pytest.raises(ValueError, match="positive orders"):
         schedule.edge_log_margin(0, 0)
