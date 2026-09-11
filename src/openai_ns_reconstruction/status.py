@@ -50,14 +50,17 @@ STAGES = [
          "SchedulePressure.shapeExponent, the complete executable OutgoingTail finalAngular(y,eta) / "
          "SchedulePressure.clockWeight(y) chain, the actual all-real-line SchedulePressure.axisPressure evaluator, "
          "an analytic no-sampling low-|Z| uniform H^2 margin that instantiates the theorem-side sigma=sqrt(m)/20 choice, "
-         "and the theorem-faithful Lambda/C selector Lambda=max(1+B+L,1+(14000/9)B), "
-         "C=exp(Lambda*realPartSup), conditional on certified coefficient-family B/L and complex phase realPartSup."
+         "the theorem-faithful Lambda/C selector Lambda=max(1+B+L,1+(14000/9)B), C=exp(Lambda*realPartSup), and a "
+         "fail-closed AxisContraction-style bound/Lipschitz propagation from certified coefficient/operator norm ledgers "
+         "to conservative remainderBound/remainderLip values, with the naturalResolvent norm deliberately left as a "
+         "certified upstream factorial-majorant input rather than a fitted constant."
      ),
      "remaining": (
-         "Materialize the actual coefficient-family remainderBound/remainderLip and certify the complex compact-set "
-         "realPartSup used by the landed Lambda/C selector; use those certified constants to materialize the "
-         "coefficient-space fixed-point phi/u/average/pressure fields, connect them to NaturalProfileAssembly, then "
-         "verify the paper's support, moments, matching and cone conditions."
+         "Materialize the actual AxisData coefficient norms, normalized angular-amplitude bound M, certified "
+         "naturalResolvent factorial-series upper bound, and complex compact-set realPartSup; feed those genuine inputs "
+         "through the landed remainderBound/remainderLip and Lambda/C selectors to materialize the coefficient-space "
+         "fixed-point phi/u/average/pressure fields, connect them to NaturalProfileAssembly, then verify the paper's "
+         "support, moments, matching and cone conditions."
      )},
     {"id": 2, "name": "all-order background", "status": "formal-structure",
      "implemented": (
@@ -67,15 +70,18 @@ STAGES = [
          "singular inverse G with one-step Picard map plus the first positive-order G f_n for supplied A0/A1/f_n, the "
          "Lemma 5.2 / Eqs. (5.14)-(5.16) compact five-moment repair using two U bumps and three E bumps, the "
          "Eq. (5.15) forward reconstruction of F_n/V_n/Pi_n from supplied repaired analytic coefficient data using "
-         "the axis-regular Eq. (5.2)/(5.5) paths, and a finite-prefix SlowBorelBase/DiagonalScale recursive cutoff-scale "
-         "constructor from supplied analytic normalized-template bounds C[j,m], with exact edge certificates and the doubling envelope."
+         "the axis-regular Eq. (5.2)/(5.5) paths, a finite-prefix SlowBorelBase/DiagonalScale recursive cutoff-scale "
+         "constructor from supplied analytic normalized-template bounds C[j,m] with exact edge certificates and the "
+         "doubling envelope, and an exact finite-prefix cutoff support certificate recording plateau, the unique possible "
+         "transition order, forced-zero tail within the constructed prefix, and stable truncation once that zero tail is reached."
      ),
      "remaining": (
          "Derive the paper's profile-dependent A0/A1/f_n from materialized leading/lower-order data, iterate Eq. (5.7) "
          "to the Lemma 5.1 solution and connect it to the constructed Eq. (5.6) source; materialize the true eta-dependent "
          "repaired coefficient hierarchy and certify the support/stress conclusions required before reuse at the next order; "
-         "derive the true uniform compactness bounds C[j,m] from that hierarchy and instantiate the full recursive cutoff "
-         "sequence; then prove local finiteness and arbitrary-order truncation/residual decay."
+         "derive the true uniform compactness bounds C[j,m] from that hierarchy and instantiate the full infinite recursive "
+         "cutoff sequence; then prove theorem-level local finiteness and arbitrary-order truncation/residual decay rather "
+         "than extrapolating from a finite-prefix support certificate."
      )},
     {"id": 3, "name": "dyadic charts and transported phases", "status": "formal-structure",
      "implemented": (
@@ -87,14 +93,16 @@ STAGES = [
          "common conservative r0 under the discrete interaction hypotheses, a physical slow-support adjacency bridge "
          "using the axis-dependent Q^(1/2), Q^(1/2-h), Q widths and a common physical-point cross-band certificate, "
          "Section 7.1 phase/wavevector/tangent-frame algebra, the pinned PhaseEstimates scalar scale gate for the "
-         "Eq. (7.9)-(7.11) error envelope, and a fail-closed pointwise rounded_normal_estimates adapter using the pinned "
-         "Lean roundedFrequency semantics."
+         "Eq. (7.9)-(7.11) error envelope, a fail-closed pointwise rounded_normal_estimates adapter using the pinned Lean "
+         "roundedFrequency semantics, and a fail-closed UniformLocalBase bridge from independently certified LocalBase "
+         "sup bounds plus slow-box diameter d<=S^-3 to the exact M(S^-3+epsilon^2) derivative-error envelope used by "
+         "the rounded-normal theorem."
      ),
      "remaining": (
          "Instantiate the TangentialBaseJetProvider from the paper-exact Proposition 5.5 background and theorem choices, "
-         "and certify uniform LocalBaseBounds/C1-C2 hypotheses on every active box so the pointwise adapter becomes a "
-         "uniform phase/frame/damping certificate; then continue to the stress-cone, amplitude/curl wave, mean-correction "
-         "and residual-improvement stages."
+         "and analytically certify the actual LocalBaseBounds/C1-C2 hypotheses on every active box; the landed bridge can "
+         "then turn those genuine bounds into the uniform rounded-normal inputs. Complete the remaining moving-frame and "
+         "damping estimates, then continue to the stress-cone, amplitude/curl wave, mean-correction and residual-improvement stages."
      )},
     {"id": 4, "name": "oscillatory stress realization", "status": "pending",
      "remaining": "Stress-cone decomposition, amplitude equations and supported divergence-free oscillatory waves."},
@@ -111,15 +119,18 @@ STAGES = [
          "actual closed-past NS residual on 0<t<1, the pinned endpoint Taylor-Borel algebra with exact "
          "DiagonalScale.doublingEnvelope recurrence and locally finite right-extension evaluation, a fail-closed dense "
          "full-spacetime endpoint-jet adapter that contracts CandidateFromLimits tensors in every derivative slot with "
-         "timeVector=(1,0), and an exact-rational SpatialBorelExtension boundSum/localScale/doubling scale-schedule adapter "
-         "with supplied-bound 2^-j derivative-tail certificates."
+         "timeVector=(1,0), an exact-rational SpatialBorelExtension boundSum/localScale/doubling scale-schedule adapter "
+         "with supplied-bound 2^-j derivative-tail certificates, and a value-level CandidateFromLimits trace/glue bridge "
+         "that preserves the supplied closed-past residual for t<T, uses only the validated degree-zero endpoint tensor "
+         "for t>=T, and composes the normal-jet contraction with the existing locally finite Borel future branch."
      ),
      "remaining": (
          "Justify the executable spatial/time transition-collar representatives where the formalization uses noncomputable "
          "ContDiffBump values; materialize the actual closed-past localized NS residual's full spacetime derivative family "
          "and prove all locally uniform t->1- limits; derive genuine analytic compact-template derivative bounds for those "
-         "true jets and instantiate the landed scale schedule; then prove jet matching and smooth global force extension "
-         "through t=1; also connect completed upstream local-field inputs."
+         "true jets and instantiate the landed scale schedule; then prove the traced degree-zero endpoint value and all "
+         "normal jets arise from those actual limits so the resulting global force is smooth through t=1; also connect "
+         "completed upstream local-field inputs."
      )},
     {"id": 8, "name": "independent verification", "status": "diagnostic-only",
      "implemented": "Manufactured solutions, refinement checks, divergence/energy diagnostics, labelled exports and fail-closed provenance audit.",
@@ -139,7 +150,7 @@ def construction_status() -> dict:
             "A force reconstructed from the same residual stencil is not independent evidence.",
             "Pointwise or sampled margins are not uniform-in-parameter certificates.",
             "The executable Section 10 spatial/time transition collars have the official support/plateau geometry but are not claimed pointwise identical to Mathlib's noncomputable ContDiffBump.",
-            "The endpoint Borel/full-spacetime-jet/scale-schedule adapters still depend on caller-supplied endpoint jets or analytic template bounds and do not certify the actual residual derivative limits or smooth t=1 force extension.",
+            "The endpoint Borel/full-spacetime-jet/scale-schedule/traced-residual adapters still depend on caller-supplied endpoint jets or analytic template bounds and do not certify the actual residual derivative limits or smooth t=1 force extension.",
         ],
         "sources": copy.deepcopy(SOURCE_PINS),
         "stages": copy.deepcopy(STAGES),

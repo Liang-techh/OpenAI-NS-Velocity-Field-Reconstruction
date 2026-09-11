@@ -37,9 +37,12 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'sigma=sqrt(m)/20' in stages[1]['implemented']
     assert 'Lambda=max(1+B+L,1+(14000/9)B)' in stages[1]['implemented']
     assert 'C=exp(Lambda*realPartSup)' in stages[1]['implemented']
+    assert 'AxisContraction-style bound/Lipschitz propagation' in stages[1]['implemented']
+    assert 'certified upstream factorial-majorant input' in stages[1]['implemented']
     assert 'axisPressure' not in stages[1]['remaining']
     assert 'H^2 margin' not in stages[1]['remaining']
-    assert 'remainderBound/remainderLip' in stages[1]['remaining']
+    assert 'actual AxisData coefficient norms' in stages[1]['remaining']
+    assert 'naturalResolvent factorial-series upper bound' in stages[1]['remaining']
     assert 'realPartSup' in stages[1]['remaining']
     assert 'coefficient-space fixed-point' in stages[1]['remaining']
 
@@ -52,10 +55,14 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'Eq. (5.15) forward reconstruction' in stages[2]['implemented']
     assert 'SlowBorelBase/DiagonalScale' in stages[2]['implemented']
     assert 'C[j,m]' in stages[2]['implemented']
+    assert 'finite-prefix cutoff support certificate' in stages[2]['implemented']
+    assert 'unique possible transition order' in stages[2]['implemented']
+    assert 'stable truncation' in stages[2]['implemented']
     assert 'A0/A1/f_n' in stages[2]['remaining']
     assert 'Eq. (5.6) source' in stages[2]['remaining']
     assert 'true eta-dependent repaired coefficient hierarchy' in stages[2]['remaining']
     assert 'true uniform compactness bounds C[j,m]' in stages[2]['remaining']
+    assert 'theorem-level local finiteness' in stages[2]['remaining']
     assert 'connect the repaired U_n/E_n through the paper\'s Eq. (5.15)' not in stages[2]['remaining']
 
     assert 'Eq. (6.8)' in stages[3]['implemented']
@@ -67,9 +74,13 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'common physical-point cross-band certificate' in stages[3]['implemented']
     assert 'PhaseEstimates' in stages[3]['implemented']
     assert 'rounded_normal_estimates' in stages[3]['implemented']
+    assert 'UniformLocalBase bridge' in stages[3]['implemented']
+    assert 'd<=S^-3' in stages[3]['implemented']
+    assert 'M(S^-3+epsilon^2)' in stages[3]['implemented']
     assert 'SlotColoring.Adj/discrete interaction' not in stages[3]['remaining']
     assert 'paper-exact Proposition 5.5 background' in stages[3]['remaining']
-    assert 'uniform LocalBaseBounds' in stages[3]['remaining']
+    assert 'actual LocalBaseBounds/C1-C2 hypotheses' in stages[3]['remaining']
+    assert 'moving-frame and damping estimates' in stages[3]['remaining']
 
     assert 'analytic cutoff gradient' in stages[7]['implemented']
     assert 'time-switch' in stages[7]['implemented']
@@ -81,10 +92,15 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'CandidateFromLimits' in stages[7]['implemented']
     assert 'SpatialBorelExtension boundSum/localScale' in stages[7]['implemented']
     assert '2^-j derivative-tail certificates' in stages[7]['implemented']
+    assert 'CandidateFromLimits trace/glue bridge' in stages[7]['implemented']
+    assert 'degree-zero endpoint tensor' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
-    assert 'smooth global force extension' in stages[7]['remaining']
+    assert 'smooth through t=1' in stages[7]['remaining']
 
+    limitations=' '.join(status['limitations'])
+    assert 'traced-residual adapters' in limitations
+    assert 'caller-supplied endpoint jets' in limitations
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 

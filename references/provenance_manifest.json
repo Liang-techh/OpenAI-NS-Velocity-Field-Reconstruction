@@ -48,6 +48,7 @@
         "src/openai_ns_reconstruction/schedule_axis_pressure.py",
         "src/openai_ns_reconstruction/schedule_axis_margin.py",
         "src/openai_ns_reconstruction/natural_scale_selection.py",
+        "src/openai_ns_reconstruction/axis_remainder_bounds.py",
         "src/openai_ns_reconstruction/profiles.py",
         "src/openai_ns_reconstruction/velocity.py",
         "src/openai_ns_reconstruction/heat_exterior.py"
@@ -67,11 +68,12 @@
         "constructive OutgoingTail scalar chain through TailData timing, terminal taper/debt, release integrating-factor solution, decayHold, complete finalAngular(y,eta), and SchedulePressure.clockWeight(y), consistently using the admissible S=32 instantiation",
         "actual SchedulePressure.axisPressure all-real-line integral evaluator for the constructed finalAngular, with exact ideal-prefix/constant-slope/eventual-power reductions, cached quadrature only on smooth transitions, and the pinned axisPressure derivative formula",
         "explicit conservative low-|Z| H^2 margin for the actual SchedulePressure datum from an analytic clock-mass envelope, pressure derivative bounds, a global Z Lipschitz bound, the formal Z(root)>j/5 gap and NaturalAxisData.cross_identity; this instantiates the theorem choice sigma=sqrt(m)/20 without constructing m from samples",
-        "theorem-faithful NaturalProfile Lambda/C selector: Lambda=max(1+B+L,1+(14000/9)B), using analytically closed R=5,m=0 AxisEvaluation jet sums 4/3 and 16/9, followed by C=exp(Lambda*realPartSup(axisPhase,compactSet)); the coefficient-family B/L and complex phase supremum remain certified upstream inputs"
+        "theorem-faithful NaturalProfile Lambda/C selector: Lambda=max(1+B+L,1+(14000/9)B), using analytically closed R=5,m=0 AxisEvaluation jet sums 4/3 and 16/9, followed by C=exp(Lambda*realPartSup(axisPhase,compactSet)); the coefficient-family B/L and complex phase supremum remain certified upstream inputs",
+        "AxisContraction-style conservative remainderBound/remainderLip propagation from certified AxisData coefficient/operator norm ledgers, including the pinned AxisOperators constants and reference-pair max-norm radius; the naturalResolvent norm remains an independently certified factorial-majorant input rather than a fitted constant"
       ],
       "missing_for_paper_exact": [
         "construct the paper's complete E/U/Pi profile data including the regular inner core",
-        "materialize and certify the actual coefficient-family remainderBound/remainderLip and complex compact-set realPartSup used by the landed Lambda/C selector",
+        "materialize and certify the actual AxisData coefficient norms, normalized angular-amplitude bound M, naturalResolvent factorial-series norm bound and complex compact-set realPartSup needed by the landed remainderBound/remainderLip and Lambda/C selectors",
         "materialize the coefficient-space fixed-point fields phi/u/average/pressure used by the natural-profile assembly",
         "connect the materialized fixed-point fields and selected Lambda/C to NaturalProfileAssembly",
         "verify the paper's support, moments, matching and cone conditions for the materialized profile"
@@ -85,6 +87,8 @@
         "NavierStokes/AxisContraction.lean",
         "NavierStokes/AxisEvaluation.lean",
         "NavierStokes/AxisReference.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisResolvent.lean",
         "NavierStokes/OutgoingSchedule.lean",
         "NavierStokes/OutgoingTail.lean",
         "NavierStokes/SchedulePressure.lean"
@@ -101,7 +105,8 @@
         "complete executable finalAngular and clockWeight scalar schedule for theorem-admissible OutgoingSchedule.Parameters/TailData, including releaseLag/decayHold and eventual power-tail identities",
         "executable actual SchedulePressure.axisPressure and derivative evaluator, independently cross-checked against adaptive quadrature of unfactorized finalAngular squared",
         "analytic no-sampling low-|Z| margin witness for concrete actual-schedule TailData, together with the resulting theorem-side delta=j/10 and sigma=sqrt(m)/20 choices",
-        "exact theorem-side Lambda/C selection algebra once actual coefficient-family remainderBound/remainderLip and complex compact-set realPartSup are supplied"
+        "exact theorem-side Lambda/C selection algebra once actual coefficient-family remainderBound/remainderLip and complex compact-set realPartSup are supplied",
+        "deterministic theorem-shaped propagation from a finite certified norm ledger to conservative remainderBound/remainderLip values, leaving only the actual norm ledger/resolvent/realPartSup inputs unresolved"
       ],
       "numerical_caveats": [
         "realPhase is evaluated by floating-point trapezoidal quadrature; the defining integral is exact but each runtime value is numerical",
@@ -111,7 +116,8 @@
         "S=32 is an explicit theorem-admissible witness for OutgoingTail's existential derivative bound, but it is not claimed to be definitionally equal to the opaque Classical.choose value used by the pinned Lean definition of stepBound",
         "outgoing_tail.py reduces long constant plateaus algebraically but evaluates the remaining compact smooth-step and release/tail integrals by finite Gauss-Legendre quadrature; tests cross-check the release integrating-factor result against an independent ODE solver, but this is numerical verification rather than a formal certificate",
         "schedule_axis_pressure.py evaluates the exact paper-defined improper integral by analytic plateau/tail reductions plus finite Gauss-Legendre quadrature on six smooth transitions; independent SciPy integration cross-checks the result, but no rigorous quadrature error enclosure is claimed; the separate schedule_axis_margin.py bound does not use that numerical quadrature to construct its low-|Z| margin",
-        "natural_scale_selection.py uses finite binary64 values for theorem constants and fails closed on overflow; it does not infer or certify the actual coefficient-family B/L or complex realPartSup from samples"
+        "natural_scale_selection.py uses finite binary64 values for theorem constants and fails closed on overflow; it does not infer or certify the actual coefficient-family B/L or complex realPartSup from samples",
+        "axis_remainder_bounds.py propagates only certified upper bounds and does not infer the actual AxisData norms, amplitude bound M or naturalResolvent factorial-series bound from samples"
       ]
     },
     {
@@ -124,6 +130,7 @@
         "src/openai_ns_reconstruction/background_moment_repair.py",
         "src/openai_ns_reconstruction/background_extension.py",
         "src/openai_ns_reconstruction/background_cutoff_schedule.py",
+        "src/openai_ns_reconstruction/background_cutoff_support.py",
         "src/openai_ns_reconstruction/cutoffs.py"
       ],
       "paper_locations": [
@@ -144,12 +151,13 @@
         "Eq. (5.7) six-component singular inverse G and one-step Picard map G[A0 W + A1 d_eta W + f_n], including the first positive-order term G f_n for supplied matrices/source",
         "Lemma 5.2 / Eqs. (5.14)-(5.16) compact five-moment repair using two fixed U_n bumps and three fixed E_n bumps; the finite systems B_U alpha=-d_U and B_E beta=-d_E are solved against the paper's moment exponents and independently re-integrated in tests",
         "Eq. (5.15) forward reconstruction from supplied repaired analytic data: F_n=integral U_n, axis-regular V_n through the Eq. (5.2) flux, and Pi_n through the landed Eq. (5.5) regular Omega_{n-1}/X pressure row; tests independently cross-check the unreduced Eq. (4.2) Z_b relation",
-        "finite-prefix SlowBorelBase/DiagonalScale recursive cutoff-scale constructor for the pinned p=0, g(j)=2hj specialization from supplied analytic normalized-template bounds C[j,m], with exact edge-inequality certificates and the doubling envelope"
+        "finite-prefix SlowBorelBase/DiagonalScale recursive cutoff-scale constructor for the pinned p=0, g(j)=2hj specialization from supplied analytic normalized-template bounds C[j,m], with exact edge-inequality certificates and the doubling envelope",
+        "exact finite-prefix cutoff support/plateau classifier using integer scales and Fraction.from_float(q): exact plateau, at most one transition order under doubling, forced-zero tail within the constructed prefix, and stable truncation once that zero tail is reached"
       ],
       "missing_for_paper_exact": [
         "derive the paper's profile-dependent A0/A1/f_n from materialized leading/lower-order data, iterate Eq. (5.7) to the Lemma 5.1 solution, and connect the solved phi_n/U_n data to the constructed Eq. (5.6) Omega source",
         "materialize the true eta-dependent repaired coefficient hierarchy and certify the support/stress conclusions required before reuse at the next order",
-        "derive the true uniform compactness bounds C[j,m] from the materialized recursively repaired coefficient hierarchy, use them to instantiate the full recursive cutoff sequence, and prove local finiteness of the summed background",
+        "derive the true uniform compactness bounds C[j,m] from the materialized recursively repaired coefficient hierarchy, use them to instantiate the full infinite recursive cutoff sequence, and prove theorem-level local finiteness of the summed background",
         "arbitrary-order truncation/residual decay certificate for the cutoff-summed background"
       ],
       "numerical_caveats": [
@@ -160,6 +168,7 @@
         "background_extension.py is paper-derived for supplied repaired analytic coefficients, but it does not materialize the missing profile-dependent A0/A1/f_n or prove next-order support/stress closure",
         "production repair/reconstruction quadratures are finite numerical rules while tests cross-check selected identities with independent adaptive quadrature; this is numerical verification, not a uniform analytic certificate",
         "the finite-prefix cutoff-scale constructor requires caller-supplied analytic C[j,m] bounds and does not infer them from samples; it does not by itself materialize the infinite schedule, local finiteness, or Proposition 5.3 residual flatness",
+        "background_cutoff_support.py certifies support and truncation stability only inside a constructed finite prefix; it deliberately refuses to extrapolate an infinite zero tail or theorem-level local finiteness when the prefix ends first",
         "the pressure-row primitive is not a complete positive-order coefficient until the coupled phi_n/U_n construction is supplied"
       ]
     },
@@ -174,7 +183,8 @@
         "src/openai_ns_reconstruction/slow_support_adjacency.py",
         "src/openai_ns_reconstruction/phase.py",
         "src/openai_ns_reconstruction/phase_estimates.py",
-        "src/openai_ns_reconstruction/phase_box_certificate.py"
+        "src/openai_ns_reconstruction/phase_box_certificate.py",
+        "src/openai_ns_reconstruction/phase_uniform_bounds.py"
       ],
       "paper_locations": [
         "Eqs. (6.1)-(6.11)",
@@ -191,7 +201,8 @@
         "local Section 7.1 phase/frequency formulas, backward material phase defect, projected evolution operator, and tangent frame for caller-supplied representative base jets",
         "deterministic allowed tie rule for rounding k*p to a nonzero integer, giving single-valued angular harmonics",
         "pinned PhaseEstimates scalar scale gate: phaseError, phaseConstant, exact phaseError<=4/S hypotheses, and the resulting rounded-normal bound envelope",
-        "pinned Lean roundedFrequency adapter and fail-closed pointwise rounded_normal_estimates hypothesis checker, with representative shear/orthogonal frame/frequency equalities enforced by construction and numerical cross-checks of normal and normal-velocity bounds"
+        "pinned Lean roundedFrequency adapter and fail-closed pointwise rounded_normal_estimates hypothesis checker, with representative shear/orthogonal frame/frequency equalities enforced by construction and numerical cross-checks of normal and normal-velocity bounds",
+        "fail-closed UniformLocalBase bridge from independently certified LocalBase sup bounds and a certified slow-box diameter d<=S^-3 to the exact M(d+epsilon^2) and theorem-facing M(S^-3+epsilon^2) derivative-error envelopes required by rounded_normal_estimates"
       ],
       "official_lean_modules": [
         "NavierStokes/SlotColoring.lean",
@@ -202,7 +213,8 @@
       ],
       "missing_for_paper_exact": [
         "instantiate TangentialBaseJetProvider with the paper-exact Proposition 5.5 background and theorem-chosen r0/u_star rather than caller-supplied data",
-        "upgrade the pointwise rounded-normal adapter to a uniform active-box certificate by proving the LocalBaseBounds C1/C2 hypotheses for the actual paper-exact base functions on every slow box",
+        "prove the actual LocalBaseBounds C1/C2 hypotheses for the paper-exact base functions on every slow box; the landed UniformLocalBase bridge can then convert those certified bounds to uniform rounded-normal inputs",
+        "complete the remaining uniform moving-frame and damping estimates after the actual base-field bounds are available",
         "stress-cone decomposition into positive wave covariances",
         "solve the pulse amplitude equations and realize divergence-free oscillations by supported curls",
         "mean corrections",
@@ -215,6 +227,7 @@
         "TangentialBaseJetProvider is a typed dependency boundary only; arbitrary caller jets are never promoted to paper-exact data",
         "PhaseScaleCertificate checks only the exact scalar scale inequalities formalized in PhaseEstimates.lean; it does not infer missing local base-field derivative bounds from samples",
         "RoundedNormalPointCertificate checks theorem inequalities only at supplied point data; the representative equalities are constructed algebraically, but uniform LocalBaseBounds over a slow box still require analytic certification upstream",
+        "phase_uniform_bounds.py accepts only already certified uniform sup bounds and a certified diameter; its polynomial fixtures test mean-value arithmetic only and are not surrogate paper fields",
         "the quantitative point adapter uses the pinned Lean floor-with-zero-replacement roundedFrequency; phase.py retains its separate deterministic paper-level nearest-integer convention, so callers must not silently interchange the two rounding semantics"
       ]
     },
@@ -228,7 +241,8 @@
         "src/openai_ns_reconstruction/past_extension.py",
         "src/openai_ns_reconstruction/endpoint_borel.py",
         "src/openai_ns_reconstruction/endpoint_jets.py",
-        "src/openai_ns_reconstruction/endpoint_scale_schedule.py"
+        "src/openai_ns_reconstruction/endpoint_scale_schedule.py",
+        "src/openai_ns_reconstruction/traced_residual.py"
       ],
       "paper_locations": [
         "Eq. (10.4)",
@@ -251,19 +265,21 @@
         "pinned PastExtension closed-past branch: zeroBefore, pastVelocity and pastPressure short-circuit unresolved negative-time inputs, together with a diagnostic past_residual_numeric evaluation of the closed-past NS residual on 0<t<1 and exact structural zero on t<=0",
         "pinned endpoint Taylor-Borel algebra: exact DiagonalScale.doublingEnvelope recurrence, locally finite right-extension evaluation from caller-supplied jets/scales, endpoint handling, and the exact t>=T+1 zero-support consequence",
         "fail-closed dense full-spacetime endpoint-jet representation shape=(3,)+(4,)*n and the SpacetimeGluing normal-time contraction J[:,0,...,0] corresponding to repeated timeVector=(1,0), composed directly with the existing Borel right-extension API",
-        "exact-rational SpatialBorelExtension boundSum/localScale construction from supplied analytic compact-template derivative bounds, composed with the doubling envelope and checked by per-degree and per-(m,j,k) 2^-j derivative-tail certificates"
+        "exact-rational SpatialBorelExtension boundSum/localScale construction from supplied analytic compact-template derivative bounds, composed with the doubling envelope and checked by per-degree and per-(m,j,k) 2^-j derivative-tail certificates",
+        "value-level CandidateFromLimits traced-residual/Borel-glue bridge: preserve the supplied closed-past residual for t<T, use the validated degree-zero full endpoint tensor for t>=T, then contract full endpoint jets to normal jets and evaluate the existing locally finite Borel future branch"
       ],
       "missing_for_paper_exact": [
         "exact pointwise realization of the formalization's noncomputable Mathlib ContDiffBump values in the spatial/time transition collars, or an explicit proof that the chosen executable representatives may replace them",
         "materialize the actual closed-past localized NS residual's full spacetime derivative family and prove its locally uniform limits as t->1- at every order",
-        "derive genuine analytic compact-template derivative bounds for those actual endpoint jets, instantiate the landed SpatialBorel scale schedule with those bounds, and prove the resulting normal jets match the closed-past force to obtain the smooth global force extension through t=1",
+        "derive genuine analytic compact-template derivative bounds for those actual endpoint jets, instantiate the landed SpatialBorel scale schedule with those bounds, and prove the traced degree-zero endpoint value and all normal jets arise from the actual limits to obtain the smooth global force extension through t=1",
         "completed local field inputs from the unresolved earlier construction stages"
       ],
       "numerical_caveats": [
         "the analytic spatial cutoff gradient is exact for the repository's explicit C-infinity representative; it does not claim equality with Mathlib's noncomputable transition-collar values",
         "the time-switch residual identity is cross-checked numerically with a separately evaluated activated-field residual; this is not a formal certificate and does not construct the missing smooth force extension",
         "past_residual_numeric independently evaluates the residual of the closed-past fields but is still a finite-difference diagnostic; defining a force by that same residual and checking R-f=0 would be tautological and is not treated as verification",
-        "the endpoint Borel evaluator, full-spacetime-to-normal adapter and scale-schedule adapter use caller-supplied jets or analytic template bounds; their algebraic shape, contraction, local-finiteness arithmetic and tail inequalities are executable, but those inputs are not evidence of actual residual derivative limits, true all-order derivative majorants, or smooth endpoint glue"
+        "the endpoint Borel evaluator, full-spacetime-to-normal adapter and scale-schedule adapter use caller-supplied jets or analytic template bounds; their algebraic shape, contraction, local-finiteness arithmetic and tail inequalities are executable, but those inputs are not evidence of actual residual derivative limits, true all-order derivative majorants, or smooth endpoint glue",
+        "traced_residual.py is a branch/glue adapter for supplied endpoint tensors and scales; its exact t<T/t>=T value logic is not evidence that the supplied tensors are locally uniform derivative limits of the actual closed-past residual"
       ]
     },
     {
