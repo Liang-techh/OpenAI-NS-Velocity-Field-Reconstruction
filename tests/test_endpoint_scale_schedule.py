@@ -55,6 +55,33 @@ def test_tail_certificate_recomputes_localized_derivative_bound_exactly() -> Non
                 assert cert.certified
 
 
+def test_derivative_tail_sum_certificate_matches_geometric_series_budget() -> None:
+    def bounds(m: int, j: int, k: int) -> Fraction:
+        return Fraction(m + k + 1, 5)
+
+    schedule = SpatialBorelScaleSchedule(bounds)
+    cert = schedule.derivative_tail_sum_certificate(2, 3, 5)
+
+    assert cert.first_omitted_degree == 6
+    assert cert.first_omitted_target == Fraction(1, 64)
+    assert cert.tail_upper_bound == Fraction(1, 32)
+    assert cert.certified
+
+    # Independently recompute a finite block from the direct scaled-template
+    # bounds, then close the remaining infinite geometric majorant in one step.
+    checked_direct = sum(
+        (schedule.tail_certificate(2, j, 3).direct_upper_bound for j in range(6, 13)),
+        Fraction(0),
+    )
+    geometric_remainder_after_12 = Fraction(1, 1 << 12)
+    assert checked_direct + geometric_remainder_after_12 <= cert.tail_upper_bound
+
+    # Independent closed-form check of the official eventual majorant itself:
+    # sum_{j=6}^{12} 2^-j + sum_{j=13}^infty 2^-j = 2^-5.
+    finite_geometric = sum((Fraction(1, 1 << j) for j in range(6, 13)), Fraction(0))
+    assert finite_geometric + geometric_remainder_after_12 == Fraction(1, 32)
+
+
 def test_schedule_is_wired_to_existing_full_jet_borel_path() -> None:
     def bounds(m: int, j: int, k: int) -> Fraction:
         return Fraction(1 + m + k, 8)
@@ -110,3 +137,5 @@ def test_invalid_template_bounds_and_tail_indices_fail_closed() -> None:
         schedule.tail_certificate(1, 1, 0)
     with pytest.raises(ValueError, match="requires spatial window < degree"):
         schedule.tail_certificate(0, 1, 1)
+    with pytest.raises(ValueError, match="last retained degree"):
+        schedule.derivative_tail_sum_certificate(2, 0, 1)
