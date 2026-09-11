@@ -38,11 +38,14 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'Lambda=max(1+B+L,1+(14000/9)B)' in stages[1]['implemented']
     assert 'C=exp(Lambda*realPartSup)' in stages[1]['implemented']
     assert 'AxisContraction-style bound/Lipschitz propagation' in stages[1]['implemented']
-    assert 'certified upstream factorial-majorant input' in stages[1]['implemented']
+    assert 'radiusLoss(1/2)=12' in stages[1]['implemented']
+    assert 'normalized amplitude M=12' in stages[1]['implemented']
+    assert 'K<=30720B' in stages[1]['implemented']
+    assert 'factorial-series enclosure' in stages[1]['implemented']
     assert 'axisPressure' not in stages[1]['remaining']
     assert 'H^2 margin' not in stages[1]['remaining']
-    assert 'actual AxisData coefficient norms' in stages[1]['remaining']
-    assert 'naturalResolvent factorial-series upper bound' in stages[1]['remaining']
+    assert 'analytic radius rho' in stages[1]['remaining']
+    assert 'complex-field sup bound B' in stages[1]['remaining']
     assert 'realPartSup' in stages[1]['remaining']
     assert 'coefficient-space fixed-point' in stages[1]['remaining']
 
@@ -58,11 +61,15 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'finite-prefix cutoff support certificate' in stages[2]['implemented']
     assert 'unique possible transition order' in stages[2]['implemented']
     assert 'stable truncation' in stages[2]['implemented']
+    assert '2^-J q^(h(J+1)-m)' in stages[2]['implemented']
+    assert 'h(J+1)+b-2M' in stages[2]['implemented']
+    assert 'minimal J' in stages[2]['implemented']
     assert 'A0/A1/f_n' in stages[2]['remaining']
     assert 'Eq. (5.6) source' in stages[2]['remaining']
     assert 'true eta-dependent repaired coefficient hierarchy' in stages[2]['remaining']
     assert 'true uniform compactness bounds C[j,m]' in stages[2]['remaining']
     assert 'theorem-level local finiteness' in stages[2]['remaining']
+    assert 'all-jets-flat residual decay' in stages[2]['remaining']
     assert 'connect the repaired U_n/E_n through the paper\'s Eq. (5.15)' not in stages[2]['remaining']
 
     assert 'Eq. (6.8)' in stages[3]['implemented']
@@ -77,10 +84,15 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'UniformLocalBase bridge' in stages[3]['implemented']
     assert 'd<=S^-3' in stages[3]['implemented']
     assert 'M(S^-3+epsilon^2)' in stages[3]['implemented']
+    assert 'BasePhaseGeometry' in stages[3]['implemented']
+    assert 'phaseConstant(M)=normalConstant(frequencyBound(M))' in stages[3]['implemented']
+    assert '16 G^2(1+G)E' in stages[3]['implemented']
+    assert '4 M(2A+5)delta' in stages[3]['implemented']
     assert 'SlotColoring.Adj/discrete interaction' not in stages[3]['remaining']
     assert 'paper-exact Proposition 5.5 background' in stages[3]['remaining']
     assert 'actual LocalBaseBounds/C1-C2 hypotheses' in stages[3]['remaining']
-    assert 'moving-frame and damping estimates' in stages[3]['remaining']
+    assert 'normal-closeness' in stages[3]['remaining']
+    assert 'landed uniform normal and frame/damping envelopes' in stages[3]['remaining']
 
     assert 'analytic cutoff gradient' in stages[7]['implemented']
     assert 'time-switch' in stages[7]['implemented']
@@ -94,13 +106,18 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert '2^-j derivative-tail certificates' in stages[7]['implemented']
     assert 'CandidateFromLimits trace/glue bridge' in stages[7]['implemented']
     assert 'degree-zero endpoint tensor' in stages[7]['implemented']
+    assert 'volume pi/32' in stages[7]['implemented']
+    assert 'E(t)<=pi M^2/64' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
     assert 'smooth through t=1' in stages[7]['remaining']
+    assert 'uniform bounded kinetic-energy' in stages[7]['remaining']
 
     limitations=' '.join(status['limitations'])
     assert 'traced-residual adapters' in limitations
     assert 'caller-supplied endpoint jets' in limitations
+    assert 'fixed-time implication' in limitations
+    assert 'uniform bounded-energy estimate' in limitations
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
