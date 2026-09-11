@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "integration-truth-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "0ebce7b28faac20d14399915c282a6c5f0bb7dcd",
+  "integrated_prs": [117, 118, 119, 120],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration ledger for the four landed increments immediately after PR #116. This records real capability without promoting any formal-structure layer to paper-exact status.",
+  "layers": [
+    {
+      "pr": 117,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_parameter_primitive.py",
+      "test": "tests/test_axis_coefficient_parameter_primitive.py",
+      "provenance": "references/AXIS_COEFFICIENT_PARAMETER_PRIMITIVE_PROVENANCE.md",
+      "equation_or_source": "AxisWeightEstimates.parameterPrimitiveJet / AxisOperators.parameterPrimitive",
+      "capability": "Pinned coefficient parameter primitive on actual SchedulePressure-derived coefficient eta-jets, including the exact m+1 parameter-jet shift.",
+      "remaining_boundary": "No complete coefficientOperators record or naturalRemainder(x0), genuine Picard iterate/fixed point, materialized phi/u/average/pressure, NaturalProfileAssembly, or final support/moment/matching/cone closure."
+    },
+    {
+      "pr": 118,
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_first_picard_radial_jet.py",
+      "test": "tests/test_background_first_picard_radial_jet.py",
+      "provenance": "references/FIRST_PICARD_RADIAL_JET_PROVENANCE.md",
+      "equation_or_source": "Lemma 5.1 / Eq. (5.7)",
+      "capability": "Exact positive-radius radial derivative of the hierarchy-owned first Picard term G f_n, with independent finite-difference checks of the integral representation.",
+      "remaining_boundary": "Only the k=0 Picard term is covered; d_eta of the iterate, subsequent Picard applications, convergence, recursively materialized all-order coefficients, common analytic strip, cutoff local finiteness, and Proposition 5.3 remain unresolved."
+    },
+    {
+      "pr": 119,
+      "id": "stage-3-6-section9-finite-prefix-evaluation",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_finite_prefix.py",
+      "test": "tests/test_section9_finite_prefix.py",
+      "provenance": "references/SECTION9_FINITE_PREFIX_PROVENANCE.md",
+      "equation_or_source": "Section 9 / Proposition 9.9 / Eqs. (9.20)-(9.21)",
+      "capability": "Fail-closed evaluation of a contiguous finite prefix of already-admitted positive Section 9 A/B/p stages with theorem-backed support-zero short circuits.",
+      "remaining_boundary": "Actual Section 7/8 correction values and the manuscript cutoff evaluator are not verified; no infinite Eq. (9.21) field, arbitrary-order residual theorem, Proposition 9.9 convergence, or paper-exact velocity is constructed."
+    },
+    {
+      "pr": 120,
+      "id": "stage-7-8-section9-physical-prefix-completion",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_physical_prefix_completion.py",
+      "test": "tests/test_section9_physical_prefix_completion.py",
+      "provenance": "references/SECTION9_PHYSICAL_PREFIX_COMPLETION_PROVENANCE.md",
+      "equation_or_source": "Eq. (4.1) + Section 9 / Proposition 9.9 / Eqs. (9.20)-(9.21) + Section 10 pre-endpoint support",
+      "capability": "Certifies that an evaluated admitted prefix contains every stage that can remain nonzero anywhere on one closed pre-endpoint physical slab, so the omitted positive tail is support-zero on that slab.",
+      "remaining_boundary": "The certificate does not cover t=1, verify actual correction field values or the manuscript cutoff pointwise, construct the infinite Eq. (9.21) field, prove endpoint residual majorants, smooth compact forcing, bounded energy, blow-up closure, or paper-exact velocity."
+    }
+  ]
+}
