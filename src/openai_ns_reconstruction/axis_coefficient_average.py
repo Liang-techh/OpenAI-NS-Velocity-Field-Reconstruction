@@ -1,4 +1,4 @@
-"""Executable coefficient-jet radial average from pinned ``AxisOperators``.
+r"""Executable coefficient-jet radial average from pinned ``AxisOperators``.
 
 The official natural-axis fixed-point remainder uses the regular radial average
 operator on the compatible coefficient space.  In the pinned Lean sources
