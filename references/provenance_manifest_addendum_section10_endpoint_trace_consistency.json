@@ -1,0 +1,32 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Section 10 / CandidateFromLimits and SpacetimeGluing",
+    "base_main_commit": "bdba51257f47e071c4c9d14cc8b50a1d1bfa812b"
+  },
+  "layer": {
+    "id": "stage-7-8-section10-endpoint-trace-consistency",
+    "status": "formal-structure",
+    "capability": "Cross-check two supplied pre-endpoint full residual-jet samples against the independently supplied integrated Section 10 endpoint-majorant ladder without fitting the majorant from those samples",
+    "paper_locations": [
+      "Section 10",
+      "CandidateFromLimits",
+      "SpacetimeGluing"
+    ]
+  },
+  "verified": {
+    "dense_full_jet_shape_gate": true,
+    "finite_ladder_pointwise_cauchy_consistency": true,
+    "majorant_not_refit_from_samples": true,
+    "official_late_plateau_window_reused": true
+  },
+  "not_verified": {
+    "actual_section9_residual_jets": true,
+    "uniform_spatial_majorant": true,
+    "locally_uniform_endpoint_limits": true,
+    "all_order_borel_smoothness": true,
+    "smooth_compact_forcing": true,
+    "bounded_energy_and_blowup_closure": true
+  }
+}
