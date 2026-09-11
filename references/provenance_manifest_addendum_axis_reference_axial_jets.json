@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3e8f64398f48d901933a8a4ebf1a6c857ab7a8c7",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/schedule_axis_pressure_jets.py",
+      "src/openai_ns_reconstruction/axis_reference_axial_jets.py"
+    ],
+    "provenance": "references/AXIS_REFERENCE_AXIAL_JETS_PROVENANCE.md",
+    "paper_locations": [
+      "Theorem 4.6",
+      "Appendices A/B/C"
+    ],
+    "official_lean_modules": [
+      "NavierStokes/PressureDatum.lean",
+      "NavierStokes/SchedulePressure.lean",
+      "NavierStokes/NaturalAxisData.lean",
+      "NavierStokes/AxisCoefficientSpace.lean",
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/AxisWeightEstimates.lean"
+    ],
+    "landed_capability": "Materializes arbitrary finite eta-derivative jets of the actual-schedule axial reference coefficient u0[1]=-(1/2) inverseL*zStar by analytic Taylor differentiation of the actual SchedulePressure integral and NaturalAxisData algebra; all other radial degrees remain exactly zero.",
+    "numerical_caveat": "The eta differentiation is analytic truncated Taylor algebra, but compact flattening integrals remain floating-point Gauss--Legendre evaluations with no rigorous interval error enclosure.",
+    "remaining_boundary": "A complete compatible AxisCoefficientSpace state/global norm witness, coefficientOperators/naturalRemainder backend, genuine Picard iterate and fixed point, materialized phi/u/average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+  }
+}
