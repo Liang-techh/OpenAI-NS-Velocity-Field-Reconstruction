@@ -29,6 +29,11 @@ import sys
 
 _LOG2 = math.log(2.0)
 _LOG_FLOAT_MAX = math.log(sys.float_info.max)
+_LOG_FLOAT_MIN_SUBNORMAL = math.log(math.ulp(0.0))
+# Guard against accidentally allocating an arbitrarily large Python integer
+# when an upstream analytic bound or h is malformed.  This is an implementation
+# resource bound only; it is not a theorem-side restriction on admissible scales.
+_MAX_EXACT_SCALE_BITS = 1_000_000
 
 
 def _positive_float(value: float, name: str) -> float:
@@ -57,11 +62,13 @@ def local_scale_from_template_bounds(
     q=1/b_j. The returned integer therefore certifies the entire punctured
     interval by monotonicity of q**(h*j).
 
-    The real threshold is computed in log space and rounded up to an integer;
-    a second log-space check increments the candidate if transcendental
-    rounding happened to undershoot it. If the threshold cannot be converted
-    through finite float arithmetic, the routine fails closed rather than
-    clipping the scale.
+    When the real threshold fits in binary64, the routine keeps the previous
+    near-minimal ``ceil(exp(log_required))`` selection.  If that threshold is
+    larger than binary64, it switches to an arbitrary-precision Python integer
+    power-of-two witness and verifies the same inequality in log space.  This
+    avoids turning a representation limit into a false theorem obstruction.
+    Non-finite logarithmic thresholds, or thresholds exceeding the explicit
+    implementation bit budget, fail closed instead of clipping the scale.
     """
     h = _positive_float(h, "h")
     order = _nonnegative_int(order, "order")
@@ -75,14 +82,37 @@ def local_scale_from_template_bounds(
     cmax = max(bounds)
     exponent = h * order
     log_required = (order * _LOG2 + math.log(cmax)) / exponent
-    if log_required <= 0.0:
-        candidate = 1
-    else:
-        if log_required >= _LOG_FLOAT_MAX:
-            raise OverflowError("required cutoff scale exceeds the supported float-to-integer range")
-        candidate = max(1, math.ceil(math.exp(log_required)))
+    if not math.isfinite(log_required):
+        raise OverflowError("required cutoff scale has a non-finite logarithmic threshold")
 
     target_log = -order * _LOG2
+    if log_required <= 0.0:
+        candidate = 1
+    elif log_required < _LOG_FLOAT_MAX:
+        candidate = max(1, math.ceil(math.exp(log_required)))
+        # A one-integer correction keeps the representable-range behavior
+        # near-minimal despite transcendental rounding.
+        while math.log(cmax) - exponent * math.log(candidate) > target_log:
+            candidate += 1
+        return candidate
+    else:
+        bits = max(1, math.ceil(log_required / _LOG2))
+        if bits > _MAX_EXACT_SCALE_BITS:
+            raise OverflowError(
+                "required cutoff scale exceeds the configured exact-integer bit budget"
+            )
+        candidate = 1 << bits
+        # Rounding in log_required/log(2) can undershoot by one bit.  Doubling
+        # is theorem-safe and avoids ever converting the wide integer to float.
+        while math.log(cmax) - exponent * math.log(candidate) > target_log:
+            bits += 1
+            if bits > _MAX_EXACT_SCALE_BITS:
+                raise OverflowError(
+                    "required cutoff scale exceeds the configured exact-integer bit budget"
+                )
+            candidate <<= 1
+        return candidate
+
     while math.log(cmax) - exponent * math.log(candidate) > target_log:
         candidate += 1
     return candidate
@@ -130,12 +160,32 @@ class SlowBorelCutoffSchedule:
     def max_order(self) -> int:
         return len(self.scales) - 1
 
-    def reciprocal_support_edge(self, order: int) -> float:
-        """Return 1/a_j, the largest q at which the jth cutoff may be active."""
+    def reciprocal_support_log_edge(self, order: int) -> float:
+        """Return ``log(1/a_j)`` without narrowing the integer scale to binary64."""
         order = _nonnegative_int(order, "order")
         if order > self.max_order:
             raise IndexError("order lies outside the constructed finite prefix")
-        return math.exp(-math.log(self.scales[order]))
+        return -math.log(self.scales[order])
+
+    def reciprocal_support_edge(self, order: int) -> float:
+        """Return 1/a_j when that positive edge is representable in binary64.
+
+        For a mathematically valid wide integer scale, ``1/a_j`` can be smaller
+        than the least positive binary64 subnormal.  Returning 0.0 would turn a
+        representation artifact into an exact support claim, so this accessor
+        fails closed and directs callers to ``reciprocal_support_log_edge``.
+        """
+        log_edge = self.reciprocal_support_log_edge(order)
+        if log_edge < _LOG_FLOAT_MIN_SUBNORMAL:
+            raise OverflowError(
+                "reciprocal support edge underflows binary64; use reciprocal_support_log_edge"
+            )
+        value = math.exp(log_edge)
+        if value == 0.0:
+            raise OverflowError(
+                "reciprocal support edge underflows binary64; use reciprocal_support_log_edge"
+            )
+        return value
 
     def edge_log_margin(self, order: int, derivative_order: int) -> float:
         """Logarithmic margin in C[j,m] a_j^(-h*j) <= 2^(-j)."""
