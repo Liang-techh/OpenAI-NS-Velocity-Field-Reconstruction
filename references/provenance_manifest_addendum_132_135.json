@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "integration-truth-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "a34622932b3bd893acd78c8b503605f9448f828b",
+  "integrated_prs": [132, 133, 134, 135],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration ledger for the four landed increments immediately after PR #131. This records real capability without promoting any formal-structure layer to paper-exact status.",
+  "layers": [
+    {
+      "pr": 132,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_inverse_param_product.py",
+      "test": "tests/test_axis_coefficient_inverse_param_product.py",
+      "provenance": "references/AXIS_COEFFICIENT_INVERSE_PARAM_PRODUCT_PROVENANCE.md",
+      "equation_or_source": "AxisOperators.inverseParamProduct / differentialFamily(p=1,d=1) / NaturalAxisBridge / AxisContraction coefficientOperators param1/param2",
+      "capability": "Executable pinned inverse-parameter-product operator on actual SchedulePressure-derived coefficient eta-jets, including the param1 (r=1) and param2 (r=2) instances used by coefficientOperators, with independent composition, radial-equation and finite-difference regression.",
+      "remaining_boundary": "No global all-index weighted norm certificate or genuine AxisSpace membership; inverse dot-product / inverse mixed bilinear composites and any other missing pinned AxisOperators, the complete coefficientOperators record, naturalRemainder(x0), the first real Picard iterate, fixed-point phi/u, average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+    },
+    {
+      "pr": 133,
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_regular_flux_third_mixed_jets.py",
+      "test": "tests/test_background_regular_flux_third_mixed_jets.py",
+      "provenance": "references/EQ_5_2_REGULAR_FLUX_THIRD_MIXED_JET_PROVENANCE.md",
+      "equation_or_source": "Section 5 / Eq. (5.2) / Eqs. (5.3)-(5.7) / Lemma 5.1",
+      "capability": "Analytic Eq. (5.2) beta=V/X third-mixed derivatives beta_XXeta, beta_Xetaeta and beta_etaetaeta from explicit fourth-mixed axial U jets, including the X=0 regular branch and independent centered-difference regression.",
+      "remaining_boundary": "The new AxialFourthMixedJet is still upstream/caller supplied. Lemma 5.2 repair must be lifted to U_XXetaeta, U_Xetaetaeta, and U_etaetaetaeta and connected to Section5LowerHistoryJetHierarchy before beta third-mixed jets, partial_eta(Omega/X), and partial_eta f_n are hierarchy-owned. Genuine k=1 Picard iteration, full Picard convergence, recursive coefficient materialization, infinite cutoff schedule, and Proposition 5.3 all-jets residual decay remain open."
+    },
+    {
+      "pr": 134,
+      "id": "stage-3-dyadic-charts-and-transported-phases",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_local_base.py",
+      "test": "tests/test_phase_large_band_local_base.py",
+      "provenance": "references/PHASE_LARGE_BAND_LOCAL_BASE_PROVENANCE.md",
+      "equation_or_source": "Section 6.2 / Eq. (6.8) / Section 7.1 / Eqs. (7.9)-(7.11) / PhaseEstimates.LocalBaseBounds",
+      "capability": "Underflow-safe large-band admission from an asymptotic Section 6 slow-label address to already-certified LocalBaseBounds hypotheses using normalized M and M*epsilon^2 ratios plus d*S_*^3, while rejecting sampled or fitted evidence.",
+      "remaining_boundary": "No paper-exact Proposition 5.5 background, machine-linked all-box LocalBase theorem, asymptotic Section 6 partition/support construction, field-level vector hypotheses, oscillatory wave, or paper-exact velocity is supplied."
+    },
+    {
+      "pr": 135,
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section10_endpoint_borel_admission.py",
+      "test": "tests/test_section10_endpoint_borel_admission.py",
+      "provenance": "references/SECTION10_ENDPOINT_BOREL_ADMISSION_PROVENANCE.md",
+      "equation_or_source": "Section 10 endpoint Taylor-Borel extension / CandidateFromLimits / SpatialBorelExtension.rightExtension_right_jets / SpacetimeGluing.smoothExtension_contDiff",
+      "capability": "Fail-closed finite endpoint-candidate admission that freezes one candidate full-jet family, requires every degree to lie inside the supplied pre-endpoint trace enclosure, rejects before any Borel-scale query on failure, and only then passes that same family to the landed finite Borel-prefix right-jet certificate.",
+      "remaining_boundary": "An admitted finite candidate is only consistent with caller-supplied trace balls. Actual Section 9 residual derivative limits, genuine analytic template bounds and summable derivative tails remain required before the candidate can be identified with CandidateFromLimits or promoted to the infinite smooth extension."
+    }
+  ]
+}
