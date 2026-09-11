@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "integration-provenance-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "87e12b1cd5e1d973c4ada03fc9125cf7e7f8a74d",
+  "integrated_prs": [107, 108, 109, 110],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration record only. It consolidates four already-landed formal-structure increments without modifying their mathematical constructors or promoting any completion gate.",
+  "layers": [
+    {
+      "pr": 107,
+      "id": "stage-1-axis-coefficient-average",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_average.py",
+      "test": "tests/test_axis_coefficient_average.py",
+      "provenance": "references/AXIS_COEFFICIENT_AVERAGE_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_axis_coefficient_average.json",
+      "paper_or_lean_locations": [
+        "NavierStokes/AxisOperators.lean: rowData, averageData, average, norm_average_le",
+        "NavierStokes/AxisContraction.lean: coefficientOperators / naturalRemainder downstream use",
+        "NavierStokes/NaturalAxisBridge.lean: AxisOperators.average profile bridge"
+      ],
+      "landed_capability": "Pinned AxisOperators.averageData / average row map J_avg[n,m]=J[n,m]/(n+1) on the actual SchedulePressure-derived coefficient eta-jets, independently regressed against radial integration and parameter differentiation.",
+      "remaining_boundary": "No global all-index weighted AxisSpace certificate, complete coefficientOperators record, genuine naturalRemainder(x0), first real Picard iterate, fixed-point phi/u, derived average/pressure profile fields, NaturalProfileAssembly, or support/moment/matching/cone closure."
+    },
+    {
+      "pr": 108,
+      "id": "stage-2-lemma52-phi-second-jets",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_phi_jets.py",
+      "test": "tests/test_background_moment_repair_phi_jets.py",
+      "provenance": "references/LEMMA_5_2_PHI_SECOND_JET_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_108.json",
+      "paper_or_lean_locations": [
+        "Lemma 5.2",
+        "Eq. (5.14)",
+        "phi_n = C E_n / R"
+      ],
+      "landed_capability": "Analytic second-(X,eta)-jet bridge for the actual compact E_n repair through phi_n=C E_n/R on strictly positive repair supports, returning the supplied base phi jet exactly off support and at the axis.",
+      "remaining_boundary": "The unrepaired inner phi_n jet, C, and hierarchy-owned moment/patch eta-jets remain inputs; no converged recursively repaired hierarchy, common strip/coefficient bounds, infinite cutoff schedule/local finiteness, or Proposition 5.3 all-jets-flat residual conclusion is supplied."
+    },
+    {
+      "pr": 109,
+      "id": "stage-6-section9-local-sum-admission",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_local_sum_admission.py",
+      "test": "tests/test_section9_local_sum_admission.py",
+      "provenance": "references/SECTION9_LOCAL_SUM_ADMISSION_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_section9_local_sum_admission.json",
+      "paper_or_lean_locations": [
+        "Lemma 5.4 local-finiteness proof",
+        "Proposition 9.9 Step 2",
+        "Eq. (9.21)"
+      ],
+      "landed_capability": "Fail-closed exact-rational local-finiteness admission for Eq. (9.21) correction sums from externally certified common-q-domain and infinite-doubling-schedule hypotheses.",
+      "remaining_boundary": "No genuine Section 7/8 correction fields, machine-verified common domain, hierarchy-derived infinite scale schedule, smooth supported zero extensions, arbitrary-order Eq. (9.20) flat residual, constructed Eq. (9.21) sums, or Proposition 9.9 convergence is supplied."
+    },
+    {
+      "pr": 110,
+      "id": "stage-6-7-section9-physical-slab-local-sum",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_physical_window.py",
+      "test": "tests/test_section9_physical_window.py",
+      "provenance": "references/SECTION9_PHYSICAL_WINDOW_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_section9_physical_window.json",
+      "paper_or_lean_locations": [
+        "Eq. (4.1)",
+        "Lemma 5.4",
+        "Lemma 9.7",
+        "Proposition 9.9 Step 2",
+        "Eq. (9.21)",
+        "Section 10 fixed spatial/time localization"
+      ],
+      "landed_capability": "Exact-rational transfer of the Section 9 q-strip local-finiteness admission to closed pre-endpoint physical-time slabs inside the official Section 10 support cylinder, using the analytic bound 1-t_upper <= q <= 1-t_lower+1/16.",
+      "remaining_boundary": "The bridge deliberately rejects t_upper=1 and supplies no genuine correction fields, constructed Eq. (9.21) sum, arbitrary-order residual flatness, uniform endpoint derivative majorants, smooth force extension, bounded-energy/blow-up closure, or endpoint convergence."
+    }
+  ],
+  "integration_boundary": "All four entries remain formal-structure. Green tests, finite-slab/local-finiteness certificates, or exact algebraic adapters do not establish a paper-exact velocity. paper_exact_velocity_available must remain false until the complete construction and independent closure obligations are discharged."
+}
