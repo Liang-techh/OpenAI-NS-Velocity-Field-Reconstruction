@@ -36,9 +36,14 @@ def primitive_jet(
 ) -> float:
     """Evaluate one pinned zero-at-axis radial-primitive coefficient jet."""
 
+    # Match AxisCoefficientJetState's index semantics before the n=0 branch;
+    # in particular, Python bools must not silently act as radial indices.
+    if isinstance(n, bool) or not isinstance(n, int) or n < 0:
+        raise ValueError("n must be a nonnegative integer")
+
     if n == 0:
-        # Route through the underlying state so the official index/window guards
-        # remain active even though the primitive's zeroth radial row vanishes.
+        # Route through the underlying state so m and eta keep the exact same
+        # pinned index/window validation even though this row vanishes.
         state.jet(0, m, eta)
         return 0.0
 
