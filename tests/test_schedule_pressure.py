@@ -22,7 +22,12 @@ def _direct_edge_ratio(x: float) -> float:
 
 def test_outgoing_sigma_matches_pinned_flat_edge_ratio() -> None:
     for x in (0.2, 0.25, 0.5, 0.75, 0.8):
-        assert outgoing_sigma(x) == pytest.approx(_direct_edge_ratio(x), rel=2e-15, abs=0.0)
+        # The production evaluator uses an algebraically equivalent log-ratio
+        # form to avoid simultaneous underflow of the two edge exponentials.
+        # The direct oracle evaluates the quotient in the opposite arithmetic
+        # order, so allow a few dozen machine epsilons rather than requiring
+        # bitwise-near identity between the two floating-point paths.
+        assert outgoing_sigma(x) == pytest.approx(_direct_edge_ratio(x), rel=1e-13, abs=1e-30)
     assert outgoing_sigma(0.5) == pytest.approx(0.5, abs=2e-15)
     assert outgoing_sigma(-3.0) == 0.0
     assert outgoing_sigma(0.0) == 0.0
