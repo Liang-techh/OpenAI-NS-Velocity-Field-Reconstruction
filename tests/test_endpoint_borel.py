@@ -89,6 +89,39 @@ def test_glue_uses_closed_past_at_the_endpoint() -> None:
     assert not np.array_equal(glued(0.2, 0.3, 0.4, 1.01), past(0.2, 0.3, 0.4, 1.01))
 
 
+def test_left_open_past_completion_uses_jet_zero_at_join_without_sampling_past() -> None:
+    sampled_times: list[float] = []
+
+    def past_open(x: float, y: float, z: float, t: float) -> np.ndarray:
+        sampled_times.append(t)
+        if t >= 1.0:
+            raise AssertionError("left-open past must never be sampled at or after the endpoint")
+        return np.array([t + x, y, z])
+
+    endpoint_value = np.array([9.0, 8.0, 7.0])
+
+    def jet(j: int, x: float, y: float, z: float) -> np.ndarray:
+        return endpoint_value if j == 0 else np.zeros(3)
+
+    extension = BorelRightExtension(jet, lambda j: 1, endpoint=1.0)
+    closed_past = extension.close_left_open_past(past_open)
+    glued = extension.glue_to_left_open_past(past_open)
+
+    before = closed_past(0.2, 0.3, 0.4, 0.9)
+    assert np.array_equal(before, np.array([1.1, 0.3, 0.4]))
+    assert np.array_equal(closed_past(0.2, 0.3, 0.4, 1.0), endpoint_value)
+    with pytest.raises(ValueError, match="t<=endpoint"):
+        closed_past(0.2, 0.3, 0.4, 1.01)
+
+    # The glue keeps the pinned closed-past convention at the join, but the
+    # completed boundary value comes from jet(0), not from evaluating a field
+    # that only exists for t<T.  Deliberately mismatched data also demonstrates
+    # that this adapter does not itself certify continuity.
+    assert np.array_equal(glued(0.2, 0.3, 0.4, 1.0), endpoint_value)
+    assert np.array_equal(glued(0.2, 0.3, 0.4, 1.01), extension(0.2, 0.3, 0.4, 1.01))
+    assert sampled_times == [0.9]
+
+
 def test_invalid_scale_and_jet_data_fail_closed() -> None:
     jet = lambda j, x, y, z: np.zeros(3)
     with pytest.raises(ValueError, match="nonnegative integer"):
