@@ -71,7 +71,14 @@ def test_symbolic_C_survives_beyond_any_direct_float_exponential() -> None:
     assert wide.Lambda.is_finite()
     assert wide.Lambda > Decimal.from_float(sys.float_info.max)
     assert wide.C.exponent_upper.is_finite()
-    assert wide.C.exponent_upper == wide.Lambda * Decimal("0.25")
+    with localcontext() as ctx:
+        ctx.prec = 90
+        oracle_exponent = wide.Lambda * Decimal("0.25")
+    assert wide.C.exponent_upper >= oracle_exponent
+    assert (
+        (wide.C.exponent_upper - oracle_exponent) / wide.C.exponent_upper
+        < Decimal("1e-80")
+    )
     # C itself is intentionally represented as exp(exponent_upper), so no
     # binary64/Decimal exponential overflow is needed to carry the theorem choice.
     assert wide.C.admits_exponential_exponent(wide.C.exponent_upper)
