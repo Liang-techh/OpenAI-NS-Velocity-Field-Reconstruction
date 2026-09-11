@@ -10,6 +10,14 @@ Produce the outer heat profile, inner analytic profile, matching moments,
 shear modification and cone constraints. The pointwise moment solver is a
 reusable subroutine, not a substitute for that construction.
 
+The current executable parameter-selection chain already contains the actual
+outgoing pressure/sigma-side work and the theorem-faithful Lambda/C algebra.
+The next Stage-1 inputs are therefore the actual coefficient-family
+`remainderBound/remainderLip`, the certified complex compact-set `realPartSup`,
+and the resulting coefficient-space fixed point `phi/u/average/pressure`.
+Do not reintroduce the superseded Lambda/C-selection task as if that algebra
+were still absent.
+
 Deliver a deterministic constructor and a manifest containing every free
 parameter, equation reference, cutoff, support radius, quadrature order,
 coefficient/table hash and truncation tolerance. Save the actual moment
@@ -21,28 +29,40 @@ look right.
 
 ## P1: Solve the background recursion from that profile
 
-Implement Eqs. (5.2)-(5.6) and the compact moment corrections. Use the
-existing analytic cutoff/curl assembly only after generating its genuine
-coefficients. Record why the cutoff schedule is admissible. Compare
-residuals and derivatives while increasing both coefficient order and
-numerical resolution; separate truncation, quadrature and roundoff errors.
+Use the landed Eqs. (5.2)-(5.7), Lemma 5.2 compact repair, Eq. (5.15) forward
+reconstruction, and finite-prefix recursive cutoff scheduler only after
+generating their genuine profile-derived inputs. The remaining work is the
+actual converged coefficient hierarchy, its eta-dependent support/stress
+closure, true uniform `C[j,m]` bounds, the infinite cutoff/local-finiteness
+argument, and arbitrary-order residual decay. Record why each cutoff schedule
+is admissible. Compare residuals and derivatives while increasing both
+coefficient order and numerical resolution; separate truncation, quadrature
+and roundoff errors.
 
 ## P2: Instantiate Sections 6-9
 
-Implement the dyadic charts, phase transport, stress cone and amplitudes,
-curl remainders, compact mean corrections, and residual-improvement cycle.
-Each stage needs independently checked conservation, support, moment and
-residual identities. A manually tuned wave-frequency list or finite plot
-cannot establish the required iteration and all-order convergence.
+The dyadic charts, slow partitions, auxiliary-slot witness, physical
+slow-support-to-adjacency bridge, and pointwise phase adapters are already
+landed. Next instantiate them with the paper-exact Proposition 5.5 base field
+and prove the uniform `LocalBaseBounds/C1-C2` needed for Eqs. (7.9)-(7.11),
+then implement the stress cone and amplitudes, curl remainders, compact mean
+corrections, and residual-improvement cycle. Each stage needs independently
+checked conservation, support, moment and residual identities. A manually
+tuned wave-frequency list or finite plot cannot establish the required
+iteration and all-order convergence.
 
 ## P3: Final compact field, pressure and smooth force
 
-Assemble Eq. (10.4) using the actual local field. Supply the spatial/time
-cutoffs and independently establish the force extension through t=1.
-Check the paper's support, energy and singular-path requirements. Only then
-replace the top-level incomplete status with an evidence-backed completion
-state. Numerical residuals supplement the analytic/formal evidence; they do
-not replace it.
+The Section 10 spatial/time localization, closed-past branch, endpoint-jet
+adapter and Borel scale arithmetic are already present as formal structure.
+The next endpoint task is to materialize the actual closed-past residual's
+full spacetime derivative family, prove its locally uniform limits as
+t -> 1-, derive genuine analytic compact-template majorants, and only then
+complete smooth force gluing through t=1. Check the paper's support, energy
+and singular-path requirements. Only then replace the top-level incomplete
+status with an evidence-backed completion state. Numerical residuals
+supplement the analytic/formal evidence; they do not replace it, and a
+force defined from the same residual is not independent verification.
 
 ## Upstream verification and handoff
 
@@ -51,7 +71,7 @@ statements; record source paths, theorem names and hashes. Run the actual
 Lean build before claiming a successful formal cross-check. The source pin
 currently present is observed commit metadata only.
 
-Existing edits must be integrated on a branch and tested against the newest
-remote revision. This delivery is a patch against refreshed snapshot
-`b01aaeebc6ec8a39f6692109b6a3c81b92cd0f32`; it does not overwrite or supersede
-subsequent work by other agents. Never use forced reset/push to apply it.
+Every new change must be integrated from the latest `main`, preserving newer
+parallel work and the fail-closed provenance gates. Historical PR #5 is an
+integration baseline, not a snapshot to restore. Never force-reset or
+force-push over another agent's work.
