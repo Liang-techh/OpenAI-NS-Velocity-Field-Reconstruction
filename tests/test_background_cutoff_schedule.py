@@ -89,7 +89,7 @@ def test_schedule_rejects_nonanalytic_or_malformed_inputs() -> None:
 def test_dataclass_fails_closed_if_envelope_or_majorant_is_forged() -> None:
     rows = ((2.0, 2.0, 2.0, 2.0),)
     with pytest.raises(ValueError, match="at least double"):
-        SlowBorelCutoffSchedule(0.5, 3, rows, (3, 16), (3, 5))
+        SlowBorelCutoffSchedule(0.5, 3, rows, (3, 1), (3, 5))
     with pytest.raises(ValueError, match="dyadic edge bound"):
         SlowBorelCutoffSchedule(0.5, 1, rows, (1, 1), (1, 2))
 
