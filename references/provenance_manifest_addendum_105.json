@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "8aabee6cd86fcb09e73958fa9ad51b9525381b99",
+  "integrated_prs": [105],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Finite Section-9 uniform physical-time endpoint-witness ladder bridge only. Every endpoint degree is independently admitted through the landed single-degree Section-9-to-10 bridge; a finite q-flat remainder ladder remains explicitly insufficient.",
+  "layers": [
+    {
+      "id": "stage-7-section9-endpoint-ladder-bridge",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_endpoint_ladder_bridge.py",
+      "provenance": "references/SECTION9_ENDPOINT_LADDER_BRIDGE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4 / Lemma 9.8 / Eq. (9.18)",
+        "Section 9 / Proposition 9.9 boundary",
+        "Section 10 endpoint smooth extension"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #105 batches separately justified uniform physical-time residual-derivative witnesses across exactly endpoint degrees 0..N on one Section 9 stage and one compact spatial window. Every row is rechecked through PR #100 and then packaged into the existing Section10EndpointMajorantLadder; PR #104 finite q-flat ladders are explicitly rejected as insufficient endpoint evidence.",
+      "remaining_boundary": "No genuine Section 7/8 correction data, actual Section 9 residual sequence/common-domain theorem, source-theorem machine verification, arbitrary-order uniform physical-time witness family, all-order endpoint limits, genuine Borel glue through t=1, smooth compact forcing, bounded-energy certificate, blow-up closure, or paper-exact velocity is constructed."
+    }
+  ]
+}
