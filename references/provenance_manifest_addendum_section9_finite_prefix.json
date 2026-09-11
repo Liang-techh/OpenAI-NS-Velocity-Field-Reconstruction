@@ -1,0 +1,24 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Lemma 5.4; Section 9 / Proposition 9.9; Eqs. (9.20)-(9.21)",
+    "base_main_commit": "acfedba6c1944f3b152f352caa2be816fbf29db8"
+  },
+  "layer": {
+    "id": "stage-3-6-section9-finite-prefix-evaluation",
+    "status": "formal-structure",
+    "capability": "Evaluate a contiguous finite prefix of structurally admitted positive Eq. (9.21) A/B/p corrections at one q, with exact schedule/domain coherence and theorem-backed support-zero short circuits, while refusing to promote caller values or a generic cutoff evaluator to paper-exact data",
+    "paper_locations": [
+      "Lemma 5.4 smooth cutoff / local-finiteness mechanism",
+      "Section 9 / Proposition 9.9",
+      "Eqs. (9.20)-(9.21)"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_finite_prefix.py",
+      "tests/test_section9_finite_prefix.py"
+    ],
+    "provenance": "references/SECTION9_FINITE_PREFIX_PROVENANCE.md",
+    "remaining_boundary": "No genuine Section 7/8 correction values are connected to the admission witnesses, the external cutoff callable is not certified pointwise as the manuscript chi, only a finite prefix is evaluated, and no infinite Eq. (9.21) locally finite sum, arbitrary-order Eq. (9.20) residual theorem, Proposition 9.9 convergence, or paper-exact velocity is supplied."
+  }
+}
