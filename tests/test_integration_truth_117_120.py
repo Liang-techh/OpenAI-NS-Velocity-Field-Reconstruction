@@ -65,9 +65,10 @@ def test_section9_prefix_layers_preserve_non_tautological_boundaries() -> None:
     )
 
     finite_boundary = finite["layer"]["remaining_boundary"]
-    assert "actual Section 7/8 correction values" in finite_boundary
-    assert "pointwise evaluator" in finite_boundary
+    assert "Section 7/8 correction values" in finite_boundary
+    assert "external cutoff callable" in finite_boundary
     assert "finite prefix" in finite_boundary
+    assert "infinite Eq. (9.21) locally finite sum" in finite_boundary
 
     not_verified = physical["not_verified"]
     assert all(not_verified.values())
