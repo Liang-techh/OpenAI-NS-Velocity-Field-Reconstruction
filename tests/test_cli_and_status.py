@@ -54,11 +54,14 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'axis_fixed_point_picard' in stages[1]['implemented']
     assert 's*remainderBound<=1' in stages[1]['implemented']
     assert 's*remainderLip<=1/2' in stages[1]['implemented']
+    assert 'axis_reference_pair' in stages[1]['implemented']
+    assert 'zeroth parameter-jet radial coefficient functions' in stages[1]['implemented']
     assert 'axisPressure' not in stages[1]['remaining']
     assert 'H^2 margin' not in stages[1]['remaining']
     assert 'actual admissible common analytic radius' not in stages[1]['remaining']
     assert 'common complex-field sup bound' not in stages[1]['remaining']
-    assert 'AxisCoefficientSpace/coefficientOperators/naturalRemainder backend' in stages[1]['remaining']
+    assert 'AxisCoefficientSpace' in stages[1]['remaining']
+    assert 'coefficientOperators/naturalRemainder' in stages[1]['remaining']
     assert 'materialize the coefficient-space fixed-point phi/u' in stages[1]['remaining']
     assert 'Derive the corresponding average/pressure fields' in stages[1]['remaining']
     assert 'former binary64 Lambda/C representation blocker is closed' in stages[1]['remaining']
@@ -70,6 +73,8 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'PositiveAxisSystem adapter' in stages[2]['implemented']
     assert 'BaseJet(phi,axial,beta)' in stages[2]['implemented']
     assert 'SourceJet(angular,axial,pressureProduct,omegaQuotient)' in stages[2]['implemented']
+    assert 'lower-history bridge' in stages[2]['implemented']
+    assert 'strict lower-order ProfileSecondJet history' in stages[2]['implemented']
     assert 'Eq. (5.8)' in stages[2]['implemented']
     assert 'p_k=ceil(k/2)' in stages[2]['implemented']
     assert 'complete-tail truncation certificate' in stages[2]['implemented']
@@ -124,7 +129,8 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'strict positive-cone condition |a t|<b m' in stages[4]['implemented']
     assert 'epsilon*mask^2 covariance scaling' in stages[4]['implemented']
     assert 'coefficient-level curl-realization algebra' in stages[4]['implemented']
-    assert 'Exact tangency n.a=0' in stages[4]['implemented']
+    assert 'cylindrical_curl_jet' in stages[4]['implemented']
+    assert 'B_theta/r' in stages[4]['implemented']
     assert 'primary amplitude ODE algebra' in stages[4]['implemented']
     assert 'exact 2x2 modal operator' in stages[4]['implemented']
     assert 'x=p+q, y=h(p-q)' in stages[4]['implemented']
@@ -135,7 +141,7 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'determinant/inverse stability' in stages[4]['remaining']
     assert 'finite-interval PrimaryODE Volterra solution adapter' in stages[4]['remaining']
     assert 'rigorous error certificate' in stages[4]['remaining']
-    assert 'actual localized coefficient' in stages[4]['remaining']
+    assert 'cylindrical derivative jet accepted by cylindrical_curl_jet' in stages[4]['remaining']
     assert 'genuine supported divergence-free oscillatory wave' in stages[4]['remaining']
 
     assert 'analytic cutoff gradient' in stages[7]['implemented']
@@ -160,10 +166,13 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'endpoint-localization transfer' in stages[7]['implemented']
     assert 'requires T=1' in stages[7]['implemented']
     assert 'timeSwitch\'=0' in stages[7]['implemented']
+    assert 'section10_endpoint_ladder' in stages[7]['implemented']
+    assert 'degrees 0..N' in stages[7]['implemented']
     assert 'pointwise endpoint-force support certificate' in stages[7]['implemented']
     assert 'requiring exact zeros with no tolerance' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
     assert 'official t>=3/4 plateau' in stages[7]['remaining']
+    assert 'close the infinite all-order family' in stages[7]['remaining']
     assert 'degree-zero endpoint value' in stages[7]['remaining']
     assert 'every genuine endpoint normal coefficient vanish outside' in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
@@ -176,6 +185,7 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'caller-supplied endpoint jets' in limitations
     assert 'close_left_open_past' in limitations
     assert 'official-plateau transfer' in limitations
+    assert 'finite section10_endpoint_ladder' in limitations
     assert 'endpoint point-support certificate' in limitations
     assert 'finite collection of point queries' in limitations
     assert 'fixed-time implication' in limitations
@@ -183,10 +193,11 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'late-origin adapter preserves an upstream-certified origin curl value' in limitations
     assert 'primary-amplitude ODE' in limitations
     assert 'generic finite-interval PrimaryODE/Volterra execution adapter' in limitations
-    assert 'not a rigorous numerical certificate' in limitations
+    assert 'paper-exact wave are still missing' in limitations
     assert 'wide Lambda/C selector' in limitations
     assert 'landed Picard gate' in limitations
-    assert 'does not materialize the coefficient-space fixed point' in limitations
+    assert 'referencePair radial coefficient functions' in limitations
+    assert 'do not materialize the coefficient-space fixed point' in limitations
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[4]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
