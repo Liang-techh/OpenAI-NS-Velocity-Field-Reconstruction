@@ -104,6 +104,8 @@ def test_primitive_preserves_underlying_index_and_window_guards(state) -> None:
     with pytest.raises(ValueError, match="nonnegative integer"):
         primitive.jet(-1, 0, 0.0)
     with pytest.raises(ValueError, match="nonnegative integer"):
+        primitive.jet(True, 0, 0.0)
+    with pytest.raises(ValueError, match="nonnegative integer"):
         primitive.jet(0, -1, 0.0)
     with pytest.raises(ValueError, match="pinned window"):
         primitive.jet(0, 0, 1.100001)
