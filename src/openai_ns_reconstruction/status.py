@@ -22,6 +22,7 @@ SOURCE_PINS = {
         "6.1-6.6",
         "7.1-7.11",
         "10.4",
+        "Section 10 time localization",
         "Lemma 5.1",
         "Lemma A.2",
     ],
@@ -50,20 +51,22 @@ STAGES = [
     {"id": 2, "name": "all-order background", "status": "formal-structure",
      "implemented": (
          "Finite coefficient assembly, Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, "
-         "analytic cutoff/curl terms, and the Eq. (5.5) pressure recurrence row with Pi_n(0,eta)=0 integration."
+         "analytic cutoff/curl terms, the Eq. (5.5) pressure recurrence row with Pi_n(0,eta)=0 integration, and the "
+         "regular Eq. (5.6) Omega_k/X source evaluator from second jets of V_j=X v_j without axis division."
      ),
      "remaining": (
-         "Coupled Eqs. (5.3)-(5.4) recursive solve, Eq. (5.6) Omega source construction, Lemma 5.2 compact moment repair, "
-         "paper-selected recursive cutoff schedule and all-order residual estimates."
+         "Coupled Eqs. (5.3)-(5.4) recursive solve for phi_n/U_n and integration with the constructed Eq. (5.6) source, "
+         "Lemma 5.2 compact moment repair, paper-selected recursive cutoff schedule and all-order residual estimates."
      )},
     {"id": 3, "name": "dyadic charts and transported phases", "status": "formal-structure",
      "implemented": (
-         "Fixed dyadic geometry, Section 7.1 phase/wavevector/tangent-frame algebra, and the pinned PhaseEstimates "
-         "scalar scale gate for the Eq. (7.9)-(7.11) error envelope."
+         "Fixed dyadic geometry, Section 7.1 phase/wavevector/tangent-frame algebra, the pinned PhaseEstimates scalar "
+         "scale gate for the Eq. (7.9)-(7.11) error envelope, and a fail-closed pointwise rounded_normal_estimates "
+         "adapter using the pinned Lean roundedFrequency semantics."
      ),
      "remaining": (
-         "Instantiate paper-exact base fields/slow supports and certify local C2/base-field hypotheses so the scalar gate "
-         "becomes a uniform active-box phase/frame/damping certificate."
+         "Instantiate paper-exact base fields/slow supports and certify uniform LocalBaseBounds/C1-C2 hypotheses on every "
+         "active box so the pointwise adapter becomes a uniform phase/frame/damping certificate."
      )},
     {"id": 4, "name": "oscillatory stress realization", "status": "pending",
      "remaining": "Stress-cone decomposition, amplitude equations and supported divergence-free oscillatory waves."},
@@ -73,12 +76,15 @@ STAGES = [
      "remaining": "Section 9 recursive choices, residual-improvement cycle, summation and convergence control."},
     {"id": 7, "name": "final compact field and force", "status": "formal-structure",
      "implemented": (
-         "Section 10 support/plateau geometry, explicit C-infinity cutoff representative, analytic cutoff gradient wired into "
-         "curl(cA)=c curl(A)+grad(c) cross A, and numerical forcing reconstruction/independent manufactured diagnostics."
+         "Section 10 support/plateau geometry, explicit C-infinity spatial cutoff representative, analytic cutoff gradient "
+         "wired into curl(cA)=c curl(A)+grad(c) cross A, pinned time-switch support/plateau geometry with analytic chi', "
+         "activated velocity/pressure adapters and an independent numerical cross-check of the TimeLocalization residual identity, "
+         "plus numerical forcing reconstruction/manufactured diagnostics."
      ),
      "remaining": (
-         "Justify the executable transition-collar representative, implement paper-specific time activation and smooth extension through t=1, "
-         "and connect completed upstream local-field inputs."
+         "Justify the executable spatial/time transition-collar representatives where the formalization uses noncomputable "
+         "ContDiffBump values, construct the separate smooth global force extension through t=1, and connect completed "
+         "upstream local-field inputs."
      )},
     {"id": 8, "name": "independent verification", "status": "diagnostic-only",
      "implemented": "Manufactured solutions, refinement checks, divergence/energy diagnostics, labelled exports and fail-closed provenance audit.",
@@ -97,7 +103,7 @@ def construction_status() -> dict:
             "Numerical residual tests are not the paper's proof or a Lean certificate.",
             "A force reconstructed from the same residual stencil is not independent evidence.",
             "Pointwise or sampled margins are not uniform-in-parameter certificates.",
-            "The executable Section 10 transition collar has the official support/plateau geometry but is not claimed pointwise identical to Mathlib's noncomputable ContDiffBump.",
+            "The executable Section 10 spatial/time transition collars have the official support/plateau geometry but are not claimed pointwise identical to Mathlib's noncomputable ContDiffBump.",
         ],
         "sources": copy.deepcopy(SOURCE_PINS),
         "stages": copy.deepcopy(STAGES),

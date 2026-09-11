@@ -3,11 +3,13 @@
 An independent, **partial** executable reconstruction of the velocity construction in
 OpenAI's September 2026 *Finite Time Blowup for Navier–Stokes*. This is not an OpenAI repository.
 
-**Current result:** tested similarity kinematics, the parameterized exterior heat swirl,
-fixed dyadic chart geometry, field-composition tools, and reproducible numerical diagnostics.
-**Not yet delivered:** the complete regular leading profile, recursive coefficients,
-transported oscillations, mean corrections, convergent correction sequence, or the final
-compact field with a force proved smooth through the singular time.
+**Current result:** tested similarity kinematics; natural-axis/range structure and an admissible
+ideal-prefix pressure witness; Section 5 pressure/Omega recurrence rows; fixed dyadic chart and
+pointwise phase-estimate adapters; spatial/time localization structure; and reproducible numerical
+diagnostics.
+**Not yet delivered:** the complete regular leading profile, the coupled all-order background solver,
+stress-cone/amplitude/wave construction, mean corrections, convergent correction sequence, or the
+final compact field with a force proved smooth through the singular time.
 
 A successful demo or a green test suite is **not** a reconstruction of the full counterexample.
 The CLI reports `full_reconstruction: false` and refuses `--require-paper-exact` requests.
@@ -44,11 +46,12 @@ formal proof checker. `demo --require-paper-exact` also refuses before generatin
 | Component | Implementation and boundary |
 |---|---|
 | Similarity coordinates, Eq. (4.1) | Relative-scale root solve, finite-input checks, direct `tau` API |
-| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation |
+| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas and an abstract admissible pressure witness are executable, but the paper's full profile/schedule/fixed-point data are still missing |
 | Profile averages | Cached 32-point Gauss–Legendre rule; optional exact-average callbacks |
 | Exterior heat swirl, Appendix A.6 | Adaptive evaluation of H and derivatives, swirl and centrifugal pressure; **r>0 only** |
-| Dyadic geometry, Eqs. (6.1)–(6.6) | Fixed chart scaling, exact integer covering matrices; **no transported-wave construction** |
-| Background/localization | Smooth experimental cutoffs, potential-before-curl composition; recursive input data still missing |
+| Section 5 background rows | Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, Eq. (5.5) pressure row, and regular Eq. (5.6) `Omega_k/X` from supplied coefficient jets; **no coupled (5.3)–(5.4) solver, Lemma 5.2 repair, or paper cutoff schedule yet** |
+| Dyadic geometry / phase, Sections 6–7 | Fixed chart scaling and exact covering matrices; Section 7.1 phase/tangent-frame algebra, scalar PhaseEstimates gate, and pointwise `rounded_normal_estimates` adapter; **no uniform slow-box certificate or transported-wave construction** |
+| Section 10 localization | Official spatial/time support/plateau geometry represented by explicit C-infinity bumps, analytic spatial cutoff gradient, time-switch derivative, activated-field adapters, and independent numerical residual-identity cross-check; **transition-collar point values are not claimed equal to Mathlib's noncomputable bump and the smooth force extension through `t=1` is missing** |
 | Verification | Independent manufactured-solution and refinement checks; bounded-time finite differences |
 | Audit/provenance | Source-pinned ledger, explicit blockers, fail-closed completion gate |
 
@@ -83,10 +86,10 @@ A generic `B(x,y,z,t)e_theta` need not be divergence-free: the direct swirl must
 axisymmetric, and localization must preserve that property. Prefer the
 `LocalField.from_axisymmetric` and `LocalizedField.from_axisymmetric` factories.
 
-The regular inner core, profile matching/moments/cone constraints, coefficient solvers,
-wave transport and stress realization, mean correction, infinite-order summation, compact
-support, and smooth-force extension remain explicit blockers. See
-[the reconstruction plan](docs/RECONSTRUCTION_PLAN.md),
+The regular inner core, profile matching/moments/cone constraints, coupled coefficient solver,
+compact moment repair and recursive cutoff schedule, uniform slow-box estimates, stress/wave
+realization, mean correction, infinite-order summation, completed compact field, and smooth-force
+extension remain explicit blockers. See [the reconstruction plan](docs/RECONSTRUCTION_PLAN.md),
 [the measured validation report](docs/VALIDATION_2026-09-10.md), and
 [the machine-readable manifest](references/provenance_manifest.json).
 

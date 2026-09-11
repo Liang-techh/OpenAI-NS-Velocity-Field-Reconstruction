@@ -108,17 +108,18 @@
         "Eq. (5.2) incompressibility coefficient flux with the D+lambda_n shift",
         "Eq. (5.27) streamfunction/vector-potential kinematics",
         "Eq. (5.5) order-n pressure row split into current-linear, lower-order convolution and regular Omega_{n-1}/X source terms",
-        "numerical integration of Eq. (5.5) with the Lemma 5.1 datum Pi_n(0,eta)=0 once phi_n and Omega_{n-1}/X are supplied"
+        "numerical integration of Eq. (5.5) with the Lemma 5.1 datum Pi_n(0,eta)=0 once phi_n and Omega_{n-1}/X are supplied",
+        "Eq. (5.6) regular Omega_k/X evaluator from second jets of the smooth factors V_j=X v_j, including the shifted double-Z term, without numerical division by X at the axis"
       ],
       "missing_for_paper_exact": [
-        "coupled recursive solve of Eqs. (5.3)-(5.4) for phi_n and U_n and the Eq. (5.6) Omega recurrence",
-        "construct the regular Omega_{n-1}/X sources from already completed lower orders rather than supplying them as callbacks",
+        "coupled recursive solve of Eqs. (5.3)-(5.4) for phi_n and U_n and connect those solved profiles to the constructed Eq. (5.6) Omega source",
         "compact moment corrections from Lemma 5.2",
         "paper-selected cutoff sequence; generic smooth cutoffs are not the recursive construction"
       ],
       "numerical_caveats": [
         "the Eq. (5.5) identity is paper-derived, but solve_pressure_eq_5_5 evaluates its radial integral by finite Gauss-Legendre quadrature",
-        "the pressure-row primitive is not a complete positive-order coefficient until the coupled phi_n/U_n and Omega source construction is supplied"
+        "the Eq. (5.6) quotient is an exact algebraic recurrence row for supplied coefficient jets, but those jets are not yet produced by the missing coupled positive-order solver",
+        "the pressure-row primitive is not a complete positive-order coefficient until the coupled phi_n/U_n construction is supplied"
       ]
     },
     {
@@ -166,24 +167,30 @@
       "status": "formal-structure",
       "artifacts": [
         "src/openai_ns_reconstruction/local_field.py",
-        "src/openai_ns_reconstruction/spatial_localization.py"
+        "src/openai_ns_reconstruction/spatial_localization.py",
+        "src/openai_ns_reconstruction/time_localization.py"
       ],
       "paper_locations": [
         "Eq. (10.4)",
         "Section 10",
-        "NavierStokes/SpatialLocalization.lean"
+        "NavierStokes/SpatialLocalization.lean",
+        "NavierStokes/SmoothCutoffs.lean",
+        "NavierStokes/TimeLocalization.lean"
       ],
       "implemented_components": [
         "official Section 10 spatial support/plateau geometry for cutoffProfile(16 r^2, 4 z), represented by an explicit C-infinity bump with the same support and plateau",
-        "analytic Cartesian gradient of that executable cutoff representative, connected to curl(cA)=c curl(A)+grad(c) cross A and independently cross-checked against numerical curl(cA)"
+        "analytic Cartesian gradient of that executable spatial cutoff representative, connected to curl(cA)=c curl(A)+grad(c) cross A and independently cross-checked against numerical curl(cA)",
+        "pinned timeSwitch support/plateau geometry with an explicit C-infinity even representative: exactly zero on |t|<=3/8 and exactly one on |t|>=3/4, together with its analytic derivative",
+        "activated velocity/pressure adapters and an independent numerical cross-check of R(chi u,chi p)=chi R(u,p)+chi' u+(chi^2-chi)(u grad u)"
       ],
       "missing_for_paper_exact": [
-        "exact pointwise realization of the formalization's noncomputable Mathlib ContDiffBump values in the transition collar, or an explicit proof that the chosen executable representative may replace it",
-        "paper-specific time localization/activation and smooth extension through t=1",
+        "exact pointwise realization of the formalization's noncomputable Mathlib ContDiffBump values in the spatial/time transition collars, or an explicit proof that the chosen executable representatives may replace them",
+        "smooth global force extension through t=1",
         "completed local field inputs from the unresolved earlier construction stages"
       ],
       "numerical_caveats": [
-        "the analytic cutoff gradient is exact for the repository's explicit C-infinity representative; it does not claim equality with Mathlib's noncomputable transition-collar values"
+        "the analytic spatial cutoff gradient is exact for the repository's explicit C-infinity representative; it does not claim equality with Mathlib's noncomputable transition-collar values",
+        "the time-switch residual identity is cross-checked numerically with a separately evaluated activated-field residual; this is not a formal certificate and does not construct the missing smooth force extension"
       ]
     },
     {
