@@ -1,22 +1,30 @@
 """Theorem-faithful scale/normalization selection for natural profiles.
 
-This module materializes the *selection algebra* used by the pinned Lean chain
+This module materializes the selection algebra used by the pinned Lean chain
 ``AxisContraction.uniform_natural_fixedPoint`` ->
 ``AxisReference.exists_positive_scaled_profiles`` ->
 ``NaturalProfile.exists_natural_profiles``.
 
 It intentionally does not manufacture the coefficient-space quantities that
-enter those theorems.  ``remainder_bound``, ``remainder_lipschitz``, the two
-``AxisEvaluation.jetBound`` values, and the compact-set ``realPartSup`` must be
-certified upstream from the actual analytic coefficient family.  Supplying
-numbers here therefore yields a formal-structure witness, not a paper-exact
-profile by itself.
+enter those theorems. ``remainder_bound``, ``remainder_lipschitz``, and the
+compact-set ``realPartSup`` must still be certified upstream from the actual
+analytic coefficient family. Supplying numbers here therefore yields a
+formal-structure witness, not a paper-exact profile by itself.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+
+
+# AxisEvaluation.jetBound(epsilon, 5, 0, 0) is independent of epsilon:
+# sum_n (5/20)^n = 1/(1-1/4) = 4/3.
+JET_VALUE_BOUND_AT_FIVE = 4.0 / 3.0
+
+# AxisEvaluation.jetBound(epsilon, 5, 1, 0) is likewise independent of epsilon:
+# sum_n (n+1)(5/20)^n = 1/(1-1/4)^2 = 16/9.
+JET_RADIAL_DERIVATIVE_BOUND_AT_FIVE = 16.0 / 9.0
 
 
 def _finite_nonnegative(value: float, name: str) -> float:
@@ -30,7 +38,7 @@ def contraction_threshold(remainder_bound: float, remainder_lipschitz: float) ->
     """Pinned ``AxisContraction.contractionThreshold`` after B/L evaluation.
 
     Lean defines ``1 + remainderBound + remainderLip`` at the reference-pair
-    ball.  The caller is responsible for supplying those two actual evaluated
+    ball. The caller is responsible for supplying those two actual evaluated
     quantities, not sampled or fitted substitutes.
     """
 
@@ -42,22 +50,20 @@ def contraction_threshold(remainder_bound: float, remainder_lipschitz: float) ->
     return value
 
 
-def stability_scale(
-    remainder_bound: float,
-    jet_value_bound: float,
-    jet_radial_derivative_bound: float,
-) -> float:
-    """Pinned ``AxisReference.stabilityScale`` specialized to the error constant.
+def stability_scale(remainder_bound: float) -> float:
+    """Pinned ``AxisReference.stabilityScale`` with its two jet sums closed.
 
-    ``errorConstant`` in ``NaturalProfile`` is exactly the same evaluated
-    ``remainderBound`` used in the fixed-point error estimate.  The two jet
-    inputs correspond to ``jetBound epsilon 5 0 0`` and ``jetBound epsilon 5 1 0``.
+    ``errorConstant`` in ``NaturalProfile`` is the same evaluated
+    ``remainderBound`` used in the fixed-point error estimate. At ``R=5`` and
+    parameter-derivative order ``m=0``, the pinned ``AxisEvaluation.majorant``
+    sums exactly to ``4/3`` for ``k=0`` and ``16/9`` for ``k=1``. Therefore
+    ``stabilityScale = 1 + (14000/9) * remainderBound``.
     """
 
     bound = _finite_nonnegative(remainder_bound, "remainder_bound")
-    jet0 = _finite_nonnegative(jet_value_bound, "jet_value_bound")
-    jet1 = _finite_nonnegative(jet_radial_derivative_bound, "jet_radial_derivative_bound")
-    value = 1.0 + 500.0 * (jet0 + jet1) * bound
+    value = 1.0 + 500.0 * (
+        JET_VALUE_BOUND_AT_FIVE + JET_RADIAL_DERIVATIVE_BOUND_AT_FIVE
+    ) * bound
     if not math.isfinite(value):
         raise ArithmeticError("stability scale overflowed")
     return value
@@ -93,16 +99,15 @@ def normalization_threshold(Lambda: float, phase_real_part_sup: float) -> float:
 class NaturalScaleSelection:
     """Executable witness for the theorem's deterministic admissible choices.
 
-    ``Lambda`` is the smallest threshold produced by the two landed theorem
-    layers once their actual constants are supplied. ``C`` is then chosen at
-    equality with ``AnalyticInputs.normalizationThreshold``, exactly as in
+    ``Lambda`` is the smallest threshold produced by the two theorem layers
+    once their actual coefficient-space remainder constants are supplied.
+    ``C`` is then chosen at equality with
+    ``AnalyticInputs.normalizationThreshold``, exactly as in
     ``NaturalProfile.exists_natural_profiles``.
     """
 
     remainder_bound: float
     remainder_lipschitz: float
-    jet_value_bound: float
-    jet_radial_derivative_bound: float
     phase_real_part_sup: float
     contraction: float
     stability: float
@@ -129,33 +134,27 @@ def select_natural_scale(
     *,
     remainder_bound: float,
     remainder_lipschitz: float,
-    jet_value_bound: float,
-    jet_radial_derivative_bound: float,
     phase_real_part_sup: float,
 ) -> NaturalScaleSelection:
     """Select the exact theorem-side ``Lambda`` and ``C`` from certified inputs.
 
     The pinned proof first uses ``contractionThreshold = 1+B+L`` and then
-    replaces it by ``max(contractionThreshold, stabilityScale)``.  The final
+    replaces it by ``max(contractionThreshold, stabilityScale)``. The final
     natural-profile theorem takes that threshold itself as ``Lambda`` and sets
     ``C = normalizationThreshold Lambda``.
     """
 
     bound = _finite_nonnegative(remainder_bound, "remainder_bound")
     lip = _finite_nonnegative(remainder_lipschitz, "remainder_lipschitz")
-    jet0 = _finite_nonnegative(jet_value_bound, "jet_value_bound")
-    jet1 = _finite_nonnegative(jet_radial_derivative_bound, "jet_radial_derivative_bound")
     phase_sup = _finite_nonnegative(phase_real_part_sup, "phase_real_part_sup")
 
     contraction = contraction_threshold(bound, lip)
-    stability = stability_scale(bound, jet0, jet1)
+    stability = stability_scale(bound)
     Lambda = max(contraction, stability)
     C = normalization_threshold(Lambda, phase_sup)
     return NaturalScaleSelection(
         remainder_bound=bound,
         remainder_lipschitz=lip,
-        jet_value_bound=jet0,
-        jet_radial_derivative_bound=jet1,
         phase_real_part_sup=phase_sup,
         contraction=contraction,
         stability=stability,
