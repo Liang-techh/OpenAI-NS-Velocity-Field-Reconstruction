@@ -30,8 +30,16 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'PressureDatum.Admissible' in stages[1]['implemented']
     assert 'outgoing pressure schedule' in stages[1]['remaining']
     assert 'Eq. (5.5)' in stages[2]['implemented']
+    assert 'Eq. (5.6)' in stages[2]['implemented']
+    assert 'Eq. (5.6) source' in stages[2]['remaining']
     assert 'PhaseEstimates' in stages[3]['implemented']
+    assert 'rounded_normal_estimates' in stages[3]['implemented']
+    assert 'uniform LocalBaseBounds' in stages[3]['remaining']
     assert 'analytic cutoff gradient' in stages[7]['implemented']
+    assert 'time-switch' in stages[7]['implemented']
+    assert 'TimeLocalization residual identity' in stages[7]['implemented']
+    assert 'smooth global force extension through t=1' in stages[7]['remaining']
+    assert 'implement paper-specific time activation' not in stages[7]['remaining']
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
