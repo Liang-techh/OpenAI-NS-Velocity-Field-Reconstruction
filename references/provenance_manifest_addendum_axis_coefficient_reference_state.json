@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "target": "OpenAI 2026 Finite Time Blowup for Navier-Stokes executable reconstruction",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "official_lean": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisCoefficientSpace.lean",
+      "NavierStokes/NaturalAxisCoefficients.lean",
+      "NavierStokes/AxisContraction.lean"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "increment": "assemble the actual SchedulePressure-derived angular and axial referencePair eta-jets into one lazy coefficient-state view matching the pinned window, actual-jet indexing, and weight normalization",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_reference_state.py",
+      "tests/test_axis_coefficient_reference_state.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_REFERENCE_STATE_PROVENANCE.md",
+    "paper_locations": [
+      "Theorem 4.6",
+      "Appendix A.6, Eqs. (A.32)-(A.38)"
+    ],
+    "verified_scope": [
+      "pinned coefficient window [-11/10,11/10]",
+      "one theorem-selected epsilon shared by both reference components",
+      "unnormalized actual derivative semantics J[n,m](eta)",
+      "RawJets coordinate normalization by the pinned AxisWeightEstimates.weight",
+      "zeroth coefficient agreement with the landed referencePair evaluator",
+      "finite independent FTC cross-checks for both angular and axial reference components"
+    ],
+    "remaining_boundary": "global all-index weighted norm certification, executable coefficientOperators, official naturalRemainder evaluation, first genuine Picard iterate, fixed-point phi/u, average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved",
+    "paper_exact": false
+  }
+}
