@@ -121,7 +121,29 @@ def _q(value: float) -> float:
     return value
 
 
-def _leading_log_rhs(q: float, exponent: Fraction, constant: float, log_power: int) -> float:
+def _as_fraction(value: Scalar, name: str) -> Fraction:
+    """Convert theorem data exactly enough for audit arithmetic.
+
+    Floats follow the decimal-string convention used by the existing Section 9
+    exponent ledger rather than exposing their binary representation.  Boolean
+    values are rejected explicitly instead of being accepted as integers.
+    """
+
+    if isinstance(value, bool):
+        raise ValueError(f"{name} must be a finite real number")
+    if isinstance(value, Fraction):
+        return value
+    if isinstance(value, int):
+        return Fraction(value)
+    value = float(value)
+    if not math.isfinite(value):
+        raise ValueError(f"{name} must be finite")
+    return Fraction(str(value))
+
+
+def _leading_log_rhs(
+    q: float, exponent: Fraction, constant: float, log_power: int
+) -> float:
     log_q = math.log(q)
     return (
         math.log(constant)
@@ -227,11 +249,7 @@ def check_eq_9_18_pointwise(
     if not isinstance(flat_remainder_bound, CertifiedBoundDatum):
         raise TypeError("flat_remainder_bound must be CertifiedBoundDatum")
 
-    loss = Fraction(derivative_loss) if isinstance(derivative_loss, int) else derivative_loss
-    try:
-        loss_fraction = Fraction(loss)
-    except (TypeError, ValueError, ZeroDivisionError) as exc:
-        raise ValueError("derivative_loss must be a finite nonnegative rational datum") from exc
+    loss_fraction = _as_fraction(derivative_loss, "derivative_loss")
     if loss_fraction < 0:
         raise ValueError("derivative_loss must be nonnegative")
 
