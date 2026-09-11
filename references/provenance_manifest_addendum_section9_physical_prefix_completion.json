@@ -1,0 +1,35 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Eq. (4.1), Lemma 5.4, Section 9 / Proposition 9.9, Eqs. (9.20)-(9.21)",
+    "base_main_commit": "957d540229d3cd968171f0094145dee36ccfd87b"
+  },
+  "layer": {
+    "id": "stage-7-8-section9-physical-prefix-completion",
+    "status": "formal-structure",
+    "capability": "Certify that an admitted finite Eq. (9.21) prefix reaches every stage that can remain nonzero anywhere on one closed pre-endpoint Section 10 physical slab, so every omitted positive stage is support-zero on the whole slab",
+    "paper_locations": [
+      "Eq. (4.1) similarity map",
+      "Lemma 5.4 cutoff/local-finiteness mechanism",
+      "Section 9 / Proposition 9.9",
+      "Eqs. (9.20)-(9.21)",
+      "Section 10 pre-endpoint physical support"
+    ]
+  },
+  "verified": {
+    "physical_slab_schedule_coherence": true,
+    "evaluation_q_inside_analytic_slab_enclosure": true,
+    "admitted_prefix_matches_evaluation": true,
+    "omitted_tail_support_zero_on_whole_pre_endpoint_slab": true
+  },
+  "not_verified": {
+    "actual_correction_field_values": true,
+    "paper_fixed_cutoff_pointwise_evaluator": true,
+    "eq_9_21_infinite_field_constructed": true,
+    "endpoint_t_equals_1_covered": true,
+    "endpoint_uniform_residual_majorants": true,
+    "smooth_compact_forcing": true,
+    "bounded_energy_and_blowup_closure": true
+  }
+}
