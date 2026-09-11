@@ -1,4 +1,6 @@
+import json
 import math
+from pathlib import Path
 
 import pytest
 
@@ -11,6 +13,9 @@ from openai_ns_reconstruction.schedule_axis_pressure_jets import (
     axis_pressure_normalized_taylor,
     pressure_kernel_normalized_taylor,
 )
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _schedule_data() -> TailData:
@@ -94,5 +99,22 @@ def test_axial_jets_use_actual_schedule_epsilon_and_fail_closed(jets) -> None:
         jets.parameter_jet(-1, 0, 0.0)
     with pytest.raises(ValueError, match="nonnegative integer"):
         jets.parameter_jet(1, -1, 0.0)
-    with pytest.raises(ValueError, match="pinned coefficient window"):
+    with pytest.raises(ValueError, match="pinned window"):
         jets.parameter_jet(1, 0, 1.100001)
+
+
+def test_axial_jet_provenance_stays_fail_closed() -> None:
+    manifest = json.loads(
+        (ROOT / "references" / "provenance_manifest_addendum_axis_reference_axial_jets.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert manifest["full_reconstruction"] is False
+    assert manifest["paper_exact_velocity_available"] is False
+    layer = manifest["layer"]
+    assert layer["id"] == "stage-1-leading-profile"
+    assert layer["status"] == "formal-structure"
+    assert "naturalRemainder" in layer["remaining_boundary"]
+    assert (ROOT / layer["provenance"]).is_file()
+    for artifact in layer["artifacts"]:
+        assert (ROOT / artifact).is_file()
