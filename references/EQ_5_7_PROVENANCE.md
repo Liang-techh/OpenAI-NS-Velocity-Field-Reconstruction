@@ -1,4 +1,4 @@
-# Eq. (5.7) inner-solver provenance
+# Eqs. (5.7)-(5.8) inner-solver provenance
 
 Status: **formal-structure**.
 
@@ -14,7 +14,17 @@ The manuscript then inverts the singular diagonal operator with
 
 and writes the Picard operator as `K = G(A0 + A1 d_eta)`.  The solution is represented by the convergent series `W_n = sum_{k>=0} K^k G f_n` on the fixed inner interval.
 
-## Executable artifact
+The sparse block structure of `A1` implies that a nonzero composition of `k` factors contains at most
+
+`p_k = ceil(k/2)`
+
+parameter derivatives.  On a smaller complex strip `S_{rho'}` with `Delta=rho-rho'>0`, the paper's Eq. (5.8) gives
+
+`||K^k G f_n||_{S_{rho'}} <= C_n^(k+1) a^(k+1)/(k+1)! * max(1,p_k/Delta)^p_k`.
+
+The factorial simplex-volume factor dominates the Cauchy derivative loss, so the manuscript observes that the `k`-th root of the right-hand side tends to zero and hence the Picard series converges for every finite inner radius `a`.
+
+## Executable artifacts
 
 `src/openai_ns_reconstruction/background_inner_solver.py` implements:
 
@@ -23,10 +33,23 @@ and writes the Picard operator as `K = G(A0 + A1 d_eta)`.  The solution is repre
 - one Picard-map application `G[A0 W + A1 d_eta W + f_n]`;
 - the genuine first positive-order Picard term `G f_n`.
 
+`src/openai_ns_reconstruction/background_picard_bounds.py` implements the independent analytic-control side of Lemma 5.1:
+
+- the exact derivative count `p_k=ceil(k/2)`;
+- the displayed Eq. (5.8) term majorant, evaluated stably in logarithms;
+- a fail-closed complete-tail enclosure.  Once `p_k >= max(1,Delta)`, the code uses `(1+1/p)^p < 3` and `p+1 <= (k+3)/2` to obtain the conservative two-step bound
+  `B_{k+2}/B_k <= 3(C_n a)^2/[2 Delta (k+2)]`;
+- even/odd geometric summation then gives `sum_{j>=N} B_j <= (B_N+B_{N+1})/(1-r_N)` whenever the certified two-step ratio `r_N<1`;
+- a deterministic search for the first Picard truncation order whose analytic tail bound meets a requested tolerance.  The order is chosen from Eq. (5.8), not fitted to sampled residuals.
+
 `tests/test_background_inner_solver.py` cross-checks `G` against independently integrated polynomial primitives, verifies an actual `n=1` first Picard term, exercises a nonzero `K` contribution with an independent closed-form oracle, and checks fail-closed input validation.
+
+`tests/test_background_picard_bounds.py` checks the displayed Eq. (5.8) arithmetic, compares the majorant with an exactly solvable scalar Picard specialization `K^kGf=lambda^k xi^(k+1)/(k+1)!`, independently sums a long finite segment of the paper majorants against the two-step tail enclosure, and verifies fail-closed strip/ratio/search-cap behavior.
 
 ## Boundary / blocker
 
-This does **not** materialize the paper's profile-dependent matrices `A0`, `A1`, or lower-order source `f_n`.  Those depend on the leading profile and finalized lower-order coefficients.  Issue #1 still does not provide the paper-exact materialized leading profile, so caller-supplied matrices or sources must not be labeled paper-exact.  The new code is solver infrastructure for the Lemma-5.1 construction, not a completed positive-order coefficient and not evidence that Stage 2 is paper-exact.
+This still does **not** materialize the paper's profile-dependent matrices `A0`, `A1`, lower-order source `f_n`, or the corresponding true constants `C_n` and common complex neighborhoods.  Those depend on the leading profile and finalized lower-order coefficients.  Issue #1 still does not provide the paper-exact materialized leading profile, so caller-supplied matrices, sources, strip radii, or coefficient bounds must not be labeled paper-exact.
 
-The next Section-5 step is to derive the actual Eq. (5.3)-(5.6) coefficient matrices/source from materialized profile data, then iterate Eq. (5.7) to a certified solution on the common inner interval before applying Lemma 5.2 compact moment repair.
+The Eq. (5.8) module is an analytic implication from independently certified inputs; it is not a proof that any caller-supplied `C_n`, `rho`, or `rho'` is valid for the manuscript hierarchy.  Its runtime evaluations use binary64 `log`/`lgamma`, so they are reproducible numerical evaluations of the analytic majorant rather than interval-arithmetic or Lean proof objects.
+
+Stage 2 therefore remains **formal-structure**, and `paper_exact_velocity_available` must remain `false`.  The next profile-dependent step is still to derive the actual Eq. (5.3)-(5.6) matrices/source from materialized leading/lower-order data.  Once those data carry certified analytic strip bounds, the landed Eq. (5.8) machinery can turn them into explicit converged-Picard truncation/error records before Lemma 5.2 compact moment repair is applied.
