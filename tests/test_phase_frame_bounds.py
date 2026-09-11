@@ -11,6 +11,8 @@ from openai_ns_reconstruction.phase_frame_bounds import (
     damping_denominator,
     damping_error_bound,
     frame_coordinate_error_bound,
+    frequency_bound,
+    normal_constant,
     normal_lower,
 )
 
@@ -23,7 +25,11 @@ def test_base_phase_constants_match_pinned_definitions():
     assert normal_lower(M, u) == pytest.approx(
         math.sqrt((1.0 / M) / (4.0 * (1.0 + u * u) ** 1.5))
     )
-    assert base_phase_constant(M) == pytest.approx(8.0 * phase_estimates_constant(2.0 * M))
+    assert normal_constant(M) == pytest.approx(8.0 * phase_estimates_constant(2.0 * M))
+
+    expected_frequency = M + M * (M + M**4) + (M + M**4) + M**2 + 4.0
+    assert frequency_bound(M) == pytest.approx(expected_frequency)
+    assert base_phase_constant(M) == pytest.approx(normal_constant(expected_frequency))
 
 
 def test_general_frame_and_damping_bounds_match_theorem_arithmetic():
@@ -46,7 +52,9 @@ def test_general_frame_and_damping_bounds_match_theorem_arithmetic():
 def test_large_band_specialization_recovers_named_lean_constants():
     M = 2.0
     u = 1.0
-    S = 1.0e6
+    # The official family-level phaseConstant first enlarges M by
+    # frequencyBound; use a genuinely large band so delta<=B/2 is certified.
+    S = 1.0e11
     B = 1.0
     viscosity = 2.5
 
@@ -90,8 +98,8 @@ def test_envelope_fails_closed_on_scalar_theorem_hypotheses():
 
 
 def test_large_band_constructor_refuses_uncertified_smallness():
-    # For M=2 the pinned phase constant is large; a small S cannot satisfy
-    # delta<=B/2 with B<=M.  The constructor must reject instead of silently
-    # treating a finite-band numerical example as a theorem-certified band.
+    # For M=2 the enlarged family phase constant is very large; a small S
+    # cannot satisfy delta<=B/2 with B<=M. Reject instead of pretending a finite
+    # numerical band has crossed the theorem threshold.
     with pytest.raises(ValueError, match="<=B/2"):
         FrameDampingEnvelope.from_large_band(M=2.0, S=100.0, u=1.0, B=1.0, viscosity=2.0)
