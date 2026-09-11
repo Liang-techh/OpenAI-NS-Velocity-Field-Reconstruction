@@ -3,7 +3,7 @@
 The pinned Lean construction ``SlowBorelBase.exists_admissibleScales`` first
 bounds the normalized template jets by constants ``C[j,m]`` and then invokes
 ``DiagonalScale.exists_diagonal_scales`` with logarithmic power ``p=0`` and
-positive gain ``g(j)=2*h*j``.  Thus, at every positive order ``j``, it is
+positive gain ``g(j)=2*h*j``. Thus, at every positive order ``j``, it is
 enough to choose a local integer scale ``b_j`` such that
 
     C[j,m] * (1 / b_j) ** (h*j) <= 2**(-j)    for m <= j+2,
@@ -14,7 +14,7 @@ and finally take the recursive doubling envelope
     a_{j+1} = max(b_{j+1}, 2*a_j).
 
 This module materializes that numerical selection for a requested finite
-prefix once the *actual* normalized jet bounds C[j,m] are supplied.  It does
+prefix once the *actual* normalized jet bounds C[j,m] are supplied. It does
 not manufacture those bounds from sampled profiles, and a finite prefix is
 not the paper's completed infinite all-order background.
 """
@@ -52,14 +52,16 @@ def local_scale_from_template_bounds(
     """Choose one explicit local scale for SlowBorelBase at positive order j.
 
     ``jet_bounds[m]`` is the normalized-template constant ``C[j,m]`` for
-    ``0 <= m <= j+2``.  Since the pinned SlowBorelBase specialization has
+    ``0 <= m <= j+2``. Since the pinned SlowBorelBase specialization has
     logarithmic exponent p=0, the worst q in ``0 < q <= 1/b_j`` is the edge
-    q=1/b_j.  The returned integer therefore certifies the entire punctured
+    q=1/b_j. The returned integer therefore certifies the entire punctured
     interval by monotonicity of q**(h*j).
 
-    The selection is intentionally conservative by one upward floating-point
-    ulp before ``ceil``.  If the required integer cannot be obtained from a
-    finite float exponent, the routine fails closed instead of clipping it.
+    The real threshold is computed in log space and rounded up to an integer;
+    a second log-space check increments the candidate if transcendental
+    rounding happened to undershoot it. If the threshold cannot be converted
+    through finite float arithmetic, the routine fails closed rather than
+    clipping the scale.
     """
     h = _positive_float(h, "h")
     order = _nonnegative_int(order, "order")
@@ -78,11 +80,8 @@ def local_scale_from_template_bounds(
     else:
         if log_required >= _LOG_FLOAT_MAX:
             raise OverflowError("required cutoff scale exceeds the supported float-to-integer range")
-        root = math.nextafter(math.exp(log_required), math.inf)
-        candidate = max(1, math.ceil(root))
+        candidate = max(1, math.ceil(math.exp(log_required)))
 
-    # Certify in log space.  The nextafter/ceil path should already pass; this
-    # loop only protects against platform-level transcendental rounding.
     target_log = -order * _LOG2
     while math.log(cmax) - exponent * math.log(candidate) > target_log:
         candidate += 1
@@ -136,7 +135,7 @@ class SlowBorelCutoffSchedule:
         order = _nonnegative_int(order, "order")
         if order > self.max_order:
             raise IndexError("order lies outside the constructed finite prefix")
-        return 1.0 / self.scales[order]
+        return math.exp(-math.log(self.scales[order]))
 
     def edge_log_margin(self, order: int, derivative_order: int) -> float:
         """Logarithmic margin in C[j,m] a_j^(-h*j) <= 2^(-j)."""
@@ -182,7 +181,7 @@ def build_slow_borel_cutoff_schedule(
 
     Row zero of ``positive_order_jet_bounds`` corresponds to paper order j=1.
     Each row j must contain the actual normalized template bounds C[j,m] for
-    m=0,...,j+2.  Those constants are analytic inputs from compactness of the
+    m=0,...,j+2. Those constants are analytic inputs from compactness of the
     true coefficient derivatives; this function never estimates them from
     point samples.
     """
