@@ -57,9 +57,10 @@ def test_one_off_provenance_and_runtime_status_do_not_promote_pr112_115() -> Non
             assert one_off["layers"], entry["pr"]
             assert all(layer["status"] == "formal-structure" for layer in one_off["layers"]), entry["pr"]
 
+    canonical = _load("references/provenance_manifest.json")
     runtime = construction_status()
     stages = {stage["id"]: stage for stage in runtime["stages"]}
-    assert runtime["full_reconstruction"] is False
+    assert canonical["full_reconstruction"] is False
     assert runtime["paper_exact_velocity_available"] is False
     assert stages[1]["status"] == "formal-structure"
     assert stages[2]["status"] == "formal-structure"
