@@ -46,11 +46,6 @@ def test_paper_exact_layers_have_no_recorded_blockers() -> None:
 
 
 def test_no_pending_layer_is_backed_by_claimed_runtime_artifacts() -> None:
-    """A pending layer must not silently acquire implementation artifacts without review.
-
-    When a stage starts being implemented, update its status to formal-structure (or stronger)
-    in the same change that adds its manifest artifacts. This makes status drift review-visible.
-    """
     data = load_manifest()
     for layer in data["layers"]:
         if layer["status"] == "pending":
@@ -69,53 +64,72 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert "src/openai_ns_reconstruction/outgoing_tail.py" in stage1["artifacts"]
     assert "src/openai_ns_reconstruction/schedule_axis_pressure.py" in stage1["artifacts"]
     assert "src/openai_ns_reconstruction/schedule_axis_margin.py" in stage1["artifacts"]
-    assert "NavierStokes/OutgoingSchedule.lean" in stage1["official_lean_modules"]
-    assert "NavierStokes/OutgoingTail.lean" in stage1["official_lean_modules"]
+    assert "src/openai_ns_reconstruction/natural_scale_selection.py" in stage1["artifacts"]
+    assert "NavierStokes/AxisContraction.lean" in stage1["official_lean_modules"]
+    assert "NavierStokes/AxisEvaluation.lean" in stage1["official_lean_modules"]
     assert any("S=32" in item and "flattenLength" in item for item in stage1["implemented_components"])
     assert any("finalAngular" in item and "clockWeight" in item for item in stage1["implemented_components"])
     assert any("actual SchedulePressure.axisPressure" in item for item in stage1["implemented_components"])
     assert any("low-|Z|" in item and "sigma=sqrt(m)/20" in item for item in stage1["implemented_components"])
-    assert not any("uniform positive H^2 margin" in item for item in stage1["missing_for_paper_exact"])
-    assert not any("finalAngular/clockWeight/axisPressure" in item for item in stage1["missing_for_paper_exact"])
+    assert any("Lambda=max(1+B+L,1+(14000/9)B)" in item and "C=exp" in item
+               for item in stage1["implemented_components"])
+    assert any("remainderBound/remainderLip" in item and "realPartSup" in item
+               for item in stage1["missing_for_paper_exact"])
+    assert not any("record the constructive Lambda/C choices" in item
+                   for item in stage1["missing_for_paper_exact"])
     assert any("Classical.choose" in item for item in stage1["numerical_caveats"])
     assert any("binary64" in item and "interval-arithmetic" in item for item in stage1["numerical_caveats"])
 
     stage2 = layers["stage-2-all-order-background"]
     assert stage2["status"] == "formal-structure"
     assert "src/openai_ns_reconstruction/background_inner_solver.py" in stage2["artifacts"]
+    assert "src/openai_ns_reconstruction/background_moment_repair.py" in stage2["artifacts"]
+    assert "src/openai_ns_reconstruction/background_extension.py" in stage2["artifacts"]
     assert "src/openai_ns_reconstruction/background_cutoff_schedule.py" in stage2["artifacts"]
     assert "Eq. (5.7)" in stage2["paper_locations"]
     assert any("Eq. (5.6)" in item and "Omega_k/X" in item for item in stage2["implemented_components"])
     assert any("Eq. (5.7)" in item and "Picard" in item for item in stage2["implemented_components"])
+    assert any("Eq. (5.15) forward reconstruction" in item for item in stage2["implemented_components"])
     assert any("SlowBorelBase/DiagonalScale" in item and "C[j,m]" in item
                for item in stage2["implemented_components"])
     assert any("A0/A1/f_n" in item for item in stage2["missing_for_paper_exact"])
+    assert any("true eta-dependent repaired coefficient hierarchy" in item
+               for item in stage2["missing_for_paper_exact"])
     assert any("true uniform compactness bounds C[j,m]" in item
                for item in stage2["missing_for_paper_exact"])
-    assert not any("construct the regular Omega" in item for item in stage2["missing_for_paper_exact"])
+    assert not any("connect the repaired U_n/E_n through" in item
+                   for item in stage2["missing_for_paper_exact"])
 
     stage3 = layers["stage-3-to-6-oscillatory-corrections"]
     assert stage3["status"] == "formal-structure"
     assert "src/openai_ns_reconstruction/slow_labels.py" in stage3["artifacts"]
     assert "src/openai_ns_reconstruction/phase_box_certificate.py" in stage3["artifacts"]
     assert "src/openai_ns_reconstruction/slot_geometry.py" in stage3["artifacts"]
+    assert "src/openai_ns_reconstruction/slow_support_adjacency.py" in stage3["artifacts"]
     assert any("Eq. (6.8)" in item for item in stage3["implemented_components"])
     assert any("2250-color" in item and "common r0" in item for item in stage3["implemented_components"])
+    assert any("physical slow-support to SlotColoring.Adj bridge" in item
+               for item in stage3["implemented_components"])
     assert any("rounded_normal_estimates" in item for item in stage3["implemented_components"])
-    assert any("SlotColoring.Adj" in item for item in stage3["missing_for_paper_exact"])
+    assert not any("physical slow-cutoff supports/enlargements" in item
+                   for item in stage3["missing_for_paper_exact"])
+    assert any("paper-exact Proposition 5.5 background" in item
+               for item in stage3["missing_for_paper_exact"])
 
     stage7 = layers["stage-7-final-localization"]
     assert stage7["status"] == "formal-structure"
     assert "src/openai_ns_reconstruction/time_localization.py" in stage7["artifacts"]
+    assert "src/openai_ns_reconstruction/past_extension.py" in stage7["artifacts"]
     assert "src/openai_ns_reconstruction/endpoint_borel.py" in stage7["artifacts"]
     assert "src/openai_ns_reconstruction/endpoint_scale_schedule.py" in stage7["artifacts"]
-    assert "NavierStokes/TimeLocalization.lean" in stage7["paper_locations"]
-    assert "NavierStokes/BorelExtension.lean" in stage7["paper_locations"]
+    assert "NavierStokes/PastExtension.lean" in stage7["paper_locations"]
     assert any("timeSwitch" in item for item in stage7["implemented_components"])
+    assert any("PastExtension closed-past branch" in item for item in stage7["implemented_components"])
     assert any("doublingEnvelope" in item and "right-extension" in item for item in stage7["implemented_components"])
     assert any("boundSum/localScale" in item and "2^-j" in item for item in stage7["implemented_components"])
-    assert any("residual endpoint jets" in item for item in stage7["missing_for_paper_exact"])
+    assert any("closed-past localized NS residual" in item and "full spacetime derivative family" in item
+               for item in stage7["missing_for_paper_exact"])
     assert any("analytic compact-template derivative bounds" in item
                for item in stage7["missing_for_paper_exact"])
     assert any("smooth global force extension through t=1" in item for item in stage7["missing_for_paper_exact"])
-    assert not any("paper-specific time localization/activation" in item for item in stage7["missing_for_paper_exact"])
+    assert any("tautological" in item for item in stage7["numerical_caveats"])
