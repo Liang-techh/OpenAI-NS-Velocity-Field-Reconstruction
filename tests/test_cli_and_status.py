@@ -46,11 +46,14 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'positive common rho' in stages[1]['implemented']
     assert 'eleven-field common complex bound B' in stages[1]['implemented']
     assert 'axisPhase real-part supremum' in stages[1]['implemented']
+    assert '96-digit Decimal' in stages[1]['implemented']
+    assert 'sys.float_info.max' in stages[1]['implemented']
     assert 'axisPressure' not in stages[1]['remaining']
     assert 'H^2 margin' not in stages[1]['remaining']
     assert 'actual admissible common analytic radius' not in stages[1]['remaining']
     assert 'common complex-field sup bound' not in stages[1]['remaining']
-    assert 'rho/B/realPartSup certificate' in stages[1]['remaining']
+    assert 'Lambda/C scale selection' in stages[1]['remaining']
+    assert 'wide Decimal' in stages[1]['remaining']
     assert 'coefficient-space fixed-point' in stages[1]['remaining']
 
     assert 'Eq. (5.5)' in stages[2]['implemented']
@@ -62,6 +65,8 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'complete-tail truncation certificate' in stages[2]['implemented']
     assert 'Lemma 5.2' in stages[2]['implemented']
     assert 'five-moment repair' in stages[2]['implemented']
+    assert 'function-level compact-repair adapter' in stages[2]['implemented']
+    assert 'paper_exact=False' in stages[2]['implemented']
     assert 'Eq. (5.15) forward reconstruction' in stages[2]['implemented']
     assert 'SlowBorelBase/DiagonalScale' in stages[2]['implemented']
     assert 'C[j,m]' in stages[2]['implemented']
@@ -106,10 +111,13 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'signed two-slot reference covariance algebra' in stages[4]['implemented']
     assert 'strict positive-cone condition |a t|<b m' in stages[4]['implemented']
     assert 'epsilon*mask^2 covariance scaling' in stages[4]['implemented']
+    assert 'coefficient-level curl-realization algebra' in stages[4]['implemented']
+    assert 'Exact tangency n.a=0' in stages[4]['implemented']
     assert 'actual pulse-integrated covariance columns' in stages[4]['remaining']
     assert 'determinant/inverse stability' in stages[4]['remaining']
     assert 'amplitude transport/ODE' in stages[4]['remaining']
-    assert 'supported divergence-free curls' in stages[4]['remaining']
+    assert 'actual localized coefficient' in stages[4]['remaining']
+    assert 'genuine supported divergence-free oscillatory wave' in stages[4]['remaining']
 
     assert 'analytic cutoff gradient' in stages[7]['implemented']
     assert 'time-switch' in stages[7]['implemented']
@@ -117,9 +125,11 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'closed-past zeroBefore/pastVelocity/pastPressure' in stages[7]['implemented']
     assert 'Taylor-Borel' in stages[7]['implemented']
     assert 'doublingEnvelope' in stages[7]['implemented']
+    assert 'close_left_open_past' in stages[7]['implemented']
+    assert 'rejects t>T' in stages[7]['implemented']
     assert 'full-spacetime endpoint-jet adapter' in stages[7]['implemented']
     assert 'CandidateFromLimits' in stages[7]['implemented']
-    assert 'SpatialBorelExtension boundSum/localScale' in stages[7]['implemented']
+    assert 'SpatialBorelExtension' in stages[7]['implemented']
     assert '2^-j derivative-tail certificates' in stages[7]['implemented']
     assert 'CandidateFromLimits trace/glue bridge' in stages[7]['implemented']
     assert 'degree-zero endpoint tensor' in stages[7]['implemented']
@@ -129,6 +139,7 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert '3/4<=t<1' in stages[7]['implemented']
     assert 'c=1 and grad(c)=0 at the origin' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
+    assert 'degree-zero endpoint value' in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
     assert 'smooth through t=1' in stages[7]['remaining']
     assert 'uniform bounded kinetic-energy' in stages[7]['remaining']
@@ -137,10 +148,12 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     limitations=' '.join(status['limitations'])
     assert 'traced-residual adapters' in limitations
     assert 'caller-supplied endpoint jets' in limitations
+    assert 'close_left_open_past' in limitations
     assert 'fixed-time implication' in limitations
     assert 'uniform bounded-energy estimate' in limitations
     assert 'late-origin adapter preserves an upstream-certified origin curl value' in limitations
-    assert 'stress-cone module is only the exact reference algebra' in limitations
+    assert 'stress-cone and curl-realization modules provide reference/certificate algebra only' in limitations
+    assert 'wide Decimal adapter' in limitations
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[4]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
