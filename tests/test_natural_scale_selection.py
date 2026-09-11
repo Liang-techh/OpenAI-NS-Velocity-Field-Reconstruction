@@ -25,7 +25,9 @@ def test_exact_pinned_threshold_algebra_and_closed_jet_sums() -> None:
     stability = stability_scale(B)
 
     assert contraction == 1.0 + B + L
-    assert stability == 1.0 + (14000.0 / 9.0) * B
+    # The two algebraically equal forms differ by one binary64 ulp because of
+    # parenthesization; keep the regression at machine-roundoff scale.
+    assert stability == pytest.approx(1.0 + (14000.0 / 9.0) * B, rel=0.0, abs=1e-12)
 
 
 def test_selection_takes_positive_profile_threshold_then_exact_C() -> None:
@@ -36,8 +38,8 @@ def test_selection_takes_positive_profile_threshold_then_exact_C() -> None:
     )
 
     expected_lambda = max(1.0 + 2.0 + 3.0, 1.0 + (14000.0 / 9.0) * 2.0)
-    assert witness.Lambda == expected_lambda
-    assert witness.C == math.exp(expected_lambda * 0.01)
+    assert witness.Lambda == pytest.approx(expected_lambda, rel=0.0, abs=1e-12)
+    assert witness.C == math.exp(witness.Lambda * 0.01)
     assert witness.admits(witness.Lambda, witness.C)
 
 
