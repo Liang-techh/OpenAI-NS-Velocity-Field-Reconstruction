@@ -92,12 +92,15 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
     assert leading['status']=='formal-structure'
     assert 'src/openai_ns_reconstruction/outgoing_tail.py' in leading['artifacts']
     assert 'src/openai_ns_reconstruction/schedule_axis_pressure.py' in leading['artifacts']
+    assert 'src/openai_ns_reconstruction/schedule_axis_margin.py' in leading['artifacts']
     assert any('finalAngular' in item and 'clockWeight' in item
                for item in leading['implemented_components'])
     assert any('actual SchedulePressure.axisPressure' in item
                for item in leading['implemented_components'])
-    assert any('uniform positive H^2 margin' in item
-               for item in leading['missing_for_paper_exact'])
+    assert any('low-|Z|' in item and 'sigma=sqrt(m)/20' in item
+               for item in leading['implemented_components'])
+    assert not any('uniform positive H^2 margin' in item
+                   for item in leading['missing_for_paper_exact'])
     assert any('coefficient-space fixed-point fields' in item
                for item in leading['missing_for_paper_exact'])
 
