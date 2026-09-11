@@ -26,6 +26,8 @@ Pinned source: `openai/NavierStokesAndEuler` commit
   - it has the prescribed normal time jets at `t=T` and vanishes for
     `t >= T+1`.
 - `NavierStokes/SpacetimeGluing.lean`
+  - `glue T f g` uses the **closed-past branch at `t=T`** and the future branch
+    only for `t>T`;
   - the final `smoothExtension` glues the closed-past field to that right
     extension after proving all normal jets match.
 - `NavierStokes/CandidateFromLimits.lean`
@@ -44,13 +46,24 @@ Pinned source: `openai/NavierStokesAndEuler` commit
    cutoff support;
 4. endpoint value handling and the exact `t >= T+1` zero-support consequence;
 5. an algebraic closed-past/future glue helper whose documentation explicitly
-   does **not** assert smooth matching.
+   does **not** assert smooth matching;
+6. `close_left_open_past(...)`, an execution adapter for the common situation
+   where an upstream residual evaluator is available only for `t<T` while its
+   endpoint trace is supplied separately by the degree-zero endpoint jet.  It
+   leaves `t<T` unchanged, fills `t=T` with `jet(0,x)`, and fails closed for
+   `t>T`; `glue_to_left_open_past(...)` then reuses the existing closed-past
+   branch convention rather than silently switching the join to the future
+   branch.
 
 Tests independently sum the active terms, check the doubling recurrence,
 recover first/second right jets for a manufactured finite jet family, verify
 future support without touching unavailable jets, and exercise fail-closed
-input validation.  These fixtures test the adapter only and are not profile or
-force surrogates.
+input validation.  The left-open completion regression uses a past callable
+that deliberately raises at `t>=T` and deliberately does **not** match the
+supplied endpoint value; this confirms both that the adapter never samples the
+unavailable past field at the join and that the adapter itself does not claim
+continuity.  These fixtures test the adapter only and are not profile or force
+surrogates.
 
 ## Boundary that remains open
 
@@ -60,12 +73,16 @@ pointwise equality with Mathlib's noncomputable transition-collar values is
 claimed.
 
 More importantly, the executable evaluator accepts `jet(j, x)` and
-`local_scale(j)` as inputs.  It does **not** yet derive the spatial template
-bounds that justify the official all-order scale choice, prove the derivative
-majorants, or establish locally uniform convergence of the actual residual
-jets as `t -> 1-`.  Those are precisely the hypotheses needed before
-`SpacetimeGluing.smoothExtension` can be instantiated for the real candidate.
-The unresolved upstream local field from Issues #1--#3 is also still required.
+`local_scale(j)` as inputs.  `close_left_open_past(...)` only materializes a
+closed-past *candidate value* at the endpoint; it is not evidence that the
+incoming residual converges to that value.  The implementation does **not** yet
+derive the spatial template bounds that justify the official all-order scale
+choice, prove the derivative majorants, establish locally uniform convergence
+of the actual residual jets as `t -> 1-`, or prove that all normal jets of the
+closed-past completion match the right extension.  Those are precisely the
+hypotheses needed before `SpacetimeGluing.smoothExtension` can be instantiated
+for the real candidate.  The unresolved upstream local field from Issues
+#1--#3 is also still required.
 
 Therefore this increment must not change
 `paper_exact_velocity_available=false`, must not upgrade Stage 7 beyond
