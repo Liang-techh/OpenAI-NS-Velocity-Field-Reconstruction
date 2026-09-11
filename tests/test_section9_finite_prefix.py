@@ -185,7 +185,7 @@ def test_rejects_mixed_schedule_or_q_domain_and_bad_cutoff_values():
             cutoff_evaluator_provenance="test only",
         )
 
-    with pytest.raises(ValueError, match="value in \[0,1\]"):
+    with pytest.raises(ValueError, match=r"value in \[0,1\]"):
         evaluate_admitted_eq_9_21_prefix(
             original_hypothesis,
             [c1],
