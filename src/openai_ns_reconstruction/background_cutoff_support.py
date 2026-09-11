@@ -1,7 +1,7 @@
 """Exact finite-prefix support/plateau certificates for Section 5 cutoffs.
 
 The paper/official formalization chooses a strictly increasing (in fact at least
--doubling) integer scale sequence ``a_j`` and multiplies the positive-order
+doubling) integer scale sequence ``a_j`` and multiplies the positive-order
 slow stages by a fixed smooth cutoff.  The executable cutoff on main satisfies
 
     chi(s) = 1  for s <= 1/2,
