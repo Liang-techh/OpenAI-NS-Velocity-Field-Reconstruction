@@ -1,16 +1,16 @@
 """Section 7 frame/damping implication bounds from the pinned Lean source.
 
 This module covers the scalar implication layer after a uniform phase-normal
-comparison has already been certified.  It transcribes the constants in
+comparison has already been certified. It transcribes the constants in
 ``BasePhaseGeometry.frame_errors_of_normal_close`` and
 ``BasePhaseGeometry.damping_error_of_normal_close`` from
 ``openai/NavierStokesAndEuler@f9e8bc5b38b6e212696e8a30e3e91517af887bbd``.
 
 Nothing here manufactures the missing paper-exact Proposition 5.5 base fields
-or proves the vector hypotheses of those theorems.  In particular, callers
-must separately certify the actual normal/slot derivative bounds and actual
-base-field comparison bounds.  These routines only turn such certified inputs
-into the quantitative frame and viscosity-error envelopes used downstream.
+or proves the vector hypotheses of those theorems. Callers must separately
+certify the actual normal/slot derivative bounds and actual base-field
+comparison bounds. These routines only turn such certified inputs into the
+quantitative frame and viscosity-error envelopes used downstream.
 """
 from __future__ import annotations
 
@@ -42,27 +42,50 @@ def damping_denominator(u: float) -> float:
 
 
 def normal_lower(M: float, u: float) -> float:
-    """Pinned ``BasePhaseGeometry.normalLower M u``.
-
-    The formal theorem only uses this quantity after assuming ``M >= 1``.
-    """
+    """Pinned ``BasePhaseGeometry.normalLower M u``."""
     M = _finite(M, "M")
     if M < 1.0:
         raise ValueError("normalLower specialization requires M>=1")
     return math.sqrt((1.0 / M) / (4.0 * damping_denominator(u)))
 
 
-def base_phase_constant(M: float) -> float:
-    """Pinned ``BasePhaseGeometry.phaseConstant M``.
+def normal_constant(M: float) -> float:
+    """Pinned ``BasePhaseGeometry.normalConstant M``.
 
-    This is *not* the same constant as ``PhaseEstimates.phaseConstant``:
-    ``normalConstant M = 8 * PhaseEstimates.phaseConstant (2*M)`` and the
-    family-level name ``phaseConstant`` abbreviates that normal constant.
+    ``normalConstant M = 8 * PhaseEstimates.phaseConstant (2*M)``.
+    """
+    M = _finite(M, "M")
+    if M < 0.0:
+        raise ValueError("normalConstant requires M>=0")
+    out = 8.0 * phase_estimates_constant(2.0 * M)
+    if not math.isfinite(out):
+        raise OverflowError("normal constant overflowed")
+    return out
+
+
+def frequency_bound(M: float) -> float:
+    """Pinned ``BasePhaseGeometry.frequencyBound M``."""
+    M = _finite(M, "M")
+    if M < 1.0:
+        raise ValueError("frequencyBound specialization requires M>=1")
+    out = M + M * (M + M**4) + (M + M**4) + M**2 + 4.0
+    if not math.isfinite(out):
+        raise OverflowError("frequency bound overflowed")
+    return out
+
+
+def base_phase_constant(M: float) -> float:
+    """Pinned family-level ``BasePhaseGeometry.phaseConstant M``.
+
+    The file first defines ``normalConstant`` and then deliberately enlarges
+    the argument to cover all frozen frequencies:
+
+    ``phaseConstant M = normalConstant (frequencyBound M)``.
     """
     M = _finite(M, "M")
     if M < 1.0:
         raise ValueError("BasePhaseGeometry phase constant requires M>=1")
-    return 8.0 * phase_estimates_constant(2.0 * M)
+    return normal_constant(frequency_bound(M))
 
 
 def frame_coordinate_error_bound(
@@ -71,11 +94,8 @@ def frame_coordinate_error_bound(
     """Conclusion bound from ``frame_errors_of_normal_close``.
 
     Under the theorem's geometric/vector hypotheses, each of the three changing
-    tangent-frame coefficient errors is bounded by
-
-    ``16 * G^2 * (1+G) * E``
-
-    with ``G=M+2+2A`` and ``E=eta+8(1+A)delta/b``.
+    tangent-frame coefficient errors is bounded by ``16*G^2*(1+G)*E`` with
+    ``G=M+2+2A`` and ``E=eta+8(1+A)delta/b``.
     """
     M = _finite(M, "M")
     A = _finite_nonnegative(A, "A")
@@ -149,7 +169,7 @@ class FrameDampingEnvelope:
     coefficient comparison entering ``frame_errors_of_normal_close``.
 
     This class checks only scalar hypotheses that can be checked without the
-    unresolved paper-exact background.  It does **not** prove the required
+    unresolved paper-exact background. It does **not** prove the required
     vector identities, unit/orthogonality facts, differentiability, or the
     actual inequalities represented by ``delta`` and ``eta``.
     """
@@ -182,7 +202,6 @@ class FrameDampingEnvelope:
             raise ValueError("normal error is not certified <=B/2")
         if not 0.0 <= viscosity <= 4.0:
             raise ValueError("damping theorem requires viscosity in [0,4]")
-        # Force overflow detection at construction time rather than later.
         _ = frame_coordinate_error_bound(M=M, A=A, b=b, delta=delta, eta=self.eta)
         _ = damping_error_bound(M=M, A=A, delta=delta)
 
@@ -204,10 +223,9 @@ class FrameDampingEnvelope:
 
         The pinned construction uses ``A=3M``, normal/normal-velocity error
         ``delta=phaseConstant(M)/S``, base comparison ``eta=16 M^2/S``, and
-        ``b=normalLower(M,u)``.  The constructor still requires the actual
+        ``b=normalLower(M,u)``. The constructor still requires the actual
         reference normal scale ``B`` and actual viscosity coefficient so it can
-        fail closed on the scalar hypotheses ``b<=B``, ``delta<=B/2``,
-        ``B<=M`` and ``0<=viscosity<=4``.
+        fail closed on ``b<=B``, ``delta<=B/2``, ``B<=M`` and ``0<=nu<=4``.
         """
         M = _finite(M, "M")
         S = _finite(S, "S")
@@ -226,7 +244,9 @@ class FrameDampingEnvelope:
             viscosity=viscosity,
         )
 
-    def specialized_constant_checks(self, *, u: float, S: float, rel_tol: float = 1e-12) -> dict[str, bool]:
+    def specialized_constant_checks(
+        self, *, u: float, S: float, rel_tol: float = 1e-12,
+    ) -> dict[str, bool]:
         """Cross-check the family specialization against the named Lean constants."""
         S = _finite(S, "S")
         rel_tol = _finite_nonnegative(rel_tol, "rel_tol")
@@ -234,11 +254,15 @@ class FrameDampingEnvelope:
             raise ValueError("S must be positive")
         return {
             "frame_equals_coordinateConstant_over_S": math.isclose(
-                self.frame_error, coordinate_constant(self.M, u) / S,
-                rel_tol=rel_tol, abs_tol=0.0,
+                self.frame_error,
+                coordinate_constant(self.M, u) / S,
+                rel_tol=rel_tol,
+                abs_tol=0.0,
             ),
             "damping_equals_dampingConstant_over_S": math.isclose(
-                self.damping_error, damping_constant(self.M) / S,
-                rel_tol=rel_tol, abs_tol=0.0,
+                self.damping_error,
+                damping_constant(self.M) / S,
+                rel_tol=rel_tol,
+                abs_tol=0.0,
             ),
         }
