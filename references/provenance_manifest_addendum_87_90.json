@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "bdd7db01fe98e7eb216480e24384eadc7ccbf533",
+  "integrated_prs": [87, 88, 89, 90],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Additive integration ledger for capabilities landed after provenance_manifest_addendum_82_85.json. These entries record executable/formal-structure progress only and do not supersede unresolved paper-exact gates in the base manifest.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_reference_angular_jets.py",
+      "provenance": "references/AXIS_REFERENCE_ANGULAR_JETS_PROVENANCE.md",
+      "paper_locations": [
+        "Theorem 4.6",
+        "Appendices A/B/C"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/AxisCoefficientSpace.lean",
+        "NavierStokes/AxisReference.lean",
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisData.lean"
+      ],
+      "landed_capability": "Extends the actual SchedulePressure-derived angular referencePair coefficients from parameter order m=0 to arbitrary finite eta-derivative order using exact Taylor algebra for H, chi, and the AxisReference radial recurrence; epsilon remains tied to the certified actual-schedule analytic neighborhood and m=0 is cross-checked against the landed referencePair.",
+      "remaining_boundary": "The axial reference coefficient u0[1]=-(1/2) inverseL*zStar still lacks theorem-faithful arbitrary eta derivatives from the actual SchedulePressure datum. A complete compatible AxisCoefficientSpace state, coefficientOperators/naturalRemainder, genuine Picard fixed point, phi/u/average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+    },
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_lower_history_solver.py",
+      "provenance": "references/LOWER_HISTORY_FIRST_PICARD_PROVENANCE.md",
+      "paper_locations": [
+        "Eqs. (5.3)-(5.8)",
+        "Lemma 5.1"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/PositiveAxisSystem.lean",
+        "NavierStokes/PositiveAxisExistence.lean",
+        "NavierStokes/SlowRecursion.lean"
+      ],
+      "landed_capability": "Connects strict lower-history ProfileSecondJet data to the exact PositiveAxis A0/A1/f_n fields over the full Eq. (5.7) Volterra interval, maps xi to X=xi^2 at every quadrature point, and evaluates the genuine first Lemma-5.1 term G f_n without an unrelated six-vector forcing callback.",
+      "remaining_boundary": "The lower-history second jets must still come from the genuine leading profile and recursively solved, Lemma-5.2-repaired hierarchy. The common analytic strip, actual Picard-tail constants, converged full Picard series, hierarchy-derived repair jets, infinite cutoff schedule/local finiteness, and Proposition 5.3 all-jets-flat residual decay are not established."
+    },
+    {
+      "id": "stage-5-compact-mean-corrections",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/mean_rank_update.py",
+      "provenance": "references/MEAN_RANK_UPDATE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 8",
+        "Equation (35) in the pinned formalization"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/FiveRowRank.lean",
+        "NavierStokes/LocalizedMomentRepair.lean",
+        "NavierStokes/MeanRankUpdate.lean"
+      ],
+      "landed_capability": "Implements the pinned three-cell angular/two-cell axial five-row compact mean-repair geometry, physical debt normalization, power-moment systems, support intervals, and physical row scaling; executable compact increments are independently cross-checked with SciPy quadrature.",
+      "remaining_boundary": "The actual mean debt and physical lambda/C/ell/U data must be derived from the genuine completed background, pulse/covariance, and oscillatory-wave hierarchy. The executable CompactMomentBump is not claimed pointwise identical to the noncomputable Mathlib ContDiffBump, and Section 8/Section 9 remain open."
+    },
+    {
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section10_endpoint_trace.py",
+      "provenance": "references/SECTION10_ENDPOINT_TRACE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 10 endpoint Taylor-Borel extension",
+        "official t >= 3/4, T = 1 late plateau"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/CandidateFromLimits.lean",
+        "NavierStokes/SpacetimeGluing.lean",
+        "NavierStokes/SpatialBorelExtension.lean"
+      ],
+      "landed_capability": "Connects the finite Section10EndpointMajorantLadder to constructive dense full-spacetime residual-jet endpoint enclosures. Each enclosure is centered at a pre-endpoint jet and uses only the certified integrated tail budget as radius, so it shrinks conditionally toward the true endpoint limit without fitting or declaring the center to be the limit.",
+      "remaining_boundary": "Actual derivative majorants must still be proved from the completed Section 9/10 residual, spatial-window membership and locally uniform endpoint limits must be closed at every order, genuine Borel template bounds and normal-jet matching remain open, and no smooth compact force through t=1, blow-up path, or uniform bounded-energy conclusion is yet certified."
+    }
+  ]
+}
