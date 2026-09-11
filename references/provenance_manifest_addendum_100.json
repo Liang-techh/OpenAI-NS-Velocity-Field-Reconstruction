@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "d387bc85f9a923db30089c670a1dd36247f306d1",
+  "integrated_prs": [100],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Fail-closed Section-9-to-Section-10 endpoint admission only. A separately justified uniform late-time residual-derivative witness is required; pointwise Eq. (9.18) certificates are explicitly insufficient.",
+  "layers": [
+    {
+      "id": "stage-7-8-endpoint-admission",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_endpoint_bridge.py",
+      "provenance": "references/SECTION9_ENDPOINT_BRIDGE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4 / Lemma 9.8 / Eqs. (9.17)-(9.19)",
+        "Section 10 endpoint smooth-extension step"
+      ],
+      "official_lean_modules": [
+        "SmoothCutoffs.lean",
+        "TimeLocalization.lean",
+        "CandidateFromLimits.lean"
+      ],
+      "landed_capability": "PR #100 requires the Section 9 residual derivative order n+1 for an endpoint D^n R jet, requires a provenance-tagged uniform integrable late-time derivative witness on one compact spatial window, admits it to EndpointPowerLawMajorant, and passes it through the exact t>=3/4 Section 10 time-localization plateau gate. A Section9PointwiseBoundCertificate is rejected explicitly.",
+      "remaining_boundary": "No genuine Section 9 correction sequence, common-domain/support theorem, uniform residual-derivative witness, q-to-(1-t) comparison, locally uniform endpoint limit, all-order endpoint jet family, smooth force closure, bounded-energy certificate, or paper-exact velocity is constructed."
+    }
+  ]
+}
