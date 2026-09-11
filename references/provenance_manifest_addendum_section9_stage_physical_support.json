@@ -1,0 +1,25 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Eq. (4.1), Lemma 5.4, Section 9 / Proposition 9.9, Eq. (9.21)",
+    "base_main_commit": "0d116dd919944fea14caf2cd1f4ff43b38293ff6"
+  },
+  "layer": {
+    "id": "stage-3-6-section9-admitted-stage-physical-support",
+    "status": "formal-structure",
+    "capability": "Compose admitted A/B/p correction-stage schedule data with the exact Section 10 physical q-slab enclosure to certify whole-stage cutoff vanishing from a_j*q_lower>=1, including actual-scale sharpening of the generic doubling bound",
+    "paper_locations": [
+      "Eq. (4.1)",
+      "Lemma 5.4 cutoff support / local-finiteness mechanism",
+      "Section 9 / Proposition 9.9",
+      "Eq. (9.21)"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_stage_physical_support.py",
+      "tests/test_section9_stage_physical_support.py"
+    ],
+    "provenance": "references/SECTION9_STAGE_PHYSICAL_SUPPORT_PROVENANCE.md",
+    "remaining_boundary": "No actual Section 7/8 correction values, constructed Eq. (9.21) locally finite sum, arbitrary-order Eq. (9.20) endpoint-uniform residual theorem, smooth extension through t=1, smooth compact forcing, bounded-energy certificate, blow-up closure, or paper-exact velocity is supplied. The bridge is pre-endpoint support logic only."
+  }
+}
