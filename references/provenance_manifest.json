@@ -133,18 +133,20 @@
       "status": "formal-structure",
       "artifacts": [
         "src/openai_ns_reconstruction/charts.py",
+        "src/openai_ns_reconstruction/slow_labels.py",
         "src/openai_ns_reconstruction/phase.py",
         "src/openai_ns_reconstruction/phase_estimates.py",
         "src/openai_ns_reconstruction/phase_box_certificate.py"
       ],
       "paper_locations": [
-        "Eqs. (6.1)-(6.6)",
+        "Eqs. (6.1)-(6.11)",
         "Eqs. (7.1)-(7.11)",
         "Sections 6-9",
         "Eq. (9.21)"
       ],
       "implemented_components": [
         "fixed dyadic geometry and exact integer covering matrices",
+        "Eq. (6.8) active-shell/label bridge with dimensionless q/Q and X reconstruction, S_*^-3 slow-support enclosure, sign-duplicated box labels, and a typed base-jet provider that freezes Eq. (6.11)/(7.2) phase data at the representative",
         "local Section 7.1 phase/frequency formulas, backward material phase defect, projected evolution operator, and tangent frame for caller-supplied representative base jets",
         "deterministic allowed tie rule for rounding k*p to a nonzero integer, giving single-valued angular harmonics",
         "pinned PhaseEstimates scalar scale gate: phaseError, phaseConstant, exact phaseError<=4/S hypotheses, and the resulting rounded-normal bound envelope",
@@ -155,7 +157,8 @@
         "NavierStokes/PhaseEstimates.lean"
       ],
       "missing_for_paper_exact": [
-        "slow-support separation and instantiate label-dependent phase parameters from paper-exact base fields",
+        "construct the actual squared slow partitions chi_ell and chi_{ell,a}, plus the common auxiliary rectangle centers/radius and Lemma 6.1 cross-label support separation",
+        "instantiate TangentialBaseJetProvider with the paper-exact Proposition 5.5 background and theorem-chosen r0/u_star rather than caller-supplied data",
         "upgrade the pointwise rounded-normal adapter to a uniform active-box certificate by proving the LocalBaseBounds C1/C2 hypotheses for the actual paper-exact base functions on every slow box",
         "stress-cone decomposition into positive wave covariances",
         "solve the pulse amplitude equations and realize divergence-free oscillations by supported curls",
@@ -163,6 +166,8 @@
         "residual-improvement iteration"
       ],
       "numerical_caveats": [
+        "the Eq. (6.8) bridge certifies the active-shell algebra and an S_*^-3 support enclosure but does not construct the squared partition or prove Lemma 6.1 support separation",
+        "TangentialBaseJetProvider is a typed dependency boundary only; arbitrary caller jets are never promoted to paper-exact data",
         "PhaseScaleCertificate checks only the exact scalar scale inequalities formalized in PhaseEstimates.lean; it does not infer missing local base-field derivative bounds from samples",
         "RoundedNormalPointCertificate checks theorem inequalities only at supplied point data; the representative equalities are constructed algebraically, but uniform LocalBaseBounds over a slow box still require analytic certification upstream",
         "the quantitative point adapter uses the pinned Lean floor-with-zero-replacement roundedFrequency; phase.py retains its separate deterministic paper-level nearest-integer convention, so callers must not silently interchange the two rounding semantics"
