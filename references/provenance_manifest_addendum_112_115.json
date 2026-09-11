@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "integration-provenance-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "10889752d6bc7656d36f5578b26b61e27d2e5a11",
+  "integrated_prs": [112, 113, 114, 115],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration record only. It consolidates four already-landed formal-structure increments without modifying their mathematical constructors or promoting any completion gate.",
+  "layers": [
+    {
+      "pr": 112,
+      "id": "stage-1-axis-coefficient-primitive",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_primitive.py",
+      "test": "tests/test_axis_coefficient_primitive.py",
+      "provenance": "references/AXIS_COEFFICIENT_PRIMITIVE_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_axis_coefficient_primitive.json",
+      "paper_or_lean_locations": [
+        "NavierStokes/AxisOperators.lean: rowData, primitiveScale, primitiveData, primitive, norm_primitive_le",
+        "NavierStokes/AxisContraction.lean: coefficientOperators / naturalRemainder downstream use"
+      ],
+      "landed_capability": "Pinned AxisOperators.primitiveData / primitive zero-at-axis radial primitive on actual SchedulePressure-derived coefficient eta-jets, with independent radial quadrature and finite-difference regressions.",
+      "remaining_boundary": "No global all-index weighted AxisSpace certificate, parameterPrimitive/regular-inverse/derivative composites or other missing pinned AxisOperators, complete coefficientOperators record, genuine naturalRemainder(x0), first real Picard iterate, fixed-point phi/u, derived average/pressure profile fields, NaturalProfileAssembly, or support/moment/matching/cone closure."
+    },
+    {
+      "pr": 113,
+      "id": "stage-2-repaired-lower-history-provider",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history.py",
+      "test": "tests/test_background_repaired_history.py",
+      "provenance": "references/REPAIRED_LOWER_HISTORY_PROVIDER_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_113.json",
+      "paper_or_lean_locations": [
+        "Eq. (5.2)",
+        "Eqs. (5.3)-(5.7)",
+        "Lemma 5.2",
+        "Eq. (5.14)",
+        "NavierStokes/PositiveAxisSystem.lean"
+      ],
+      "landed_capability": "Contiguous hierarchy-owned strict-lower-history provider that packages landed Lemma 5.2 repaired phi/U jets, derives beta=V/X only through the analytic Eq. (5.2) adapter, and feeds owned lower history into actualLowerSource / Eq. (5.7) without current-order leakage.",
+      "remaining_boundary": "Order zero still comes from Issue #1, and positive-order unrepaired/base jets plus hierarchy moment/patch eta-jets remain inputs. No genuinely recursively solved and converged all-order hierarchy, common analytic strip/coefficient-bound proof, infinite cutoff local-finiteness theorem, or Proposition 5.3 all-jets residual decay is established."
+    },
+    {
+      "pr": 114,
+      "id": "stage-6-section9-correction-extension-admission",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_correction_extension_admission.py",
+      "test": "tests/test_section9_correction_extension_admission.py",
+      "provenance": "references/SECTION9_CORRECTION_EXTENSION_ADMISSION_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_section9_correction_extension_admission.json",
+      "paper_or_lean_locations": [
+        "Lemma 5.4 smooth cutoff / local-finiteness mechanism",
+        "Section 9 / Proposition 9.9",
+        "Eqs. (9.20)-(9.21)"
+      ],
+      "landed_capability": "Fail-closed per-stage admission requiring complete A/B/p theorem witnesses on one common q-domain, actual schedule membership, fixed cutoff support, smooth zero extension, and the exact doubling-schedule lower bound before a correction may enter the Eq. (9.21) assembly path.",
+      "remaining_boundary": "No genuine Section 7/8 A_j/B_j/p_j correction values, machine-connected common-domain or smooth-extension theorem witnesses, hierarchy-derived infinite scale schedule, arbitrary-order Eq. (9.20) flat residual, constructed Eq. (9.21) sums, or Proposition 9.9 convergence is supplied."
+    },
+    {
+      "pr": 115,
+      "id": "stage-6-7-section9-admitted-stage-physical-support",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_stage_physical_support.py",
+      "test": "tests/test_section9_stage_physical_support.py",
+      "provenance": "references/SECTION9_STAGE_PHYSICAL_SUPPORT_PROVENANCE.md",
+      "one_off_manifest": "references/provenance_manifest_addendum_section9_stage_physical_support.json",
+      "paper_or_lean_locations": [
+        "Eq. (4.1)",
+        "Lemma 5.4 cutoff support / local-finiteness mechanism",
+        "Section 9 / Proposition 9.9",
+        "Eq. (9.21)",
+        "Section 10 physical support slabs"
+      ],
+      "landed_capability": "Composition of admitted Section 9 correction-stage schedule data with the exact Eq. (4.1) physical q-slab enclosure, certifying whole-stage cutoff vanishing from a_j*q_lower>=1 and sharpening the generic doubling bound using the actual admitted scale.",
+      "remaining_boundary": "This is pre-endpoint support logic only. No actual Section 7/8 correction values, constructed Eq. (9.21) locally finite sum, arbitrary-order endpoint-uniform residual theorem, smooth extension through t=1, smooth compact forcing, bounded-energy certificate, blow-up closure, or paper-exact velocity is supplied."
+    }
+  ],
+  "integration_boundary": "All four entries remain formal-structure. Green tests, exact coefficient-space operators, hierarchy ownership adapters, or finite pre-endpoint support/admission certificates do not establish a paper-exact velocity. paper_exact_velocity_available must remain false until the complete construction and independent closure obligations are discharged."
+}
