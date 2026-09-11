@@ -1,0 +1,24 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Lemma 5.4; Proposition 9.9 Step 2; Eq. (9.21)",
+    "base_main_commit": "779a952e7130bc4ba4b5ee57b3235074d51f7145"
+  },
+  "layer": {
+    "id": "stage-3-6-section9-local-sum-admission",
+    "status": "formal-structure",
+    "capability": "Fail-closed exact-rational local-finiteness admission for the Eq. (9.21) correction sums from an externally certified common q-domain and infinite doubling scale schedule",
+    "paper_locations": [
+      "Lemma 5.4 local-finiteness proof",
+      "Section 9 / Proposition 9.9 Step 2",
+      "Eq. (9.21)"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_local_sum_admission.py",
+      "tests/test_section9_local_sum_admission.py"
+    ],
+    "provenance": "references/SECTION9_LOCAL_SUM_ADMISSION_PROVENANCE.md",
+    "remaining_boundary": "No genuine Section 7/8 correction fields, machine-verified Lemma 9.7 common domain, actual infinite scale schedule derived from the correction hierarchy, smooth supported zero extensions, arbitrary-order Eq. (9.20) flat residual, constructed Eq. (9.21) field sums, Proposition 9.9 convergence, or paper-exact velocity is supplied. The admission certificate must not be promoted beyond formal-structure."
+  }
+}
