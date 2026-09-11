@@ -122,6 +122,43 @@ class TailScaleCertificate:
         )
 
 
+@dataclass(frozen=True)
+class DerivativeTailSumCertificate:
+    """Exact geometric budget for the omitted localized derivative series.
+
+    If ``N`` is the last retained Taylor degree and ``N >= max(m,k)``, every
+    omitted degree ``j>N`` lies in the official geometric regime ``m<j`` and
+    ``k<j``.  The pinned bound is therefore ``2^-j`` termwise, and
+
+        sum_{j>N} 2^-j = 2^-N.
+
+    This certificate records that summable-majorant arithmetic.  It is still
+    conditional on the caller's ``template_bound`` provider being a genuine
+    global analytic bound at every degree; it does not infer such bounds from
+    samples or certify the actual Navier--Stokes residual endpoint jets.
+    """
+
+    spatial_window: int
+    derivative_order: int
+    last_retained_degree: int
+    first_omitted_degree: int
+    first_omitted_target: Fraction
+    tail_upper_bound: Fraction
+
+    @property
+    def certified(self) -> bool:
+        if min(self.spatial_window, self.derivative_order, self.last_retained_degree) < 0:
+            return False
+        if self.last_retained_degree < max(self.spatial_window, self.derivative_order):
+            return False
+        first = self.last_retained_degree + 1
+        return (
+            self.first_omitted_degree == first
+            and self.first_omitted_target == Fraction(1, 1 << first)
+            and self.tail_upper_bound == Fraction(1, 1 << self.last_retained_degree)
+        )
+
+
 class SpatialBorelScaleSchedule:
     """Deterministic constructive witness for the pinned Borel scale recurrence.
 
@@ -211,6 +248,44 @@ class SpatialBorelScaleSchedule:
         )
         if not certificate.certified:
             raise ArithmeticError("supplied template bounds do not satisfy the pinned tail inequality")
+        return certificate
+
+    def derivative_tail_sum_certificate(
+        self,
+        m: int,
+        k: int,
+        last_retained_degree: int,
+    ) -> DerivativeTailSumCertificate:
+        """Certify the exact geometric budget for all omitted degrees ``j>N``.
+
+        This is the executable arithmetic behind the eventual geometric
+        majorant used by ``SpatialBorelExtension.majorant_summable``.  It does
+        not enumerate an infinite series: once ``N >= max(m,k)``, the already
+        certified per-degree theorem shape applies to every ``j>N``, and the
+        remaining majorant is the exact geometric sum ``2^-N``.
+        """
+        m = _natural(m, "spatial window")
+        k = _natural(k, "derivative order")
+        last_retained_degree = _natural(last_retained_degree, "last retained degree")
+        threshold = max(m, k)
+        if last_retained_degree < threshold:
+            raise ValueError(
+                "derivative tail sum requires last retained degree >= "
+                "max(spatial window, derivative order)"
+            )
+
+        first = last_retained_degree + 1
+        first_certificate = self.tail_certificate(m, first, k)
+        certificate = DerivativeTailSumCertificate(
+            spatial_window=m,
+            derivative_order=k,
+            last_retained_degree=last_retained_degree,
+            first_omitted_degree=first,
+            first_omitted_target=first_certificate.geometric_target,
+            tail_upper_bound=Fraction(1, 1 << last_retained_degree),
+        )
+        if not certificate.certified:
+            raise ArithmeticError("Spatial Borel derivative-tail sum invariant failed")
         return certificate
 
 
