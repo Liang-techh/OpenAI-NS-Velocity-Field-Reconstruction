@@ -55,3 +55,28 @@ def test_no_pending_layer_is_backed_by_claimed_runtime_artifacts() -> None:
     for layer in data["layers"]:
         if layer["status"] == "pending":
             assert layer["artifacts"] == []
+
+
+def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> None:
+    data = load_manifest()
+    layers = {layer["id"]: layer for layer in data["layers"]}
+
+    assert data["full_reconstruction"] is False
+
+    stage2 = layers["stage-2-all-order-background"]
+    assert stage2["status"] == "formal-structure"
+    assert any("Eq. (5.6)" in item and "Omega_k/X" in item for item in stage2["implemented_components"])
+    assert not any("construct the regular Omega" in item for item in stage2["missing_for_paper_exact"])
+
+    stage3 = layers["stage-3-to-6-oscillatory-corrections"]
+    assert stage3["status"] == "formal-structure"
+    assert "src/openai_ns_reconstruction/phase_box_certificate.py" in stage3["artifacts"]
+    assert any("rounded_normal_estimates" in item for item in stage3["implemented_components"])
+
+    stage7 = layers["stage-7-final-localization"]
+    assert stage7["status"] == "formal-structure"
+    assert "src/openai_ns_reconstruction/time_localization.py" in stage7["artifacts"]
+    assert "NavierStokes/TimeLocalization.lean" in stage7["paper_locations"]
+    assert any("timeSwitch" in item for item in stage7["implemented_components"])
+    assert any("smooth global force extension through t=1" in item for item in stage7["missing_for_paper_exact"])
+    assert not any("paper-specific time localization/activation" in item for item in stage7["missing_for_paper_exact"])
