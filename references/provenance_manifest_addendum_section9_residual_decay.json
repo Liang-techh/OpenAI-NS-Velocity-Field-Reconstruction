@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "df87ae3d5ff4d27fc956e38af0bdbb3ff1abedb2",
+  "integrated_prs": [94],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Additive formal-structure ledger for the exact Section 9 schedule and exponent thresholds. It records arithmetic implied by Eqs. (9.17)-(9.20) only and does not certify that the actual Section 7/8 correction sequence satisfies those estimates.",
+  "layers": [
+    {
+      "id": "stage-6-section9-residual-improvement",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_residual_decay.py",
+      "provenance": "references/SECTION9_RESIDUAL_DECAY_PROVENANCE.md",
+      "paper_locations": [
+        "Eqs. (9.17)-(9.21)",
+        "Proposition 9.9"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "Encodes sigma_j=1/5+j/10, g_j=h*j/10, the admissible Eq. (9.17) derivative loss, the Eq. (9.18) leading residual exponent h*sigma_j-K_m, and exact rational first-stage threshold calculations. Independent tests check minimal stage indices from the closed formulas rather than from production outputs.",
+      "remaining_boundary": "Actual Section 7/8 corrections, C_{j,m}, P_{j,m}, theorem-derived K_m, the flat E_{j,m} remainder, locally finite Eq. (9.21) sums, convergence of the correction sequence, and Proposition 9.9 residual flatness remain unproved. K_m remains an explicit supplied theorem datum, never a fitted sample quantity."
+    }
+  ]
+}
