@@ -5,6 +5,7 @@ from openai_ns_reconstruction.__main__ import main
 from openai_ns_reconstruction.provenance import (
     status_report,require_complete_reconstruction,IncompleteReconstructionError,
 )
+from openai_ns_reconstruction.status import construction_status
 from openai_ns_reconstruction.demo import toy_gaussian_profile
 
 
@@ -21,14 +22,34 @@ def test_status_report_has_no_shared_mutable_state():
     report=status_report()
     report['sources']['lean_build_verified']=True
     report['stages'][0]['complete']=False
+    report['stages'][1]['remaining']='fake'
     assert not status_report()['sources']['lean_build_verified']
     assert status_report()['stages'][0]['complete']
+    assert status_report()['stages'][1]['remaining']!='fake'
+
+
+def test_audit_and_status_share_one_truth_surface():
+    audit=status_report()
+    runtime=construction_status()
+    assert audit['full_reconstruction'] is runtime['paper_exact_velocity_available'] is False
+    audit_stages={stage['stage']:stage for stage in audit['stages']}
+    runtime_stages={stage['id']:stage for stage in runtime['stages']}
+    assert audit_stages.keys()==runtime_stages.keys()
+    for stage_id, stage in runtime_stages.items():
+        assert audit_stages[stage_id]['name']==stage['name']
+        assert audit_stages[stage_id]['status']==stage['status']
+        if 'implemented' in stage:
+            assert audit_stages[stage_id]['implemented']==stage['implemented']
+        if 'remaining' in stage:
+            assert audit_stages[stage_id]['remaining']==stage['remaining']
 
 
 def test_exact_audit_returns_nonzero_without_fake_success(tmp_path,capsys):
     path=tmp_path/'audit.json'
     assert main(['audit','--output',str(path),'--require-paper-exact'])==2
-    assert json.loads(path.read_text())['full_reconstruction'] is False
+    report=json.loads(path.read_text())
+    assert report['full_reconstruction'] is False
+    assert report['paper_exact_velocity_available'] is False
 
 
 def test_exact_demo_refuses_before_writing_toy_artifacts(tmp_path,capsys):

@@ -26,20 +26,37 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert status['sources']['pr5_integration_merge_commit']=='c0a08e68b0f65a59a4dca70c50934957a0608475'
     assert status['sources']['lean_source_reviewed'] is True
     assert status['sources']['lean_compiled'] is False
+
     assert 'NaturalAxisRange' in stages[1]['implemented']
     assert 'PressureDatum.Admissible' in stages[1]['implemented']
-    assert 'outgoing pressure schedule' in stages[1]['remaining']
+    assert 'S=32' in stages[1]['implemented']
+    assert 'shapeExponent' in stages[1]['implemented']
+    assert 'finalAngular/clockWeight/axisPressure' in stages[1]['remaining']
+
     assert 'Eq. (5.5)' in stages[2]['implemented']
     assert 'Eq. (5.6)' in stages[2]['implemented']
+    assert 'Eq. (5.7)' in stages[2]['implemented']
+    assert 'Picard' in stages[2]['implemented']
+    assert 'A0/A1/f_n' in stages[2]['remaining']
     assert 'Eq. (5.6) source' in stages[2]['remaining']
+    assert 'Lemma 5.2' in stages[2]['remaining']
+
+    assert 'Eq. (6.8)' in stages[3]['implemented']
+    assert 'TangentialBaseJetProvider' in stages[3]['implemented']
     assert 'PhaseEstimates' in stages[3]['implemented']
     assert 'rounded_normal_estimates' in stages[3]['implemented']
+    assert 'squared slow partitions' in stages[3]['remaining']
     assert 'uniform LocalBaseBounds' in stages[3]['remaining']
+
     assert 'analytic cutoff gradient' in stages[7]['implemented']
     assert 'time-switch' in stages[7]['implemented']
     assert 'TimeLocalization residual identity' in stages[7]['implemented']
+    assert 'Taylor-Borel' in stages[7]['implemented']
+    assert 'doublingEnvelope' in stages[7]['implemented']
+    assert 'residual endpoint jets' in stages[7]['remaining']
     assert 'smooth global force extension through t=1' in stages[7]['remaining']
     assert 'implement paper-specific time activation' not in stages[7]['remaining']
+
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 

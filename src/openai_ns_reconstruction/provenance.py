@@ -1,40 +1,40 @@
 """Conservative reconstruction ledger, not a theorem prover.
 
-A green test run, a caller's paper_exact flag, or a residual-defined force must
-never upgrade this ledger. Missing constructors need actual source-mapped
-implementations and independent evidence before their entries can be changed.
+The audit surface is derived from ``status.construction_status`` so ``audit``
+and ``status`` cannot silently disagree about which construction boundaries have
+landed. A green test run, caller flag, or residual-defined force still cannot
+upgrade the truth status.
 """
 from __future__ import annotations
 import copy
 
+from .status import SOURCE_PINS, construction_status
+
 SOURCES = {
     "paper_title": "Finite Time Blowup for Navier-Stokes",
-    "paper_url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf",
+    "paper_url": SOURCE_PINS["paper_url"],
     "paper_sha256": None,
     "paper_hash_status": "not computed; equations inspected in rendered PDF pages",
-    "upstream_repository": "https://github.com/openai/NavierStokesAndEuler",
-    "upstream_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "upstream_repository": "https://github.com/" + SOURCE_PINS["upstream_lean_repository"],
+    "upstream_commit": SOURCE_PINS["upstream_commit_metadata_observed"],
     "upstream_observed_date": "2026-09-10",
-    "lean_build_verified": False,
+    "lean_build_verified": SOURCE_PINS["lean_compiled"],
     "lean_crosscheck_status": "commit pinned only; theorem mapping and local Lean build pending",
 }
 
-_STAGES = (
-    (0, "similarity geometry", "implemented-formula", True, "Eq. (4.1)"),
-    (1, "complete leading profile", "partial: kinematics, natural-axis rescaling and heat exterior", False,
-     "Thm. 4.6; Appendices A/B/C; heat component A.32-A.38"),
-    (2, "recursive background coefficients", "assembly only; recursive solver missing", False,
-     "Section 5"),
-    (3, "charts, support separation and transported phases", "partial: fixed dyadic geometry only", False,
-     "Eqs. (6.1)-(6.6); remaining Section 6 missing"),
-    (4, "oscillatory stress realization", "missing", False, "Section 7"),
-    (5, "compact mean corrections", "missing", False, "Section 8"),
-    (6, "residual-improvement iteration", "missing", False, "Section 9"),
-    (7, "final compact field and smooth force", "composition only; paper inputs missing", False,
-     "Section 10"),
-    (8, "independent verification", "partial: numerical regression, no full-field certificate", False,
-     "tests and diagnostic reports"),
-)
+_STAGE_SOURCES = {
+    0: "Eq. (4.1)",
+    1: "Thm. 4.6; Appendices A/B/C; heat component A.32-A.38",
+    2: "Section 5; Eqs. (5.1)-(5.7); Eq. (5.27)",
+    3: "Sections 6-7; Eqs. (6.1)-(6.11), (7.1)-(7.11)",
+    4: "Section 7",
+    5: "Section 8",
+    6: "Section 9",
+    7: "Section 10; endpoint Taylor-Borel extension",
+    8: "tests and diagnostic reports",
+}
+
+_PAPER_EXACT_STATUSES = {"paper-exact", "paper-exact-formula"}
 
 
 class IncompleteReconstructionError(RuntimeError):
@@ -42,16 +42,37 @@ class IncompleteReconstructionError(RuntimeError):
 
 
 def status_report() -> dict:
-    stages = [{"stage": i, "name": name, "status": status, "complete": complete,
-               "source": source} for i, name, status, complete, source in _STAGES]
-    return {"schema_version": 1, "full_reconstruction": all(s["complete"] for s in stages),
-            "numerical_checks_are_proofs": False, "sources": copy.deepcopy(SOURCES),
-            "stages": stages,
-            "blockers": [s["name"] for s in stages if not s["complete"]]}
+    """Return the audit view of the same fail-closed truth surface as ``status``."""
+    runtime = construction_status()
+    stages = []
+    for stage in runtime["stages"]:
+        entry = {
+            "stage": stage["id"],
+            "name": stage["name"],
+            "status": stage["status"],
+            "complete": stage["status"] in _PAPER_EXACT_STATUSES,
+            "source": _STAGE_SOURCES[stage["id"]],
+        }
+        if "implemented" in stage:
+            entry["implemented"] = stage["implemented"]
+        if "remaining" in stage:
+            entry["remaining"] = stage["remaining"]
+        stages.append(entry)
+
+    return {
+        "schema_version": 1,
+        "full_reconstruction": runtime["paper_exact_velocity_available"],
+        "paper_exact_velocity_available": runtime["paper_exact_velocity_available"],
+        "numerical_checks_are_proofs": False,
+        "sources": copy.deepcopy(SOURCES),
+        "stages": copy.deepcopy(stages),
+        "blockers": [stage["name"] for stage in stages if not stage["complete"]],
+    }
 
 
 def require_complete_reconstruction() -> None:
     report = status_report()
     if not report["full_reconstruction"]:
-        raise IncompleteReconstructionError("Full paper reconstruction is unavailable: "
-                                             + "; ".join(report["blockers"]))
+        raise IncompleteReconstructionError(
+            "Full paper reconstruction is unavailable: " + "; ".join(report["blockers"])
+        )

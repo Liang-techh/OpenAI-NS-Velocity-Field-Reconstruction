@@ -17,12 +17,13 @@ SOURCE_PINS = {
     "paper_url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf",
     "paper_equations_checked": [
         "4.1-4.7",
-        "5.1-5.6",
+        "5.1-5.7",
         "5.27",
-        "6.1-6.6",
+        "6.1-6.11",
         "7.1-7.11",
         "10.4",
         "Section 10 time localization",
+        "Section 10 endpoint Taylor-Borel extension",
         "Lemma 5.1",
         "Lemma A.2",
     ],
@@ -40,33 +41,41 @@ STAGES = [
     {"id": 1, "name": "leading profile", "status": "formal-structure",
      "implemented": (
          "Leading kinematics, natural-axis polynomials/rescaling, heat exterior, pointwise moment primitives, "
-         "NaturalAxisRange h/j bounds, unique H-root bracket, delta=j/10 and conditional sigma=sqrt(m)/20, plus an "
-         "explicit B=2 ideal-prefix PressureDatum.Admissible witness with closed-form axis pressure."
+         "NaturalAxisRange h/j bounds, unique H-root bracket, delta=j/10 and conditional sigma=sqrt(m)/20, an "
+         "explicit B=2 ideal-prefix PressureDatum.Admissible witness with closed-form axis pressure, and the pinned "
+         "Gaussian-flat outgoing scalar schedule with analytic sigma', an explicit S=32 derivative-bound witness, "
+         "constructive flattenLength, and SchedulePressure.shapeExponent."
      ),
      "remaining": (
-         "Materialize the manuscript-compatible outgoing pressure schedule (or an equivalent fully constructive schedule witness), "
-         "certify the low-|Z| uniform H^2 margin, instantiate Lambda/C and the coefficient-space fixed-point "
-         "phi/u/average/pressure fields, then verify support, moments, matching and cone conditions."
+         "Materialize the manuscript's actual outgoing finalAngular/clockWeight/axisPressure schedule, certify the "
+         "low-|Z| uniform H^2 margin, instantiate Lambda/C and the coefficient-space fixed-point phi/u/average/pressure "
+         "fields, then verify support, moments, matching and cone conditions."
      )},
     {"id": 2, "name": "all-order background", "status": "formal-structure",
      "implemented": (
-         "Finite coefficient assembly, Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, "
-         "analytic cutoff/curl terms, the Eq. (5.5) pressure recurrence row with Pi_n(0,eta)=0 integration, and the "
-         "regular Eq. (5.6) Omega_k/X source evaluator from second jets of V_j=X v_j without axis division."
+         "Finite coefficient assembly, Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, analytic "
+         "cutoff/curl terms, the Eq. (5.5) pressure recurrence row with Pi_n(0,eta)=0 integration, the regular Eq. (5.6) "
+         "Omega_k/X source evaluator from second jets of V_j=X v_j without axis division, and the Eq. (5.7) six-component "
+         "singular inverse G with one-step Picard map plus the first positive-order G f_n for supplied A0/A1/f_n."
      ),
      "remaining": (
-         "Coupled Eqs. (5.3)-(5.4) recursive solve for phi_n/U_n and integration with the constructed Eq. (5.6) source, "
-         "Lemma 5.2 compact moment repair, paper-selected recursive cutoff schedule and all-order residual estimates."
+         "Derive the paper's profile-dependent A0/A1/f_n from materialized leading/lower-order data, iterate Eq. (5.7) "
+         "to the Lemma 5.1 solution and connect it to the constructed Eq. (5.6) source, then implement Lemma 5.2 compact "
+         "moment repair, the paper-selected recursive cutoff schedule and all-order residual estimates."
      )},
     {"id": 3, "name": "dyadic charts and transported phases", "status": "formal-structure",
      "implemented": (
-         "Fixed dyadic geometry, Section 7.1 phase/wavevector/tangent-frame algebra, the pinned PhaseEstimates scalar "
-         "scale gate for the Eq. (7.9)-(7.11) error envelope, and a fail-closed pointwise rounded_normal_estimates "
-         "adapter using the pinned Lean roundedFrequency semantics."
+         "Fixed dyadic geometry, an Eq. (6.8) active-shell/slow-label bridge with q/Q and X reconstruction, S_*^-3 "
+         "slow-support enclosure and typed TangentialBaseJetProvider freezing Eq. (6.11)/(7.2) representative data, "
+         "Section 7.1 phase/wavevector/tangent-frame algebra, the pinned PhaseEstimates scalar scale gate for the "
+         "Eq. (7.9)-(7.11) error envelope, and a fail-closed pointwise rounded_normal_estimates adapter using the pinned "
+         "Lean roundedFrequency semantics."
      ),
      "remaining": (
-         "Instantiate paper-exact base fields/slow supports and certify uniform LocalBaseBounds/C1-C2 hypotheses on every "
-         "active box so the pointwise adapter becomes a uniform phase/frame/damping certificate."
+         "Construct the actual squared slow partitions and Lemma 6.1 cross-label support separation, instantiate the "
+         "base-jet provider from the paper-exact Proposition 5.5 background and theorem choices, and certify uniform "
+         "LocalBaseBounds/C1-C2 hypotheses on every active box so the pointwise adapter becomes a uniform "
+         "phase/frame/damping certificate."
      )},
     {"id": 4, "name": "oscillatory stress realization", "status": "pending",
      "remaining": "Stress-cone decomposition, amplitude equations and supported divergence-free oscillatory waves."},
@@ -78,13 +87,15 @@ STAGES = [
      "implemented": (
          "Section 10 support/plateau geometry, explicit C-infinity spatial cutoff representative, analytic cutoff gradient "
          "wired into curl(cA)=c curl(A)+grad(c) cross A, pinned time-switch support/plateau geometry with analytic chi', "
-         "activated velocity/pressure adapters and an independent numerical cross-check of the TimeLocalization residual identity, "
-         "plus numerical forcing reconstruction/manufactured diagnostics."
+         "activated velocity/pressure adapters and an independent numerical cross-check of the TimeLocalization residual "
+         "identity, plus the pinned endpoint Taylor-Borel algebra: exact DiagonalScale.doublingEnvelope recurrence, "
+         "locally finite right-extension evaluation from supplied jets/scales, endpoint handling and t>=T+1 zero support."
      ),
      "remaining": (
          "Justify the executable spatial/time transition-collar representatives where the formalization uses noncomputable "
-         "ContDiffBump values, construct the separate smooth global force extension through t=1, and connect completed "
-         "upstream local-field inputs."
+         "ContDiffBump values; materialize the actual residual endpoint jets, official derivative-majorant/local-scale "
+         "bounds and locally uniform derivative limits needed for jet matching and the smooth global force extension "
+         "through t=1; and connect completed upstream local-field inputs."
      )},
     {"id": 8, "name": "independent verification", "status": "diagnostic-only",
      "implemented": "Manufactured solutions, refinement checks, divergence/energy diagnostics, labelled exports and fail-closed provenance audit.",
@@ -104,6 +115,7 @@ def construction_status() -> dict:
             "A force reconstructed from the same residual stencil is not independent evidence.",
             "Pointwise or sampled margins are not uniform-in-parameter certificates.",
             "The executable Section 10 spatial/time transition collars have the official support/plateau geometry but are not claimed pointwise identical to Mathlib's noncomputable ContDiffBump.",
+            "The endpoint Borel evaluator uses caller-supplied jets/scales and does not certify the all-order derivative majorants or smooth t=1 force extension.",
         ],
         "sources": copy.deepcopy(SOURCE_PINS),
         "stages": copy.deepcopy(STAGES),
