@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "56fa46eb02f5976037dd5f1df4801e375d543af7",
+  "integrated_prs": [128],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Eq. (5.6) Omega/X eta-derivative increment. Analytically differentiates the regular omega row, including the nested shifted axial-viscosity term, while making the required third-mixed beta derivatives explicit and fail-closed.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_omega_parameter_jet.py",
+      "provenance": "references/EQ_5_6_OMEGA_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Eqs. (5.3)-(5.7)", "Lemma 5.1"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #128 exposes value plus analytic partial_eta(Omega_k/X) for the landed regular Eq. (5.6) row from explicit third-mixed beta jets and axial second jets. Regression cross-checks the derivative against an independent centered finite difference of the pre-existing omega value implementation for orders 0-2, including X=0.",
+      "remaining_boundary": "The Section5LowerHistoryJetHierarchy still derives beta only through second order. Eq. (5.2) must be lifted to beta_XXeta, beta_Xetaeta, and beta_etaetaeta from a correspondingly higher U jet before partial_eta f_n is hierarchy-owned. Genuine k=1 Picard iteration, full Picard convergence, recursive coefficient materialization, infinite cutoff schedule, and Proposition 5.3 all-jets residual decay remain open. paper_exact_velocity_available remains false."
+    }
+  ]
+}
