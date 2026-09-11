@@ -3,7 +3,7 @@ import math
 import numpy as np
 import pytest
 
-from openai_ns_reconstruction.local_field import LocalField, LocalizedField, curl_numeric
+from openai_ns_reconstruction.local_field import LocalField, curl_numeric
 from openai_ns_reconstruction.spatial_localization import (
     PLATEAU_HALF_HEIGHT,
     PLATEAU_RADIUS_SQUARED,
@@ -11,6 +11,7 @@ from openai_ns_reconstruction.spatial_localization import (
     SUPPORT_RADIUS_SQUARED,
     plateau_contains,
     section10_axisymmetric_cutoff,
+    section10_localized_field,
     section10_spatial_cutoff,
     section10_spatial_cutoff_gradient,
     support_cylinder_contains,
@@ -83,34 +84,36 @@ def test_section10_analytic_gradient_matches_independent_finite_difference():
     assert np.array_equal(section10_spatial_cutoff_gradient(0.30, 0.0, 0.0, t), np.zeros(3))
 
 
-def test_section10_gradient_wires_into_localized_product_rule():
+def test_section10_fixed_binding_wires_matching_gradient_into_product_rule():
     # A=(0,0,-r^2/2) has exact curl=(-y,x,0). With B=0, Eq. (10.4)
     # reduces to curl(cA), so numerical curl of the product is an independent
-    # check of c curl(A) + grad(c) cross A.
+    # check that the fixed-cutoff adapter selects the matching analytic
+    # c curl(A) + grad(c) cross A path.
     potential = lambda x, y, z, t: np.array([0.0, 0.0, -0.5 * (x * x + y * y)])
     analytic_curl = lambda x, y, z, t: np.array([-y, x, 0.0])
     local = LocalField(potential, lambda *args: 0.0, analytic_curl=analytic_curl)
-    localized = LocalizedField(
-        local,
-        section10_spatial_cutoff,
-        section10_spatial_cutoff_gradient,
-    )
+    localized = section10_localized_field(local)
+
+    assert localized.cutoff is section10_spatial_cutoff
+    assert localized.cutoff_gradient is section10_spatial_cutoff_gradient
+
     point = (0.19, 0.05, 0.17, 0.4)
     exact_product_rule = localized.velocity(*point)
     independently_differenced = curl_numeric(localized.localized_potential, *point, eps=2e-6)
     assert np.allclose(exact_product_rule, independently_differenced, rtol=2e-5, atol=2e-8)
 
 
-def test_negative_z_exterior_is_zero_and_short_circuits_missing_local_field():
+def test_fixed_binding_exterior_is_zero_and_short_circuits_missing_local_field():
     # Regression guard: the old one-sided smooth_cutoff(s) is not suitable by
-    # itself for the official |z|-symmetric compact support.
+    # itself for the official |z|-symmetric compact support. The fixed adapter
+    # must preserve that geometry and avoid evaluating unavailable local data.
     assert section10_spatial_cutoff(0.0, 0.0, -0.30, 0.5) == 0.0
 
     def unavailable(*_args):
         raise RuntimeError("local field must not be evaluated outside support")
 
     local = LocalField(unavailable, unavailable)
-    localized = LocalizedField.from_axisymmetric(local, section10_axisymmetric_cutoff)
+    localized = section10_localized_field(local)
     assert np.array_equal(localized.velocity(0.0, 0.0, -0.30, 0.5), np.zeros(3))
     assert np.array_equal(localized.velocity(0.30, 0.0, 0.0, 0.5), np.zeros(3))
 
@@ -122,3 +125,5 @@ def test_bad_geometry_inputs_fail_loudly():
         section10_spatial_cutoff_gradient(0.0, float("inf"), 0.0, 0.0)
     with pytest.raises(ValueError):
         section10_axisymmetric_cutoff(-0.1, 0.0, 0.0)
+    with pytest.raises(TypeError):
+        section10_localized_field(object())
