@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "ac1a19a7ce4635c8db149c6cb28c3a5a1d36a169",
+  "integrated_prs": [133],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Eq. (5.2) regular-flux third-mixed derivative increment. Analytically derives beta_XXeta, beta_Xetaeta, and beta_etaetaeta while making the exact additional fourth-mixed U derivative requirements explicit and fail-closed.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_regular_flux_third_mixed_jets.py",
+      "provenance": "references/EQ_5_2_REGULAR_FLUX_THIRD_MIXED_JET_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eqs. (5.3)-(5.7)", "Lemma 5.1"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #133 extends the analytic Eq. (5.2) beta=V/X adapter to the exact three third-mixed beta derivatives required by the landed Eq. (5.6) Omega/X eta derivative. Regression independently centered-differences the pre-existing beta second-jet path for orders 0-2, including X=0, and verifies all three new fourth-mixed U inputs are structurally active.",
+      "remaining_boundary": "The new AxialFourthMixedJet is still upstream/caller supplied. Lemma 5.2 repair must be lifted to U_XXetaeta, U_Xetaetaeta, and U_etaetaetaeta and connected to Section5LowerHistoryJetHierarchy before beta third-mixed jets, partial_eta(Omega/X), and partial_eta f_n are hierarchy-owned. Genuine k=1 Picard iteration, full Picard convergence, recursive coefficient materialization, infinite cutoff schedule, and Proposition 5.3 all-jets residual decay remain open. paper_exact_velocity_available remains false."
+    }
+  ]
+}
