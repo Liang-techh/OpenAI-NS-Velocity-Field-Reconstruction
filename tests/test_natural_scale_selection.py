@@ -3,6 +3,8 @@ import math
 import pytest
 
 from openai_ns_reconstruction.natural_scale_selection import (
+    JET_RADIAL_DERIVATIVE_BOUND_AT_FIVE,
+    JET_VALUE_BOUND_AT_FIVE,
     contraction_threshold,
     normalization_threshold,
     select_natural_scale,
@@ -10,29 +12,30 @@ from openai_ns_reconstruction.natural_scale_selection import (
 )
 
 
-def test_exact_pinned_threshold_algebra() -> None:
+def test_exact_pinned_threshold_algebra_and_closed_jet_sums() -> None:
     B = 2.0
     L = 3.0
-    J0 = 0.125
-    J1 = 0.375
+
+    # Independent closed forms for sum q^n and sum (n+1)q^n at q=5/20.
+    q = 0.25
+    assert JET_VALUE_BOUND_AT_FIVE == 1.0 / (1.0 - q)
+    assert JET_RADIAL_DERIVATIVE_BOUND_AT_FIVE == 1.0 / (1.0 - q) ** 2
 
     contraction = contraction_threshold(B, L)
-    stability = stability_scale(B, J0, J1)
+    stability = stability_scale(B)
 
     assert contraction == 1.0 + B + L
-    assert stability == 1.0 + 500.0 * (J0 + J1) * B
+    assert stability == 1.0 + (14000.0 / 9.0) * B
 
 
 def test_selection_takes_positive_profile_threshold_then_exact_C() -> None:
     witness = select_natural_scale(
         remainder_bound=2.0,
         remainder_lipschitz=3.0,
-        jet_value_bound=0.125,
-        jet_radial_derivative_bound=0.375,
         phase_real_part_sup=0.01,
     )
 
-    expected_lambda = max(1.0 + 2.0 + 3.0, 1.0 + 500.0 * 0.5 * 2.0)
+    expected_lambda = max(1.0 + 2.0 + 3.0, 1.0 + (14000.0 / 9.0) * 2.0)
     assert witness.Lambda == expected_lambda
     assert witness.C == math.exp(expected_lambda * 0.01)
     assert witness.admits(witness.Lambda, witness.C)
@@ -40,10 +43,8 @@ def test_selection_takes_positive_profile_threshold_then_exact_C() -> None:
 
 def test_admissibility_recomputes_C_threshold_at_candidate_Lambda() -> None:
     witness = select_natural_scale(
-        remainder_bound=1.0,
+        remainder_bound=0.01,
         remainder_lipschitz=0.25,
-        jet_value_bound=0.01,
-        jet_radial_derivative_bound=0.02,
         phase_real_part_sup=0.2,
     )
     larger_lambda = witness.Lambda + 1.0
@@ -58,8 +59,8 @@ def test_admissibility_recomputes_C_threshold_at_candidate_Lambda() -> None:
 def test_fail_closed_for_uncertified_numeric_domains() -> None:
     with pytest.raises(ValueError, match="remainder_bound"):
         contraction_threshold(-1.0, 0.0)
-    with pytest.raises(ValueError, match="jet_value_bound"):
-        stability_scale(1.0, float("nan"), 1.0)
+    with pytest.raises(ValueError, match="remainder_bound"):
+        stability_scale(float("nan"))
     with pytest.raises(ValueError, match="phase_real_part_sup"):
         normalization_threshold(2.0, -0.1)
     with pytest.raises(ArithmeticError, match="binary64"):
