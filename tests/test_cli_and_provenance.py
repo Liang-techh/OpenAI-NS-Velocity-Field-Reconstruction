@@ -96,6 +96,7 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
     assert 'src/openai_ns_reconstruction/schedule_analytic_neighborhood.py' in leading['artifacts']
     assert 'src/openai_ns_reconstruction/natural_scale_selection.py' in leading['artifacts']
     assert 'src/openai_ns_reconstruction/axis_remainder_bounds.py' in leading['artifacts']
+    assert 'src/openai_ns_reconstruction/axis_remainder_wide_bounds.py' in leading['artifacts']
     assert 'src/openai_ns_reconstruction/axis_analytic_input_bounds.py' in leading['artifacts']
     assert any('finalAngular' in item and 'clockWeight' in item
                for item in leading['implemented_components'])
@@ -111,9 +112,13 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
                for item in leading['implemented_components'])
     assert any('actual-schedule analytic-neighborhood certificate' in item and 'realPartSup' in item
                for item in leading['implemented_components'])
+    assert any('96-digit Decimal' in item and 'sys.float_info.max' in item
+               for item in leading['implemented_components'])
     assert not any('materialize and certify an actual admissible common analytic' in item
                    for item in leading['missing_for_paper_exact'])
-    assert any('rho/B/realPartSup' in item and 'contraction' in item
+    assert any('wide Decimal remainderBound/remainderLip' in item and 'Lambda/C' in item
+               for item in leading['missing_for_paper_exact'])
+    assert any('historical binary64 overflow is not a lower bound' in item
                for item in leading['missing_for_paper_exact'])
     assert any('coefficient-space fixed-point fields' in item
                for item in leading['missing_for_paper_exact'])
@@ -124,11 +129,14 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
     assert background['status']=='formal-structure'
     assert 'src/openai_ns_reconstruction/background_picard_bounds.py' in background['artifacts']
     assert 'src/openai_ns_reconstruction/background_moment_repair.py' in background['artifacts']
+    assert 'src/openai_ns_reconstruction/background_moment_repair_profile.py' in background['artifacts']
     assert 'src/openai_ns_reconstruction/background_extension.py' in background['artifacts']
     assert 'src/openai_ns_reconstruction/background_cutoff_schedule.py' in background['artifacts']
     assert 'src/openai_ns_reconstruction/background_cutoff_support.py' in background['artifacts']
     assert 'src/openai_ns_reconstruction/background_tail_order.py' in background['artifacts']
     assert any('five-moment repair' in item for item in background['implemented_components'])
+    assert any('function-level Lemma 5.2 compact repair' in item and 'paper_exact' in item
+               for item in background['implemented_components'])
     assert any('Eq. (5.8)' in item and 'p_k=ceil(k/2)' in item and 'complete-tail' in item
                for item in background['implemented_components'])
     assert any('Eq. (5.15) forward reconstruction' in item
@@ -155,6 +163,8 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
     assert 'src/openai_ns_reconstruction/phase_uniform_bounds.py' in oscillatory['artifacts']
     assert 'src/openai_ns_reconstruction/phase_frame_bounds.py' in oscillatory['artifacts']
     assert 'src/openai_ns_reconstruction/stress_cone.py' in oscillatory['artifacts']
+    assert 'src/openai_ns_reconstruction/pulse_covariance_budget.py' in oscillatory['artifacts']
+    assert 'src/openai_ns_reconstruction/curl_realization_algebra.py' in oscillatory['artifacts']
     assert any('squared partitions' in item for item in oscillatory['implemented_components'])
     assert any('2250-color' in item and 'common r0' in item
                for item in oscillatory['implemented_components'])
@@ -167,11 +177,15 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
                for item in oscillatory['implemented_components'])
     assert any('strict positive-cone test |a t|<b m' in item and 'sqrt(epsilon)*mask' in item
                for item in oscillatory['implemented_components'])
+    assert any('Formula (30)' in item and 'inverseCarrier=i/K' in item
+               for item in oscillatory['implemented_components'])
     assert any('paper-exact Proposition 5.5 background' in item
                for item in oscillatory['missing_for_paper_exact'])
     assert any('LocalBaseBounds C1/C2 hypotheses' in item and 'normal-closeness' in item
                for item in oscillatory['missing_for_paper_exact'])
     assert any('actual pulse-integrated covariance matrix H' in item and 'Eq. (7.28)' in item
+               for item in oscillatory['missing_for_paper_exact'])
+    assert any('actual localized coefficient' in item and 'LocalizedCurlRealization' in item
                for item in oscillatory['missing_for_paper_exact'])
 
     final=layers['stage-7-final-localization']
@@ -179,10 +193,13 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
     assert 'src/openai_ns_reconstruction/past_extension.py' in final['artifacts']
     assert 'src/openai_ns_reconstruction/endpoint_jets.py' in final['artifacts']
     assert 'src/openai_ns_reconstruction/endpoint_scale_schedule.py' in final['artifacts']
+    assert 'src/openai_ns_reconstruction/endpoint_limit_majorant.py' in final['artifacts']
     assert 'src/openai_ns_reconstruction/traced_residual.py' in final['artifacts']
     assert 'src/openai_ns_reconstruction/section10_support_energy.py' in final['artifacts']
     assert 'src/openai_ns_reconstruction/section10_origin_preservation.py' in final['artifacts']
     assert any('PastExtension closed-past branch' in item
+               for item in final['implemented_components'])
+    assert any('close_left_open_past' in item and 'rejects t>T' in item
                for item in final['implemented_components'])
     assert any('full-spacetime' in item and 'timeVector' in item
                for item in final['implemented_components'])
@@ -196,6 +213,8 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
                for item in final['implemented_components'])
     assert any('closed-past localized NS residual' in item and 'full spacetime derivative family' in item
                for item in final['missing_for_paper_exact'])
+    assert any('degree-zero endpoint value used by close_left_open_past' in item
+               for item in final['missing_for_paper_exact'])
     assert any('analytic compact-template derivative bounds' in item
                for item in final['missing_for_paper_exact'])
     assert any('uniform bounded kinetic-energy' in item
@@ -204,6 +223,8 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
                for item in final['missing_for_paper_exact'])
     assert any('tautological' in item for item in final['numerical_caveats'])
     assert any('supplied endpoint tensors' in item and 'not evidence' in item
+               for item in final['numerical_caveats'])
+    assert any('endpoint_borel.close_left_open_past' in item and 'does not prove continuity' in item
                for item in final['numerical_caveats'])
     assert any('section10_support_energy.py' in item and 'fixed-time implication' in item
                for item in final['numerical_caveats'])
