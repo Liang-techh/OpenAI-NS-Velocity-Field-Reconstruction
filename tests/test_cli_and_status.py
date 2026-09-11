@@ -51,11 +51,15 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'landed wide Lambda/C selector' in stages[1]['implemented']
     assert 'symbolic exponent' in stages[1]['implemented']
     assert 'without binary64 down-conversion' in stages[1]['implemented']
+    assert 'axis_fixed_point_picard' in stages[1]['implemented']
+    assert 's*remainderBound<=1' in stages[1]['implemented']
+    assert 's*remainderLip<=1/2' in stages[1]['implemented']
     assert 'axisPressure' not in stages[1]['remaining']
     assert 'H^2 margin' not in stages[1]['remaining']
     assert 'actual admissible common analytic radius' not in stages[1]['remaining']
     assert 'common complex-field sup bound' not in stages[1]['remaining']
-    assert 'Materialize the coefficient-space fixed-point phi/u' in stages[1]['remaining']
+    assert 'AxisCoefficientSpace/coefficientOperators/naturalRemainder backend' in stages[1]['remaining']
+    assert 'materialize the coefficient-space fixed-point phi/u' in stages[1]['remaining']
     assert 'derive the corresponding average/pressure fields' in stages[1]['remaining']
     assert 'former binary64 Lambda/C representation blocker is closed' in stages[1]['remaining']
 
@@ -63,6 +67,9 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'Eq. (5.6)' in stages[2]['implemented']
     assert 'Eq. (5.7)' in stages[2]['implemented']
     assert 'Picard' in stages[2]['implemented']
+    assert 'PositiveAxisSystem adapter' in stages[2]['implemented']
+    assert 'BaseJet(phi,axial,beta)' in stages[2]['implemented']
+    assert 'SourceJet(angular,axial,pressureProduct,omegaQuotient)' in stages[2]['implemented']
     assert 'Eq. (5.8)' in stages[2]['implemented']
     assert 'p_k=ceil(k/2)' in stages[2]['implemented']
     assert 'complete-tail truncation certificate' in stages[2]['implemented']
@@ -82,7 +89,7 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'h(J+1)+b-2M' in stages[2]['implemented']
     assert 'minimal J' in stages[2]['implemented']
     assert 'A0/A1/f_n' in stages[2]['remaining']
-    assert 'actual analytic constants' in stages[2]['remaining']
+    assert 'actual C_n' in stages[2]['remaining']
     assert 'Eq. (5.6) source' in stages[2]['remaining']
     assert 'true eta-dependent repaired hierarchy' in stages[2]['remaining']
     assert 'true uniform C[j,m] bounds' in stages[2]['remaining']
@@ -121,9 +128,13 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'primary amplitude ODE algebra' in stages[4]['implemented']
     assert 'exact 2x2 modal operator' in stages[4]['implemented']
     assert 'x=p+q, y=h(p-q)' in stages[4]['implemented']
+    assert 'finite-interval PrimaryODE adapter' in stages[4]['implemented']
+    assert 'Volterra integral defect' in stages[4]['implemented']
+    assert 'closed-form constant-coefficient oracle' in stages[4]['implemented']
     assert 'actual pulse-integrated covariance columns' in stages[4]['remaining']
     assert 'determinant/inverse stability' in stages[4]['remaining']
-    assert 'finite-interval PrimaryODE Volterra solution' in stages[4]['remaining']
+    assert 'finite-interval PrimaryODE Volterra solution adapter' in stages[4]['remaining']
+    assert 'rigorous error certificate' in stages[4]['remaining']
     assert 'actual localized coefficient' in stages[4]['remaining']
     assert 'genuine supported divergence-free oscillatory wave' in stages[4]['remaining']
 
@@ -146,9 +157,13 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'late-origin preservation certificate' in stages[7]['implemented']
     assert '3/4<=t<1' in stages[7]['implemented']
     assert 'c=1 and grad(c)=0 at the origin' in stages[7]['implemented']
+    assert 'endpoint-localization transfer' in stages[7]['implemented']
+    assert 'requires T=1' in stages[7]['implemented']
+    assert 'timeSwitch\'=0' in stages[7]['implemented']
     assert 'pointwise endpoint-force support certificate' in stages[7]['implemented']
     assert 'requiring exact zeros with no tolerance' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
+    assert 'official t>=3/4 plateau' in stages[7]['remaining']
     assert 'degree-zero endpoint value' in stages[7]['remaining']
     assert 'every genuine endpoint normal coefficient vanish outside' in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
@@ -160,15 +175,18 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'traced-residual adapters' in limitations
     assert 'caller-supplied endpoint jets' in limitations
     assert 'close_left_open_past' in limitations
+    assert 'official-plateau transfer' in limitations
     assert 'endpoint point-support certificate' in limitations
     assert 'finite collection of point queries' in limitations
     assert 'fixed-time implication' in limitations
     assert 'uniform bounded-energy estimate' in limitations
     assert 'late-origin adapter preserves an upstream-certified origin curl value' in limitations
     assert 'primary-amplitude ODE' in limitations
-    assert 'finite-interval Volterra solution is not constructed' in limitations
+    assert 'generic finite-interval PrimaryODE/Volterra execution adapter' in limitations
+    assert 'not a rigorous numerical certificate' in limitations
     assert 'wide Lambda/C selector' in limitations
-    assert 'coefficient-space fixed point has been materialized' in limitations
+    assert 'landed Picard gate' in limitations
+    assert 'does not materialize the coefficient-space fixed point' in limitations
     assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[4]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
