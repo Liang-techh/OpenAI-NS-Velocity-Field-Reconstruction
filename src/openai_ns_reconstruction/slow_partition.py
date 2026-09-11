@@ -6,7 +6,7 @@ partition ``sum_ell chi_ell(q)^2 = 1`` with ``chi_ell`` supported where
 ``sum_a chi_{ell,a}(R,Z,T)^2 = 1`` on a mesh of size ``S_*^-3`` whose support
 extends by at most one mesh length from its grid point in each coordinate.
 
-The manuscript deliberately leaves the seed bump unspecified.  This module
+The manuscript deliberately leaves the seed bump unspecified. This module
 therefore makes one explicit paper-admissible C-infinity choice and records it
 as an implementation choice, not as a uniquely paper-exact transition profile:
 
@@ -91,7 +91,7 @@ def active_dyadic_indices(q: float) -> tuple[int, int]:
 class ProductSlowCutoff:
     """The product squared-partition factor ``chi_{ell,a}(R,Z,T)``.
 
-    We choose the grid origin at zero.  Section 6.2 allows an arbitrary fixed
+    We choose the grid origin at zero. Section 6.2 allows an arbitrary fixed
     translated mesh; the zero-origin choice is therefore implementation data,
     not a claim that the manuscript selected this particular translate.
     """
@@ -141,7 +141,7 @@ class ProductSlowCutoff:
 
 
 def active_product_indices(chart: DyadicChart, R: float, Z: float, T: float):
-    """Yield the at-most-eight product-grid indices nonzero at a slow point."""
+    """Return the at-most-eight product-grid indices nonzero at a slow point."""
     h = chart.S_star ** -3
     coords = tuple(_finite(v, "slow coordinate") / h for v in (R, Z, T))
     axes = [local_integer_indices(x) for x in coords]
@@ -157,11 +157,14 @@ def product_partition_square_sum(chart: DyadicChart, R: float, Z: float, T: floa
     return total
 
 
-def slow_label_cutoff(label: SlowLabel, q: float, R: float, Z: float, T: float) -> float:
+def slow_label_cutoff(
+    chart: DyadicChart, label: SlowLabel, q: float, R: float, Z: float, T: float
+) -> float:
     """Equation (6.9) cutoff ``eta_gamma=chi_ell(q) chi_{ell,a}``.
 
     The sign is intentionally absent from the value: Eq. (6.9) duplicates the
     same cutoff for the ``+`` and ``-`` wave families.
     """
-    chart = DyadicChart(label.ell)
+    if chart.ell != label.ell:
+        raise ValueError("chart and label must use the same dyadic band")
     return dyadic_cutoff(label.ell, q) * ProductSlowCutoff(chart, label.a).value(R, Z, T)
