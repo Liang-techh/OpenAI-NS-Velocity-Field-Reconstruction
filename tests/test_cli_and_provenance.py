@@ -71,9 +71,7 @@ def test_demo_runs_offline_and_hashes_artifacts(tmp_path,capsys):
 
 
 def test_runtime_source_pins_match_repository_manifest():
-    import json
     from pathlib import Path
-    from openai_ns_reconstruction.provenance import status_report
     manifest = json.loads((Path(__file__).resolve().parents[1] /
                            "references/provenance_manifest.json").read_text())
     report = status_report()
@@ -82,3 +80,39 @@ def test_runtime_source_pins_match_repository_manifest():
     assert manifest["sources"]["paper"]["sha256"] == report["sources"]["paper_sha256"]
     assert manifest["sources"]["official_lean"]["build_verified"] is False
     assert manifest["full_reconstruction"] == report["full_reconstruction"] is False
+
+
+def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
+    from pathlib import Path
+    manifest = json.loads((Path(__file__).resolve().parents[1] /
+                           "references/provenance_manifest.json").read_text())
+    layers={layer['id']:layer for layer in manifest['layers']}
+
+    leading=layers['stage-1-leading-profile']
+    assert leading['status']=='formal-structure'
+    assert 'src/openai_ns_reconstruction/outgoing_tail.py' in leading['artifacts']
+    assert any('finalAngular' in item and 'clockWeight' in item
+               for item in leading['implemented_components'])
+    assert any('axisPressure' in item for item in leading['missing_for_paper_exact'])
+
+    background=layers['stage-2-all-order-background']
+    assert background['status']=='formal-structure'
+    assert 'src/openai_ns_reconstruction/background_moment_repair.py' in background['artifacts']
+    assert any('five-moment repair' in item for item in background['implemented_components'])
+    assert any('Eq. (5.15)' in item for item in background['missing_for_paper_exact'])
+
+    oscillatory=layers['stage-3-to-6-oscillatory-corrections']
+    assert oscillatory['status']=='formal-structure'
+    assert 'src/openai_ns_reconstruction/slow_partition.py' in oscillatory['artifacts']
+    assert any('squared partitions' in item for item in oscillatory['implemented_components'])
+    assert any('Lemma 6.1' in item for item in oscillatory['missing_for_paper_exact'])
+
+    final=layers['stage-7-final-localization']
+    assert final['status']=='formal-structure'
+    assert 'src/openai_ns_reconstruction/endpoint_jets.py' in final['artifacts']
+    assert any('full-spacetime' in item and 'timeVector' in item
+               for item in final['implemented_components'])
+    assert any('actual localized NS residual' in item
+               for item in final['missing_for_paper_exact'])
+
+    assert manifest['full_reconstruction'] is False

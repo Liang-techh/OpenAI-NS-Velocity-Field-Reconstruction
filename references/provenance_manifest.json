@@ -108,13 +108,16 @@
         "src/openai_ns_reconstruction/background.py",
         "src/openai_ns_reconstruction/background_recurrence.py",
         "src/openai_ns_reconstruction/background_inner_solver.py",
+        "src/openai_ns_reconstruction/background_moment_repair.py",
         "src/openai_ns_reconstruction/cutoffs.py"
       ],
       "paper_locations": [
-        "Eqs. (5.1)-(5.6)",
-        "Eq. (5.7)",
+        "Eqs. (5.1)-(5.7)",
+        "Eqs. (5.10)-(5.16)",
         "Eq. (5.27)",
-        "Lemma 5.1"
+        "Lemma 5.1",
+        "Lemma 5.2",
+        "Appendix A, Lemma A.1"
       ],
       "implemented_components": [
         "Eq. (5.2) incompressibility coefficient flux with the D+lambda_n shift",
@@ -122,17 +125,21 @@
         "Eq. (5.5) order-n pressure row split into current-linear, lower-order convolution and regular Omega_{n-1}/X source terms",
         "numerical integration of Eq. (5.5) with the Lemma 5.1 datum Pi_n(0,eta)=0 once phi_n and Omega_{n-1}/X are supplied",
         "Eq. (5.6) regular Omega_k/X evaluator from second jets of the smooth factors V_j=X v_j, including the shifted double-Z term, without numerical division by X at the axis",
-        "Eq. (5.7) six-component singular inverse G and one-step Picard map G[A0 W + A1 d_eta W + f_n], including the first positive-order term G f_n for supplied matrices/source"
+        "Eq. (5.7) six-component singular inverse G and one-step Picard map G[A0 W + A1 d_eta W + f_n], including the first positive-order term G f_n for supplied matrices/source",
+        "Lemma 5.2 / Eqs. (5.14)-(5.16) compact five-moment repair using two fixed U_n bumps and three fixed E_n bumps; the finite systems B_U alpha=-d_U and B_E beta=-d_E are solved against the paper's moment exponents and independently re-integrated in tests"
       ],
       "missing_for_paper_exact": [
         "derive the paper's profile-dependent A0/A1/f_n from materialized leading/lower-order data, iterate Eq. (5.7) to the Lemma 5.1 solution, and connect the solved phi_n/U_n data to the constructed Eq. (5.6) Omega source",
-        "compact moment corrections from Lemma 5.2",
-        "paper-selected cutoff sequence; generic smooth cutoffs are not the recursive construction"
+        "connect the repaired U_n/E_n through the paper's Eq. (5.15) reconstruction of F_n/V_n/Pi_n and verify the resulting support/stress conclusions required before reuse at the next order",
+        "paper-selected recursive cutoff sequence; generic smooth cutoffs are not the recursive construction",
+        "arbitrary-order truncation/residual decay certificate for the cutoff-summed background"
       ],
       "numerical_caveats": [
         "the Eq. (5.5) identity is paper-derived, but solve_pressure_eq_5_5 evaluates its radial integral by finite Gauss-Legendre quadrature",
         "the Eq. (5.6) quotient is an exact algebraic recurrence row for supplied coefficient jets, but those jets are not yet produced by the missing coupled positive-order solver",
         "the Eq. (5.7) inverse/Picard implementation is exact for supplied A0/A1/f_n, but those data are not yet produced by the paper-exact leading/lower-order construction and no Picard convergence certificate is claimed",
+        "the compact repair realizes the five paper moment equations for supplied base moment data and e_* f(eta); it does not itself construct those upstream functions or complete Eq. (5.15)",
+        "production repair moments use the repository quadrature path while tests cross-check with an independent adaptive quadrature; this is numerical verification, not a uniform analytic certificate",
         "the pressure-row primitive is not a complete positive-order coefficient until the coupled phi_n/U_n construction is supplied"
       ]
     },
@@ -142,6 +149,7 @@
       "artifacts": [
         "src/openai_ns_reconstruction/charts.py",
         "src/openai_ns_reconstruction/slow_labels.py",
+        "src/openai_ns_reconstruction/slow_partition.py",
         "src/openai_ns_reconstruction/phase.py",
         "src/openai_ns_reconstruction/phase_estimates.py",
         "src/openai_ns_reconstruction/phase_box_certificate.py"
@@ -155,6 +163,7 @@
       "implemented_components": [
         "fixed dyadic geometry and exact integer covering matrices",
         "Eq. (6.8) active-shell/label bridge with dimensionless q/Q and X reconstruction, S_*^-3 slow-support enclosure, sign-duplicated box labels, and a typed base-jet provider that freezes Eq. (6.11)/(7.2) phase data at the representative",
+        "paper-admissible normalized C-infinity translate squared partitions with sum chi_ell(q)^2=1 on the dyadic q cover and sum chi_{ell,a}(R,Z,T)^2=1 on the S_*^-3 product slow mesh; sign-duplicated labels share the same spatial-temporal cutoff",
         "local Section 7.1 phase/frequency formulas, backward material phase defect, projected evolution operator, and tangent frame for caller-supplied representative base jets",
         "deterministic allowed tie rule for rounding k*p to a nonzero integer, giving single-valued angular harmonics",
         "pinned PhaseEstimates scalar scale gate: phaseError, phaseConstant, exact phaseError<=4/S hypotheses, and the resulting rounded-normal bound envelope",
@@ -165,7 +174,7 @@
         "NavierStokes/PhaseEstimates.lean"
       ],
       "missing_for_paper_exact": [
-        "construct the actual squared slow partitions chi_ell and chi_{ell,a}, plus the common auxiliary rectangle centers/radius and Lemma 6.1 cross-label support separation",
+        "construct the common auxiliary rectangle centers/radius and prove the Lemma 6.1 cross-label support separation for the landed slow partitions",
         "instantiate TangentialBaseJetProvider with the paper-exact Proposition 5.5 background and theorem-chosen r0/u_star rather than caller-supplied data",
         "upgrade the pointwise rounded-normal adapter to a uniform active-box certificate by proving the LocalBaseBounds C1/C2 hypotheses for the actual paper-exact base functions on every slow box",
         "stress-cone decomposition into positive wave covariances",
@@ -174,7 +183,8 @@
         "residual-improvement iteration"
       ],
       "numerical_caveats": [
-        "the Eq. (6.8) bridge certifies the active-shell algebra and an S_*^-3 support enclosure but does not construct the squared partition or prove Lemma 6.1 support separation",
+        "the squared partitions use a standard explicit compact C-infinity seed and a zero-origin product grid; the paper permits normalized smooth translates but does not uniquely prescribe this seed or grid origin, so this is recorded as a paper-admissible implementation choice rather than a unique paper-exact transition profile",
+        "the landed partitions establish the local squared-sum identities and support enclosures but do not prove Lemma 6.1 common-rectangle or cross-label separation",
         "TangentialBaseJetProvider is a typed dependency boundary only; arbitrary caller jets are never promoted to paper-exact data",
         "PhaseScaleCertificate checks only the exact scalar scale inequalities formalized in PhaseEstimates.lean; it does not infer missing local base-field derivative bounds from samples",
         "RoundedNormalPointCertificate checks theorem inequalities only at supplied point data; the representative equalities are constructed algebraically, but uniform LocalBaseBounds over a slow box still require analytic certification upstream",
@@ -188,7 +198,8 @@
         "src/openai_ns_reconstruction/local_field.py",
         "src/openai_ns_reconstruction/spatial_localization.py",
         "src/openai_ns_reconstruction/time_localization.py",
-        "src/openai_ns_reconstruction/endpoint_borel.py"
+        "src/openai_ns_reconstruction/endpoint_borel.py",
+        "src/openai_ns_reconstruction/endpoint_jets.py"
       ],
       "paper_locations": [
         "Eq. (10.4)",
@@ -207,17 +218,18 @@
         "analytic Cartesian gradient of that executable spatial cutoff representative, connected to curl(cA)=c curl(A)+grad(c) cross A and independently cross-checked against numerical curl(cA)",
         "pinned timeSwitch support/plateau geometry with an explicit C-infinity even representative: exactly zero on |t|<=3/8 and exactly one on |t|>=3/4, together with its analytic derivative",
         "activated velocity/pressure adapters and an independent numerical cross-check of R(chi u,chi p)=chi R(u,p)+chi' u+(chi^2-chi)(u grad u)",
-        "pinned endpoint Taylor-Borel algebra: exact DiagonalScale.doublingEnvelope recurrence, locally finite right-extension evaluation from caller-supplied jets/scales, endpoint handling, and the exact t>=T+1 zero-support consequence"
+        "pinned endpoint Taylor-Borel algebra: exact DiagonalScale.doublingEnvelope recurrence, locally finite right-extension evaluation from caller-supplied jets/scales, endpoint handling, and the exact t>=T+1 zero-support consequence",
+        "fail-closed dense full-spacetime endpoint-jet representation shape=(3,)+(4,)*n and the SpacetimeGluing normal-time contraction J[:,0,...,0] corresponding to repeated timeVector=(1,0), composed directly with the existing Borel right-extension API"
       ],
       "missing_for_paper_exact": [
         "exact pointwise realization of the formalization's noncomputable Mathlib ContDiffBump values in the spatial/time transition collars, or an explicit proof that the chosen executable representatives may replace them",
-        "materialize actual residual endpoint jets, official derivative-majorant/local-scale bounds and locally uniform limits of every required spacetime derivative, then prove the jet matching needed for the smooth global force extension through t=1",
+        "materialize the actual localized NS residual's full spacetime derivative family, prove its locally uniform limits as t->1- at every order, construct the official derivative-majorant/local-scale witnesses, and prove the resulting normal jets match the closed-past force so the global extension is smooth through t=1",
         "completed local field inputs from the unresolved earlier construction stages"
       ],
       "numerical_caveats": [
         "the analytic spatial cutoff gradient is exact for the repository's explicit C-infinity representative; it does not claim equality with Mathlib's noncomputable transition-collar values",
         "the time-switch residual identity is cross-checked numerically with a separately evaluated activated-field residual; this is not a formal certificate and does not construct the missing smooth force extension",
-        "the endpoint Borel evaluator uses caller-supplied jets and scales; local finiteness and support are executable, but the all-order derivative majorants, actual residual-jet limits and smooth endpoint glue remain unproved"
+        "the endpoint Borel evaluator and full-spacetime-to-normal adapter use caller-supplied jets and scales; shape/contraction/local-finiteness are executable, but supplied tensors are not evidence of actual residual derivative limits, the all-order derivative majorants, or smooth endpoint glue"
       ]
     },
     {
