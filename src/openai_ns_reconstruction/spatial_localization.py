@@ -127,6 +127,32 @@ def section10_spatial_cutoff_gradient(
     return gradient
 
 
+def section10_localized_field(local: "LocalField") -> "LocalizedField":
+    """Bind a local field to the fixed Section 10 cutoff and exact gradient.
+
+    This adapter intentionally makes the fixed support/plateau representative
+    and its matching analytic derivative an atomic choice.  In particular it
+    prevents a caller from accidentally pairing the Section 10 cutoff with a
+    generic or mismatched gradient while using ``LocalizedField``'s analytic
+    product-rule path.
+
+    The adapter does *not* certify ``local`` as the paper's completed profile,
+    and the executable transition collar remains only geometry-faithful to the
+    formal ``ContDiffBump``.  It therefore carries no paper-exact promotion.
+    """
+    # Import lazily to keep spatial geometry independent of the local-field
+    # module at import time while still enforcing the expected constructor.
+    from .local_field import LocalField, LocalizedField
+
+    if not isinstance(local, LocalField):
+        raise TypeError("local must be a LocalField")
+    return LocalizedField(
+        local=local,
+        cutoff=section10_spatial_cutoff,
+        cutoff_gradient=section10_spatial_cutoff_gradient,
+    )
+
+
 def section10_axisymmetric_cutoff(r: float, z: float, t: float = 0.0) -> float:
     """Axisymmetric adapter for ``LocalizedField.from_axisymmetric``."""
     r, z, t = _finite(r, z, t)
