@@ -13,45 +13,55 @@ value bound `B` into `epsilon=rho/2`, `radiusLoss(1/2)=12`, coefficient norm `<=
 amplitude `M=12`, and a conservative complete naturalResolvent factorial-series bound, plus an
 actual-schedule analytic-neighborhood certificate that constructs a positive common `rho`, the
 11-field complex bound `B`, and a conservative `realPartSup(axisPhase)` upper bound without sampled
-complex maxima. That actual schedule is now wired into the coefficient/resolvent/remainder/scale
-chain with no caller-supplied `rho/B/K`; on the current theorem-admissible regression instance a
-positive term of the conservative factorial majorant is already certified beyond binary64 range, so
-the chain fails closed before inventing remainder or `Lambda/C` values. Section 5 includes pressure/
-Omega recurrence rows, the Eq. (5.7) singular Picard primitive, a theorem-shaped Lemma 5.1 / Eq.
-(5.8) Picard-term and complete-tail truncation certificate, Lemma 5.2 compact five-moment repair,
-Eq. (5.15) forward reconstruction from supplied repaired analytic coefficient data, a finite-prefix
-SlowBorel/DiagonalScale cutoff-scale constructor, exact finite-prefix plateau/transition/zero-tail
-support certification, a theorem-shaped fixed-prefix truncation/tail-order arithmetic gate, and an
-exact finite SlowExpansionResidual recurrence/truncation bridge that keeps nonzero retained defects
-explicit and only factors the first omitted slow order after independently established recurrence
-cancellation. Sections 6–7 include fixed dyadic geometry, the slow-label/base-jet bridge, executable
-squared slow partitions, a constructive auxiliary-slot centers/`r0` witness, the
-physical-support-to-`SlotColoring.Adj` bridge, pointwise and uniform phase-normal adapters, the
-pinned BasePhaseGeometry frame/damping implication bounds with the corrected family-level
-`phaseConstant(M)=normalConstant(frequencyBound(M))`, the exact signed two-slot reference
-stress-cone algebra, and a separate fail-closed actual-vs-reference 2x2 covariance perturbation
-certificate deriving determinant/inverse/positive-amplitude margins from independently certified
-column errors. Section 10 includes spatial/time localization, the pinned closed-past `zeroBefore`
-branch, endpoint Taylor–Borel right-extension infrastructure, the full-spacetime-to-normal endpoint-
-jet adapter, SpatialBorel scale arithmetic with both per-degree `2^-j` bounds and the exact omitted
-series budget `sum_{j>N}2^-j=2^-N`, a value-level CandidateFromLimits traced-residual/Borel glue
-bridge, the exact support-cylinder/fixed-time energy implication, and a fail-closed late-origin
-certificate showing final localization preserves any upstream-certified origin curl on
-`3/4 <= t < 1`; plus reproducible numerical diagnostics.
+complex maxima. The actual schedule is now refined componentwise: the same one-field Cauchy bound is
+applied separately as `||element_k|| <= 12 B_k`, the maximum is retained only for the common
+`CoefficientFamily.bound`, and the resolvent uses the chi-specific `||chi|| <= 12 B_chi`. On the
+current theorem-admissible regression instance this removes the earlier cross-field resolvent
+overflow; the complete factorial resolvent majorant is representable in binary64, and the connected
+chain now fails closed later during conservative `remainderBound/remainderLip` propagation rather
+than inventing downstream `Lambda/C` values. Section 5 includes pressure/Omega recurrence rows, the
+Eq. (5.7) singular Picard primitive, a theorem-shaped Lemma 5.1 / Eq. (5.8) Picard-term and
+complete-tail truncation certificate, Lemma 5.2 compact five-moment repair, a finite `eta`-jet
+repair adapter that propagates supplied moment and `p=e_*f` derivatives through exact
+Leibniz/quotient recurrences and the same fixed repair matrices, Eq. (5.15) forward reconstruction
+from supplied repaired analytic coefficient data, a finite-prefix SlowBorel/DiagonalScale
+cutoff-scale constructor, exact finite-prefix plateau/transition/zero-tail support certification, a
+theorem-shaped fixed-prefix truncation/tail-order arithmetic gate, and an exact finite
+SlowExpansionResidual recurrence/truncation bridge that keeps nonzero retained defects explicit and
+only factors the first omitted slow order after independently established recurrence cancellation.
+Sections 6–7 include fixed dyadic geometry, the slow-label/base-jet bridge, executable squared slow
+partitions, a constructive auxiliary-slot centers/`r0` witness, the physical-support-to-
+`SlotColoring.Adj` bridge, pointwise and uniform phase-normal adapters, the pinned BasePhaseGeometry
+frame/damping implication bounds with the corrected family-level
+`phaseConstant(M)=normalConstant(frequencyBound(M))`, the exact signed two-slot reference stress-cone
+algebra, a fail-closed actual-vs-reference 2x2 covariance perturbation certificate, and a separate
+Eq. (7.28) pulse-error-budget implication that turns independently certified Lemma-7.4 ratio/frame
+and normalized first-moment inputs into a `C/sqrt(S_*)` normalized-column envelope. Section 10
+includes spatial/time localization, the pinned closed-past `zeroBefore` branch, endpoint
+Taylor–Borel right-extension infrastructure, the full-spacetime-to-normal endpoint-jet adapter,
+SpatialBorel scale arithmetic with both per-degree `2^-j` bounds and the exact omitted series budget
+`sum_{j>N}2^-j=2^-N`, a value-level CandidateFromLimits traced-residual/Borel glue bridge, the exact
+support-cylinder/fixed-time energy implication, a fail-closed late-origin certificate showing final
+localization preserves any upstream-certified origin curl on `3/4 <= t < 1`, and an endpoint-limit
+majorant that converts an independently proved integrable bound
+`sup_x ||partial_t D^n R|| <= C(T-t)^(-alpha)`, `alpha<1`, into a locally uniform endpoint-tail
+modulus. Reproducible numerical diagnostics remain explicitly diagnostic rather than proof.
 
 **Not yet delivered:** the materialized coefficient-space fixed-point fields and complete regular
 leading profile; a completed end-to-end contraction using the actual-schedule analytic certificate
-(the current conservative resolvent majorant overflows binary64 before the downstream scale chain);
-the profile-derived converged all-order background solve, true eta-dependent repaired hierarchy/
-support closure, uniform `C[j,m]` bounds, independently proved residual-cancellation identities,
-and completed infinite recursive cutoff/all-jets-flat argument; the paper-exact Proposition 5.5
-base-field provider and actual LocalBase/vector hypotheses on every active box; the actual Eq. (7.27)
-pulse-integrated covariance columns and a proof of the uniform Eq. (7.28) analytic column-error
-bound needed to instantiate the landed perturbation certificate, followed by amplitude ODE,
-supported-curl wave realization, mean corrections and the convergent correction sequence; or the
-final compact field with actual closed-past residual full-spacetime derivative limits, genuine
-analytic template majorants, a force proved smooth through the singular time, the upstream origin
-blow-up premise, and the paper's uniform bounded-energy conclusion along the actual blow-up limit.
+(the current conservative chain now reaches the resolvent but overflows binary64 in downstream
+`remainderBound/remainderLip` propagation); the profile-derived converged all-order background
+solve, genuine moment/`p=e_*f` jets with interval nonvanishing control, true eta-dependent repaired
+hierarchy/support closure, uniform `C[j,m]` bounds, independently proved residual-cancellation
+identities, and completed infinite recursive cutoff/all-jets-flat argument; the paper-exact
+Proposition 5.5 base-field provider and actual LocalBase/vector hypotheses on every active box; the
+actual Eq. (7.27) pulse-integrated covariance columns and genuine Lemma-7.4/Gaussian-concentration
+inputs needed to instantiate the landed Eq. (7.28) budget and perturbation certificates, followed by
+amplitude ODE, supported-curl wave realization, mean corrections and the convergent correction
+sequence; or the final compact field with actual closed-past residual full-spacetime derivative
+bounds/limits at every order, genuine analytic template majorants, a force proved smooth through the
+singular time, the upstream origin blow-up premise, and the paper's uniform bounded-energy
+conclusion along the actual blow-up limit.
 
 A successful demo or a green test suite is **not** a reconstruction of the full counterexample.
 The CLI reports `full_reconstruction: false` / `paper_exact_velocity_available: false` and refuses
@@ -88,13 +98,13 @@ proof checker. `demo --require-paper-exact` also refuses before generating toy d
 | Component | Implementation and boundary |
 |---|---|
 | Similarity coordinates, Eq. (4.1) | Relative-scale root solve, finite-input checks, direct `tau` API |
-| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas, outgoing schedule, actual `axisPressure`, analytic low-|Z| margin, theorem-faithful `Lambda/C` selection, theorem-shaped conservative `remainderBound/remainderLip` propagation, and canonical analytic-input norm/resolvent propagation are present. The actual schedule has an analytic no-grid common-neighborhood certificate producing `rho`, an 11-field common complex bound `B`, and a conservative `realPartSup(axisPhase)` upper bound; those values are now fed into the actual scale chain without caller-supplied constants. The current conservative regression chain stops fail-closed because a positive AxisResolvent majorant term exceeds binary64 range. **That obstruction is not a lower bound on the true resolvent. The coefficient-space fixed point, completed `NaturalProfileAssembly`, and final support/moment/matching/cone certificates are still missing; the current analytic inequalities are executable binary64 certificates rather than interval/Lean proofs.** |
+| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas, outgoing schedule, actual `axisPressure`, analytic low-|Z| margin, theorem-faithful `Lambda/C` selection, theorem-shaped conservative `remainderBound/remainderLip` propagation, and canonical analytic-input norm/resolvent propagation are present. The actual schedule has an analytic no-grid common-neighborhood certificate producing `rho`, an 11-field complex bound, and a conservative `realPartSup(axisPhase)` upper bound. A theorem-faithful componentwise adapter now applies `radiusLoss(1/2)=12` per field, retains the fieldwise maximum only for the family ledger, and sends the chi-specific norm to AxisResolvent. The current regression resolvent majorant is representable; the chain instead stops fail-closed at downstream conservative `remainderBound/remainderLip` binary64 overflow. **That obstruction is not a lower bound on the true resolvent or remainder. The coefficient-space fixed point, completed `NaturalProfileAssembly`, and final support/moment/matching/cone certificates are still missing; the current analytic inequalities are executable binary64 certificates rather than interval/Lean proofs.** |
 | Profile averages | Cached 32-point Gauss–Legendre rule; optional exact-average callbacks |
 | Exterior heat swirl, Appendix A.6 | Adaptive evaluation of H and derivatives, swirl and centrifugal pressure; **r>0 only** |
-| Section 5 background rows | Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, Eq. (5.5) pressure row, regular Eq. (5.6) `Omega_k/X`, Eq. (5.7) singular inverse/Picard primitive, the Lemma 5.1 / Eq. (5.8) term majorant and fail-closed complete-tail truncation certificate, Lemma 5.2 compact five-moment repair, Eq. (5.15) forward `F_n/V_n/Pi_n` reconstruction from supplied repaired analytic data, finite-prefix recursive cutoff scheduling from supplied analytic `C[j,m]`, exact finite-prefix cutoff support/truncation certification, exact fixed-prefix tail-order arithmetic for `2^-J q^(h(J+1)-m)` / physical exponent `h(J+1)+b-2M`, and an exact finite recurrence/truncation identity that retains nonzero `R_n` defects and conditionally exposes the first omitted slow-order factor. **The paper-derived `A0/A1/f_n`, actual analytic constants needed to instantiate the Picard convergence certificate, converged coefficient hierarchy, true eta-dependent support/stress closure, true uniform `C[j,m]`, completed infinite schedule/theorem-level local-finiteness argument, independently proved order-by-order residual cancellation identities, and Proposition 5.3 all-jets-flat decay are not yet constructed.** |
+| Section 5 background rows | Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, Eq. (5.5) pressure row, regular Eq. (5.6) `Omega_k/X`, Eq. (5.7) singular inverse/Picard primitive, the Lemma 5.1 / Eq. (5.8) term majorant and fail-closed complete-tail truncation certificate, Lemma 5.2 compact five-moment repair, and a finite `eta`-jet repair adapter for supplied unrepaired-moment and `p=e_*f` derivatives, plus Eq. (5.15) forward `F_n/V_n/Pi_n` reconstruction from supplied repaired analytic data, finite-prefix recursive cutoff scheduling from supplied analytic `C[j,m]`, exact finite-prefix cutoff support/truncation certification, exact fixed-prefix tail-order arithmetic for `2^-J q^(h(J+1)-m)` / physical exponent `h(J+1)+b-2M`, and an exact finite recurrence/truncation identity that retains nonzero `R_n` defects and conditionally exposes the first omitted slow-order factor. **The paper-derived `A0/A1/f_n`, actual analytic constants needed to instantiate the Picard convergence certificate, genuine hierarchy-derived moment/patch-factor jets and nonvanishing control, converged coefficient hierarchy, true eta-dependent support/stress closure, true uniform `C[j,m]`, completed infinite schedule/theorem-level local-finiteness argument, independently proved order-by-order residual cancellation identities, and Proposition 5.3 all-jets-flat decay are not yet constructed.** |
 | Dyadic geometry / phase, Sections 6–7 | Fixed chart scaling and exact covering matrices; active-shell/slow-label bridge; squared partitions; constructive 2250-color/rational-center/common-`r0` witness; physical slow-support-to-`SlotColoring.Adj` bridge with cross-band common-point handling; Section 7.1 phase/tangent-frame algebra; pointwise rounded-normal adapters; a fail-closed UniformLocalBase implication bridge; and pinned BasePhaseGeometry frame/damping consequence bounds, including the enlarged family-level phase constant. **The paper-exact Proposition 5.5 provider and actual LocalBase C1/C2, unit/orthogonality, normal-closeness and slot-normal derivative-closeness certificates remain missing; the landed implications cannot be promoted until those true hypotheses are supplied.** |
-| Oscillatory stress, Section 7 | Exact signed two-slot reference covariance solve for target `(-m,t)`, strict cone `|a t| < b m`, positive squared amplitudes, the manuscript ratio specialization, exact `epsilon*mask^2` covariance scaling after amplitude localization, and a fail-closed 2x2 perturbation implication that turns independently certified column errors into determinant, inverse-norm and positive-amplitude margins. **The actual Eq. (7.27) pulse integrals and uniform Eq. (7.28) analytic error proof are still missing, so the perturbation certificate is not yet instantiated with paper data; real amplitude transport and supported divergence-free curl waves also remain missing.** |
-| Section 10 localization | Official spatial/time support/plateau geometry represented by explicit C-infinity bumps, analytic spatial cutoff gradient, time-switch derivative, activated-field adapters and independent residual-identity cross-check; pinned closed-past `zeroBefore/pastVelocity/pastPressure` branch with diagnostic residual evaluation; endpoint Taylor–Borel infrastructure, full-spacetime endpoint-jet adapter, exact-rational SpatialBorel scale scheduling from supplied analytic derivative bounds, per-degree `2^-j` derivative-tail certificates, and the exact conditional all-omitted-degrees budget `sum_{j>N}2^-j=2^-N`; plus a value-level traced-residual/Borel glue bridge for supplied endpoint tensors. The support certificate records the exact radius-`1/4`, height-`1/2` cylinder of volume `pi/32`, hence `E(t)<=pi M^2/64` from an independently certified fixed-time `|u|<=M`. A late-origin certificate also checks `c=1`, `grad(c)=0`, and time switch `=1` for `3/4<=t<1`, so localization preserves an already-certified incoming origin curl. **Transition-collar point values are not claimed equal to Mathlib's noncomputable bump; actual closed-past residual derivative limits, true analytic template majorants that instantiate the tail certificate, smooth force gluing through `t=1`, the upstream origin blow-up premise, and a uniform bounded-energy estimate along the actual blow-up limit are still missing.** |
+| Oscillatory stress, Section 7 | Exact signed two-slot reference covariance solve for target `(-m,t)`, strict cone `|a t| < b m`, positive squared amplitudes, the manuscript ratio specialization, exact `epsilon*mask^2` covariance scaling after amplitude localization, a fail-closed 2x2 perturbation implication that turns independently certified column errors into determinant/inverse-norm/positive-amplitude margins, and an Eq. (7.28) error-budget implication `|e_sigma| <= E_ratio + u_*sqrt(1+c_*^2) M1` with a certified `C/sqrt(S_*)` rate collapse. **The actual Eq. (7.27) pulse functions/integrals and genuine uniform Lemma-7.4 ratio/frame plus weighted first-moment estimates are still missing, so neither the budget nor perturbation certificate is instantiated with paper data; real amplitude transport and supported divergence-free curl waves also remain missing.** |
+| Section 10 localization | Official spatial/time support/plateau geometry represented by explicit C-infinity bumps, analytic spatial cutoff gradient, time-switch derivative, activated-field adapters and independent residual-identity cross-check; pinned closed-past `zeroBefore/pastVelocity/pastPressure` branch with diagnostic residual evaluation; endpoint Taylor–Borel infrastructure, full-spacetime endpoint-jet adapter, exact-rational SpatialBorel scale scheduling from supplied analytic derivative bounds, per-degree `2^-j` derivative-tail certificates, and the exact conditional all-omitted-degrees budget `sum_{j>N}2^-j=2^-N`; plus a value-level traced-residual/Borel glue bridge for supplied endpoint tensors. The support certificate records the exact radius-`1/4`, height-`1/2` cylinder of volume `pi/32`, hence `E(t)<=pi M^2/64` from an independently certified fixed-time `|u|<=M`. A late-origin certificate checks `c=1`, `grad(c)=0`, and time switch `=1` for `3/4<=t<1`, so localization preserves an already-certified incoming origin curl. A separate endpoint-limit majorant proves the elementary implication from an independently certified integrable time-derivative bound `C(T-t)^(-alpha)`, `alpha<1`, to a uniform Cauchy/endpoint-tail modulus. **Transition-collar point values are not claimed equal to Mathlib's noncomputable bump; actual closed-past residual derivative bounds/limits, true analytic template majorants that instantiate the tail certificate, smooth force gluing through `t=1`, the upstream origin blow-up premise, and a uniform bounded-energy estimate along the actual blow-up limit are still missing.** |
 | Verification | Independent manufactured-solution and refinement checks; bounded-time finite differences |
 | Audit/provenance | Source-pinned ledger, explicit blockers, synchronized `status`/`audit` truth surface, fail-closed completion gate |
 
@@ -130,20 +140,23 @@ localization must preserve that property. Prefer the `LocalField.from_axisymmetr
 `LocalizedField.from_axisymmetric` factories.
 
 The regular inner core and materialized coefficient-space fixed point, a theorem-faithful way to
-carry or substantially tighten the current overflowing actual-schedule resolvent majorant,
-profile-derived Section 5 source and converged hierarchy, true uniform coefficient-template bounds
-and completed infinite recursive cutoff schedule/residual cancellation, paper-exact base-field/
-slow-box and vector hypotheses, actual pulse-integrated covariance columns and the Eq. (7.28)
-analytic error certificate needed to instantiate the landed finite-dimensional perturbation layer,
-amplitude/curl-wave realization, mean correction, infinite-order summation, completed compact field,
-actual closed-past residual full spacetime jets and locally uniform endpoint derivative limits,
-genuine analytic compact-template derivative majorants, smooth-force extension, upstream blow-up-
-path premise, and uniform bounded-energy conclusion remain explicit blockers. The late-origin
-localization identity preserves a proved incoming origin divergence if one is supplied; it does not
-infer blow-up from finite samples. The fixed-time compact-support energy implication likewise does
-not replace the missing uniform energy estimate. The exact SpatialBorel `2^-N` omitted-series
-budget is conditional on genuine all-order template bounds and is not itself a smooth-force proof.
-See [the reconstruction plan](docs/RECONSTRUCTION_PLAN.md),
+carry or substantially tighten the current overflowing actual-schedule remainderBound/remainderLip
+upper-bound propagation, profile-derived Section 5 source and converged hierarchy, genuine
+hierarchy-derived moment/patch-factor jets and interval nonvanishing control, true uniform
+coefficient-template bounds and completed infinite recursive cutoff schedule/residual cancellation,
+paper-exact base-field/slow-box and vector hypotheses, actual pulse-integrated covariance columns
+and genuine Lemma-7.4/concentration inputs needed to instantiate the landed Eq. (7.28) analytic
+budget and finite-dimensional perturbation layer, amplitude/curl-wave realization, mean correction,
+infinite-order summation, completed compact field, actual closed-past residual full spacetime jets
+and independently proved all-window endpoint derivative bounds/locally uniform limits, genuine
+analytic compact-template derivative majorants, smooth-force extension, upstream blow-up-path
+premise, and uniform bounded-energy conclusion remain explicit blockers. The endpoint-limit
+majorant is a conditional sufficient-condition adapter and does not infer `C`/`alpha` from samples.
+The late-origin localization identity preserves a proved incoming origin divergence if one is
+supplied; it does not infer blow-up from finite samples. The fixed-time compact-support energy
+implication likewise does not replace the missing uniform energy estimate. The exact SpatialBorel
+`2^-N` omitted-series budget is conditional on genuine all-order template bounds and is not itself a
+smooth-force proof. See [the reconstruction plan](docs/RECONSTRUCTION_PLAN.md),
 [the measured validation report](docs/VALIDATION_2026-09-10.md), and
 [the machine-readable manifest](references/provenance_manifest.json).
 
