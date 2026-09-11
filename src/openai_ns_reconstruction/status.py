@@ -156,8 +156,9 @@ STAGES = [
          "Construct the actual pulse-integrated covariance columns of Eq. (7.27), including the true pulse functions, "
          "from the paper-exact background; prove the genuine Lemma 7.4 ratio/frame bound and Gaussian normalized "
          "first-moment estimate on every active pulse, then feed those certified inputs through the landed Eq. (7.28) "
-         "error-budget and determinant/inverse/positive-cone certificates for the real T_{0,*} data. After that, solve "
-         "the amplitude transport/ODE and realize the oscillatory corrections by supported divergence-free curls."
+         "error-budget and perturbation certificates to obtain actual-data determinant/inverse stability and positive-cone "
+         "persistence for the real T_{0,*} data. After that, solve the amplitude transport/ODE and realize the oscillatory "
+         "corrections by supported divergence-free curls."
      )},
     {"id": 5, "name": "compact mean corrections", "status": "pending",
      "remaining": "Section 8 compact mean corrections and the associated defect solve."},
