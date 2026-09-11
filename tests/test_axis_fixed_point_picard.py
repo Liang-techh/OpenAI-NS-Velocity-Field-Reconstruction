@@ -89,19 +89,26 @@ def test_execution_adapter_uses_the_pinned_picard_map_shape() -> None:
     reference = Decimal("0.25")
 
     def remainder(x: Decimal) -> Decimal:
-        return Decimal(1) + x
+        with localcontext() as ctx:
+            ctx.prec = 90
+            return Decimal(1) + x
 
     def scale_inverse_two_lambda(value: Decimal, Lambda: Decimal) -> Decimal:
         with localcontext() as ctx:
             ctx.prec = 90
             return value / (Decimal(2) * Lambda)
 
+    def add(x: Decimal, y: Decimal) -> Decimal:
+        with localcontext() as ctx:
+            ctx.prec = 90
+            return x + y
+
     states = iterate_natural_picard(
         reference,
         certificate=cert,
         remainder=remainder,
         algebra=PicardAlgebra(
-            add=lambda x, y: x + y,
+            add=add,
             scale_inverse_two_lambda=scale_inverse_two_lambda,
         ),
         iterations=3,
