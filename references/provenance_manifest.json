@@ -224,7 +224,7 @@
       ],
       "missing_for_paper_exact": [
         "exact pointwise realization of the formalization's noncomputable Mathlib ContDiffBump values in the spatial/time transition collars, or an explicit proof that the chosen executable representatives may replace them",
-        "materialize the actual localized NS residual's full spacetime derivative family, prove its locally uniform limits as t->1- at every order, construct the official derivative-majorant/local-scale witnesses, and prove the resulting normal jets match the closed-past force so the global extension is smooth through t=1",
+        "materialize actual residual endpoint jets from the actual localized NS residual's full spacetime derivative family, prove their locally uniform limits as t->1- at every order, construct the official derivative-majorant/local-scale witnesses, and prove the resulting normal jets match the closed-past force to obtain the smooth global force extension through t=1",
         "completed local field inputs from the unresolved earlier construction stages"
       ],
       "numerical_caveats": [
