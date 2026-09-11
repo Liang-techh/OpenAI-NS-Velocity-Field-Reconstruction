@@ -51,7 +51,8 @@ def test_admissibility_recomputes_C_threshold_at_candidate_Lambda() -> None:
 
     assert witness.admits(larger_lambda, exact_larger_C)
     assert not witness.admits(larger_lambda, math.nextafter(exact_larger_C, 0.0))
-    assert not witness.admits(math.nextafter(witness.Lambda, 0.0), math.inf)
+    below_scale = math.nextafter(witness.Lambda, 0.0)
+    assert not witness.admits(below_scale, witness.C * 10.0)
 
 
 def test_fail_closed_for_uncertified_numeric_domains() -> None:
