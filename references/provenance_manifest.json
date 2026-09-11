@@ -127,7 +127,8 @@
       "artifacts": [
         "src/openai_ns_reconstruction/charts.py",
         "src/openai_ns_reconstruction/phase.py",
-        "src/openai_ns_reconstruction/phase_estimates.py"
+        "src/openai_ns_reconstruction/phase_estimates.py",
+        "src/openai_ns_reconstruction/phase_box_certificate.py"
       ],
       "paper_locations": [
         "Eqs. (6.1)-(6.6)",
@@ -139,7 +140,8 @@
         "fixed dyadic geometry and exact integer covering matrices",
         "local Section 7.1 phase/frequency formulas, backward material phase defect, projected evolution operator, and tangent frame for caller-supplied representative base jets",
         "deterministic allowed tie rule for rounding k*p to a nonzero integer, giving single-valued angular harmonics",
-        "pinned PhaseEstimates scalar scale gate: phaseError, phaseConstant, exact phaseError<=4/S hypotheses, and the resulting rounded-normal bound envelope"
+        "pinned PhaseEstimates scalar scale gate: phaseError, phaseConstant, exact phaseError<=4/S hypotheses, and the resulting rounded-normal bound envelope",
+        "pinned Lean roundedFrequency adapter and fail-closed pointwise rounded_normal_estimates hypothesis checker, with representative shear/orthogonal frame/frequency equalities enforced by construction and numerical cross-checks of normal and normal-velocity bounds"
       ],
       "official_lean_modules": [
         "NavierStokes/PhaseCalculus.lean",
@@ -147,14 +149,16 @@
       ],
       "missing_for_paper_exact": [
         "slow-support separation and instantiate label-dependent phase parameters from paper-exact base fields",
-        "supply and certify the local C2/base-field hypotheses needed to upgrade the scalar scale gate to uniform rounded-normal/normal-velocity estimates (7.9)-(7.11) on every active box",
+        "upgrade the pointwise rounded-normal adapter to a uniform active-box certificate by proving the LocalBaseBounds C1/C2 hypotheses for the actual paper-exact base functions on every slow box",
         "stress-cone decomposition into positive wave covariances",
         "solve the pulse amplitude equations and realize divergence-free oscillations by supported curls",
         "mean corrections",
         "residual-improvement iteration"
       ],
       "numerical_caveats": [
-        "PhaseScaleCertificate checks only the exact scalar scale inequalities formalized in PhaseEstimates.lean; it does not infer missing local base-field derivative bounds from samples"
+        "PhaseScaleCertificate checks only the exact scalar scale inequalities formalized in PhaseEstimates.lean; it does not infer missing local base-field derivative bounds from samples",
+        "RoundedNormalPointCertificate checks theorem inequalities only at supplied point data; the representative equalities are constructed algebraically, but uniform LocalBaseBounds over a slow box still require analytic certification upstream",
+        "the quantitative point adapter uses the pinned Lean floor-with-zero-replacement roundedFrequency; phase.py retains its separate deterministic paper-level nearest-integer convention, so callers must not silently interchange the two rounding semantics"
       ]
     },
     {
