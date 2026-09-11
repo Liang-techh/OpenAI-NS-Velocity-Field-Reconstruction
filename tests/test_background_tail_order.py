@@ -86,9 +86,9 @@ def test_constructed_schedule_gate_fails_closed_when_prefix_is_too_short():
 
 
 def test_derivative_budget_and_invalid_inputs_fail_closed():
-    with pytest.raises(ValueError, match="M <= J\+3"):
+    with pytest.raises(ValueError, match=r"M <= J\+3"):
         FixedPrefixTailOrderCertificate(0.125, 0, 4)
-    with pytest.raises(ValueError, match="m <= J\+3"):
+    with pytest.raises(ValueError, match=r"m <= J\+3"):
         chart_tail_exponent_exact(0.125, 0, 4)
     with pytest.raises(ValueError, match="0 < h < 1/2"):
         minimal_prefix_for_chart_target(0.5, 0, 1.0)
