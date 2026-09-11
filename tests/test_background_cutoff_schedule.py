@@ -1,4 +1,5 @@
 import math
+import sys
 
 import pytest
 
@@ -49,6 +50,28 @@ def test_doubling_envelope_and_all_edge_majorants() -> None:
             assert math.isclose(got_lhs, c * (0.37 * edge) ** (0.5 * j), rel_tol=2e-15)
             assert got_rhs == rhs
             assert got_lhs <= got_rhs
+
+
+def test_wide_integer_scale_crosses_binary64_without_clipping() -> None:
+    # This is a representation-layer regression, not paper coefficient data.
+    # C=1e308, h=1/2 and j=1 require log(b) >= 2(log(2)+log(C)),
+    # far beyond log(max_float), while Python's exact integer scale remains valid.
+    row = [1.0e308] * 4
+    scale = local_scale_from_template_bounds(0.5, 1, row)
+    assert scale > sys.float_info.max
+
+    lhs_log = math.log(row[0]) - 0.5 * math.log(scale)
+    assert lhs_log <= -math.log(2.0) + 32 * sys.float_info.epsilon
+
+    schedule = build_slow_borel_cutoff_schedule(0.5, [row])
+    assert schedule.scales[1] == scale
+    assert schedule.edge_log_margin(1, 0) >= -32 * sys.float_info.epsilon
+    assert schedule.reciprocal_support_log_edge(1) == -math.log(scale)
+
+    # 1/scale is below the least positive binary64 subnormal.  The executable
+    # accessor must not silently return 0 and pretend that is an exact edge.
+    with pytest.raises(OverflowError, match="underflows binary64"):
+        schedule.reciprocal_support_edge(1)
 
 
 def test_provider_is_called_for_exact_triangular_jet_set() -> None:
