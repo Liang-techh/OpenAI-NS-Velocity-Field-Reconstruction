@@ -1,0 +1,24 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Lemma 5.4; Section 9 / Proposition 9.9; Eqs. (9.20)-(9.21)",
+    "base_main_commit": "ffd6d9afd3d892a415a75aa417a0d653446abea9"
+  },
+  "layer": {
+    "id": "stage-3-6-section9-correction-extension-admission",
+    "status": "formal-structure",
+    "capability": "Fail-closed per-stage admission requiring complete A/B/p theorem witnesses for one common q-domain, actual schedule membership, fixed cutoff support, smooth zero extension, and the exact doubling-schedule lower bound",
+    "paper_locations": [
+      "Lemma 5.4 smooth cutoff / local-finiteness mechanism",
+      "Section 9 / Proposition 9.9",
+      "Eqs. (9.20)-(9.21)"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_correction_extension_admission.py",
+      "tests/test_section9_correction_extension_admission.py"
+    ],
+    "provenance": "references/SECTION9_CORRECTION_EXTENSION_ADMISSION_PROVENANCE.md",
+    "remaining_boundary": "No genuine Section 7/8 A_j/B_j/p_j values, machine-connected theorem witnesses for their common domain or smooth zero extensions, hierarchy-derived infinite scale schedule, arbitrary-order Eq. (9.20) flat residual, constructed Eq. (9.21) sums, Proposition 9.9 convergence, or paper-exact velocity is supplied. This admission gate must remain formal-structure."
+  }
+}
