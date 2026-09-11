@@ -39,14 +39,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 import math
 
-from .natural_axis import L, chi
+from .natural_axis import A, H, L, axis_U, chi, d
 from .natural_axis_range import CutoffParametersFromMargin
 from .outgoing_tail import TailData
-from .schedule_axis_margin import (
-    ScheduleLowZMarginWitness,
-    certify_schedule_low_Z_margin,
-    schedule_natural_axis_Z,
-)
+from .schedule_axis_margin import ScheduleLowZMarginWitness, certify_schedule_low_Z_margin
+from .schedule_axis_pressure import axis_pressure, axis_pressure_derivative
 
 _WINDOW_LEFT = -11.0 / 10.0
 _WINDOW_RIGHT = 11.0 / 10.0
@@ -78,6 +75,32 @@ def radial_divisor(r: int, n: int) -> float:
     if r < 1:
         raise ValueError("r must be a positive integer")
     return float((n + 1) * (n + r))
+
+
+def _schedule_z_star_on_window(data: TailData, j: float, eta: float) -> float:
+    """Pinned ``NaturalAxisData.Z`` using the actual schedule pressure.
+
+    ``schedule_axis_margin.schedule_natural_axis_Z`` intentionally restricts
+    itself to ``[-1,1]`` because that is the domain needed for its margin
+    theorem.  The coefficient space itself uses the enlarged window
+    ``[-11/10,11/10]``.  The defining pressure and derivative are valid for all
+    real ``eta``, so the same pinned Z formula is evaluated directly here on
+    the full coefficient window instead of silently shrinking ``AxisSpace``.
+    """
+
+    eta = _eta_in_window(eta)
+    u = axis_U(j, eta)
+    p = axis_pressure(data, eta)
+    dp = axis_pressure_derivative(data, eta)
+    value = (
+        -A(data.h) * (1.0 - 2.0 * eta * u) * u
+        - 4.0 * H(data.h, j, eta)
+        - d(eta) * dp
+        + 4.0 * A(data.h) * eta * p
+    )
+    if not math.isfinite(value):
+        raise ArithmeticError("schedule NaturalAxisData.Z must remain finite")
+    return value
 
 
 @dataclass(frozen=True)
@@ -143,8 +166,7 @@ class ActualScheduleReferencePair:
         return value
 
     def z_star(self, eta: float) -> float:
-        eta = _eta_in_window(eta)
-        return schedule_natural_axis_Z(self.data, self.j, eta)
+        return _schedule_z_star_on_window(self.data, self.j, eta)
 
     def phi_coefficient(self, n: int, eta: float) -> float:
         """Return the actual reference angular radial coefficient ``phi0[n]``.
