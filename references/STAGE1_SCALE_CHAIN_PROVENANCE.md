@@ -4,63 +4,92 @@ Status: **formal-structure / diagnostic certificate only**.  This file does not
 promote the leading profile to paper-exact and does not claim that the true
 natural resolvent norm is large.
 
-## What is connected
+## Pinned source
 
-`src/openai_ns_reconstruction/stage1_scale_chain.py` connects already-landed
-actual SchedulePressure data to the existing coefficient-space bookkeeping:
+Official source commit:
+`openai/NavierStokesAndEuler@f9e8bc5b38b6e212696e8a30e3e91517af887bbd`.
 
-1. `certify_actual_schedule_analytic_inputs(data, j)` supplies the theorem-side
-   schedule `sigma`, an explicit common complex neighborhood `rho`, the common
-   eleven-field value bound `B`, and a conservative compact-set
-   `realPartSup(axisPhase)` bound.
-2. The canonical `NaturalAxisCoefficients` choice gives `epsilon=rho/2`,
-   `radiusLoss(1/2)=12`, hence the common coefficient-family norm upper bound
-   `12 B`.
-3. The pinned `AxisResolvent` filtration estimate uses
-   `K = 2560 ||chi||`; with `||chi|| <= 12 B` the landed conservative ledger
-   therefore uses an upward-rounded `K <= 2560*(12 B)`.
-4. Before converting the complete factorial-series majorant to binary64, the
-   new adapter checks positive terms
-   `a_k = K^k/(k!(k+1)!)` using downward-rounded Decimal recurrence.
+Relevant pinned modules are
+`NavierStokes/NaturalAxisCoefficients.lean` and
+`NavierStokes/AxisResolvent.lean`.
 
-The official pinned Lean source is
-`openai/NavierStokesAndEuler@f9e8bc5b38b6e212696e8a30e3e91517af887bbd`,
-`NavierStokes/AxisResolvent.lean`:
+`NaturalAxisCoefficients.boundedAxisElement_norm` is a one-field statement:
+if a complex field is analytic on the common tube and has value bound `B_k`,
+then at coefficient radius `epsilon<rho` its AxisSpace norm is bounded by
 
-- `factorialMajorant (K) (k) = K^k/(k! (k+1)!)`;
-- `factorialMajorant_nonneg` proves every term is nonnegative for `K>=0`;
-- `factorialMajorant_succ` gives the recurrence
-  `a_(k+1) = K/((k+1)(k+2)) * a_k`;
-- `norm_alternatingResolvent_le` bounds the true alternating resolvent norm by
-  the sum of these positive majorant terms.
+`B_k * radiusLoss(epsilon/rho)`.
 
-## New verified boundary
+For the canonical `epsilon=rho/2`, the already-landed exact identity is
+`radiusLoss(1/2)=12`.  The pinned existence proof chooses one common `B` first
+and therefore obtains the convenient common bound `12 B`, but the theorem does
+not require the same value bound to be used for every call to
+`boundedAxisElement`.  The resulting eleven elements still fit the same
+`CoefficientFamily` structure by taking the maximum of their individual norm
+bounds as the structure's common `bound` field.
 
-For the existing concrete theorem-admissible regression schedule
-`P=2, m=1, lambda=0.05, wait=30, h=0.01, j=0.05`, the actual-schedule analytic
-certificate is now fed into this chain without caller-supplied `rho`, `B`,
-resolvent norm, remainder constants, `Lambda`, or `C`.  A finite positive term
-of the resulting **conservative majorant series** already exceeds
-`sys.float_info.max`; the adapter records that term and stops before the
-binary64 remainder/Lambda-C machinery.
+`AxisResolvent.lean` then uses the norm of the **chi element specifically**:
 
-This result is useful because it identifies the first concrete downstream
-obstruction after PR #52: the present conservative schedule -> common-field ->
-resolvent-majorant ledger is too large for the current numeric representation.
-It is no longer merely unknown whether an overflow appears later in the chain.
+- `factorialMajorant K k = K^k/(k! (k+1)!)`;
+- `naturalOperator_pow_bound` uses `K = 2560 * ||chi||`;
+- `norm_alternatingResolvent_le` bounds the resolvent by the sum of those
+  positive factorial-majorant terms.
 
-## What this does *not* prove
+## Componentwise refinement
 
-The overflow witness is for the *upper majorant evaluated at the conservative
-upper K*.  It is **not** a lower bound on the actual operator resolvent, is not a
-failure of the Lean existence theorem, and is not evidence that the
-coefficient-space fixed point does not exist.  In particular, replacing this
-with a toy/sampled smaller K would be invalid.
+`src/openai_ns_reconstruction/axis_componentwise_input_bounds.py` applies the
+same pinned one-field Cauchy estimate separately to the eleven value bounds
+already produced by `schedule_analytic_neighborhood.py`:
 
-The next theorem-faithful options are therefore to tighten one or more analytic
-upper inequalities (especially the theorem-side sigma/common-field ledger), or
-to carry the majorant/remainder selection in a representation that does not
-require binary64, while preserving every contraction hypothesis.  Until that
-is done, `phi/u/average/pressure`, `NaturalProfileAssembly`, and the final
-support/moment/matching/cone checks remain unresolved and
-`paper_exact_velocity_available` must remain false.
+`||element_k|| <= 12 B_k`.
+
+It records
+
+- the common coefficient radius `epsilon=rho/2`;
+- every individual fixed-field norm upper bound `12 B_k`;
+- the common `CoefficientFamily.bound` upper as `max_k 12 B_k`;
+- the normalized amplitude bound `M=12`;
+- the chi-specific norm upper `12 B_chi`;
+- `K <= 2560 * (12 B_chi)` and the complete positive factorial-series
+  enclosure.
+
+This is not a sampled or hand-tuned reduction.  It removes only an avoidable
+cross-field overestimate: a large bound for `complexGradient` no longer enters
+`AxisResolvent`, because the pinned resolvent theorem depends on chi rather than
+on the maximum norm of all fixed fields.
+
+## Actual-schedule consequence
+
+`src/openai_ns_reconstruction/stage1_scale_chain.py` now uses that componentwise
+ledger for the actual landed SchedulePressure certificate.  On the existing
+regression schedule
+
+`P=2, m=1, lambda=0.05, wait=30, h=0.01, j=0.05`,
+
+the chi-specific majorant parameter is below `100000`, and the complete
+factorial resolvent majorant is representable in binary64.  Thus the previous
+"one positive factorial-majorant term already exceeds binary64" obstruction was
+an artifact of feeding the unrelated common eleven-field bound into chi; it is
+no longer the first blocker on this actual schedule.
+
+The chain now proceeds through the factorial-series enclosure and fails closed
+at the next representability boundary during conservative
+`remainderBound/remainderLip` propagation.  The diagnostic records that later
+stage explicitly instead of manufacturing finite values.  This new overflow is
+again only about the current conservative upper-bound arithmetic; it is not a
+lower bound on the true remainder, not a failure of the Lean existence theorem,
+and not evidence against existence of the fixed point.
+
+The standalone downward-rounded positive-term witness remains in the module for
+large-K cases: if such a term exceeds `sys.float_info.max`, the code still stops
+before converting the series.
+
+## Truth boundary
+
+This increment does **not** materialize the coefficient-space Banach elements,
+`phi`, `u`, `average`, or `pressure`; it does not construct
+`NaturalProfileAssembly`; and it does not close support, moments, matching, or
+cone conditions.  It only tightens a theorem-faithful analytic norm ledger and
+moves the actual-schedule diagnostic to the next concrete blocker.
+
+`paper_exact_velocity_available` therefore remains false and Stage 1 remains
+`formal-structure`.
