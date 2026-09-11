@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "d173e7dab7af8ebed244524d5a1b442847f9a02d",
+  "integrated_prs": [99],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Section-9 Lemma-9.8 pointwise envelope-checking infrastructure only. It validates separately certified scalar bounds against Eqs. (9.17)-(9.18) at one q and does not construct or certify the genuine correction sequence.",
+  "layers": [
+    {
+      "id": "stage-6-residual-improvement",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_stage_certificate.py",
+      "provenance": "references/SECTION9_STAGE_CERTIFICATE_PROVENANCE.md",
+      "paper_locations": ["Section 9.4", "Lemma 9.8", "Eqs. (9.17)-(9.19)", "printed pages 113-114"],
+      "official_lean_modules": [],
+      "landed_capability": "PR #99 adds fail-closed log-domain arithmetic checks for the exact Lemma 9.8 Eq. (9.17) correction envelope and Eq. (9.18) residual envelope, reusing the rational Section-9 schedule and requiring explicit certified/theorem-derived provenance for every supplied norm datum while keeping E_{j,m} separate.",
+      "remaining_boundary": "No genuine Z_j/Delta u_j fields or theorem-derived C_{j,m}, P_{j,m}, K_m are produced; no uniform-in-q/common-domain estimate, all-orders E_{j,m}=O(q^N) witness, Lemma 9.7 common domain, shrinking-cutoff sum (9.21), convergence, Proposition 9.9 flatness, or paper-exact velocity is certified."
+    }
+  ]
+}
