@@ -83,7 +83,7 @@ def test_envelope_fails_closed_on_scalar_theorem_hypotheses():
             M=M, A=1.0, b=b, B=1.0, delta=0.500001, eta=0.0, viscosity=1.0
         )
 
-    with pytest.raises(ValueError, match="viscosity in \[0,4\]"):
+    with pytest.raises(ValueError, match=r"viscosity in \[0,4\]"):
         FrameDampingEnvelope(
             M=M, A=1.0, b=b, B=1.0, delta=0.01, eta=0.0, viscosity=4.0001
         )
