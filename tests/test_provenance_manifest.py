@@ -66,10 +66,13 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     stage1 = layers["stage-1-leading-profile"]
     assert stage1["status"] == "formal-structure"
     assert "src/openai_ns_reconstruction/schedule_pressure.py" in stage1["artifacts"]
+    assert "src/openai_ns_reconstruction/outgoing_tail.py" in stage1["artifacts"]
     assert "NavierStokes/OutgoingSchedule.lean" in stage1["official_lean_modules"]
     assert "NavierStokes/OutgoingTail.lean" in stage1["official_lean_modules"]
     assert any("S=32" in item and "flattenLength" in item for item in stage1["implemented_components"])
-    assert any("finalAngular/clockWeight/axisPressure" in item for item in stage1["missing_for_paper_exact"])
+    assert any("finalAngular" in item and "clockWeight" in item for item in stage1["implemented_components"])
+    assert any("axisPressure" in item and "H^2" in item for item in stage1["missing_for_paper_exact"])
+    assert not any("finalAngular/clockWeight/axisPressure" in item for item in stage1["missing_for_paper_exact"])
     assert any("Classical.choose" in item for item in stage1["numerical_caveats"])
 
     stage2 = layers["stage-2-all-order-background"]
