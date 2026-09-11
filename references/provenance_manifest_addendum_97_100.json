@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "5b851bbf187e9707e60cc79d59fb98a068c91150",
+  "integrated_prs": [
+    97,
+    98,
+    99,
+    100
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Integration ledger for the four Agent 1-4 increments landed after PR #96. It records only capabilities already present on main, cross-links their paper/Lean provenance, and preserves every formal-structure and fail-closed boundary; it is not a paper-exact promotion.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_reference_state.py",
+      "provenance": "references/AXIS_COEFFICIENT_REFERENCE_STATE_PROVENANCE.md",
+      "paper_locations": [
+        "Theorem 4.6",
+        "Appendix A.6, Eqs. (A.32)-(A.38)"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/AxisCoefficientSpace.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean",
+        "NavierStokes/AxisContraction.lean"
+      ],
+      "landed_capability": "PR #97 assembles the actual SchedulePressure-derived angular and axial referencePair eta-jets into one lazy coefficient-state view on the pinned coefficient window, preserving the actual-jet indexing and AxisWeightEstimates normalization and independently cross-checking finite FTC compatibility.",
+      "remaining_boundary": "Global all-index weighted norm certification, executable coefficientOperators, official naturalRemainder evaluation, the first genuine Picard iterate and converged fixed point, materialized phi/u/average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+    },
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_regular_flux_second_jets.py",
+      "provenance": "references/EQ_5_2_REGULAR_FLUX_SECOND_JET_PROVENANCE.md",
+      "paper_locations": [
+        "Eq. (5.2)",
+        "Eqs. (5.3)-(5.7)"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #98 analytically differentiates the exact regular Eq. (5.2) quotient beta_n=V_n/X through second (X,eta) order from an explicit minimal third-mixed U_n jet, including direct axis evaluation and radial-average chain-rule weights without production finite differences or sampled division by X.",
+      "remaining_boundary": "The required U_XXeta, U_Xetaeta and U_etaetaeta data must still come from the genuine converged and Lemma-5.2-repaired coefficient hierarchy; repaired third mixed jets, automatic beta-history population, a common analytic strip/converged positive-order Picard hierarchy, infinite recursive cutoff schedule/local finiteness, and Proposition 5.3 all-jets-flat residual decay remain unresolved."
+    },
+    {
+      "id": "stage-6-section9-stage-certificate",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_stage_certificate.py",
+      "provenance": "references/SECTION9_STAGE_CERTIFICATE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4",
+        "Lemma 9.8",
+        "Eqs. (9.17)-(9.19)",
+        "printed pages 113-114"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #99 adds fail-closed log-domain checks for the exact Lemma 9.8 Eq. (9.17) correction envelope and Eq. (9.18) residual envelope, reusing the rational Section 9 schedule while requiring explicit certified/theorem-derived provenance for supplied norm data and keeping E_{j,m} separate.",
+      "remaining_boundary": "No genuine Z_j/Delta u_j fields or theorem-derived C_{j,m}, P_{j,m}, K_m are produced; uniform-in-q common-domain estimates, all-orders E_{j,m}=O(q^N), Lemma 9.7 common-domain closure, the shrinking-cutoff sum (9.21), convergence, Proposition 9.9 flatness, and paper-exact velocity remain unresolved."
+    },
+    {
+      "id": "stage-7-8-endpoint-admission",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_endpoint_bridge.py",
+      "provenance": "references/SECTION9_ENDPOINT_BRIDGE_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4 / Lemma 9.8 / Eqs. (9.17)-(9.19)",
+        "Section 10 endpoint smooth-extension step"
+      ],
+      "official_lean_modules": [
+        "SmoothCutoffs.lean",
+        "TimeLocalization.lean",
+        "CandidateFromLimits.lean"
+      ],
+      "landed_capability": "PR #100 requires a separately justified uniform late-time Section 9 residual-derivative witness of order n+1 before admitting an endpoint D^n R jet, keeps one compact spatial window, passes the witness through EndpointPowerLawMajorant and the exact T=1, t>=3/4 Section 10 plateau gate, and explicitly rejects a pointwise Eq. (9.18) certificate as insufficient.",
+      "remaining_boundary": "No genuine Section 9 correction sequence, common-domain/support theorem, uniform residual-derivative witness, q-to-(1-t) comparison, locally uniform endpoint limit, all-order endpoint jet family, smooth force closure, bounded-energy certificate, or paper-exact velocity is constructed."
+    }
+  ]
+}
