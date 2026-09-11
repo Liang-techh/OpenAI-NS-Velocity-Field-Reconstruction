@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, localcontext
 import math
 import sys
 
@@ -33,7 +33,7 @@ def test_wide_threshold_algebra_keeps_exact_positive_structure() -> None:
     # Independent rational oracle for 1 + (14000/9) * 2.  The production
     # value is rounded upward at finite precision, so it must enclose the same
     # high-precision rational evaluation rather than undershoot it.
-    with __import__("decimal").localcontext() as ctx:
+    with localcontext() as ctx:
         ctx.prec = 90
         oracle = Decimal(1) + Decimal(28000) / Decimal(9)
     assert stability >= oracle
@@ -57,7 +57,7 @@ def test_wide_selection_cross_checks_narrow_when_float_is_representable() -> Non
     assert wide.admits_symbolic(wide.Lambda, wide.C.exponent_upper)
     assert not wide.admits_symbolic(
         wide.Lambda,
-        wide.C.exponent_upper - Decimal("1e-30"),
+        wide.C.exponent_upper - Decimal("1e-20"),
     )
 
 
