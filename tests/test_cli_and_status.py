@@ -92,7 +92,7 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'CandidateFromLimits' in stages[7]['implemented']
     assert 'SpatialBorelExtension boundSum/localScale' in stages[7]['implemented']
     assert '2^-j derivative-tail certificates' in stages[7]['implemented']
-    assert 'traced-residual/Borel-glue bridge' in stages[7]['implemented']
+    assert 'CandidateFromLimits trace/glue bridge' in stages[7]['implemented']
     assert 'degree-zero endpoint tensor' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
