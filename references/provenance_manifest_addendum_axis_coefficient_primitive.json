@@ -1,0 +1,23 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd"
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "Executable pinned AxisOperators.primitiveData / AxisOperators.primitive zero-at-axis radial primitive on actual SchedulePressure-derived coefficient eta-jets",
+    "paper_locations": [
+      "NavierStokes/AxisOperators.lean: rowData, primitiveScale, primitiveData, primitive, norm_primitive_le",
+      "NavierStokes/AxisContraction.lean: coefficientOperators / naturalRemainder downstream use"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_primitive.py",
+      "tests/test_axis_coefficient_primitive.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_PRIMITIVE_PROVENANCE.md",
+    "remaining_boundary": "No global all-index weighted norm certificate or genuine AxisSpace membership; parameterPrimitive, regular inverses / derivative composites and any other missing pinned AxisOperators, the complete coefficientOperators record, naturalRemainder(x0), the first real Picard iterate, fixed-point phi/u, average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved. paper_exact_velocity_available must remain false."
+  }
+}
