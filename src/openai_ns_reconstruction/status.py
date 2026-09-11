@@ -70,18 +70,22 @@ STAGES = [
          "closed during conservative remainderBound/remainderLip propagation, but the landed wide-arithmetic adapter now "
          "propagates the same positive Controlled/remainder majorant algebra with 96-digit Decimal arithmetic rounded "
          "toward +infinity. On that actual regression datum its remainderBound/remainderLip ledger remains finite even "
-         "when a conservative bound exceeds sys.float_info.max; this is a representation-layer result, not a tighter "
-         "estimate or a fixed-point construction."
+         "when a conservative bound exceeds sys.float_info.max. The landed wide Lambda/C selector now consumes those "
+         "Decimal bounds without binary64 down-conversion, evaluates Lambda=max(1+B+L,1+(14000/9)B) with upward-rounded "
+         "Decimal arithmetic, and represents C=exp(Lambda*phaseSup) by its certified symbolic exponent so an enormous but "
+         "finite theorem threshold is not mistaken for numerical infinity. The actual-schedule stage1_scale_chain_wide "
+         "path supplies no caller-chosen rho, field bounds, resolvent, remainder, Lambda, or C. These are representation-"
+         "layer certificates, not a tighter estimate or a fixed-point construction."
      ),
      "remaining": (
-         "Carry the landed wide Decimal remainderBound/remainderLip values through the pinned Lambda/C scale selection "
-         "without converting them back to binary64, preserving every contraction hypothesis; then determine whether the "
-         "resulting conservative constants are merely huge or require a tighter theorem-side majorant before a practical "
-         "coefficient-space solve. The historical binary64 overflow is not a lower bound on the true resolvent/remainder "
-         "and not a failure of the Lean existence theorem. Then materialize the coefficient-space fixed-point "
-         "phi/u/average/pressure fields, connect those genuine fields to NaturalProfileAssembly, and verify the paper's "
-         "support, moments, matching and cone conditions. The current analytic inequalities and wide arithmetic are "
-         "executable conservative certificates, not interval or Lean proof objects."
+         "Materialize the coefficient-space fixed-point phi/u fields from the actual schedule/operator/remainder data, "
+         "derive the corresponding average/pressure fields, and connect those genuine fields together with the landed "
+         "wide Lambda/C choice to NaturalProfileAssembly. If a practical executable solve needs smaller constants, tighten "
+         "the theorem-side conservative majorants without weakening the contraction hypotheses; the former binary64 "
+         "Lambda/C representation blocker is closed, and the historical overflow is not a lower bound on the true "
+         "resolvent/remainder or a failure of the Lean existence theorem. Then verify the paper's support, moments, "
+         "matching and cone conditions. The current analytic inequalities and wide arithmetic are executable conservative "
+         "certificates, not interval or Lean proof objects."
      )},
     {"id": 2, "name": "all-order background", "status": "formal-structure",
      "implemented": (
@@ -100,14 +104,18 @@ STAGES = [
          "Eq. (5.15) forward reconstruction of F_n/V_n/Pi_n from supplied repaired analytic coefficient data uses the "
          "axis-regular Eq. (5.2)/(5.5) paths. Also present are a finite-prefix SlowBorelBase/DiagonalScale recursive "
          "cutoff-scale constructor from supplied analytic normalized-template bounds C[j,m] with exact edge certificates "
-         "and the doubling envelope, an exact finite-prefix cutoff support certificate recording plateau, the unique "
-         "possible transition order, forced-zero tail within the constructed prefix and stable truncation once that zero "
-         "tail is reached, a fixed-prefix tail-order arithmetic gate recording the Lean bounds "
-         "2^-J q^(h(J+1)-m) and physical exponent h(J+1)+b-2M, solving exactly for the minimal J needed for a requested "
-         "finite decay order and failing closed when the constructed finite scale schedule is too short, and an exact "
-         "SlowExpansionResidual finite recurrence / truncation bridge that keeps every nonzero retained recurrence defect "
-         "explicit and, only after independent exact recurrence cancellation, bounds the omitted pair/shift tail by the "
-         "first omitted slow factor q^(b+2(N+1)h) times its coefficient majorant."
+         "and the doubling envelope. When a theorem-admissible local scale exceeds binary64, the constructor keeps the "
+         "same dyadic inequality and produces an arbitrary-precision power-of-two Python integer witness, checking the "
+         "original inequality in log space rather than clipping the scale; reciprocal_support_log_edge preserves the "
+         "support edge in log form, while the binary64 reciprocal accessor fails closed if it would underflow to fake zero. "
+         "An exact finite-prefix cutoff support certificate records plateau, the unique possible transition order, forced-"
+         "zero tail within the constructed prefix and stable truncation once that zero tail is reached, a fixed-prefix "
+         "tail-order arithmetic gate records the Lean bounds 2^-J q^(h(J+1)-m) and physical exponent h(J+1)+b-2M, "
+         "solving exactly for the minimal J needed for a requested finite decay order and failing closed when the "
+         "constructed finite scale schedule is too short, and an exact SlowExpansionResidual finite recurrence / "
+         "truncation bridge keeps every nonzero retained recurrence defect explicit and, only after independent exact "
+         "recurrence cancellation, bounds the omitted pair/shift tail by the first omitted slow factor "
+         "q^(b+2(N+1)h) times its coefficient majorant."
      ),
      "remaining": (
          "Derive the paper's profile-dependent A0/A1/f_n from materialized leading/lower-order data, verify the actual "
@@ -161,16 +169,23 @@ STAGES = [
          "level curl-realization algebra from the pinned Formula (30) is also executable: B=|n|^-2(n cross a), the "
          "principal harmonic is the tangential projection, inverseCarrier=i/K, and the displayed derivative remainder is "
          "(i/K)curl(B). Exact tangency n.a=0 is required before exposing the tangent specialization; caller-supplied "
-         "coefficient_curl is never treated as proof of the genuine cylindrical curl."
+         "coefficient_curl is never treated as proof of the genuine cylindrical curl. The landed theorem-shaped primary "
+         "amplitude ODE algebra now maps MovingFrameODE/GrowingMode/PrimaryODE pointwise: moving-frame a/b/c, reference "
+         "defects B=b-lambda/h and C=c-lambda*h, four modal errors, j^2 viscosity damping, the exact 2x2 modal operator, "
+         "projected forcing transform, and x=p+q, y=h(p-q) with h'=rate*h. Its regression independently evaluates the "
+         "physical rhsX/rhsY path and differentiates the modal basis; it does not identify the fixture with paper data or "
+         "solve the Volterra equation."
      ),
      "remaining": (
          "Construct the actual pulse-integrated covariance columns of Eq. (7.27), including the true pulse functions, "
          "from the paper-exact background; prove the genuine Lemma 7.4 ratio/frame bound and Gaussian normalized "
          "first-moment estimate on every active pulse, then feed those certified inputs through the landed Eq. (7.28) "
          "error-budget and perturbation certificates to obtain actual-data determinant/inverse stability and positive-cone "
-         "persistence for the real T_{0,*} data. After that, solve the amplitude transport/ODE and instantiate the landed "
-         "curl algebra with the actual localized coefficient, cylindrical derivative, smoothness, support, zero-germ and "
-         "phase-patch hypotheses required for a genuine supported divergence-free oscillatory wave."
+         "persistence for the real T_{0,*} data. Instantiate the landed primary-amplitude datum from the genuine Proposition "
+         "5.5/phase-frame fields, construct the actual pulse forcing, solve the finite-interval PrimaryODE Volterra "
+         "solution with its ODE/initial-value estimates, and only then connect that amplitude to the landed curl algebra "
+         "with the actual localized coefficient, cylindrical derivative, smoothness, support, zero-germ and phase-patch "
+         "hypotheses required for a genuine supported divergence-free oscillatory wave."
      )},
     {"id": 5, "name": "compact mean corrections", "status": "pending",
      "remaining": "Section 8 compact mean corrections and the associated defect solve."},
@@ -199,7 +214,11 @@ STAGES = [
          "exactly one, so final localization preserves any upstream-certified origin curl value without sampling a blow-up "
          "sequence. A separate fail-closed endpoint-limit majorant records the elementary sufficient condition "
          "sup_x||partial_t D^n R||<=C(T-t)^(-alpha), 0<=alpha<1, and derives the locally-uniform Cauchy/endpoint-tail "
-         "modulus C/(1-alpha)(T-t)^(1-alpha) without fitting C or alpha from samples."
+         "modulus C/(1-alpha)(T-t)^(1-alpha) without fitting C or alpha from samples. A landed pointwise endpoint-force "
+         "support certificate follows SpatialBorelExtension.extension_zero_of_coefficients_zero outside the official "
+         "cylinder: it checks the past residual exactly for t<T, the degree-zero endpoint trace at t=T, and exactly the "
+         "locally finite active future normal coefficients for t>T, requiring exact zeros with no tolerance or sampled "
+         "support inference."
      ),
      "remaining": (
          "Justify the executable spatial/time transition-collar representatives where the formalization uses noncomputable "
@@ -207,11 +226,13 @@ STAGES = [
          "and prove genuine derivative bounds (or equivalent estimates) that discharge the landed endpoint-limit majorant "
          "for every derivative/window, hence all locally uniform t->1- limits; prove that the degree-zero endpoint value "
          "used by close_left_open_past is the actual left limit and that all normal jets match the Borel right extension; "
-         "derive genuine analytic compact-template derivative bounds for those true jets and instantiate the landed scale "
-         "schedule and exact 2^-N derivative-tail budget so the resulting global force is smooth through t=1. Independently "
-         "establish the paper's uniform bounded kinetic-energy conclusion along the actual blow-up limit, connect completed "
-         "upstream local-field inputs, and prove the required upstream ||curl A(t,0)||->infinity premise; the landed late-"
-         "origin adapter preserves that premise but does not establish it."
+         "prove that the actual past residual and every genuine endpoint normal coefficient vanish outside the official "
+         "support cylinder so the pointwise support implication applies globally; derive genuine analytic compact-template "
+         "derivative bounds for those true jets and instantiate the landed scale schedule and exact 2^-N derivative-tail "
+         "budget so the resulting global force is smooth through t=1. Independently establish the paper's uniform bounded "
+         "kinetic-energy conclusion along the actual blow-up limit, connect completed upstream local-field inputs, and "
+         "prove the required upstream ||curl A(t,0)||->infinity premise; the landed late-origin adapter preserves that "
+         "premise but does not establish it."
      )},
     {"id": 8, "name": "independent verification", "status": "diagnostic-only",
      "implemented": "Manufactured solutions, refinement checks, divergence/energy diagnostics, labelled exports and fail-closed provenance audit.",
@@ -232,10 +253,12 @@ def construction_status() -> dict:
             "Pointwise or sampled margins are not uniform-in-parameter certificates.",
             "The executable Section 10 spatial/time transition collars have the official support/plateau geometry but are not claimed pointwise identical to Mathlib's noncomputable ContDiffBump.",
             "The endpoint Borel/full-spacetime-jet/scale-schedule/traced-residual adapters still depend on caller-supplied endpoint jets or analytic template bounds; close_left_open_past only supplies the prescribed degree-zero endpoint candidate and does not prove the incoming residual converges to it. The endpoint-limit majorant additionally depends on independently proved actual residual derivative bounds with integrable exponent alpha<1. None of these layers infer endpoint convergence from samples or by themselves prove smooth t=1 force extension; the exact 2^-N omitted-derivative tail budget is conditional on genuine all-order bounds.",
+            "The endpoint point-support certificate is an exact implication for a queried point and locally finite active coefficients; it does not prove the unresolved actual residual or all endpoint jets vanish outside the support cylinder, nor does a finite collection of point queries establish global compact support.",
             "The Section 10 compact-support energy adapter is only a fixed-time implication from an independently certified sup bound; it does not prove a uniform bounded-energy estimate as t approaches the blow-up time.",
             "The Section 10 late-origin adapter preserves an upstream-certified origin curl value on 3/4<=t<1 but does not prove that the upstream curl actually blows up.",
-            "The Section 7 stress-cone and curl-realization modules provide reference/certificate algebra only; covariance-perturbation and pulse-error-budget inputs remain caller-certified, and the curl algebra accepts a caller-supplied coefficient derivative. Actual pulse integrals, genuine Lemma-7.4/concentration inputs, amplitude transport, localized cylindrical curl hypotheses and a paper-exact wave are still missing.",
-            "The connected Stage-1 actual-schedule scale chain now uses componentwise field bounds so the current regression resolvent majorant is representable; the original binary64 remainder path still fails closed on overflow, while the wide Decimal adapter carries the same conservative remainderBound/remainderLip algebra to finite values beyond float range. Those wide values are not yet connected through Lambda/C without binary64 down-conversion and are not evidence of the materialized fixed point.",
+            "The Section 7 stress-cone, primary-amplitude ODE and curl-realization modules provide theorem-shaped algebra only; covariance-perturbation and pulse-error-budget inputs remain caller-certified, the primary ODE datum is not yet the actual Proposition 5.5/pulse datum and its finite-interval Volterra solution is not constructed, and the curl algebra accepts a caller-supplied coefficient derivative. Actual pulse integrals, genuine Lemma-7.4/concentration inputs, localized cylindrical curl hypotheses and a paper-exact wave are still missing.",
+            "The Stage-2 cutoff scheduler can preserve theorem-admissible scales beyond binary64 with arbitrary-precision integers and log-space support edges, but it still consumes caller-supplied analytic C[j,m] bounds and constructs only finite prefixes; no infinite schedule, theorem-level local finiteness, or Proposition 5.3 conclusion follows from this representation bridge.",
+            "The connected Stage-1 actual-schedule scale chain now uses componentwise field bounds so the current regression resolvent majorant is representable; the original binary64 remainder path still fails closed on overflow, while the wide Decimal adapter carries the same conservative remainderBound/remainderLip algebra to finite values beyond float range and the wide Lambda/C selector carries those values onward without binary64 down-conversion by storing C through its certified exponential exponent. This closes the scalar representation blocker only; it is not evidence that the coefficient-space fixed point has been materialized.",
         ],
         "sources": copy.deepcopy(SOURCE_PINS),
         "stages": copy.deepcopy(STAGES),
