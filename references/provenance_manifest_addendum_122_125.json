@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "integration-truth-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "fefcaf368d9c36b2b4bd48842c3b3d39e9f7d33d",
+  "integrated_prs": [122, 123, 124, 125],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration ledger for the four landed increments immediately after PR #121. This records real capability without promoting any formal-structure layer to paper-exact status.",
+  "layers": [
+    {
+      "pr": 122,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_multiply_y.py",
+      "test": "tests/test_axis_coefficient_multiply_y.py",
+      "provenance": "references/AXIS_COEFFICIENT_MULTIPLY_Y_PROVENANCE.md",
+      "equation_or_source": "AxisWeightEstimates.weight_radial_shift / AxisOperators.multiplyYData / AxisOperators.mulY",
+      "capability": "Pinned radial-variable multiplication on the actual SchedulePressure-derived coefficient eta-jets, with the official row shift/scale rather than an ad hoc coefficient transform.",
+      "remaining_boundary": "No global weighted AxisSpace membership certificate; missing regular inverses, derivative/bilinear composites and any other pinned AxisOperators still block the complete coefficientOperators record, naturalRemainder(x0), the first real Picard iterate, fixed-point phi/u, average/pressure, NaturalProfileAssembly, and final support/moment/matching/cone closure."
+    },
+    {
+      "pr": 123,
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_first_picard_parameter_jet.py",
+      "test": "tests/test_background_first_picard_parameter_jet.py",
+      "provenance": "references/FIRST_PICARD_PARAMETER_JET_PROVENANCE.md",
+      "equation_or_source": "Lemma 5.1 / Eq. (5.7)",
+      "capability": "Analytic eta derivative of the first Picard term through the eta-independent singular kernel, partial_eta(G f_n)=G(partial_eta f_n), independently checked against a closed-form integral and finite-difference oracle of the value path.",
+      "remaining_boundary": "partial_eta f_n remains an explicit analytic input because the repaired hierarchy does not yet own all extra Eq. (5.6) source derivatives; the genuine k=1 Picard term, full Picard convergence, recursive coefficient materialization, infinite cutoff schedule, and Proposition 5.3 all-jets residual decay remain unresolved."
+    },
+    {
+      "pr": 124,
+      "id": "stage-3-dyadic-charts-and-transported-phases",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_scale.py",
+      "test": "tests/test_phase_large_band_scale.py",
+      "provenance": "references/PHASE_LARGE_BAND_SCALE_PROVENANCE.md",
+      "equation_or_source": "Sections 6-7.1 / Eqs. (7.9)-(7.11) / PhaseEstimates.eventually_band_conditions",
+      "capability": "Exact-integer sufficient large-band gate for S=ell^2, epsilon=2^(-ell h), and k=ceil(epsilon^(-1/2)) that avoids binary64 underflow of Q=2^-ell and exposes the pinned phaseError<=4/S consequence.",
+      "remaining_boundary": "The carrier inequality is a sufficient gate, not an exact characterization of ceiling help; no paper-exact Proposition 5.5 background, actual slow-box LocalBase/vector hypotheses, uniform Eqs. (7.9)-(7.11) family proof, stress-cone/curl wave, or paper-exact velocity is supplied."
+    },
+    {
+      "pr": 125,
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section10_endpoint_trace_consistency.py",
+      "test": "tests/test_section10_endpoint_trace_consistency.py",
+      "provenance": "references/SECTION10_ENDPOINT_TRACE_CONSISTENCY_PROVENANCE.md",
+      "equation_or_source": "Section 10 / CandidateFromLimits / SpacetimeGluing",
+      "capability": "Finite-order fail-closed consistency check between two supplied pre-endpoint dense full residual-jet samples and independently supplied integrated endpoint-majorant budgets, without fitting or shrinking those majorants from the samples.",
+      "remaining_boundary": "No actual Section 9 residual jets or uniform spatial majorants are derived; locally uniform endpoint limits, the infinite all-order Borel smoothness family, smooth compact forcing, bounded energy, blow-up closure, and paper-exact velocity remain unresolved."
+    }
+  ]
+}
