@@ -66,11 +66,14 @@ class FormalForceSupportPointCertificate:
 
     @property
     def certified(self) -> bool:
+        branch_time_ok = (
+            (self.branch == "past" and self.t < self.endpoint)
+            or (self.branch == "endpoint" and self.t == self.endpoint)
+            or (self.branch == "future" and self.t > self.endpoint)
+        )
         return (
-            self.branch in {"past", "endpoint", "future"}
-            and self.t < self.endpoint if self.branch == "past" else self.t >= self.endpoint
-        ) and (
-            not support_cylinder_contains(self.x, self.y, self.z)
+            branch_time_ok
+            and not support_cylinder_contains(self.x, self.y, self.z)
             and self.relevant_inputs_zero
             and self.formal_value_zero
         )
