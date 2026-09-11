@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "014b20c13be2f75ad83d8f141f1e6894a8fd67ea",
+  "integrated_prs": [104],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Section-9 finite flat-remainder witness ladder only. It admits separately justified uniform-in-q power-law witnesses for E_{j,m} and checks a contiguous finite N=0..Nmax family on one common stage/derivative/domain; it does not infer all-orders flatness.",
+  "layers": [
+    {
+      "id": "stage-3-6-section9-flat-remainder",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_flat_remainder.py",
+      "provenance": "references/SECTION9_FLAT_REMAINDER_LADDER_PROVENANCE.md",
+      "paper_locations": [
+        "Section 9.4 / Lemma 9.8 / Eq. (9.18)",
+        "Section 9 / Proposition 9.9 boundary"
+      ],
+      "official_lean_modules": [],
+      "landed_capability": "PR #104 adds a fail-closed theorem-input gate for E_{j,m} <= C_{j,m,N} q^N on a full small-q domain and validates that a finite witness family covers exactly N=0..Nmax without mixing stages, derivative orders, or q domains. Sampled/fitted evidence is rejected through the existing CertifiedBoundDatum gate.",
+      "remaining_boundary": "No genuine Section 7/8 correction data, actual Section 9 residual sequence, machine verification of the external power-law witnesses, arbitrary-N/all-orders flatness, Lemma 9.7 common-domain theorem, Eq. (9.21) locally finite sum, Proposition 9.9 convergence, or paper-exact velocity is constructed."
+    }
+  ]
+}
