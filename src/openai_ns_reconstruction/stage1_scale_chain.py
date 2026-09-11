@@ -1,22 +1,23 @@
 """Fail-closed bridge from the actual schedule to the Stage-1 scale chain.
 
-The landed Stage-1 pieces already construct an actual SchedulePressure analytic
-neighborhood and, separately, turn a finite coefficient-family norm ledger into
-AxisResolvent/remainder/Lambda-C bounds.  This module connects those two pieces
+The landed Stage-1 pieces construct an actual SchedulePressure analytic
+neighborhood and, separately, turn coefficient-space norm ledgers into
+AxisResolvent/remainder/Lambda-C bounds.  This module connects those pieces
 without inventing fixed-point data.
 
-A key practical issue is that the current conservative actual-schedule bound can
-make the *majorant used to upper-bound* the natural resolvent enormous.  Before
-asking the existing binary64 remainder machinery to consume that number, we
-probe the positive factorial majorant
+The first version deliberately pushed the single common eleven-field bound
+through every coefficient.  That reproduced the simplest pinned Lean existence
+proof, but it also let the large gradient bound contaminate ``||chi||`` even
+though ``AxisResolvent`` depends on chi specifically.  The pinned
+``boundedAxisElement_norm`` theorem applies to one field and one value bound at
+a time, so the actual-schedule path now uses the theorem-faithful componentwise
+ledger while retaining the same common radius and a common family bound given
+by the maximum of the individual norms.
 
-    a_k = K^k / (k! (k+1)!).
-
-If a single rigorously downward-rounded positive term already exceeds the
-largest binary64 number, then the current conservative majorant series cannot be
-represented in binary64.  This is an obstruction of the present certificate
-chain only; it is **not** a lower bound on the true resolvent norm and is not a
-claim that the theorem's fixed point fails to exist.
+Every numeric representation failure remains fail-closed.  Such an obstruction
+is about this conservative certificate chain only; it is **not** a lower bound
+on the true resolvent norm and is not a claim that the theorem's fixed point
+fails to exist.
 """
 
 from __future__ import annotations
@@ -27,14 +28,11 @@ import math
 import sys
 from typing import Optional
 
-from .axis_analytic_input_bounds import (
-    ConstructiveAnalyticInputNormCertificate,
-    constructive_analytic_input_norm_certificate,
+from .axis_componentwise_input_bounds import (
+    ComponentwiseAnalyticInputNormCertificate,
+    componentwise_analytic_input_norm_certificate,
 )
-from .axis_remainder_bounds import (
-    NaturalRemainderBoundCertificate,
-    natural_remainder_bound_certificate,
-)
+from .axis_remainder_bounds import NaturalRemainderBoundCertificate, natural_remainder_bound_certificate
 from .natural_scale_selection import NaturalScaleSelection, select_natural_scale
 from .outgoing_tail import TailData
 from .schedule_analytic_neighborhood import (
@@ -128,6 +126,24 @@ def first_binary64_majorant_obstruction(
 
 
 @dataclass(frozen=True)
+class Binary64PropagationObstruction:
+    """A later certified bound cannot be represented by current float machinery."""
+
+    stage: str
+    detail: str
+
+    def __post_init__(self) -> None:
+        if self.stage not in {
+            "resolvent-conversion",
+            "remainder-propagation",
+            "scale-selection",
+        }:
+            raise ValueError("unknown Stage-1 propagation obstruction")
+        if not self.detail:
+            raise ValueError("propagation obstruction detail must be nonempty")
+
+
+@dataclass(frozen=True)
 class ActualScheduleScaleChainDiagnostic:
     """Actual-schedule bridge through the first representable theorem layer."""
 
@@ -135,7 +151,8 @@ class ActualScheduleScaleChainDiagnostic:
     coefficient_family_norm_upper: float
     resolvent_majorant_parameter_upper: float
     obstruction: Optional[Binary64MajorantObstruction]
-    analytic_norms: Optional[ConstructiveAnalyticInputNormCertificate]
+    propagation_obstruction: Optional[Binary64PropagationObstruction]
+    analytic_norms: Optional[ComponentwiseAnalyticInputNormCertificate]
     remainder: Optional[NaturalRemainderBoundCertificate]
     scale: Optional[NaturalScaleSelection]
 
@@ -148,6 +165,28 @@ class ActualScheduleScaleChainDiagnostic:
         return self.scale is not None
 
 
+def _stopped(
+    *,
+    schedule: ActualScheduleAnalyticInputCertificate,
+    family_upper: float,
+    K_upper: float,
+    obstruction: Optional[Binary64MajorantObstruction] = None,
+    propagation: Optional[Binary64PropagationObstruction] = None,
+    analytic: Optional[ComponentwiseAnalyticInputNormCertificate] = None,
+    remainder: Optional[NaturalRemainderBoundCertificate] = None,
+) -> ActualScheduleScaleChainDiagnostic:
+    return ActualScheduleScaleChainDiagnostic(
+        schedule_inputs=schedule,
+        coefficient_family_norm_upper=family_upper,
+        resolvent_majorant_parameter_upper=K_upper,
+        obstruction=obstruction,
+        propagation_obstruction=propagation,
+        analytic_norms=analytic,
+        remainder=remainder,
+        scale=None,
+    )
+
+
 def diagnose_actual_schedule_scale_chain(
     data: TailData,
     j: float,
@@ -157,63 +196,112 @@ def diagnose_actual_schedule_scale_chain(
     """Connect actual schedule inputs to the landed norm/remainder/scale chain.
 
     The caller supplies only the theorem's actual ``TailData`` and ``j``.  No
-    free ``rho``, ``B``, resolvent norm, remainder constants, Lambda, or C are
-    accepted here.
+    free ``rho``, per-field value bounds, resolvent norm, remainder constants,
+    Lambda, or C are accepted here.
 
-    If the current conservative factorial majorant is already too large for the
-    binary64 remainder machinery, the function returns a structured obstruction
-    and stops *before* manufacturing any downstream values.  Otherwise it runs
-    the already-landed certificate chain normally.
+    Each fixed field now receives its own ``12*B_k`` Cauchy norm certificate.
+    The common ``CoefficientFamily.bound`` is their maximum, while the pinned
+    natural-resolvent majorant uses only the chi-specific norm.  Numeric
+    overflow at any later layer is returned as a structured obstruction rather
+    than being hidden or replaced by smaller sampled values.
     """
 
     schedule = certify_actual_schedule_analytic_inputs(data, j)
     neighborhood = schedule.neighborhood
+
     family_upper = _mul_upper(
-        neighborhood.common_field_sup_upper,
+        max(neighborhood.field_bounds.values()),
         _RADIUS_LOSS_HALF,
-        "coefficient-family norm bound",
+        "componentwise coefficient-family max norm bound",
+    )
+    chi_upper = _mul_upper(
+        neighborhood.field_bounds["chi"],
+        _RADIUS_LOSS_HALF,
+        "chi coefficient norm bound",
     )
     K_upper = _mul_upper(
         _RESOLVENT_POWER_CONSTANT,
-        family_upper,
+        chi_upper,
         "natural-resolvent majorant parameter",
     )
+
     obstruction = first_binary64_majorant_obstruction(
         K_upper,
         max_terms=max_probe_terms,
     )
     if obstruction is not None:
-        return ActualScheduleScaleChainDiagnostic(
-            schedule_inputs=schedule,
-            coefficient_family_norm_upper=family_upper,
-            resolvent_majorant_parameter_upper=K_upper,
+        return _stopped(
+            schedule=schedule,
+            family_upper=family_upper,
+            K_upper=K_upper,
             obstruction=obstruction,
-            analytic_norms=None,
-            remainder=None,
-            scale=None,
         )
 
-    analytic = constructive_analytic_input_norm_certificate(
+    analytic = componentwise_analytic_input_norm_certificate(
         neighborhood_radius=neighborhood.radius,
-        complex_field_sup_upper=neighborhood.common_field_sup_upper,
+        field_value_sup_upper=neighborhood.field_bounds,
     )
-    operators = analytic.operator_norm_bounds()
+    if analytic.resolvent_majorant.majorant_parameter_upper != K_upper:
+        raise ArithmeticError("componentwise chi ledger disagrees with Stage-1 K bound")
+
+    try:
+        operators = analytic.operator_norm_bounds()
+    except ArithmeticError as exc:
+        return _stopped(
+            schedule=schedule,
+            family_upper=family_upper,
+            K_upper=K_upper,
+            propagation=Binary64PropagationObstruction(
+                "resolvent-conversion",
+                str(exc),
+            ),
+            analytic=analytic,
+        )
+
     axis_data = analytic.axis_data_norm_bounds(h=data.h)
-    remainder = natural_remainder_bound_certificate(
-        operators=operators,
-        data=axis_data,
-        amplitude_norm_upper=analytic.amplitude_norm_upper,
-    )
-    scale = select_natural_scale(
-        remainder_bound=remainder.remainder_bound_upper,
-        remainder_lipschitz=remainder.remainder_lipschitz_upper,
-        phase_real_part_sup=neighborhood.axis_phase_real_part_sup_upper,
-    )
+    try:
+        remainder = natural_remainder_bound_certificate(
+            operators=operators,
+            data=axis_data,
+            amplitude_norm_upper=analytic.amplitude_norm_upper,
+        )
+    except ArithmeticError as exc:
+        return _stopped(
+            schedule=schedule,
+            family_upper=family_upper,
+            K_upper=K_upper,
+            propagation=Binary64PropagationObstruction(
+                "remainder-propagation",
+                str(exc),
+            ),
+            analytic=analytic,
+        )
+
+    try:
+        scale = select_natural_scale(
+            remainder_bound=remainder.remainder_bound_upper,
+            remainder_lipschitz=remainder.remainder_lipschitz_upper,
+            phase_real_part_sup=neighborhood.axis_phase_real_part_sup_upper,
+        )
+    except (ArithmeticError, OverflowError) as exc:
+        return _stopped(
+            schedule=schedule,
+            family_upper=family_upper,
+            K_upper=K_upper,
+            propagation=Binary64PropagationObstruction(
+                "scale-selection",
+                str(exc),
+            ),
+            analytic=analytic,
+            remainder=remainder,
+        )
+
     return ActualScheduleScaleChainDiagnostic(
         schedule_inputs=schedule,
         coefficient_family_norm_upper=family_upper,
         resolvent_majorant_parameter_upper=K_upper,
         obstruction=None,
+        propagation_obstruction=None,
         analytic_norms=analytic,
         remainder=remainder,
         scale=scale,
