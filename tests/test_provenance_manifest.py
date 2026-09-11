@@ -67,6 +67,7 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert "src/openai_ns_reconstruction/schedule_analytic_neighborhood.py" in stage1["artifacts"]
     assert "src/openai_ns_reconstruction/natural_scale_selection.py" in stage1["artifacts"]
     assert "src/openai_ns_reconstruction/axis_remainder_bounds.py" in stage1["artifacts"]
+    assert "src/openai_ns_reconstruction/axis_remainder_wide_bounds.py" in stage1["artifacts"]
     assert "src/openai_ns_reconstruction/axis_analytic_input_bounds.py" in stage1["artifacts"]
     assert "NavierStokes/AxisContraction.lean" in stage1["official_lean_modules"]
     assert "NavierStokes/AxisEvaluation.lean" in stage1["official_lean_modules"]
@@ -84,9 +85,11 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert any("actual-schedule analytic-neighborhood certificate" in item
                and "eleven" in item and "realPartSup" in item
                for item in stage1["implemented_components"])
+    assert any("96-digit Decimal" in item and "sys.float_info.max" in item
+               for item in stage1["implemented_components"])
     assert not any("materialize and certify an actual admissible common analytic" in item
                    for item in stage1["missing_for_paper_exact"])
-    assert any("rho/B/realPartSup" in item and "contraction" in item
+    assert any("wide Decimal remainderBound/remainderLip" in item and "Lambda/C" in item
                for item in stage1["missing_for_paper_exact"])
     assert any("coefficient-space fixed-point fields" in item
                for item in stage1["missing_for_paper_exact"])
@@ -96,12 +99,15 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert any("binary64" in item and "interval-arithmetic" in item for item in stage1["numerical_caveats"])
     assert any("schedule_analytic_neighborhood.py" in item and "extremely conservative" in item
                for item in stage1["numerical_caveats"])
+    assert any("axis_remainder_wide_bounds.py" in item and "not interval arithmetic" in item
+               for item in stage1["numerical_caveats"])
 
     stage2 = layers["stage-2-all-order-background"]
     assert stage2["status"] == "formal-structure"
     assert "src/openai_ns_reconstruction/background_inner_solver.py" in stage2["artifacts"]
     assert "src/openai_ns_reconstruction/background_picard_bounds.py" in stage2["artifacts"]
     assert "src/openai_ns_reconstruction/background_moment_repair.py" in stage2["artifacts"]
+    assert "src/openai_ns_reconstruction/background_moment_repair_profile.py" in stage2["artifacts"]
     assert "src/openai_ns_reconstruction/background_extension.py" in stage2["artifacts"]
     assert "src/openai_ns_reconstruction/background_cutoff_schedule.py" in stage2["artifacts"]
     assert "src/openai_ns_reconstruction/background_cutoff_support.py" in stage2["artifacts"]
@@ -111,6 +117,8 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert any("Eq. (5.6)" in item and "Omega_k/X" in item for item in stage2["implemented_components"])
     assert any("Eq. (5.7)" in item and "Picard" in item for item in stage2["implemented_components"])
     assert any("Eq. (5.8)" in item and "p_k=ceil(k/2)" in item and "complete-tail" in item
+               for item in stage2["implemented_components"])
+    assert any("function-level Lemma 5.2 compact repair" in item and "paper_exact" in item
                for item in stage2["implemented_components"])
     assert any("Eq. (5.15) forward reconstruction" in item for item in stage2["implemented_components"])
     assert any("SlowBorelBase/DiagonalScale" in item and "C[j,m]" in item
@@ -138,8 +146,10 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert "src/openai_ns_reconstruction/phase_uniform_bounds.py" in stage3["artifacts"]
     assert "src/openai_ns_reconstruction/phase_frame_bounds.py" in stage3["artifacts"]
     assert "src/openai_ns_reconstruction/stress_cone.py" in stage3["artifacts"]
+    assert "src/openai_ns_reconstruction/curl_realization_algebra.py" in stage3["artifacts"]
     assert "NavierStokes/BasePhaseGeometry.lean" in stage3["official_lean_modules"]
     assert "NavierStokes/Covariance.lean" in stage3["official_lean_modules"]
+    assert "NavierStokes/CurlClassBounds.lean" in stage3["official_lean_modules"]
     assert "Proposition 7.5" in stage3["paper_locations"]
     assert "Eqs. (7.24)-(7.30)" in stage3["paper_locations"]
     assert any("Eq. (6.8)" in item for item in stage3["implemented_components"])
@@ -152,15 +162,21 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
                for item in stage3["implemented_components"])
     assert any("strict positive-cone test |a t|<b m" in item and "sqrt(epsilon)*mask" in item
                for item in stage3["implemented_components"])
+    assert any("Formula (30)" in item and "inverseCarrier=i/K" in item
+               for item in stage3["implemented_components"])
     assert any("paper-exact Proposition 5.5 background" in item
                for item in stage3["missing_for_paper_exact"])
     assert any("LocalBaseBounds C1/C2" in item and "normal-closeness" in item
                for item in stage3["missing_for_paper_exact"])
     assert any("actual pulse-integrated covariance matrix H" in item and "Eq. (7.28)" in item
                for item in stage3["missing_for_paper_exact"])
+    assert any("actual localized coefficient" in item and "LocalizedCurlRealization" in item
+               for item in stage3["missing_for_paper_exact"])
     assert any("phase_frame_bounds.py" in item and "does not certify" in item
                for item in stage3["numerical_caveats"])
     assert any("stress_cone.py" in item and "surrogate wave" in item
+               for item in stage3["numerical_caveats"])
+    assert any("curl_realization_algebra.py" in item and "caller-supplied coefficient_curl" in item
                for item in stage3["numerical_caveats"])
 
     stage7 = layers["stage-7-final-localization"]
@@ -177,6 +193,8 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert any("timeSwitch" in item for item in stage7["implemented_components"])
     assert any("PastExtension closed-past branch" in item for item in stage7["implemented_components"])
     assert any("doublingEnvelope" in item and "right-extension" in item for item in stage7["implemented_components"])
+    assert any("close_left_open_past" in item and "rejects t>T" in item
+               for item in stage7["implemented_components"])
     assert any("boundSum/localScale" in item and "2^-j" in item for item in stage7["implemented_components"])
     assert any("pi/32" in item and "E(t)<=pi M^2/64" in item
                for item in stage7["implemented_components"])
@@ -185,6 +203,8 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
                for item in stage7["implemented_components"])
     assert any("closed-past localized NS residual" in item and "full spacetime derivative family" in item
                for item in stage7["missing_for_paper_exact"])
+    assert any("degree-zero endpoint value used by close_left_open_past" in item
+               for item in stage7["missing_for_paper_exact"])
     assert any("analytic compact-template derivative bounds" in item
                for item in stage7["missing_for_paper_exact"])
     assert any("smooth global force extension through t=1" in item for item in stage7["missing_for_paper_exact"])
@@ -192,6 +212,8 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert any("SpatialCurl.spatialCurl A" in item and "late-origin certificate" in item
                for item in stage7["missing_for_paper_exact"])
     assert any("tautological" in item for item in stage7["numerical_caveats"])
+    assert any("endpoint_borel.close_left_open_past" in item and "does not prove continuity" in item
+               for item in stage7["numerical_caveats"])
     assert any("section10_support_energy.py" in item and "fixed-time implication" in item
                for item in stage7["numerical_caveats"])
     assert any("section10_origin_preservation.py" in item and "not evidence" in item
