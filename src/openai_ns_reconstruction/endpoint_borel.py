@@ -160,3 +160,39 @@ class BorelRightExtension:
             return self(x, y, z, t)
 
         return glued
+
+    def close_left_open_past(self, past_open: VectorField) -> VectorField:
+        """Complete a ``t<T`` field at ``T`` using the prescribed degree-zero jet.
+
+        The pinned ``SpacetimeGluing.glue`` uses the *closed-past* branch at the
+        join.  Executable upstream residual evaluators, however, may be defined
+        only for ``t<T`` while ``CandidateFromLimits`` supplies their endpoint
+        trace separately.  This adapter fills exactly that missing boundary
+        value with ``jet(0,x,y,z)`` and never samples ``past_open`` at ``T``.
+
+        This is an interface completion only.  It does not prove that
+        ``past_open`` converges to the supplied jet as ``t -> T-``; that
+        locally-uniform limit remains an independent prerequisite.
+        """
+        if not callable(past_open):
+            raise ValueError("past_open must be callable")
+
+        def closed_past(x: float, y: float, z: float, t: float) -> np.ndarray:
+            t = _finite(t, "t")
+            if t < self.endpoint:
+                return finite_vector(past_open(x, y, z, t))
+            if t == self.endpoint:
+                return finite_vector(self.jet(0, x, y, z))
+            raise ValueError("closed-past completion is defined only for t<=endpoint")
+
+        return closed_past
+
+    def glue_to_left_open_past(self, past_open: VectorField) -> VectorField:
+        """Glue a ``t<T`` evaluator after completing its endpoint from ``jet(0)``.
+
+        The actual branch convention is still the repository's existing
+        closed-past/future glue: after completion, ``t=T`` belongs to the past
+        branch exactly as in the pinned Lean definition.  No continuity or
+        higher-jet matching is inferred by this helper.
+        """
+        return self.glue_to_past(self.close_left_open_past(past_open))
