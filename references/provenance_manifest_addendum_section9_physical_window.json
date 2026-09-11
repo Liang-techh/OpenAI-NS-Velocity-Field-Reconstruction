@@ -1,0 +1,27 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Eq. (4.1); Lemma 5.4; Lemma 9.7; Proposition 9.9 Step 2; Eq. (9.21); Section 10 fixed support/time localization",
+    "base_main_commit": "b947a1d8a156359aa5df058285878e17d88d52e2"
+  },
+  "layer": {
+    "id": "stage-6-7-section9-physical-slab-local-sum",
+    "status": "formal-structure",
+    "capability": "Exact-rational transfer of the Section 9 q-strip local-finiteness admission to any closed pre-endpoint physical-time slab inside the fixed Section 10 support cylinder, using Eq. (4.1) rather than sampled q bounds",
+    "paper_locations": [
+      "Eq. (4.1)",
+      "Lemma 5.4",
+      "Lemma 9.7",
+      "Section 9 / Proposition 9.9 Step 2",
+      "Eq. (9.21)",
+      "Section 10 fixed spatial/time localization"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_physical_window.py",
+      "tests/test_section9_physical_window.py"
+    ],
+    "provenance": "references/SECTION9_PHYSICAL_WINDOW_PROVENANCE.md",
+    "remaining_boundary": "This proves only a finite pre-endpoint physical-slab enclosure 1-t_upper <= q <= 1-t_lower+1/16 and then reuses the externally certified common-q/infinite-doubling admission. It deliberately rejects t_upper=1 and supplies no genuine correction fields, constructed Eq. (9.21) sum, arbitrary-order residual flatness, uniform endpoint derivative majorants, smooth force extension, bounded-energy/blow-up closure, or paper-exact velocity."
+  }
+}
