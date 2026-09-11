@@ -71,8 +71,11 @@ def test_schedule_is_wired_to_existing_full_jet_borel_path() -> None:
         # localScale witness, so the two scale paths must agree exactly.
         assert extension.scale(j) == schedule.scale(j)
 
-    value = extension(0.2, -0.1, 0.3, 1.0)
-    assert np.array_equal(value, np.array([1.0, 0.3, 0.3]))
+    x, y, z = 0.2, -0.1, 0.3
+    value = extension(x, y, z, 1.0)
+    # Preserve the exact binary operation used by the manufactured jet rather
+    # than comparing it to a decimal literal with a different binary rounding.
+    assert np.array_equal(value, np.array([1.0, x - y, z]))
 
 
 def test_bound_provider_is_cached_and_only_finite_triangle_is_needed_per_degree() -> None:
