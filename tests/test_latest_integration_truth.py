@@ -32,7 +32,7 @@ def test_runtime_truth_surface_tracks_recent_landed_capabilities_without_promoti
     assert "spectral ||H^-1||_2" in stages[4]["implemented"]
     assert "pulse-covariance error-budget adapter" in stages[4]["implemented"]
     assert "|e_sigma|<=E_ratio+u_*sqrt(1+c_*^2)M1" in stages[4]["implemented"]
-    assert "actual Eq. (7.27)" in stages[4]["remaining"]
+    assert "actual pulse-integrated covariance columns of Eq. (7.27)" in stages[4]["remaining"]
     assert "Gaussian normalized first-moment" in stages[4]["remaining"]
 
     assert "sum_{j>N} 2^-j = 2^-N" in stages[7]["implemented"]
