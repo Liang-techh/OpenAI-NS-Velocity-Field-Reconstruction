@@ -4,15 +4,18 @@ An independent, **partial** executable reconstruction of the velocity constructi
 OpenAI's September 2026 *Finite Time Blowup for Navier–Stokes*. This is not an OpenAI repository.
 
 **Current result:** tested similarity kinematics; natural-axis/range structure, an admissible
-ideal-prefix pressure witness, and the constructive outgoing scalar schedule; Section 5
-pressure/Omega recurrence rows plus the Eq. (5.7) singular Picard primitive; fixed dyadic
-geometry, the slow-label/base-jet bridge, and pointwise phase-estimate adapters; spatial/time
-localization plus endpoint Taylor–Borel right-extension infrastructure; and reproducible
-numerical diagnostics.
-**Not yet delivered:** the complete regular leading profile and actual outgoing
-`finalAngular/clockWeight/axisPressure`, the profile-derived all-order background solve,
-stress-cone/amplitude/wave construction, mean corrections, convergent correction sequence,
-or the final compact field with a force proved smooth through the singular time.
+ideal-prefix pressure witness, the constructive outgoing scalar schedule, and executable
+`finalAngular/clockWeight`; Section 5 pressure/Omega recurrence rows, the Eq. (5.7) singular
+Picard primitive, and the Lemma 5.2 compact five-moment repair; fixed dyadic geometry, the
+slow-label/base-jet bridge, executable squared slow partitions, and pointwise phase-estimate
+adapters; spatial/time localization, endpoint Taylor–Borel right-extension infrastructure,
+and the full-spacetime-to-normal endpoint-jet adapter; plus reproducible numerical diagnostics.
+**Not yet delivered:** the complete regular leading profile and actual outgoing `axisPressure`
+with a certified uniform low-|Z| margin, the profile-derived converged all-order background
+solve and Eq. (5.15) repaired-coefficient reconstruction, the paper-selected recursive cutoff
+schedule, Lemma 6.1 support separation, stress-cone/amplitude/wave construction, mean
+corrections, convergent correction sequence, or the final compact field with a force proved
+smooth through the singular time.
 
 A successful demo or a green test suite is **not** a reconstruction of the full counterexample.
 The CLI reports `full_reconstruction: false` / `paper_exact_velocity_available: false` and
@@ -53,12 +56,12 @@ formal proof checker. `demo --require-paper-exact` also refuses before generatin
 | Component | Implementation and boundary |
 |---|---|
 | Similarity coordinates, Eq. (4.1) | Relative-scale root solve, finite-input checks, direct `tau` API |
-| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas, an abstract admissible pressure witness, and the pinned Gaussian-flat scalar outgoing schedule (`S=32` derivative-bound witness, `flattenLength`, `shapeExponent`) are executable, but the actual `finalAngular/clockWeight/axisPressure`, uniform low-|Z| `H^2` margin, `Lambda/C`, and coefficient-space fixed-point fields are still missing |
+| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas, an abstract admissible pressure witness, the pinned Gaussian-flat outgoing schedule (`S=32` derivative-bound witness, `flattenLength`, `shapeExponent`) and the complete executable `finalAngular/clockWeight` scalar tail are present; **actual `axisPressure`, a certified uniform low-|Z| `H^2` margin, `Lambda/C`, and coefficient-space fixed-point fields are still missing** |
 | Profile averages | Cached 32-point Gauss–Legendre rule; optional exact-average callbacks |
 | Exterior heat swirl, Appendix A.6 | Adaptive evaluation of H and derivatives, swirl and centrifugal pressure; **r>0 only** |
-| Section 5 background rows | Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, Eq. (5.5) pressure row, regular Eq. (5.6) `Omega_k/X`, and the Eq. (5.7) six-component singular inverse/Picard-map primitive; **the paper-derived `A0/A1/f_n`, converged Lemma 5.1 coefficient, Lemma 5.2 repair, and recursive cutoff schedule are not yet constructed** |
-| Dyadic geometry / phase, Sections 6–7 | Fixed chart scaling and exact covering matrices; Eq. (6.8) active-shell/slow-label bridge with typed `TangentialBaseJetProvider`; Section 7.1 phase/tangent-frame algebra, scalar PhaseEstimates gate, and pointwise `rounded_normal_estimates` adapter; **no actual squared slow partition/Lemma 6.1 separation, paper-exact provider instantiation, or uniform slow-box certificate yet** |
-| Section 10 localization | Official spatial/time support/plateau geometry represented by explicit C-infinity bumps, analytic spatial cutoff gradient, time-switch derivative, activated-field adapters and independent numerical residual-identity cross-check; endpoint Taylor–Borel infrastructure reproduces `doublingEnvelope`, locally finite future evaluation, endpoint value and `t>=T+1` zero support; **transition-collar point values are not claimed equal to Mathlib's noncomputable bump, the actual residual endpoint jets/majorants are missing, and smooth force gluing through `t=1` is not proved** |
+| Section 5 background rows | Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, Eq. (5.5) pressure row, regular Eq. (5.6) `Omega_k/X`, the Eq. (5.7) six-component singular inverse/Picard-map primitive, and the Lemma 5.2 / Eqs. (5.14)–(5.16) compact five-moment repair with two U bumps and three E bumps; **the paper-derived `A0/A1/f_n`, converged Lemma 5.1 coefficient, full Eq. (5.15) repaired `F_n/V_n/Pi_n` reconstruction, recursive cutoff schedule, and arbitrary-order residual decay are not yet constructed** |
+| Dyadic geometry / phase, Sections 6–7 | Fixed chart scaling and exact covering matrices; Eq. (6.8) active-shell/slow-label bridge with typed `TangentialBaseJetProvider`; paper-admissible normalized C-infinity translate squared partitions for dyadic q and the `S_*^-3` `(R,Z,T)` slow mesh; Section 7.1 phase/tangent-frame algebra, scalar PhaseEstimates gate, and pointwise `rounded_normal_estimates` adapter; **no Lemma 6.1 common-rectangle/cross-label separation, paper-exact provider instantiation, or uniform slow-box certificate yet** |
+| Section 10 localization | Official spatial/time support/plateau geometry represented by explicit C-infinity bumps, analytic spatial cutoff gradient, time-switch derivative, activated-field adapters and independent numerical residual-identity cross-check; endpoint Taylor–Borel infrastructure reproduces `doublingEnvelope`, locally finite future evaluation, endpoint value and `t>=T+1` zero support; a dense full-spacetime endpoint-jet adapter contracts every derivative slot with the pinned time direction before Borel evaluation; **transition-collar point values are not claimed equal to Mathlib's noncomputable bump, actual residual endpoint derivative limits/majorants are missing, and smooth force gluing through `t=1` is not proved** |
 | Verification | Independent manufactured-solution and refinement checks; bounded-time finite differences |
 | Audit/provenance | Source-pinned ledger, explicit blockers, synchronized `status`/`audit` truth surface, fail-closed completion gate |
 
@@ -93,12 +96,14 @@ A generic `B(x,y,z,t)e_theta` need not be divergence-free: the direct swirl must
 axisymmetric, and localization must preserve that property. Prefer the
 `LocalField.from_axisymmetric` and `LocalizedField.from_axisymmetric` factories.
 
-The regular inner core, actual outgoing pressure schedule and fixed-point profile data,
-profile-derived Section 5 matrices/source and converged coefficient solve, compact moment
-repair and recursive cutoff schedule, actual squared slow partitions/support separation,
-uniform slow-box estimates, stress/wave realization, mean correction, infinite-order
-summation, completed compact field, actual residual endpoint jets/derivative majorants,
-and smooth-force extension remain explicit blockers. See
+The regular inner core, actual outgoing schedule-derived `axisPressure` and fixed-point profile
+data, certified low-|Z| margin and `Lambda/C`, profile-derived Section 5 matrices/source and
+converged coefficient solve, full Eq. (5.15) reconstruction after the landed compact five-moment
+repair, recursive cutoff schedule, Lemma 6.1 rectangle/support separation after the landed
+squared partitions, uniform slow-box estimates, stress/wave realization, mean correction,
+infinite-order summation, completed compact field, actual residual endpoint full spacetime jets
+and locally uniform derivative limits, derivative-majorant scales, and smooth-force extension
+remain explicit blockers. See
 [the reconstruction plan](docs/RECONSTRUCTION_PLAN.md),
 [the measured validation report](docs/VALIDATION_2026-09-10.md), and
 [the machine-readable manifest](references/provenance_manifest.json).
