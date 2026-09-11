@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "b2f7b28b836a82b5b7f125848a1b103bc5623fc2",
+  "integrated_prs": [108],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Lemma 5.2 derivative-interface increment. Records only the analytic repaired phi=C E/R second-jet bridge on the actual compact repair supports; it is not a paper-exact promotion.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_phi_jets.py",
+      "provenance": "references/LEMMA_5_2_PHI_SECOND_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.2", "Eq. (5.14)", "phi_n = C E_n / R"],
+      "official_lean_modules": [],
+      "landed_capability": "PR #108 analytically applies the exact phi_n=C E_n/R relation to the actual compact E_n repair, differentiating b(R)/R through second (X,eta) order only on strictly positive repair supports and returning the supplied inner/base phi jet exactly off support and at the axis. Tests independently finite-difference the function-level repaired-E identity rather than the production radial formulas.",
+      "remaining_boundary": "The unrepaired inner phi_n second jet, C, and hierarchy moment/patch eta-jets remain inputs rather than hierarchy-owned solved data. A genuine converged repaired coefficient hierarchy, automatic lower-history population across orders, common analytic strip/coefficient bounds, infinite recursive cutoff schedule/local finiteness, and Proposition 5.3 all-jets-flat residual decay remain unresolved."
+    }
+  ]
+}
