@@ -1,0 +1,25 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd"
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "Executable pinned AxisOperators.regularInverse / inverseData row map on actual SchedulePressure-derived coefficient eta-jets, including the j1 (r=1) and j2 (r=2) instances required by coefficientOperators",
+    "paper_locations": [
+      "NavierStokes/AxisWeightEstimates.lean: radialDivisor, regularInverseJet, regularInverseJet_bound",
+      "NavierStokes/AxisOperators.lean: inverseScale, inverseData, regularInverse, norm_regularInverse_le, jet_regularInverse_zero, jet_regularInverse_succ",
+      "NavierStokes/AxisEvaluationAlgebra.lean: regularInverse_equation",
+      "NavierStokes/AxisContraction.lean: coefficientOperators j1/j2 / naturalRemainder downstream use"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_regular_inverse.py",
+      "tests/test_axis_coefficient_regular_inverse.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_REGULAR_INVERSE_PROVENANCE.md",
+    "remaining_boundary": "No global all-index weighted norm certificate or genuine AxisSpace membership; inverse parameter-product / inverse dot-product / inverse mixed bilinear composites and any other missing pinned AxisOperators, the complete coefficientOperators record, naturalRemainder(x0), the first real Picard iterate, fixed-point phi/u, average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved. paper_exact_velocity_available must remain false."
+  }
+}
