@@ -107,21 +107,34 @@ def test_manifest_tracks_landed_formal_structure_without_promoting_completion():
     background=layers['stage-2-all-order-background']
     assert background['status']=='formal-structure'
     assert 'src/openai_ns_reconstruction/background_moment_repair.py' in background['artifacts']
+    assert 'src/openai_ns_reconstruction/background_cutoff_schedule.py' in background['artifacts']
     assert any('five-moment repair' in item for item in background['implemented_components'])
+    assert any('SlowBorelBase/DiagonalScale' in item and 'C[j,m]' in item
+               for item in background['implemented_components'])
     assert any('Eq. (5.15)' in item for item in background['missing_for_paper_exact'])
+    assert any('true uniform compactness bounds C[j,m]' in item
+               for item in background['missing_for_paper_exact'])
 
     oscillatory=layers['stage-3-to-6-oscillatory-corrections']
     assert oscillatory['status']=='formal-structure'
     assert 'src/openai_ns_reconstruction/slow_partition.py' in oscillatory['artifacts']
+    assert 'src/openai_ns_reconstruction/slot_geometry.py' in oscillatory['artifacts']
     assert any('squared partitions' in item for item in oscillatory['implemented_components'])
-    assert any('Lemma 6.1' in item for item in oscillatory['missing_for_paper_exact'])
+    assert any('2250-color' in item and 'common r0' in item
+               for item in oscillatory['implemented_components'])
+    assert any('SlotColoring.Adj' in item for item in oscillatory['missing_for_paper_exact'])
 
     final=layers['stage-7-final-localization']
     assert final['status']=='formal-structure'
     assert 'src/openai_ns_reconstruction/endpoint_jets.py' in final['artifacts']
+    assert 'src/openai_ns_reconstruction/endpoint_scale_schedule.py' in final['artifacts']
     assert any('full-spacetime' in item and 'timeVector' in item
                for item in final['implemented_components'])
-    assert any('actual localized NS residual' in item
+    assert any('boundSum/localScale' in item and '2^-j' in item
+               for item in final['implemented_components'])
+    assert any('actual residual endpoint jets' in item
+               for item in final['missing_for_paper_exact'])
+    assert any('analytic compact-template derivative bounds' in item
                for item in final['missing_for_paper_exact'])
 
     assert manifest['full_reconstruction'] is False
