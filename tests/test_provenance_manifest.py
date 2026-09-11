@@ -67,13 +67,18 @@ def test_manifest_tracks_latest_landed_formal_structure_without_promotion() -> N
     assert stage1["status"] == "formal-structure"
     assert "src/openai_ns_reconstruction/schedule_pressure.py" in stage1["artifacts"]
     assert "src/openai_ns_reconstruction/outgoing_tail.py" in stage1["artifacts"]
+    assert "src/openai_ns_reconstruction/schedule_axis_pressure.py" in stage1["artifacts"]
+    assert "src/openai_ns_reconstruction/schedule_axis_margin.py" in stage1["artifacts"]
     assert "NavierStokes/OutgoingSchedule.lean" in stage1["official_lean_modules"]
     assert "NavierStokes/OutgoingTail.lean" in stage1["official_lean_modules"]
     assert any("S=32" in item and "flattenLength" in item for item in stage1["implemented_components"])
     assert any("finalAngular" in item and "clockWeight" in item for item in stage1["implemented_components"])
-    assert any("axisPressure" in item and "H^2" in item for item in stage1["missing_for_paper_exact"])
+    assert any("actual SchedulePressure.axisPressure" in item for item in stage1["implemented_components"])
+    assert any("low-|Z|" in item and "sigma=sqrt(m)/20" in item for item in stage1["implemented_components"])
+    assert not any("uniform positive H^2 margin" in item for item in stage1["missing_for_paper_exact"])
     assert not any("finalAngular/clockWeight/axisPressure" in item for item in stage1["missing_for_paper_exact"])
     assert any("Classical.choose" in item for item in stage1["numerical_caveats"])
+    assert any("binary64" in item and "interval-arithmetic" in item for item in stage1["numerical_caveats"])
 
     stage2 = layers["stage-2-all-order-background"]
     assert stage2["status"] == "formal-structure"
