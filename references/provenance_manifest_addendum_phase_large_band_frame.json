@@ -1,0 +1,26 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Sections 6-7.1 / Eqs. (7.9)-(7.11); official Lean PhaseEstimates and BasePhaseGeometry",
+    "base_main_commit": "8d20bc22bbcf1bf9734f76e8d5b88b55d67b667f"
+  },
+  "layer": {
+    "id": "stage-3-section7-large-band-phase-frame-bridge",
+    "status": "formal-structure",
+    "capability": "Compose the exact integer large-band phase-scale gate with the pinned family-level frame/damping scalar implications at the same S_*=ell^2, preserving the distinct local and family phase constants and failing closed on normal-scale, delta, B, and viscosity smallness hypotheses",
+    "paper_locations": [
+      "Section 6 dyadic chart scale",
+      "Section 7.1 / Eqs. (7.9)-(7.11)",
+      "PhaseEstimates.phaseError_le_four_div",
+      "BasePhaseGeometry.frame_errors_of_normal_close",
+      "BasePhaseGeometry.damping_error_of_normal_close"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_frame.py",
+      "tests/test_phase_large_band_frame.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_FRAME_PROVENANCE.md",
+    "remaining_boundary": "No paper-exact Proposition 5.5 background, actual active-box LocalBase C1/C2/vector hypotheses, paper-derived B/viscosity witness, uniform Eqs. (7.9)-(7.11) field proof, stress-cone/curl wave, or paper-exact velocity is supplied."
+  }
+}
