@@ -27,10 +27,13 @@ The same pinned `SlowBorelBase.lean` also proves the support side needed to turn
 `src/openai_ns_reconstruction/background_cutoff_schedule.py` provides a finite-prefix executable witness for the scale-selection specialization:
 
 - `local_scale_from_template_bounds(h, j, C_j)` takes the full triangular set `C[j,m]`, `m=0,...,j+2`, and chooses an integer local scale from the closed-form `p=0` edge inequality;
+- if the required local scale lies above binary64 range, the same function now switches to an arbitrary-precision Python integer power-of-two witness, checks the original logarithmic inequality, and never clips the theorem scale to `sys.float_info.max`;
+- the wide-integer path has an explicit implementation bit budget and fails closed if the logarithmic threshold is non-finite or exceeds that resource budget; this budget is not part of the mathematical admissibility condition;
 - `build_slow_borel_cutoff_schedule` applies the pinned doubling-envelope recurrence `a_0=max(1,B)`, `a_j=max(b_j,2*a_{j-1})` for the requested prefix;
 - `build_slow_borel_cutoff_schedule_from_provider` gives a typed boundary for a future analytic provider of the actual compactness bounds;
-- `edge_log_margin` certifies the scale inequality in log space without underflow; and
-- `majorant_at` evaluates only the resulting scalar bound on its permitted active interval.
+- `edge_log_margin` certifies the scale inequality in log space without underflow;
+- `reciprocal_support_log_edge` records `log(1/a_j)` without narrowing a wide integer scale to binary64; and
+- `reciprocal_support_edge` returns a positive binary64 edge only when representable, otherwise it fails closed rather than silently returning numerical zero.
 
 `src/openai_ns_reconstruction/background_cutoff_support.py` adds the finite-prefix support/plateau certificate implied by the same scale sequence and the repository's fixed cutoff (`chi=1` on `s<=1/2`, `chi=0` on `s>=1`):
 
@@ -42,7 +45,7 @@ The same pinned `SlowBorelBase.lean` also proves the support side needed to turn
 
 The certificate deliberately refuses to infer an infinite zero tail when the requested finite prefix ends before `a_j q >= 1`. This mirrors the theorem's support logic while keeping the executable claim no stronger than the data actually constructed.
 
-`tests/test_background_cutoff_schedule.py` independently recomputes the `p=0` edge inequality, checks a hand-solvable threshold sequence, verifies the recursive doubling envelope, verifies the exact triangular `(j,m)` provider calls, and exercises fail-closed malformed/forged schedules.
+`tests/test_background_cutoff_schedule.py` independently recomputes the `p=0` edge inequality, checks a hand-solvable threshold sequence, verifies the recursive doubling envelope, verifies the exact triangular `(j,m)` provider calls, exercises fail-closed malformed/forged schedules, and includes a representation-layer regression whose valid integer scale is strictly larger than binary64. That regression checks the theorem inequality directly in log space and confirms that an unrepresentable reciprocal edge raises instead of becoming a fake exact zero.
 
 `tests/test_background_cutoff_support.py` independently evaluates the actual `standard_cutoff` on a hand-solvable doubling schedule, checks the closed `1/2` plateau and `1` zero boundaries, verifies the unique transition-order consequence of doubling, checks finite-prefix truncation stability once a zero tail is reached, and verifies that a prefix ending in the transition collar remains explicitly uncertified beyond that prefix.
 
@@ -50,6 +53,6 @@ The certificate deliberately refuses to infer an infinite zero tail when the req
 
 This remains **formal-structure / solver infrastructure**, not the completed paper-exact all-order cutoff sequence.
 
-The actual constants `C[j,m]` must come from uniform compactness bounds for the materialized recursively repaired Section 5 coefficient fields. The scale constructor deliberately does not estimate them from a finite sample grid or accept a generic cutoff as evidence. The current executable object materializes only a requested finite prefix; the support certificate proves exact plateau/transition/zero facts only inside that prefix. It does **not** establish the paper's infinite schedule, global local-finiteness theorem, arbitrary-order residual flatness, or Proposition 5.3 by itself.
+The actual constants `C[j,m]` must come from uniform compactness bounds for the materialized recursively repaired Section 5 coefficient fields. The scale constructor deliberately does not estimate them from a finite sample grid or accept a generic cutoff as evidence. Supporting arbitrarily large Python integer witnesses only removes a machine-representation obstruction; it does not supply those analytic constants or certify an actual coefficient hierarchy. The current executable object materializes only a requested finite prefix; the support certificate proves exact plateau/transition/zero facts only inside that prefix. It does **not** establish the paper's infinite schedule, global local-finiteness theorem, arbitrary-order residual flatness, or Proposition 5.3 by itself.
 
 Once the true coefficient hierarchy is available, its analytic normalized-template bounds can feed the provider interface and the same recurrence can instantiate longer paper-admissible prefixes; an actual infinite schedule plus the theorem-side convergence argument is still required before claiming full local finiteness/residual flatness. Until then Stage 2 remains `formal-structure`, and `paper_exact_velocity_available` remains false.
