@@ -191,11 +191,18 @@ def picard_tail_certificate(
     log_ratio = _two_step_ratio_upper_log(
         start_order, C_n, radial_extent, delta
     )
-    if log_ratio >= 0.0:
+    # The tail proof needs a strict ratio r<1.  Treat a small binary64 band
+    # around log(r)=0 as uncertified rather than allowing roundoff to turn the
+    # exact boundary r=1 into a spurious contraction.
+    if log_ratio >= -32.0 * sys.float_info.epsilon:
         raise ValueError(
             "tail start is too early: the certified two-step ratio is not < 1"
         )
-    ratio = math.exp(log_ratio)
+    ratio = math.nextafter(math.exp(log_ratio), math.inf)
+    if ratio >= 1.0:
+        raise ValueError(
+            "tail start is too early: the certified two-step ratio is not < 1"
+        )
 
     first = eq_5_8_log_majorant(
         start_order, C_n, radial_extent, rho, rho_prime
