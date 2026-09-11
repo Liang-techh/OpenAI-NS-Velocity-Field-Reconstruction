@@ -64,18 +64,26 @@ def _down(value: float, name: str) -> float:
 def _mul_up(x: float, y: float, name: str) -> float:
     if x < 0.0 or y < 0.0:
         raise ValueError(f"{name} expects nonnegative factors")
+    # Multiplication by an exact floating zero is mathematically exact; do not
+    # turn the theorem's zero-error case into the smallest positive subnormal.
+    if x == 0.0 or y == 0.0:
+        return 0.0
     return _up(x * y, name)
 
 
 def _mul_down(x: float, y: float, name: str) -> float:
     if x < 0.0 or y < 0.0:
         raise ValueError(f"{name} expects nonnegative factors")
+    if x == 0.0 or y == 0.0:
+        return 0.0
     return _down(x * y, name)
 
 
 def _add_up(x: float, y: float, name: str) -> float:
     if x < 0.0 or y < 0.0:
         raise ValueError(f"{name} expects nonnegative summands")
+    if x == 0.0 and y == 0.0:
+        return 0.0
     return _up(x + y, name)
 
 
@@ -88,6 +96,8 @@ def _sub_down(x: float, y: float, name: str) -> float:
 def _div_up(x: float, y: float, name: str) -> float:
     if x < 0.0 or y <= 0.0:
         raise ValueError(f"{name} expects nonnegative numerator and positive denominator")
+    if x == 0.0:
+        return 0.0
     return _up(x / y, name)
 
 
@@ -136,8 +146,12 @@ class CovariancePerturbationCertificate:
         object.__setattr__(self, "error_plus", ep)
         object.__setattr__(self, "normalized_error_bound", delta)
 
-        em_norm_up = _up(math.hypot(*em), "error_minus norm")
-        ep_norm_up = _up(math.hypot(*ep), "error_plus norm")
+        # `hypot(0,0)` is exact. Preserve the exact theorem case delta=0 rather
+        # than outward-rounding zero to the smallest positive subnormal.
+        em_norm = math.hypot(*em)
+        ep_norm = math.hypot(*ep)
+        em_norm_up = 0.0 if em_norm == 0.0 else _up(em_norm, "error_minus norm")
+        ep_norm_up = 0.0 if ep_norm == 0.0 else _up(ep_norm, "error_plus norm")
         if em_norm_up > delta or ep_norm_up > delta:
             raise ValueError("normalized column error exceeds certified bound")
 
