@@ -112,7 +112,8 @@
         "src/openai_ns_reconstruction/cutoffs.py"
       ],
       "paper_locations": [
-        "Eqs. (5.1)-(5.7)",
+        "Eqs. (5.1)-(5.6)",
+        "Eq. (5.7)",
         "Eqs. (5.10)-(5.16)",
         "Eq. (5.27)",
         "Lemma 5.1",
