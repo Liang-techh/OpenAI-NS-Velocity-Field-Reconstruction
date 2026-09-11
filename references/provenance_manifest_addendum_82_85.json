@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "30da864f2f2ae1fc1d886c9c48e3a9763ceca658",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "integrated_prs": [82, 83, 84, 85],
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_reference_pair.py",
+      "provenance": "references/AXIS_REFERENCE_PAIR_PROVENANCE.md",
+      "paper_locations": ["Theorem 4.6", "Appendices A/B/C"],
+      "official_lean_modules": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisReference.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean",
+        "NavierStokes/NaturalAxisData.lean",
+        "NavierStokes/SchedulePressure.lean"
+      ],
+      "landed_capability": "Materializes the pinned referencePair zeroth parameter-jet radial coefficient functions from the actual SchedulePressure chain on the full coefficient window, using the exact AxisReference angular recurrence/factorial identity and u0[1]=-(1/2) inverseL*zStar for the axial member.",
+      "remaining_boundary": "The coefficients are not yet a complete compatible AxisCoefficientSpace state; coefficientOperators/naturalRemainder, the real Picard fixed point, average/pressure, and NaturalProfileAssembly remain unresolved."
+    },
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_lower_history_source.py",
+      "provenance": "references/LOWER_HISTORY_SOURCE_PROVENANCE.md",
+      "paper_locations": ["Eqs. (5.3)-(5.7)", "Section 5 positive-order recursion"],
+      "official_lean_modules": [
+        "NavierStokes/PositiveAxisSystem.lean",
+        "NavierStokes/PositiveAxisExistence.lean",
+        "NavierStokes/SlowRecursion.lean"
+      ],
+      "landed_capability": "Builds PositiveAxis BaseJet/SourceJet data from strict lower-order ProfileSecondJet history, including i=1,...,n-1 convolutions, analytic preceding Z_(b-D) Z_b diffusion, and the regular Omega_(n-1)/X source.",
+      "remaining_boundary": "The strict lower-order second jets must still come from the genuine recursively solved and Lemma-5.2-repaired hierarchy; convergence constants, infinite cutoff schedule, and Proposition 5.3 remain unresolved."
+    },
+    {
+      "id": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/cylindrical_curl_jet.py",
+      "provenance": "references/CYLINDRICAL_CURL_JET_PROVENANCE.md",
+      "paper_locations": ["Section 7 Formula (30)", "localized curl realization"],
+      "official_lean_modules": [
+        "NavierStokes/CurlClassBounds.lean",
+        "NavierStokes/LocalizedCurlRealization.lean"
+      ],
+      "landed_capability": "Computes the genuine r>0 cylindrical curl from component derivative jets, including the B_theta/r moving-frame connection term, while fixing the tangent coefficient value from B=|n|^-2(n cross a).",
+      "remaining_boundary": "The derivative jets are not yet analytically derived from the actual localized paper coefficient, and smoothness/support/zero-germ/phase-patch/common-glue hypotheses remain unresolved."
+    },
+    {
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section10_endpoint_ladder.py",
+      "provenance": "references/SECTION10_ENDPOINT_LADDER_PROVENANCE.md",
+      "paper_locations": ["Section 10", "endpoint Taylor-Borel smooth extension"],
+      "official_lean_modules": [
+        "NavierStokes/TimeLocalization.lean",
+        "NavierStokes/CandidateFromLimits.lean",
+        "NavierStokes/SpatialBorelExtension.lean"
+      ],
+      "landed_capability": "Packages derivative degrees 0..N into a contiguous finite endpoint-majorant family with one spatial window; every member must pass the official T=1, start>=3/4 plateau gate, and a common finite-order Cauchy/tail modulus is derived from exact antiderivative budgets.",
+      "remaining_boundary": "No actual residual majorant is derived, endpoint tensors are not materialized, and a finite ladder does not close the required infinite all-order smooth-extension argument."
+    }
+  ]
+}
