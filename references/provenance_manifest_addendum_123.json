@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "28e15b8a8b89374f4546a6986bf9a518de340733",
+  "integrated_prs": [123],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Eq. (5.7) first-Picard parameter-jet solver increment. Materializes partial_eta(G f_n)=G(partial_eta f_n) without numerical differentiation in production, while keeping partial_eta f_n an explicit analytic input until the repaired hierarchy owns the extra Eq. (5.6) derivatives.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_first_picard_parameter_jet.py",
+      "provenance": "references/FIRST_PICARD_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.1", "Eq. (5.7)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #123 exposes the analytic eta jet of the first Picard term through the eta-independent singular kernel: partial_eta(G f_n)=G(partial_eta f_n). Regression checks an independent closed-form integral and a finite-difference oracle of the existing value path.",
+      "remaining_boundary": "The source-parameter derivative is still an explicit analytic input, not hierarchy-owned data. The repaired hierarchy lacks the additional regular-flux derivatives needed to differentiate the full Eq. (5.6) Omega/X source. The genuine k=1 Picard term, full Picard convergence, recursive coefficient materialization, infinite cutoff schedule, and Proposition 5.3 all-jets residual decay remain open. paper_exact_velocity_available remains false."
+    }
+  ]
+}
