@@ -42,17 +42,24 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'normalized amplitude M=12' in stages[1]['implemented']
     assert 'K<=30720B' in stages[1]['implemented']
     assert 'factorial-series enclosure' in stages[1]['implemented']
+    assert 'actual-schedule analytic-neighborhood certificate' in stages[1]['implemented']
+    assert 'positive common rho' in stages[1]['implemented']
+    assert 'eleven-field common complex bound B' in stages[1]['implemented']
+    assert 'axisPhase real-part supremum' in stages[1]['implemented']
     assert 'axisPressure' not in stages[1]['remaining']
     assert 'H^2 margin' not in stages[1]['remaining']
-    assert 'analytic radius rho' in stages[1]['remaining']
-    assert 'complex-field sup bound B' in stages[1]['remaining']
-    assert 'realPartSup' in stages[1]['remaining']
+    assert 'actual admissible common analytic radius' not in stages[1]['remaining']
+    assert 'common complex-field sup bound' not in stages[1]['remaining']
+    assert 'rho/B/realPartSup certificate' in stages[1]['remaining']
     assert 'coefficient-space fixed-point' in stages[1]['remaining']
 
     assert 'Eq. (5.5)' in stages[2]['implemented']
     assert 'Eq. (5.6)' in stages[2]['implemented']
     assert 'Eq. (5.7)' in stages[2]['implemented']
     assert 'Picard' in stages[2]['implemented']
+    assert 'Eq. (5.8)' in stages[2]['implemented']
+    assert 'p_k=ceil(k/2)' in stages[2]['implemented']
+    assert 'complete-tail truncation certificate' in stages[2]['implemented']
     assert 'Lemma 5.2' in stages[2]['implemented']
     assert 'five-moment repair' in stages[2]['implemented']
     assert 'Eq. (5.15) forward reconstruction' in stages[2]['implemented']
@@ -65,9 +72,10 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'h(J+1)+b-2M' in stages[2]['implemented']
     assert 'minimal J' in stages[2]['implemented']
     assert 'A0/A1/f_n' in stages[2]['remaining']
+    assert 'actual analytic constants' in stages[2]['remaining']
     assert 'Eq. (5.6) source' in stages[2]['remaining']
-    assert 'true eta-dependent repaired coefficient hierarchy' in stages[2]['remaining']
-    assert 'true uniform compactness bounds C[j,m]' in stages[2]['remaining']
+    assert 'true eta-dependent repaired hierarchy' in stages[2]['remaining']
+    assert 'true uniform C[j,m] bounds' in stages[2]['remaining']
     assert 'theorem-level local finiteness' in stages[2]['remaining']
     assert 'all-jets-flat residual decay' in stages[2]['remaining']
     assert 'connect the repaired U_n/E_n through the paper\'s Eq. (5.15)' not in stages[2]['remaining']
@@ -94,6 +102,15 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'normal-closeness' in stages[3]['remaining']
     assert 'landed uniform normal and frame/damping envelopes' in stages[3]['remaining']
 
+    assert stages[4]['status']=='formal-structure'
+    assert 'signed two-slot reference covariance algebra' in stages[4]['implemented']
+    assert 'strict positive-cone condition |a t|<b m' in stages[4]['implemented']
+    assert 'epsilon*mask^2 covariance scaling' in stages[4]['implemented']
+    assert 'actual pulse-integrated covariance columns' in stages[4]['remaining']
+    assert 'determinant/inverse stability' in stages[4]['remaining']
+    assert 'amplitude transport/ODE' in stages[4]['remaining']
+    assert 'supported divergence-free curls' in stages[4]['remaining']
+
     assert 'analytic cutoff gradient' in stages[7]['implemented']
     assert 'time-switch' in stages[7]['implemented']
     assert 'TimeLocalization residual identity' in stages[7]['implemented']
@@ -108,17 +125,23 @@ def test_runtime_status_tracks_current_formal_structure_without_promotion():
     assert 'degree-zero endpoint tensor' in stages[7]['implemented']
     assert 'volume pi/32' in stages[7]['implemented']
     assert 'E(t)<=pi M^2/64' in stages[7]['implemented']
+    assert 'late-origin preservation certificate' in stages[7]['implemented']
+    assert '3/4<=t<1' in stages[7]['implemented']
+    assert 'c=1 and grad(c)=0 at the origin' in stages[7]['implemented']
     assert "closed-past localized NS residual's full spacetime derivative family" in stages[7]['remaining']
     assert 'analytic compact-template derivative bounds' in stages[7]['remaining']
     assert 'smooth through t=1' in stages[7]['remaining']
     assert 'uniform bounded kinetic-energy' in stages[7]['remaining']
+    assert '||curl A(t,0)||->infinity premise' in stages[7]['remaining']
 
     limitations=' '.join(status['limitations'])
     assert 'traced-residual adapters' in limitations
     assert 'caller-supplied endpoint jets' in limitations
     assert 'fixed-time implication' in limitations
     assert 'uniform bounded-energy estimate' in limitations
-    assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[7]['status']=='formal-structure'
+    assert 'late-origin adapter preserves an upstream-certified origin curl value' in limitations
+    assert 'stress-cone module is only the exact reference algebra' in limitations
+    assert stages[1]['status']==stages[2]['status']==stages[3]['status']==stages[4]['status']==stages[7]['status']=='formal-structure'
     assert stages[8]['status']=='diagnostic-only'
 
 
