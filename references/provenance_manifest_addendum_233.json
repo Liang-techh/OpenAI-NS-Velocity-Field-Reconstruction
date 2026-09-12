@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "c45ef0895bd5e1e6abe419168caec705dee75d84",
+  "integrated_prs": [
+    233
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative increment. Lifts the real Lemma 5.2 compact E-repair to a fourth-mixed phi jet and verifies that it drives the already-landed analytic second-eta angular preceding-diffusion operator. The base fourth-mixed phi jet remains an upstream contract.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_phi_fourth_mixed_jets.py",
+      "provenance": "references/LEMMA_5_2_PHI_FOURTH_MIXED_JET_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.2",
+        "Appendix A",
+        "Eqs. (5.3)-(5.7)"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/PositiveAxisSystem.lean",
+        "NavierStokes/PositiveAxisExistence.lean"
+      ],
+      "landed_capability": "PR #233 adds the analytic compact-repaired phi fourth-mixed jet required by the second-eta angular preceding-diffusion term. Its lower projection agrees exactly with the landed third-mixed repair, and the three new fields plus the downstream preceding-diffusion second derivative are independently cross-checked against centered eta differences of older analytic paths.",
+      "remaining_boundary": "The genuine order-zero fourth-mixed leading phi profile remains an Issue #1 input. The strong Section-5 hierarchy does not yet own this repaired fourth-mixed phi provider, so hierarchy-owned second eta actualLowerSource/forcing and partial_eta W_n^(1) remain open; full Picard convergence, recursive coefficient materialization, recursive cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity also remain open."
+    }
+  ]
+}
