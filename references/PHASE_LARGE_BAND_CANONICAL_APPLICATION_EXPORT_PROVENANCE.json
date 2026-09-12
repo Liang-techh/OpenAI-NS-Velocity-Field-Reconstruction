@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "symbols": [
+      "PrimaryGeometryAssembly.canonicalPrepared",
+      "PrimaryGeometryAssembly.canonicalPhases",
+      "LeadingStressWeights.FullTrueCone"
+    ]
+  },
+  "layer": {
+    "id": "stage-3-to-6-oscillatory-corrections",
+    "status": "formal-structure",
+    "capability": "content-addressed fail-closed handoff contract for a future external formal export of one canonical Prepared application and its exact active scope",
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_canonical_application_export.py",
+      "tests/test_phase_large_band_canonical_application_export.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_CANONICAL_APPLICATION_EXPORT_PROVENANCE.md",
+    "validation": [
+      "export schema and producer kind are exact and numeric/sampled producer kinds are rejected",
+      "formal repository and commit are pinned",
+      "source/revision/prepared instance and canonical (B,r0,N0) match the admitted canonical scope",
+      "unsigned boxes and signed ± labels exactly match the canonical scope",
+      "required canonical application symbols are exact",
+      "scope SHA-256 binds the export to the repository-side scope contract",
+      "payload SHA-256 detects post-export metadata mutation",
+      "prepared_N is content-addressed but remains an opaque external value until formal replay exists"
+    ],
+    "truth_boundary": {
+      "actual_canonical_prepared_application_machine_verified": false,
+      "actual_cell_index_enumeration_machine_verified": false,
+      "actual_physical_base_values_materialized": false,
+      "actual_base_fields_verified": false,
+      "theorem_applications_machine_replayed": false,
+      "uniform_eq_7_9_to_7_11_verified": false,
+      "paper_exact_velocity_available": false
+    },
+    "remaining_boundary": "machine-linked Lean export/replay of the actual canonicalPrepared application, its selected N/active Index W N or CellIndex slice, then physical field and phase/base/frame/damping theorem witnesses"
+  }
+}
