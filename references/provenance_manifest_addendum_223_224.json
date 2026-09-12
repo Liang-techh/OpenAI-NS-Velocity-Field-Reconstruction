@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "e109a7aadcc5cbd2cf8c267a672f645ac8e69261",
+  "integrated_prs": [223, 224],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the analytic Eq. (5.2) fourth-mixed regular-flux jet and the finite-prefix Section 10 off-axis divergence certificate.",
+  "layers": [
+    {
+      "pr": 223,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_regular_flux_fourth_mixed_jets.py",
+      "test": "tests/test_background_regular_flux_fourth_mixed_jets.py",
+      "provenance": "references/provenance_manifest_addendum_223.json",
+      "capability": "Analytically maps a minimal fifth-mixed axial U contract through Eq. (5.2) to the fourth-mixed regular-flux beta=V/X entries needed by the landed second-eta Eq. (5.6) Omega/X path, while delegating lower beta fields to the existing third-mixed adapter and using no production finite differences or sampled V/X division.",
+      "remaining_boundary": "AxialFifthMixedJet is still an explicit upstream provider contract rather than hierarchy-owned repaired data. The actual leading profile remains unresolved; hierarchy-owned beta fourth-mixed jets, hierarchy-owned partial_eta^2 Omega/X / actualLowerSource / f_n, partial_eta W_n^(1), further Picard iteration and convergence, recursive coefficient materialization, the infinite recursive cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 224,
+      "stage": "stage-7-8-section-10-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_divergence_certificate.py",
+      "test": "tests/test_section9_section10_localized_velocity_spatial_jacobian.py",
+      "provenance": null,
+      "provenance_note": "PR #224 builds on the already-landed finite Section 9 prefix to fixed Section 10 analytic spatial-Jacobian bridge and the official axisymmetric Section 10 cutoff. This integration addendum records the truth boundary for the new divergence certificate; PR #224 did not add a dedicated provenance file.",
+      "capability": "Evaluates div(curl(c A)+c B e_theta) analytically at one off-axis point from a finite provider-supplied Section 9 prefix. It verifies the fixed cutoff has zero azimuthal derivative, decomposes the direct-swirl obstruction as c e_theta dot grad(B), checks the analytic Jacobian trace identity, exposes non-axisymmetric supplied B jets as failed divergence-free certificates, and preserves exact zero outside the fixed support.",
+      "remaining_boundary": "This is a one-point finite-prefix certificate, not a proof that the manuscript correction field is divergence-free everywhere. The symmetry axis remains uncovered, the actual Section 7/8 correction exporter and infinite or locally-finite Eq. (9.21) field are not constructed, smooth extension through t=1 is unproved, and no genuine Navier-Stokes residual/forcing, endpoint closure, finite-energy conclusion, blow-up path, or paper-exact velocity follows."
+    }
+  ],
+  "forbidden_inferences": [
+    "A provider-driven fifth-mixed Eq. (5.2) regular-flux jet does not make the repaired hierarchy own those jets, prove Picard convergence, or establish Proposition 5.3 residual decay.",
+    "A one-point off-axis finite-prefix divergence certificate does not construct the manuscript's actual Section 7/8 correction exporter or infinite Eq. (9.21) field and does not establish global divergence-free closure.",
+    "A passed divergence certificate away from the axis must not be extrapolated through the symmetry axis without the actual paper field's axis-regularity structure.",
+    "Exact support-exterior zero of the localized finite-prefix adapter does not establish the final smooth compact forcing, finite-energy theorem, endpoint closure, or blow-up conclusion.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote provider-contract, theorem-admission, analytic-adapter, diagnostic, toy, or formal-structure artifacts to paper-exact status."
+  ]
+}
