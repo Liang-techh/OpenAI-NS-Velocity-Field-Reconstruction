@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "integration-truth-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "bd5c81bc0bcf0e26d9b992fb0c38f473dad53792",
+  "integrated_prs": [162, 163, 164, 167],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration ledger for the latest non-overlapping Stage 1-3 increments not already covered by the PR #166 Section-9 fingerprint sync. This records landed formal-structure capability only; it does not modify the mathematical constructors or promote any paper-exact gate.",
+  "layers": [
+    {
+      "pr": 162,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_natural_resolvent.py",
+      "test": "tests/test_axis_coefficient_natural_resolvent.py",
+      "provenance": "references/AXIS_COEFFICIENT_NATURAL_RESOLVENT_PROVENANCE.md",
+      "equation_or_source": "AxisResolvent.naturalResolvent / naturalResolvent_equation / radial filtration",
+      "capability": "The pinned naturalResolvent is executable coefficientwise on the actual SchedulePressure-derived reference coefficient scale: row n uses the exact finite alternating prefix sum_{k=0}^n (-1)^k Q^k because the landed naturalOperator raises radial vanishing order by one.",
+      "remaining_boundary": "PR #167 later supplies the pinned naturalRemainder composition itself, but global all-index weighted AxisSpace membership/norm certification remains absent. The theorem-selected normalized amplitude state, t=1/Lambda specialization, naturalRemainder(x0), genuine Picard x1/fixed point phi/u, derived average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and paper-exact velocity remain unresolved."
+    },
+    {
+      "pr": 163,
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_phi_third_mixed.py",
+      "test": "tests/test_background_repaired_history_phi_third_mixed.py",
+      "provenance": "references/REPAIRED_HISTORY_PHI_THIRD_MIXED_PROVENANCE.md",
+      "equation_or_source": "Lemma 5.2 / Eq. (5.14) / Eqs. (5.3)-(5.7) / repaired phi third-mixed hierarchy ownership",
+      "capability": "A strong repaired coefficient-history source now owns the landed repaired phi third-mixed provider together with the repaired U fourth-mixed provider, exposes lower phi/U jets only as exact projections, and fails closed when the stronger phi data are absent or inconsistent.",
+      "remaining_boundary": "The genuine Issue #1 leading third-mixed profile and unrepaired positive-order mixed jets remain upstream. Complete hierarchy-owned partial_eta actualLowerSource and partial_eta f_n, the genuine k=1 Eq. (5.7) Picard application, recursive coefficient/cutoff completion, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 164,
+      "id": "stage-3-dyadic-charts-and-transported-phases",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_family_coverage.py",
+      "test": "tests/test_phase_large_band_family_coverage.py",
+      "provenance": "references/PHASE_LARGE_BAND_FAMILY_COVERAGE_PROVENANCE.md",
+      "equation_or_source": "Sections 6-7 / finite active signed-family coverage / phase_estimates + coordinate_errors + damping_error",
+      "capability": "One declared finite large-band active signed-family scope must now be covered exactly by the pinned phase, coordinate-error, and damping-error admissions before a scope-uniform theorem envelope is exposed; missing, extra, duplicate, sign-incomplete, sampled/fitted, and source-drift evidence fail closed.",
+      "remaining_boundary": "The exact active scope is still theorem metadata supplied by the caller. No genuine Section 6 active family, Proposition 5.5 paper-exact base provider, actual field values, global all-band uniformity, stress-cone/curl-realized oscillatory wave, or paper-exact velocity is supplied."
+    },
+    {
+      "pr": 167,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_natural_remainder.py",
+      "test": "tests/test_axis_coefficient_natural_remainder.py",
+      "provenance": "references/AXIS_COEFFICIENT_NATURAL_REMAINDER_PROVENANCE.md",
+      "equation_or_source": "AxisContraction.naturalRemainder / pinned angular-linear, angular-quadratic, average, slow, axial-linear and axial-quadratic coefficient composition",
+      "capability": "The pinned naturalRemainder expression is now executable on the actual SchedulePressure-derived coefficient representation using landed AxisData, complete coefficientOperators and the exact coefficientwise naturalResolvent; callers do not supply the pressure/sigma/epsilon/operator table.",
+      "remaining_boundary": "The normalized amplitude coefficient state and theorem-selected t=1/Lambda are not materialized here. naturalRemainder(x0), the genuine first Picard iterate/fixed point phi/u, derived average/pressure fields, NaturalProfileAssembly, support/moment/matching/cone closure, global all-index weighted AxisSpace membership/norms, and paper-exact velocity remain unresolved."
+    }
+  ],
+  "forbidden_inferences": [
+    "finite coefficientwise resolvent rows imply a certified global AxisSpace continuous-linear-map norm",
+    "executable naturalRemainder composition implies naturalRemainder(x0), a genuine Picard iterate, or a fixed point",
+    "hierarchy ownership of repaired finite jets implies the all-order Section 5 hierarchy or Proposition 5.3 residual decay",
+    "finite active-family admission implies the genuine Section 6 family, Proposition 5.5 base fields, or a curl-realized paper wave",
+    "a green diagnostic or setting f equal to the evaluated residual is independent Navier-Stokes verification"
+  ]
+}
