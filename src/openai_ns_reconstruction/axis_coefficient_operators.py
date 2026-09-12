@@ -112,11 +112,21 @@ class AxisCoefficientOperators:
     def primitive(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
         return axis_coefficient_primitive(self._state(state))
 
-    def parameter_primitive(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
+    def parameterPrimitive(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
         return axis_coefficient_parameter_primitive(self._state(state))
 
-    def mul_y(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
+    def parameter_primitive(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
+        """Snake-case alias for ``parameterPrimitive``."""
+
+        return self.parameterPrimitive(state)
+
+    def mulY(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
         return axis_coefficient_multiply_y(self._state(state))
+
+    def mul_y(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
+        """Snake-case alias for ``mulY``."""
+
+        return self.mulY(state)
 
     def j1(self, state: AxisCoefficientJetState) -> AxisCoefficientJetState:
         return axis_coefficient_regular_inverse(self._state(state), 1)
