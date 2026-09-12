@@ -44,7 +44,7 @@
     "validation": [
       "ordinary inverseL*lin2 is cross-checked against the previously landed full naturalRemainder with regression-only a=0,t=0 isolation",
       "ordinary inverseL*slow2 is cross-checked against the regression-only difference naturalRemainder(t=0)-naturalRemainder(t=1) with a=0",
-      "zero-eta-derivative inverseL*pressure is independently isolated by constant a=1 minus a=0 in the existing full remainder",
+      "the final inverseL multiplication on wide pressure is checked against the exact radial-degree-zero AxisData identity at eta derivative orders 0 and 1; constant-amplitude replacement is explicitly rejected because parameterPrimitive contains genuine amplitude-derivative terms",
       "the final inverseL multiplication on wide pressure uses exact radial convolution and eta Leibniz expansion",
       "Lambda is inherited from the actual theorem-selected wide amplitude and cannot be overridden",
       "nonzero pressure remains signed-log nonzero and binary64 projection fails closed on range loss",
