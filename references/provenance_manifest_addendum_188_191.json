@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "fa100ccc5ebbea31996dd860ef4500ca84e775b5",
+  "integrated_prs": [188, 189, 190, 191],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Cross-agent integration truth for the newest Stage 1, Stage 2, Section 7, and Section 9 increments. This ledger records only capabilities already present on main and preserves every paper-exact completion gate as fail-closed.",
+  "layers": [
+    {
+      "pr": 188,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "equation_or_source": "AxisContraction.naturalRemainder axial branch at x0=referencePair: inverseL * (lin2 - slow2/Lambda + pressure)",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_axial_remainder.py",
+      "test": "tests/test_axis_coefficient_wide_axial_remainder.py",
+      "provenance": "references/AXIS_COEFFICIENT_WIDE_AXIAL_REMAINDER_PROVENANCE.md",
+      "capability": "Materializes the axial half of naturalRemainder at the actual SchedulePressure reference pair as a mixed-scale decomposition that preserves theorem-selected 1/Lambda in Decimal form and the genuine nonzero a^2 pressure contribution in signed-log form without binary64 collapse.",
+      "remaining_boundary": "This is not the complete naturalRemainder(x0): the angular branch still needs theorem-selected 1/Lambda handling through naturalResolvent, both components must be combined compatibly, and the outer 1/(2*Lambda) Picard scale must be applied before genuine x1, fixed-point phi/u, average/pressure, NaturalProfileAssembly, global AxisSpace certification, or support/moment/matching/cone closure can be claimed."
+    },
+    {
+      "pr": 189,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "equation_or_source": "Eq. (5.7) hierarchy-owned analytic eta jets of PositiveAxis matrices A0 and A1",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_matrix_parameter.py",
+      "test": "tests/test_background_repaired_history_matrix_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_MATRIX_PARAMETER_PROVENANCE.md",
+      "capability": "Analytically derives hierarchy-owned (A0, partial_eta A0) and (A1, partial_eta A1) from the same structured order-zero phi/U/beta second jets used by the PositiveAxis system, with finite differences used only as an independent regression oracle.",
+      "remaining_boundary": "Differentiating the already-landed k=1 Picard value W_n^(1) still requires partial_eta^2 W_n^(0), so a hierarchy-owned second eta jet of the forcing/first Picard term remains open. Picard convergence, finalized recursive coefficients, the infinite cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 190,
+      "stage": "stage-3-section7-physical-estimate-scope-coherence",
+      "status": "formal-structure",
+      "equation_or_source": "Sections 6-7 coherence between fixed-band physical-base coverage and phase/frame/damping theorem-estimate coverage",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_physical_estimate_coverage.py",
+      "test": "tests/test_phase_large_band_physical_estimate_coverage.py",
+      "provenance": "references/PHASE_LARGE_BAND_PHYSICAL_ESTIMATE_COVERAGE_PROVENANCE.md",
+      "capability": "Requires physical-base and theorem-estimate coverage to share the exact same active scope witness, unsigned boxes, signed labels, source revision and LocalBase M, resolving every signed estimate label to exactly one sign-free physical Prepared binding.",
+      "remaining_boundary": "The actual Lean BaseChartJets.CellIndex family is still not machine-enumerated, Prepared/FinalSlowBase.velocity values are not materialized, theorem applications are not replayed, and uniform Eqs. (7.9)-(7.11), genuine wave construction, and global all-band paper-exact coverage remain unverified."
+    },
+    {
+      "pr": 191,
+      "stage": "stage-6-section9-residual-iteration",
+      "status": "formal-structure",
+      "equation_or_source": "Section 9 cutoff weight chi(a_j q) finite spacetime jets via normalized multivariate Taylor composition",
+      "artifact": "src/openai_ns_reconstruction/section9_cutoff_composition_jet.py",
+      "test": "tests/test_section9_cutoff_composition_jet.py",
+      "provenance": "references/SECTION9_CUTOFF_COMPOSITION_JET_PROVENANCE.md",
+      "capability": "Derives a finite spacetime cutoff-weight jet from a supplied q-jet and supplied one-variable chi derivatives by exact normalized multivariate Taylor composition, while binding q identity, a_j q argument, zero-order cutoff value and cutoff provenance to an admitted Section 9 stage/prefix evaluation.",
+      "remaining_boundary": "The q-jet and scalar chi derivatives are still provider inputs rather than machine-derived from the manuscript Eq. (4.1) similarity coordinate and fixed cutoff. Infinite Eq. (9.21), the t=1 endpoint extension, a genuine Navier-Stokes residual artifact, endpoint convergence, smooth compact forcing, bounded energy, and blow-up closure remain open."
+    }
+  ],
+  "forbidden_inferences": [
+    "Materializing only the axial mixed-scale branch does not imply complete naturalRemainder(x0), Picard x1, a fixed point, or a paper-exact leading profile.",
+    "Analytic eta jets of A0/A1 do not imply partial_eta W_n^(1), Picard convergence, recursive coefficient closure, or Proposition 5.3.",
+    "Coherent physical-base/estimate metadata over a declared scope does not prove that Python enumerated the actual Lean CellIndex family, materialized Prepared/FinalSlowBase.velocity, replayed theorem applications, or verified Eqs. (7.9)-(7.11) on the manuscript family.",
+    "Deriving chi(a_j q) jets from provider-supplied q and scalar cutoff jets does not prove that either input is manuscript-derived, nor that the infinite Eq. (9.21) field, a genuine residual artifact, endpoint convergence, or smooth compact forcing exists.",
+    "Setting f=R and then observing R-f=0 is not independent verification.",
+    "Green tests or CI do not promote toy, diagnostic, or formal-structure artifacts to paper-exact reconstruction."
+  ]
+}
