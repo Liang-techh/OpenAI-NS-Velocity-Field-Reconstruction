@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "e96b6d965115929a3f99cda70d1473803f15bf34",
+  "integrated_prs": [211, 212, 213],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the theorem-scale first-Picard angular square, the cycle-invariant-to-common-curl theorem admission seam, and the finite Section 9 prefix to fixed Section 10 localized-velocity time derivative landed through PR #213.",
+  "layers": [
+    {
+      "pr": 211,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_angular_square.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_angular_square.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_angular_square.json",
+      "capability": "Materializes the pinned mixed-scale coefficient product phi1 * phi1 at the genuine theorem-scale first Picard state, preserving separate Lambda^0 through Lambda^-4 radial-convolution and eta-Leibniz components.",
+      "remaining_boundary": "This is only one nonlinear primitive for naturalRemainder(x1). Signed-log pressure-aware products involving u1 and the remaining mixed-scale linear, parameter, source-pressure, inverse and resolvent operations are still missing; x2, Picard convergence/finality, final phi/u, final average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and global all-index AxisSpace certification remain open."
+    },
+    {
+      "pr": 212,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/actual_signed_common_curl_invariant.py",
+      "test": "tests/test_actual_signed_common_curl_invariant.py",
+      "provenance": "references/provenance_manifest_addendum_actual_signed_common_curl_invariant.json",
+      "capability": "Adds a fail-closed composition gate identifying the UniformLocalJets premise of the admitted common-curl/divergence theorem with fullRequest_jets_from_invariant for the same B/N0, request, exponent, actual strip and phaseCell instantiation.",
+      "remaining_boundary": "No Lean theorem is replayed, no actual CycleAnalyticInvariant value is machine verified, no external theorem producer is authenticated, no actual request or signed wave is materialized, canonical slow-box scope is not machine linked, and paper-exact divergence-free wave/final velocity remain unavailable."
+    },
+    {
+      "pr": 213,
+      "stage": "stage-6-section-9-to-10-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_localized_velocity_time_derivative.py",
+      "test": "tests/test_section9_section10_localized_velocity_time_derivative.py",
+      "provenance": "references/provenance_manifest_addendum_section9_section10_time_derivative.json",
+      "capability": "Computes the analytic one-point time derivative d_t u_cut from a provider-supplied finite Section 9 prefix jet through the fixed time-independent Section 10 spatial cutoff, using mixed analytic derivatives rather than production finite differences.",
+      "remaining_boundary": "The actual Section 7/8 correction exporter, infinite or locally-finite Eq. (9.21) field, all-order one-sided t->1- endpoint convergence, smooth extension through t=1, genuine Navier-Stokes residual artifact, forcing smoothness/closure, finite-energy conclusion and blow-up path remain unverified."
+    }
+  ],
+  "forbidden_inferences": [
+    "A theorem-scale phi1 * phi1 coefficient product does not imply complete naturalRemainder(x1), x2, Picard convergence/finality, final phi/u, final average/pressure, NaturalProfileAssembly, or paper-exact leading-profile completion.",
+    "A fail-closed metadata composition between fullRequest_jets_from_invariant and common_curl_and_divergence does not replay Lean, verify an actual CycleAnalyticInvariant, authenticate theorem production, materialize an actual signed wave, or produce paper-exact divergence-free velocity.",
+    "An analytic time derivative of a finite provider-supplied localized prefix does not imply the actual infinite Eq. (9.21) correction sequence, smooth extension through t=1, a genuine Navier-Stokes residual/forcing artifact, bounded energy, or the blow-up conclusion.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote toy, diagnostic-only, analytic-adapter, theorem-admission, or formal-structure artifacts to paper-exact status."
+  ]
+}
