@@ -41,9 +41,14 @@ The regression suite cross-checks the ordinary pieces against the previously lan
 
 Those isolating values are test oracles only and are never promoted to manuscript parameters.
 
-For the pressure branch, eta derivative order zero is independently compared with the existing full remainder evaluated at the exact constant coefficient state `a=1`; subtracting the `a=0` result isolates the complete `inverseL * pressure` chain. Higher eta derivatives remain represented through the already-verified wide pressure Bell/Leibniz recurrence plus the new exact `inverseL` Leibniz convolution.
+For the pressure branch, a constant-amplitude replacement is deliberately **not** used as an oracle: pinned `parameterPrimitive(source)` differentiates the actual theorem amplitude, so even the zeroth derivative of the pressure contains genuine `Lambda`-dependent amplitude-derivative terms. Instead the new final multiplication is checked against the independent radial-degree-zero identity for the landed `inverseL` AxisData field. Coefficientwise,
 
-The tests also require a nonzero pressure coefficient to remain nonzero in signed-log form and require binary64 projection to fail closed rather than silently underflow to zero.
+- order 0: `(inverseL * pressure)^(0)_n = inverseL^(0)_0 * pressure^(0)_n`;
+- order 1: `(inverseL * pressure)^(1)_n = inverseL^(0)_0 * pressure^(1)_n + inverseL^(1)_0 * pressure^(0)_n`.
+
+The test also verifies that positive radial rows of `inverseL` vanish, so this reduction is exact rather than sampled. Higher pressure derivatives continue to come from the already-verified wide pressure Bell/Leibniz recurrence plus the exact finite product rule.
+
+The tests additionally require a nonzero pressure coefficient to remain nonzero in signed-log form and require binary64 projection to fail closed rather than silently underflow to zero.
 
 ## Explicit non-claims / next blocker
 
