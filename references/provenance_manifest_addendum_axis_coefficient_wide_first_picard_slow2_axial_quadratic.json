@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisWeightEstimates.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisContraction.lean"
+    ],
+    "symbols": [
+      "AxisWeightEstimates.jetProduct",
+      "AxisOperators.productFamily",
+      "AxisOperators.regularInverse",
+      "AxisContraction.naturalRemainder"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the first pinned slow2 branch j1((2*A*eta)*(u1*u1)) at the genuine theorem-scale first Picard state, preserving ordinary Lambda^0..Lambda^-4, pressure-linear a^2 Lambda^-1..Lambda^-3, and pressure-square a^4 Lambda^-2 contributions through the exact eta product rule and j1 row divisor",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_axial_quadratic.py",
+      "tests/test_axis_coefficient_wide_first_picard_slow2_axial_quadratic.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_SLOW2_AXIAL_QUADRATIC_PROVENANCE.md",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "axial_quadratic_coefficient": "2*A*eta with A inherited from actual SchedulePressure AxisData",
+      "A_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_override": false,
+      "pressure_override": false,
+      "coefficient_table_override": false,
+      "derivative_table_override": false,
+      "radial_cutoff": false,
+      "eta_product_rule": "d_eta^m[(2*A*eta)F]=(2*A*eta)d_eta^m F + m*(2*A)d_eta^(m-1)F",
+      "j1_row_zero": "exact zero",
+      "j1_positive_row": "source row n-1 divided by radialDivisor(1,n-1)=n^2",
+      "ordinary_inverse_lambda_powers": [0, 1, 2, 3, 4],
+      "pressure_linear_amplitude_power": 2,
+      "pressure_linear_inverse_lambda_powers": [1, 2, 3],
+      "pressure_square_amplitude_power": 4,
+      "pressure_square_inverse_lambda_power": 2,
+      "collapsed_total_value": false
+    },
+    "validation": [
+      "the branch is bound to the landed genuine theorem-scale x1 and keeps complete-slow2/naturalRemainder(x1)/fixed-point flags false",
+      "the ordinary reference component cross-checks an independent composition of landed product, eta multiplication, j1 regular inverse, and the exact scalar 2*A",
+      "all ordinary, pressure-linear, and pressure-square numerators agree exactly with a separate literal eta-product plus n^2-divisor reconstruction",
+      "j1 row zero is exactly zero while still exercising the actual upstream square-state validation",
+      "actual nonzero pressure-linear terms retain the common a^2 log scale and explicit inverse-Lambda powers",
+      "the actual nonzero pressure-square term retains the common a^4 log scale and explicit Lambda^-2 factor",
+      "current nonzero theorem-scale pressure terms fail closed on binary64 underflow instead of becoming zero",
+      "invalid indices, out-of-window eta, and surrogate input states fail closed",
+      "complete slow2(x1), naturalRemainder(x1), x2, fixed-point convergence/finality, global AxisSpace certification, and paper exactness remain false"
+    ],
+    "remaining_boundary": "materialize the remaining average(u1)-coupled slow2 branches through dot1, mixed1, and param1 while preserving ordinary/a^2 scales; lift the remaining angular and source-pressure-resolvent operations needed for complete naturalRemainder(x1); then materialize x2 and certify convergence to the fixed point phi/u; afterward derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
