@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "section9-residual-flatness-theorem-admission",
+  "base_main_commit": "fdaf4be8af0a4d858bef87b0fab9ffdb61b9927c",
+  "issue": 3,
+  "section": 9,
+  "status": "formal-structure",
+  "artifact": "src/openai_ns_reconstruction/section9_residual_flatness.py",
+  "tests": "tests/test_section9_residual_flatness.py",
+  "formal_repository": "https://github.com/openai/NavierStokesAndEuler",
+  "formal_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+  "formal_file": "NavierStokes/DiagonalResidual.lean",
+  "theorem": "NavierStokes.DiagonalResidual.allJetsFlat_residual_of_stages",
+  "dependencies": [
+    "NavierStokes.DiagonalResidual.residual_jetRate_of_stages",
+    "NavierStokes.DiagonalResidual.residualDifference_jetRate"
+  ],
+  "producer_kind": "lean-formal-export",
+  "sampled_or_fitted_evidence_allowed": false,
+  "all_jets_flat_theorem_machine_replayed": false,
+  "section9_iteration_machine_materialized": false,
+  "stage_fields_materialized": false,
+  "stage_rate_bounds_materialized": false,
+  "limit_velocity_materialized": false,
+  "navier_stokes_residual_values_materialized": false,
+  "paper_exact_velocity_available": false
+}
