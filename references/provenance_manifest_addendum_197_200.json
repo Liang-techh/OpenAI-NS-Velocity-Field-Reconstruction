@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "72e0d9109823db445d426e96311abeb21e6140d2",
+  "integrated_prs": [197, 198, 199, 200],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the complete Stage 1 naturalRemainder(x0) pair, the Stage 2 second-eta first-Picard jet, the Section 6-to-7 canonical Prepared scope gate, and the Section 10 official time-switch source/support certificate landed through PR #200.",
+  "layers": [
+    {
+      "pr": 197,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "equation_or_source": "AxisContraction.naturalRemainder at x0 = actual SchedulePressure referencePair",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_natural_remainder.py",
+      "test": "tests/test_axis_coefficient_wide_natural_remainder.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_natural_remainder.json",
+      "capability": "Assembles the complete typed mixed-scale naturalRemainder(x0) pair from the landed theorem-selected angular and axial branches while preserving their Decimal 1/Lambda decompositions and signed-log a^2 pressure scale.",
+      "remaining_boundary": "The outer 1/(2*Lambda) Picard factor is not yet applied to materialize genuine x1; iterative fixed-point convergence, phi/u, average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and global all-index weighted AxisSpace certification remain open."
+    },
+    {
+      "pr": 198,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "equation_or_source": "Eq. (5.7): partial_eta^2(G f_n) = G(partial_eta^2 f_n)",
+      "artifact": "src/openai_ns_reconstruction/background_first_picard_second_parameter_jet.py",
+      "test": "tests/test_background_first_picard_second_parameter_jet.py",
+      "provenance": "references/provenance_manifest_addendum_198.json",
+      "capability": "Adds the exact second-eta jet for the first positive-order Picard term by applying the same singular inverse to an explicit analytic partial_eta^2 f_n provider, without finite-difference production derivatives or fitted coefficients.",
+      "remaining_boundary": "partial_eta^2 f_n remains caller-provided rather than hierarchy-owned paper data; further Picard iteration/convergence, recursive coefficient materialization, Proposition 5.3 all-jets residual flatness, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 199,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "equation_or_source": "PrimaryGeometryAssembly.canonicalPrepared / canonicalPhases active-scope identity",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_canonical_scope_coverage.py",
+      "test": "tests/test_phase_large_band_canonical_scope_coverage.py",
+      "provenance": "references/PHASE_LARGE_BAND_CANONICAL_SCOPE_COVERAGE_PROVENANCE.json",
+      "capability": "Requires exact active-box coverage by canonical bindings with one shared Prepared identity, one shared (B,r0,N0) constructor tuple, exact wrapping of the admitted physical binding, and exact signed-family coverage.",
+      "remaining_boundary": "Python still does not evaluate the noncomputable canonical Prepared application, enumerate the actual CellIndex slice, materialize physical base fields, replay the phase/base/frame/damping theorem applications, or verify uniform Eqs. (7.9)-(7.11)."
+    },
+    {
+      "pr": 200,
+      "stage": "stage-6-section-10-time-localization",
+      "status": "formal-structure",
+      "equation_or_source": "NavierStokes.SmoothCutoffs.timeSwitch at pinned commit f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "artifact": "src/openai_ns_reconstruction/section10_paper_time_switch.py",
+      "test": "tests/test_section10_paper_time_switch.py",
+      "provenance": "references/SECTION10_PAPER_TIME_SWITCH_PROVENANCE.md",
+      "capability": "Binds Section 10 to the official theorem source and exact 3/8, 3/4 geometry: timeSwitch is zero on |t|<=3/8, one for t>=3/4, and positive-order derivatives are theorem-certified to vanish after the collar, so the switch is inert near t=1.",
+      "remaining_boundary": "The Mathlib bump is not numerically evaluated, Lean theorems are not machine replayed in Python, and the missing one-sided Section 9 field/residual smooth extension through t=1, endpoint closure, final compact forcing, and paper-exact velocity remain unconstructed."
+    }
+  ],
+  "forbidden_inferences": [
+    "A complete executable naturalRemainder(x0) pair does not imply that the outer 1/(2*Lambda) Picard factor was applied, that genuine x1 exists, or that a fixed-point leading profile was constructed.",
+    "An exact second-eta first-Picard jet driven by caller-provided partial_eta^2 f_n does not imply hierarchy ownership of that source derivative, Picard convergence, or Proposition 5.3 residual flatness.",
+    "Exact canonical Prepared scope coverage does not imply that the noncomputable Prepared object, actual CellIndex slice, physical base values, or Eqs. (7.9)-(7.11) theorem applications were machine evaluated.",
+    "The official timeSwitch being identically one with vanishing positive derivatives near t=1 does not extend the Section 9 field through t=1 and does not establish endpoint residual closure or final forcing.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote toy, diagnostic-only, or formal-structure artifacts to paper-exact status."
+  ]
+}
