@@ -47,7 +47,7 @@ def test_literal_tail_mean_cross_binds_to_same_canonical_scope_without_truth_upg
 def test_tail_threshold_is_exact_and_components_are_only_theta_or_axial():
     scope = _scope()
     n0 = scope.canonical_export.export.prepared_N
-    with pytest.raises(ValueError, match="Prepared.N \+ 1 <= n"):
+    with pytest.raises(ValueError, match=r"Prepared.N \+ 1 <= n"):
         _witness(scope, band=n0)
     for component in (0, 1):
         ActualSignedMeanTailAdmission(scope, _witness(scope, component=component))
