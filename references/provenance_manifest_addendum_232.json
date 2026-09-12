@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "fdaf4be8af0a4d858bef87b0fab9ffdb61b9927c",
+  "integrated_prs": [
+    232
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 hierarchy-ownership increment. Makes the real Lemma 5.2 repaired fifth-mixed U provider authoritative for its lower projections, derives beta fourth-mixed jets only through analytic Eq. (5.2), and routes them through the landed analytic second-eta Eq. (5.6) Omega/X implementation.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_fifth_mixed.py",
+      "companion_artifact": "src/openai_ns_reconstruction/background_repaired_history_omega_second_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_FIFTH_MIXED_OMEGA_SECOND_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.2",
+        "Appendix A",
+        "Eq. (5.2)",
+        "Eqs. (5.3)-(5.7)"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/PositiveAxisSystem.lean",
+        "NavierStokes/PositiveAxisExistence.lean"
+      ],
+      "landed_capability": "PR #232 makes a single repaired fifth-mixed U provider hierarchy-owned, enforces exact fourth/third projection coherence, derives beta fourth-mixed jets only through analytic Eq. (5.2), and exposes a fail-closed hierarchy-owned analytic second eta jet of Omega/X. Regression uses the real five-bump repair at order 1 and cross-checks the second derivative against the prior hierarchy-owned first-eta path at the axis and inside active compact support.",
+      "remaining_boundary": "The genuine order-zero fifth-mixed leading profile remains an Issue #1 input. Hierarchy-owned second eta actualLowerSource/forcing and partial_eta W_n^(1) are not yet closed; full Picard convergence, recursive coefficient materialization, recursive cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
