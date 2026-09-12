@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/NaturalAxisCoefficients.lean"
+    ],
+    "symbols": [
+      "AxisContraction.naturalRemainder",
+      "AxisContraction.referencePair",
+      "NaturalAxisCoefficients.realAmplitude"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the first genuine theorem-scale Picard x1 = x0 + naturalRemainder(x0)/(2*Lambda) as a lossless mixed-scale coefficient decomposition, preserving the outer 1/(2*Lambda), inherited 1/Lambda slow terms, and signed-log pressure without binary64 underflow",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard.py",
+      "tests/test_axis_coefficient_wide_first_picard.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_surrogate": false,
+      "fixed_point_state": "first Picard iterate from x0 = actual SchedulePressure referencePair",
+      "angular_representation": "reference Decimal + explicit base/(2*Lambda) + inherited slow numerator/(2*Lambda^2)",
+      "axial_representation": "reference Decimal + explicit base/(2*Lambda) + inherited slow numerator/(2*Lambda^2) + signed-log pressure/(2*Lambda)",
+      "pressure_scaling": "preserves the common signed-log a^2 scale and subtracts log(2*Lambda) from the separate factor log",
+      "collapsed_total_value": false
+    },
+    "validation": [
+      "the state is built only from the complete actual SchedulePressure mixed-scale naturalRemainder(x0) pair",
+      "ordinary angular and axial correction pieces satisfy the exact outer 1/(2*Lambda) algebra",
+      "the inherited remainder slow numerator becomes an explicit 1/Lambda^2 Picard correction",
+      "signed-log pressure scaling preserves sign and common amplitude log and applies exactly -log(2*Lambda) to the factor log",
+      "exact zero pressure remains zero",
+      "nonzero out-of-binary64 pressure fails closed rather than being replaced by zero",
+      "the reference and tiny corrections remain decomposed rather than being destructively summed at fixed precision",
+      "fixed-point convergence/finality, global AxisSpace certification, and paper exactness remain false"
+    ],
+    "remaining_boundary": "extend the mixed-scale map beyond first Picard x1 and certify convergence to the fixed-point phi/u; then derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
