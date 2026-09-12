@@ -92,23 +92,30 @@ def test_ordinary_slow_matches_t_difference_in_existing_remainder(axial) -> None
             )
 
 
-def test_pressure_after_inverse_l_matches_unit_amplitude_zero_jet_oracle(axial) -> None:
-    # At eta-derivative order zero, factoring out a^2 leaves the same pressure
-    # chain as the existing remainder evaluated with the exact constant a=1.
-    # This independently checks the new final inverseL multiplication.
-    zero = _constant_state(axial.epsilon, 0.0)
-    one = _constant_state(axial.epsilon, 1.0)
-    remainder = actual_schedule_natural_remainder(axial.reference)
-    pair = (axial.reference.phi, axial.reference.u)
-    no_pressure = remainder.apply(0.0, zero, pair)[1]
-    unit_pressure = remainder.apply(0.0, one, pair)[1]
-
+def test_pressure_after_inverse_l_uses_radial_zero_leibniz_identity(axial) -> None:
+    # inverseL is one of the landed AxisData fields and is exactly radial-degree
+    # zero.  Therefore the final product with the wide pressure has a simple
+    # independent row identity.  This avoids the invalid constant-amplitude
+    # oracle: parameterPrimitive differentiates the *actual* amplitude, so
+    # replacing a(eta) by constant 1 would erase a genuine Lambda-sized term.
     eta = 0.07
+    inverse_l = axial.axis_data.inverseL
+
+    for radial_row in range(1, 4):
+        for derivative_order in range(3):
+            assert inverse_l.jet(radial_row, derivative_order, eta) == 0.0
+
     for n in range(6):
-        expected = unit_pressure.jet(n, 0, eta) - no_pressure.jet(n, 0, eta)
-        assert float(axial.pressure_normalized_factor(n, 0, eta)) == pytest.approx(
-            expected, rel=2e-10, abs=2e-12
-        )
+        with localcontext() as ctx:
+            ctx.prec = PRECISION
+            l0 = Decimal.from_float(inverse_l.jet(0, 0, eta))
+            l1 = Decimal.from_float(inverse_l.jet(0, 1, eta))
+            p0 = axial.wide_pressure.normalized_factor(n, 0, eta)
+            p1 = axial.wide_pressure.normalized_factor(n, 1, eta)
+            expected0 = +(l0 * p0)
+            expected1 = +(l0 * p1 + l1 * p0)
+        assert axial.pressure_normalized_factor(n, 0, eta) == expected0
+        assert axial.pressure_normalized_factor(n, 1, eta) == expected1
 
 
 def test_mixed_jet_keeps_inverse_lambda_and_pressure_as_separate_scales(axial) -> None:
