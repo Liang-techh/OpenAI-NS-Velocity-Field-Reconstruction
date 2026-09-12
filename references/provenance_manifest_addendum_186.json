@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "4526e79c608e26eff4a95dd8cf401c11c2a68e8f",
+  "integrated_prs": [186],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Issue #4 derivative-aware Section 9 increment: derive weighted Eq. (9.21) stage jets from separately supplied unweighted correction and cutoff-weight jets by the exact multi-index Leibniz rule, while keeping both source jets non-paper-exact provider inputs.",
+  "layers": [
+    {
+      "pr": 186,
+      "stage": "stage-6-section9-residual-iteration",
+      "status": "formal-structure",
+      "equation_or_source": "Eq. (9.21) product derivatives D^alpha[chi(a_j q)(A_j,B_j,p_j)]",
+      "artifact": "src/openai_ns_reconstruction/section9_weighted_correction_jet.py",
+      "test": "tests/test_section9_weighted_correction_jet.py",
+      "provenance": "references/SECTION9_WEIGHTED_CORRECTION_JET_PROVENANCE.md",
+      "capability": "Uses the exact multi-index Leibniz rule to derive every weighted stage derivative from separate complete unweighted correction and cutoff-weight spacetime jets, binding stage/scale/q, admission evidence, value/cutoff provenance, zero-order weight, and the independently evaluated zero-order contribution before feeding the existing prefix-jet aggregator.",
+      "remaining_boundary": "The unweighted correction and cutoff derivative tables remain provider inputs rather than machine-derived outputs of the actual Section 7/8 fields and manuscript similarity/cutoff construction. The infinite Eq. (9.21) field, t=1 endpoint, genuine Navier-Stokes residual artifact, Eq. (9.18) residual majorants, smooth compact forcing, bounded energy, and blow-up closure remain open."
+    }
+  ],
+  "forbidden_inferences": [
+    "Machine-executing the Leibniz rule does not prove that either input derivative jet is the manuscript's actual correction or cutoff jet.",
+    "Agreement of zero-order products with the finite-prefix evaluator does not establish the infinite Eq. (9.21) sum or a genuine Navier-Stokes residual.",
+    "A provider-supplied analytic cutoff jet is not evidence that the manuscript's implicit q(t,z) and fixed chi derivatives were machine-derived.",
+    "Green tests or CI do not promote formal-structure artifacts to paper-exact reconstruction."
+  ]
+}
