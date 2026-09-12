@@ -1,0 +1,25 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd"
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "Actual SchedulePressure-derived executable AxisResolvent.naturalOperator: radially constant chi recovered from the pinned phi0[1] = -chi/4 identity and Q(A) = (1/2) J2(chi*A) assembled from landed coefficient product and regular-inverse operators",
+    "paper_locations": [
+      "NavierStokes/AxisResolvent.lean: naturalOperator",
+      "NavierStokes/AxisResolvent.lean: naturalOperator_isAxisLinearOperator",
+      "NavierStokes/AxisReference.lean: reference_coefficient",
+      "NavierStokes/NaturalAxisData.lean: chi"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_natural_operator.py",
+      "tests/test_axis_coefficient_natural_operator.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_NATURAL_OPERATOR_PROVENANCE.md",
+    "remaining_boundary": "The pinned naturalOperator Q is now executable on the actual coefficient-jet representation, but no global all-index weighted AxisSpace norm certificate or infinite alternating naturalResolvent evaluation/truncation certificate is claimed. The naturalResolvent action required by naturalRemainder, naturalRemainder(x0), the first genuine Picard iterate, fixed-point phi/u, derived average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved. paper_exact_velocity_available must remain false."
+  }
+}
