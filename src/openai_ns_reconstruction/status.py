@@ -211,10 +211,39 @@ STAGES = [
          "by cylindrical_curl_jet and discharge the smoothness, support, zero-germ, phase-patch and common-glue hypotheses "
          "required for a genuine supported divergence-free oscillatory wave."
      )},
-    {"id": 5, "name": "compact mean corrections", "status": "pending",
-     "remaining": "Section 8 compact mean corrections and the associated defect solve."},
-    {"id": 6, "name": "residual-improvement iteration", "status": "pending",
-     "remaining": "Section 9 recursive choices, residual-improvement cycle, summation and convergence control."},
+    {"id": 5, "name": "compact mean corrections", "status": "formal-structure",
+     "implemented": (
+         "Section 8 five-row mean-rank update algebra is executable for supplied local data: the landed solver constructs "
+         "the official separated three-cell angular and two-cell axial geometry, uses the physical debt normalization and "
+         "paper power-moment systems, returns compact angular/axial increments on the pinned inner support intervals, and "
+         "maps a normalized five-moment repair to rows (0,0,-d_P,-d_Jtheta,-d_Jz). Independent regression recomputes the "
+         "physical five rows with SciPy adaptive quadrature rather than the production moment integrator. This remains "
+         "formal-structure: fixtures are synthetic/caller-supplied and the executable C-infinity CompactMomentBump is not "
+         "claimed pointwise identical to the pinned noncomputable Mathlib ContDiffBump."
+     ),
+     "remaining": (
+         "Derive the actual mean debt, lambda,C,ell,U and power-law patch from the genuine completed background, pulse/"
+         "covariance and oscillatory-wave hierarchy; instantiate the mean repair on those actual fields, justify the "
+         "executable bump or replace it with theorem-certified moment data, and close the Section 8 support/glue and "
+         "associated defect solve. A synthetic five-row solve is not a paper-exact mean correction."
+     )},
+    {"id": 6, "name": "residual-improvement iteration", "status": "formal-structure",
+     "implemented": (
+         "Section 9 now has fail-closed theorem-shaped infrastructure for the recursive residual-improvement layer: exact "
+         "stage exponent/certificate arithmetic for Eqs. (9.17)-(9.18), flat-remainder and finite power-ladder gates, "
+         "correction-extension admission with source/provenance binding, exact-rational local-sum admission, contiguous "
+         "finite Eq. (9.21) prefix evaluation, physical-window/support bridges showing sufficiently late admitted stages "
+         "vanish on closed pre-endpoint slabs, and endpoint residual-source/majorant adapters that can transfer independently "
+         "certified uniform Eq. (9.18) evidence toward Section 10. These adapters reject sampled/fitted evidence and keep "
+         "actual_section9_sequence_verified, proposition_9_9_verified and paper_exact_velocity_available false."
+     ),
+     "remaining": (
+         "Construct the genuine Section 9 correction fields and theorem-selected infinite scale sequence from the actual "
+         "Section 7/8 data, prove the common-domain Eq. (9.17)-(9.20) bounds and all-orders flat remainder uniformly, identify "
+         "the manuscript fixed cutoff pointwise, form the locally finite infinite Eq. (9.21) sums, and prove convergence to "
+         "the Proposition 9.9 residual-flat limit. Finite prefixes, supplied certified envelopes, support implications and "
+         "endpoint-majorant plumbing do not by themselves establish the recursive correction sequence or endpoint closure."
+     )},
     {"id": 7, "name": "final compact field and force", "status": "formal-structure",
      "implemented": (
          "Section 10 support/plateau geometry, explicit C-infinity spatial cutoff representative, analytic cutoff gradient "
