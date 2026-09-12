@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "7def8744b6a0a5fc8616671a992322253a3c9262",
+  "integrated_prs": [174],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 hierarchy-owned analytic eta jet of the exact Section 5 Eq. (5.7) positive-axis forcing f_n. The value delegates to the landed exact forcing, the source derivative comes only from the strong repaired lower-history hierarchy, and the explicit eta/ell geometry is differentiated analytically. No caller-supplied derivative table, production finite difference, generic cutoff, or fitted coefficient is admitted.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_forcing_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_POSITIVE_AXIS_FORCING_PARAMETER_PROVENANCE.md",
+      "paper_locations": ["Eqs. (5.3)-(5.7)", "Lemma 5.2", "Eq. (5.14)", "Appendix A"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #174 composes the hierarchy-owned analytic eta jet of actualLowerSource with the exact PositiveAxisSystem forcing formula and differentiates the remaining explicit eta/ell factor analytically, yielding a fail-closed hierarchy-owned partial_eta f_n whenever all required strong lower-history jets exist.",
+      "remaining_boundary": "The genuine Issue #1 leading mixed profile remains upstream. Wiring this derivative into the singular inverse for a hierarchy-owned first-Picard parameter jet, the next nontrivial A0 W + A1 partial_eta W Picard application, recursive coefficient materialization, recursive cutoff-scale completion, Proposition 5.3 all-jets truncation/residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
