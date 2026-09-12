@@ -103,7 +103,7 @@ class LargeBandActiveFamilyScopeWitness:
 
         labels = set(self.labels)
         for label in self.labels:
-            if label.opposite not in labels:
+            if label.opposite() not in labels:
                 raise ValueError("scope labels must be closed under the Section 6 sign pair")
 
         for name in (
