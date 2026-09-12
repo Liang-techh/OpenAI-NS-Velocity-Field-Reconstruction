@@ -1,0 +1,35 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Section 9 Eq. (9.21) and Proposition 9.9",
+    "base_main_commit": "e0e6641eb0965706b692d91f13509510e824003e"
+  },
+  "layer": {
+    "id": "section9-eq921-finite-prefix-analytic-jet-adapter",
+    "status": "formal-structure",
+    "capability": "Fail-closed termwise aggregation of complete provider-supplied physical spacetime derivative jets for the weighted Eq. (9.21) summands in an already-admitted finite contiguous prefix.",
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_eq921_prefix_jet.py",
+      "tests/test_section9_eq921_prefix_jet.py"
+    ],
+    "provenance": "references/SECTION9_EQ921_PREFIX_JET_PROVENANCE.md",
+    "remaining_boundary": "The adapter does not machine-derive correction or cutoff derivatives from the actual Section 7/8 fields, construct the locally finite infinite Eq. (9.21) sum, cover t=1, or create a genuine Navier-Stokes residual artifact."
+  },
+  "truth_flags": {
+    "analytic_derivatives_machine_derived_from_actual_corrections": false,
+    "paper_fixed_cutoff_derivatives_machine_verified": false,
+    "actual_correction_field_values_verified": false,
+    "actual_section9_sequence_verified": false,
+    "eq_9_21_infinite_sum_constructed": false,
+    "endpoint_covered": false,
+    "residual_artifact_ready": false,
+    "paper_exact_velocity_available": false
+  },
+  "forbidden_inferences": [
+    "complete provider-supplied derivative tables imply the tables came from the paper correction fields",
+    "zero-order agreement with the finite-prefix evaluator proves higher derivatives",
+    "a finite-prefix analytic jet implies the locally finite infinite Eq. (9.21) field is constructed",
+    "green tests for synthetic jets imply a genuine residual artifact or paper-exact velocity"
+  ]
+}
