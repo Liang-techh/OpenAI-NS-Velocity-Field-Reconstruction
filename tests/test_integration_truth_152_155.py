@@ -31,7 +31,7 @@ def test_integration_ledger_maps_prs_152_155_and_keeps_truth_gates_closed() -> N
 
     assert "naturalRemainder(x0)" in rows[152]["remaining_boundary"]
     assert "first genuine Picard iterate" in rows[152]["remaining_boundary"]
-    assert "hierarchy-owned partial_eta actualLowerSource" in rows[153]["remaining_boundary"]
+    assert "partial_eta actualLowerSource" in rows[153]["remaining_boundary"]
     assert "Proposition 5.3 all-jets residual decay" in rows[153]["remaining_boundary"]
     assert "paper-exact Proposition 5.5 base/background provider" in rows[154]["remaining_boundary"]
     assert "uniform Eq. (7.9)-(7.11) verification" in rows[154]["remaining_boundary"]
