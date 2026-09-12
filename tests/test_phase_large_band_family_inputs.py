@@ -156,13 +156,13 @@ def test_witness_checks_family_global_scalar_hypotheses_directly():
         _witness(u=0.0)
     with pytest.raises(ValueError, match="0<B<=M"):
         _witness(B=0.0)
-    with pytest.raises(ValueError, match="\[0,4\]"):
+    with pytest.raises(ValueError, match=r"\[0,4\]"):
         _witness(viscosity=4.1)
     with pytest.raises(ValueError, match="reference_radius"):
         _witness(reference_radius=0.0)
-    with pytest.raises(ValueError, match="1/\(2\*r0\)<=M"):
+    with pytest.raises(ValueError, match=r"1/\(2\*r0\)<=M"):
         _witness(reference_radius=0.2)
-    with pytest.raises(ValueError, match="4\*r0\*Tg<=M"):
+    with pytest.raises(ValueError, match=r"4\*r0\*Tg<=M"):
         _witness(Tg=0.6)
 
 
