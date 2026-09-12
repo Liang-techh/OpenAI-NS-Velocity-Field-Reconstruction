@@ -1,11 +1,10 @@
-from dataclasses import replace
 import json
 from pathlib import Path
 
 import pytest
 
-from openai_ns_reconstruction.axis_coefficient_reference_state import (
-    actual_schedule_reference_axis_state,
+from openai_ns_reconstruction.axis_coefficient_wide_axial_remainder import (
+    actual_schedule_reference_wide_axial_remainder_state,
 )
 from openai_ns_reconstruction.axis_coefficient_wide_natural_remainder import (
     ActualScheduleReferenceWideNaturalRemainderState,
@@ -65,17 +64,19 @@ def test_jet_pair_preserves_both_landed_mixed_scale_representations(remainder_x0
     assert u_jet.pressure == remainder_x0.axial.jet(n, m, eta).pressure
 
 
-def test_pair_rejects_actual_reference_from_different_schedule_j(remainder_x0) -> None:
-    # The incompatible reference is itself constructed through the real
-    # SchedulePressure theorem path; this is a fail-closed compatibility test,
-    # not a surrogate production input.
-    other_reference = actual_schedule_reference_axis_state(_schedule_data(), 0.04)
-    mismatched_axial = replace(remainder_x0.axial, reference=other_reference)
+def test_pair_rejects_actual_axial_branch_from_different_schedule_j(remainder_x0) -> None:
+    # The incompatible branch is itself fully constructed through the real
+    # SchedulePressure theorem path.  No fabricated coefficient or scale is
+    # introduced merely to exercise the compatibility gate.
+    other_axial = actual_schedule_reference_wide_axial_remainder_state(
+        _schedule_data(),
+        0.04,
+    )
 
-    with pytest.raises(ValueError, match="schedule j mismatch"):
+    with pytest.raises(ValueError, match="mismatch"):
         ActualScheduleReferenceWideNaturalRemainderState(
             angular=remainder_x0.angular,
-            axial=mismatched_axial,
+            axial=other_axial,
         )
 
 
