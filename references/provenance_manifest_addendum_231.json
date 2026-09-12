@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "fdaf4be8af0a4d858bef87b0fab9ffdb61b9927c",
+  "integrated_prs": [231],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Issue #3 Section 9 formal residual-flatness closure contract pinned to the official allJetsFlat_residual_of_stages theorem; no stage iteration or rates are materialized by Python.",
+  "layers": [
+    {
+      "id": "section9-residual-flatness-closure",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_residual_flatness.py",
+      "provenance": "references/SECTION9_RESIDUAL_FLATNESS_PROVENANCE.md",
+      "official_lean_modules": ["NavierStokes/DiagonalResidual.lean"],
+      "landed_capability": "Fail-closed lean-formal-export admission for allJetsFlat_residual_of_stages, including the exact smoothness, divergent-gain, background/tail and finite-stage residual jet-rate proof obligations.",
+      "remaining_boundary": "The actual Section 9 finite-stage family, Eq. (9.21), gain/loss schedules, theorem replay, residual values, limiting paper field, and paper-exact velocity remain unmaterialized."
+    }
+  ]
+}
