@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "f3545b839ccd4c91dc207b4ca4c4020e8ec997e0",
+  "integrated_prs": [240],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative-composition increment. Assembles a hierarchy-owned analytic second eta jet of the complete strict-lower actualLowerSource from the already-landed repaired phi-fourth/U-fifth ownership, analytic Eq. (5.2) beta-fourth mapper, second-eta preceding diffusion, and second-eta Eq. (5.6) Omega/X bridge.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_source_second_parameter.py",
+      "test": "tests/test_background_repaired_history_source_second_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_LOWER_SOURCE_SECOND_PARAMETER_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.2",
+        "Appendix A",
+        "Eq. (5.2)",
+        "Eqs. (5.3)-(5.7)"
+      ],
+      "landed_capability": "Requires the strong hierarchy-owned repaired phi fourth-mixed/U fifth-mixed history, derives beta fourth-mixed data only through analytic Eq. (5.2), reuses second-eta preceding diffusion and hierarchy-owned second-eta Omega/X, and exposes value/first/second eta jets of the complete strict-lower actualLowerSource. Value and first derivative delegate to the existing landed bridge; the new second derivative is cross-checked against centered differentiation of that prior analytic path at the axis and active compact-repair points.",
+      "remaining_boundary": "The genuine Issue-#1 order-zero strong profile remains upstream. This does not yet establish hierarchy-owned second-eta forcing, partial_eta W_n^(1), Picard convergence, final recursive coefficient materialization, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "A caller-supplied or test-only leading fourth/fifth mixed profile is not paper-exact data.",
+    "Finite-difference regression is an oracle only and is not used in production or promoted to proof.",
+    "Hierarchy-owned second eta actualLowerSource does not by itself establish second eta forcing, Picard convergence, recursive coefficient materialization, or Proposition 5.3.",
+    "The repository's generic executable cutoff is not the paper's recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
