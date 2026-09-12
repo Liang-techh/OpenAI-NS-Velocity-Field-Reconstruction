@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "fdaf4be8af0a4d858bef87b0fab9ffdb61b9927c",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-8-actual-signed-mean-defect",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/actual_signed_mean_defect.py",
+    "test": "tests/test_actual_signed_mean_defect.py",
+    "provenance": "references/ACTUAL_SIGNED_MEAN_DEFECT_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/ActualSignedMeanBinding.lean",
+        "NavierStokes/ActualPrimaryCovariance.lean"
+      ],
+      "symbols": [
+        "NavierStokes.ActualSignedMeanBinding.requested_cross_defect",
+        "NavierStokes.ActualSignedMeanBinding.requested_cross_factor",
+        "NavierStokes.ActualPrimaryCovariance.partitionFactor_eq_one_sub_missing"
+      ]
+    },
+    "landed_capability": "Fail-closed admission of the exact finite-head signed mean-cross defect identity, bound to the same canonical B/N0 and selected Prepared.N as the admitted signed scope.",
+    "identity": "meanBar(actualCross)-requestedStress = -missingWeight(Prepared.N, physicalScale)*requestedStress",
+    "admitted_band_range": "n <= Prepared.N",
+    "truth_boundary": {
+      "requested_cross_defect_theorem_machine_replayed": false,
+      "actual_mean_cross_values_materialized": false,
+      "missing_weight_values_materialized": false,
+      "finite_head_mean_debt_materialized": false,
+      "compact_mean_correction_available": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "synthetic finite-head debt as actual Section 8 debt",
+      "evaluated missingWeight without a formal export/materialization path",
+      "paper-exact compact mean correction"
+    ]
+  }
+}
