@@ -29,6 +29,32 @@ def standard_cutoff_derivative(s: float) -> float:
     return _transition(s)[1]
 
 
+def standard_cutoff_second_derivative(s: float) -> float:
+    """Exact second derivative of the explicit transition representative.
+
+    In the transition collar write ``v=2s-1`` and
+    ``L=-1/v+1/(1-v)``.  Since ``f=1/(1+exp(L))``, differentiation gives
+    ``f''=f(1-f)((1-2f)(L')^2-L'')``.  The flat pieces, including values
+    where the stable exponential representation has underflowed all the way
+    to an exact endpoint value, have derivative zero.
+    """
+    s = _finite(s, "s")
+    if s <= 0.5 or s >= 1.0:
+        return 0.0
+    value, _derivative = _transition(s)
+    if value == 0.0 or value == 1.0:
+        return 0.0
+    v = 2.0 * s - 1.0
+    l_prime = 2.0 * (1.0 / v**2 + 1.0 / (1.0 - v) ** 2)
+    l_second = -8.0 / v**3 + 8.0 / (1.0 - v) ** 3
+    second = value * (1.0 - value) * (
+        (1.0 - 2.0 * value) * l_prime**2 - l_second
+    )
+    if not math.isfinite(second):
+        raise ArithmeticError("standard cutoff second derivative is not finite")
+    return second
+
+
 def smooth_cutoff(s: float) -> float:
     """Compatibility name used by the Section-10 geometry module on main."""
     return standard_cutoff(s)
