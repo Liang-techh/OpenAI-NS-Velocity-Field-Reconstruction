@@ -1,5 +1,3 @@
-from dataclasses import replace
-
 import pytest
 
 from openai_ns_reconstruction.actual_signed_canonical_scope import (
@@ -80,7 +78,7 @@ def _binding(canonical_export, label, *, suffix=None, **link_changes):
     signed_label_repr = link_changes.pop(
         "signed_label_repr", f"lean:SignedLabel#{suffix}"
     )
-    link = CanonicalActualSignedLabelLinkWitness(
+    kwargs = dict(
         ell=ell,
         a=a,
         sigma=sigma,
@@ -95,8 +93,9 @@ def _binding(canonical_export, label, *, suffix=None, **link_changes):
         canonical_phase_cell_identity_certified=True,
         same_prepared_application_certified=True,
         formal_export_application_certified=True,
-        **link_changes,
     )
+    kwargs.update(link_changes)
+    link = CanonicalActualSignedLabelLinkWitness(**kwargs)
     actual = _actual_application(
         B=canonical_export.export.B,
         N0=canonical_export.export.N0,
