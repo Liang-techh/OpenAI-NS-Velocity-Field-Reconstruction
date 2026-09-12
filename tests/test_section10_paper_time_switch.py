@@ -39,7 +39,12 @@ def test_time_switch_is_theorem_certified_inert_near_t1_without_claiming_extensi
     assert source.endpoint_t1_switch_value_certified_one is True
     assert source.endpoint_t1_switch_positive_derivatives_certified_zero is True
     assert source.positive_derivatives_certified_zero_late(Fraction(3, 4)) is False
-    assert source.positive_derivatives_certified_zero_late(Fraction(3, 4) + Fraction(1, 1000)) is True
+    assert (
+        source.positive_derivatives_certified_zero_late(
+            Fraction(3, 4) + Fraction(1, 1000)
+        )
+        is True
+    )
 
     assert source.section9_field_smooth_extension_through_t1_constructed is False
     assert source.endpoint_residual_closure_verified is False
@@ -51,14 +56,41 @@ def test_time_switch_is_theorem_certified_inert_near_t1_without_claiming_extensi
 def test_derivative_support_collar_preserves_exact_nonnegative_boundary() -> None:
     source = Section10PaperTimeSwitchSource.pinned()
 
-    assert source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(Fraction(0)) is False
-    assert source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(Fraction(3, 8)) is True
-    assert source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(Fraction(1, 2)) is True
-    assert source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(Fraction(3, 4)) is True
-    assert source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(Fraction(1)) is False
+    assert (
+        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(
+            Fraction(0)
+        )
+        is False
+    )
+    assert (
+        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(
+            Fraction(3, 8)
+        )
+        is True
+    )
+    assert (
+        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(
+            Fraction(1, 2)
+        )
+        is True
+    )
+    assert (
+        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(
+            Fraction(3, 4)
+        )
+        is True
+    )
+    assert (
+        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(
+            Fraction(1)
+        )
+        is False
+    )
 
     with pytest.raises(ValueError, match="t >= 0"):
-        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(Fraction(-1, 10))
+        source.positive_derivative_support_may_be_nonzero_on_nonnegative_axis(
+            Fraction(-1, 10)
+        )
 
 
 def test_arbitrary_time_window_or_source_drift_fails_closed() -> None:
@@ -69,6 +101,7 @@ def test_arbitrary_time_window_or_source_drift_fails_closed() -> None:
         {"lean_commit": "0" * 40},
         {"source_file": "NavierStokes/OtherCutoffs.lean"},
         {"definition_name": "genericTimeWindow"},
+        {"contdiff_theorem": "surrogate.contDiff"},
         {"zero_theorem": "surrogate.zero"},
         {"one_theorem": "surrogate.one"},
         {"eventually_one_theorem": "surrogate.eventually_one"},
