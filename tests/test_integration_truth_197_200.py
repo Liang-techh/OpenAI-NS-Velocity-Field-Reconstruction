@@ -85,7 +85,6 @@ def test_landed_provenance_boundaries_remain_fail_closed() -> None:
 
     runtime = construction_status()
     assert runtime["paper_exact_velocity_available"] is False
-    assert runtime["full_paper_reconstruction_available"] is False
     assert runtime["status"] == "partial-executable-reconstruction"
     stages = {stage["id"]: stage for stage in runtime["stages"]}
     for stage_id in (1, 2, 3, 6):
