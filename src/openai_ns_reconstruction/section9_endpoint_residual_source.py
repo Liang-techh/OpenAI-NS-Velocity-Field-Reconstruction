@@ -10,10 +10,10 @@ both interfaces independently.
 
 This module closes only that provenance/identity gap.  A theorem-facing source
 witness freezes a stable ``(source_id, source_revision)`` together with the exact
-ordered provenance strings of the already-admitted majorants and the pre-endpoint
-full-jet provider.  A binding requires exact stage/window/provenance agreement
-before the Section 10 candidate-to-Borel-prefix admission may consume that
-provider.
+ordered evidence kinds and provenance strings of the already-admitted majorants
+and the pre-endpoint full-jet provider.  A binding requires exact
+stage/window/evidence-kind/provenance agreement before the Section 10
+candidate-to-Borel-prefix admission may consume that provider.
 
 No residual estimate is proved here.  The source witness remains theorem input,
 finite candidate balls do not identify the actual endpoint limit, and the
@@ -61,10 +61,13 @@ def _strict_true(value: object, name: str) -> bool:
 class Section9ResidualEndpointSourceWitness:
     """Stable identity of the residual source used by one endpoint ladder.
 
-    ``majorant_evidence_provenance`` is deliberately ordered by endpoint degree
-    ``0..N``.  The binding below compares it byte-for-byte with the provenance
-    carried by the already-admitted Section 9 ladder; this prevents a source
-    witness from silently rebinding only some derivative degrees.
+    ``majorant_evidence_kinds`` and ``majorant_evidence_provenance`` are
+    deliberately ordered by endpoint degree ``0..N``.  The binding below
+    compares both byte-for-byte with the evidence metadata carried by the
+    already-admitted Section 9 ladder.  Matching provenance text alone is not
+    enough: changing an evidence class (for example from ``paper-derived`` to
+    ``certified-numerical``) while reusing the same provenance label must fail
+    closed rather than look source-identical.
 
     The three boolean facts are theorem-facing assertions, not facts proved by
     this Python module.  They are separated so the audit trail distinguishes a
@@ -78,6 +81,7 @@ class Section9ResidualEndpointSourceWitness:
     source_revision: str
     evidence_kind: str
     provenance: str
+    majorant_evidence_kinds: tuple[str, ...]
     majorant_evidence_provenance: tuple[str, ...]
     past_full_jets: PastFullSpacetimeJetFamily
     residual_provider_contract_certified: bool
@@ -102,6 +106,13 @@ class Section9ResidualEndpointSourceWitness:
             raise ValueError(
                 "evidence_kind must be analytic-theorem or formal-theorem; sampled/fitted evidence is rejected"
             )
+        if not isinstance(self.majorant_evidence_kinds, tuple) or not self.majorant_evidence_kinds:
+            raise ValueError("majorant_evidence_kinds must be a nonempty tuple")
+        normalized_kinds = tuple(
+            _nonempty_text(value, f"majorant evidence kind degree {degree}")
+            for degree, value in enumerate(self.majorant_evidence_kinds)
+        )
+        object.__setattr__(self, "majorant_evidence_kinds", normalized_kinds)
         if not isinstance(self.majorant_evidence_provenance, tuple) or not self.majorant_evidence_provenance:
             raise ValueError("majorant_evidence_provenance must be a nonempty tuple")
         normalized = tuple(
@@ -147,6 +158,10 @@ class Section9ResidualEndpointSourceBinding:
         return self.source.source_key
 
     @property
+    def expected_majorant_evidence_kinds(self) -> tuple[str, ...]:
+        return tuple(row.evidence_kind for row in self.bridge.bridge_records)
+
+    @property
     def expected_majorant_provenance(self) -> tuple[str, ...]:
         return tuple(row.evidence_provenance for row in self.bridge.bridge_records)
 
@@ -155,6 +170,14 @@ class Section9ResidualEndpointSourceBinding:
             "endpoint_ladder_bridge_intact": self.bridge.formal_bridge_ready,
             "stage_identity": self.source.stage == self.bridge.stage,
             "spatial_window_identity": self.source.spatial_window == self.bridge.spatial_window,
+            "majorant_evidence_kind_identity": (
+                self.source.majorant_evidence_kinds
+                == tuple(row.evidence_kind for row in self.bridge.bridge_records)
+            ),
+            "majorant_evidence_kind_count_identity": (
+                len(self.source.majorant_evidence_kinds)
+                == self.bridge.max_endpoint_degree + 1
+            ),
             "majorant_provenance_identity": (
                 self.source.majorant_evidence_provenance
                 == tuple(row.evidence_provenance for row in self.bridge.bridge_records)
@@ -207,9 +230,9 @@ class Section9SourceBoundEndpointBorelCertificate:
     """Source-bound finite endpoint-candidate admission record.
 
     Passing means only that the same named residual revision supplied the
-    theorem-facing majorant provenance and the pre-endpoint dense-jet provider,
-    and that the existing finite Section 10 consistency/Borel-prefix checks
-    passed.  It deliberately does not upgrade any analytic truth flag.
+    theorem-facing majorant evidence metadata and the pre-endpoint dense-jet
+    provider, and that the existing finite Section 10 consistency/Borel-prefix
+    checks passed.  It deliberately does not upgrade any analytic truth flag.
     """
 
     binding: Section9ResidualEndpointSourceBinding
