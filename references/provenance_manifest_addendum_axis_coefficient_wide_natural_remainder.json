@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisResolvent.lean",
+      "NavierStokes/NaturalAxisCoefficients.lean"
+    ],
+    "symbols": [
+      "AxisContraction.naturalRemainder",
+      "AxisContraction.referencePair",
+      "AxisOperators.average",
+      "AxisResolvent.naturalResolvent"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "assembles the complete mixed-scale naturalRemainder(x0) pair from the landed actual SchedulePressure angular and axial branches, preserving explicit Decimal 1/Lambda terms and the signed-log a^2 pressure scale",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_natural_remainder.py",
+      "tests/test_axis_coefficient_wide_natural_remainder.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_NATURAL_REMAINDER_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_surrogate": false,
+      "fixed_point_state": "x0 = actual SchedulePressure referencePair",
+      "angular_representation": "ordinary Decimal base + explicit Decimal numerator/Lambda slow term",
+      "axial_representation": "ordinary Decimal base + explicit Decimal numerator/Lambda slow term + signed-log inverseL*pressure",
+      "pair_compatibility": "exact TailData, j, certified sigma, epsilon, and theorem-selected Decimal Lambda agreement"
+    },
+    "validation": [
+      "both branches are independently built through the existing actual SchedulePressure theorem paths",
+      "the pair constructor fails closed on TailData, j, certified sigma, epsilon, or theorem-selected Lambda disagreement",
+      "jet_pair preserves both landed mixed-scale jet representations without binary64 scale collapse",
+      "the mismatch regression uses a second actual theorem-derived schedule reference rather than a production surrogate",
+      "production factory accepts no pressure, sigma, epsilon, Lambda, C, amplitude, coefficient-table, or cutoff override",
+      "formal-structure and paper_exact_velocity_available=false remain explicit"
+    ],
+    "remaining_boundary": "apply the pinned outer 1/(2*Lambda) factor to the complete mixed-scale naturalRemainder(x0) pair and add it to x0 to materialize genuine Picard x1; then iterate/certify fixed-point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
