@@ -9,12 +9,17 @@ The landed Lemma 5.2 adapters already provide three pieces separately:
 * the analytic Eq. (5.2) map from that axial jet to the regular flux
   ``beta_n = V_n / X`` through second order.
 
-The strict-lower-history solver, however, consumes three order-indexed provider
-functions.  This module makes one coefficient hierarchy own those providers and
-connects them directly to the landed ``actualLowerSource`` / Eq. (5.7) bridge.
-It deliberately keeps order zero generic because the leading profile belongs to
-Issue #1, while positive orders may be materialized with the actual Lemma 5.2
-compact repair.
+A later derivative layer also provides the repaired axial fourth-mixed jet and
+the corresponding third-mixed ``beta_n`` jet required by the analytic
+``partial_eta(Omega/X)`` path.  This module makes those pieces hierarchy-owned
+when the stronger axial jet is available, while keeping the older third-mixed
+source path valid for coefficients whose upstream data stop there.
+
+The strict-lower-history solver consumes order-indexed provider functions.  This
+module makes one coefficient hierarchy own those providers and connects them
+directly to the landed ``actualLowerSource`` / Eq. (5.7) bridge.  It deliberately
+keeps order zero generic because the leading profile belongs to Issue #1, while
+positive orders may be materialized with the actual Lemma 5.2 compact repair.
 
 No coefficient is solved here.  Upstream base jets, moment/patch eta-jets, the
 normalization C, and the leading order remain explicit data.  Consequently this
@@ -37,6 +42,10 @@ from .background_lower_history_solver import (
     positive_axis_eq_5_7_fields_from_lower_history,
 )
 from .background_lower_history_source import ProfileSecondJet
+from .background_moment_repair_fourth_mixed_jets import (
+    BaseFourthMixedJetProvider,
+    Lemma52RepairedFourthMixedJetAdapter,
+)
 from .background_moment_repair_phi_jets import (
     BasePhiSecondJetProvider,
     Lemma52RepairedPhiSecondJetAdapter,
@@ -46,11 +55,17 @@ from .background_moment_repair_third_mixed_jets import (
     BaseThirdMixedJetProvider,
     Lemma52RepairedThirdMixedJetAdapter,
 )
+from .background_omega_parameter_jet import RegularFluxThirdMixedJet
 from .background_positive_axis import PositiveAxisFields
 from .background_regular_flux_second_jets import (
     AxialThirdMixedJet,
     AxialThirdMixedJetProvider,
     regular_flux_second_jet_eq_5_2,
+)
+from .background_regular_flux_third_mixed_jets import (
+    AxialFourthMixedJet,
+    AxialFourthMixedJetProvider,
+    regular_flux_third_mixed_jet_eq_5_2,
 )
 from .coordinates import validate_h
 
@@ -92,11 +107,16 @@ class Section5CoefficientJetSource:
 
     ``phi_second_jet_provider`` supplies the PositiveAxis ``phi_n`` jet.
     ``axial_third_mixed_jet_provider`` supplies a coherent repaired/unrepaired
-    ``U_n`` jet and is also the *only* source used to construct ``beta_n`` via
-    Eq. (5.2).  Thus callers cannot silently pair an axial coefficient with an
-    unrelated caller-supplied regular-flux jet.
+    ``U_n`` jet and is also the source used to construct ``beta_n`` through
+    second order via Eq. (5.2).
 
-    ``normalization_C`` is populated by :meth:`from_lemma52_repair` so a
+    When ``axial_fourth_mixed_jet_provider`` is present it is authoritative for
+    the axial coefficient: the hierarchy projects its first nine fields back to
+    the third-mixed jet and derives the third-mixed regular-flux jet only through
+    the analytic Eq. (5.2) adapter.  This prevents the stronger derivative layer
+    from being paired with an unrelated lower-order U record.
+
+    ``normalization_C`` is populated by the Lemma-5.2 constructors so a
     hierarchy can reject accidental mixing of repairs built with a different C.
     Generic sources keep it ``None``; this is required for the Issue-#1 leading
     coefficient until that upstream materialization is complete.
@@ -107,6 +127,7 @@ class Section5CoefficientJetSource:
     axial_third_mixed_jet_provider: AxialThirdMixedJetProvider
     provenance: str
     normalization_C: float | None = None
+    axial_fourth_mixed_jet_provider: AxialFourthMixedJetProvider | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "order", _order(self.order))
@@ -114,6 +135,10 @@ class Section5CoefficientJetSource:
             raise TypeError("phi_second_jet_provider must be callable")
         if not callable(self.axial_third_mixed_jet_provider):
             raise TypeError("axial_third_mixed_jet_provider must be callable")
+        if self.axial_fourth_mixed_jet_provider is not None and not callable(
+            self.axial_fourth_mixed_jet_provider
+        ):
+            raise TypeError("axial_fourth_mixed_jet_provider must be callable")
         if not isinstance(self.provenance, str) or not self.provenance.strip():
             raise ValueError("provenance must be a nonempty string")
         if self.normalization_C is not None:
@@ -135,6 +160,12 @@ class Section5CoefficientJetSource:
         provenance: str | None = None,
     ) -> "Section5CoefficientJetSource":
         """Own the actual compact Lemma-5.2 repaired jets for one positive order.
+
+        This compatibility constructor materializes the derivative layer needed
+        by the ordinary second-jet lower-history solve.  Use
+        :meth:`from_lemma52_repair_fourth_mixed` when the upstream coefficient
+        also supplies the fourth-mixed U data needed by the analytic
+        ``partial_eta(Omega/X)`` route.
 
         Lemma 5.2 belongs to the positive-order Section-5 correction hierarchy,
         so order zero is rejected rather than being silently treated as a
@@ -159,6 +190,58 @@ class Section5CoefficientJetSource:
             ),
         )
 
+    @classmethod
+    def from_lemma52_repair_fourth_mixed(
+        cls,
+        order: int,
+        *,
+        C: float,
+        profile: Lemma52RepairedProfileAdapter,
+        base_phi_second_jet: BasePhiSecondJetProvider,
+        base_U_fourth_mixed_jet: BaseFourthMixedJetProvider,
+        provenance: str | None = None,
+    ) -> "Section5CoefficientJetSource":
+        """Own one repaired coefficient through the fourth-mixed axial layer.
+
+        The fourth-mixed adapter is the single authoritative U provider.  Its
+        projection supplies the already-landed third-mixed path, while the full
+        jet supplies ``beta_XXeta``, ``beta_Xetaeta`` and ``beta_etaetaeta`` via
+        the analytic Eq. (5.2) adapter.  No independently supplied beta jet or
+        duplicate third-mixed U table is accepted by this constructor.
+        """
+
+        order = _order(order, positive=True)
+        C = _positive(C, "C")
+        if not isinstance(profile, Lemma52RepairedProfileAdapter):
+            raise TypeError("profile must be a Lemma52RepairedProfileAdapter")
+        if not callable(base_U_fourth_mixed_jet):
+            raise TypeError("base_U_fourth_mixed_jet must be callable")
+
+        phi = Lemma52RepairedPhiSecondJetAdapter(profile, C, base_phi_second_jet)
+        axial = Lemma52RepairedFourthMixedJetAdapter(
+            profile, base_U_fourth_mixed_jet
+        )
+
+        def fourth_provider(X: float, eta: float) -> AxialFourthMixedJet:
+            return axial.U_fourth_mixed_jet(X, eta)
+
+        def third_provider(X: float, eta: float) -> AxialThirdMixedJet:
+            return fourth_provider(X, eta).third()
+
+        return cls(
+            order=order,
+            phi_second_jet_provider=phi.phi_second_jet,
+            axial_third_mixed_jet_provider=third_provider,
+            normalization_C=C,
+            axial_fourth_mixed_jet_provider=fourth_provider,
+            provenance=provenance
+            or (
+                "Lemma 5.2 compact repaired phi/U coefficient source through "
+                "fourth-mixed U; beta second/third-mixed jets are derived only "
+                "through analytic Eq. (5.2); formal-structure only."
+            ),
+        )
+
 
 @dataclass(frozen=True)
 class Section5LowerHistoryJetHierarchy:
@@ -168,6 +251,10 @@ class Section5LowerHistoryJetHierarchy:
     ``n`` is admitted only when the hierarchy owns every strict lower order
     ``0,...,n-1``.  The regular flux is generated on demand from each owned
     axial jet with Eq. (5.2); no independent beta provider is accepted.
+
+    The ordinary lower-history path needs only third-mixed U data.  The stronger
+    ``beta_third_mixed_jet`` path fails closed unless that coefficient source
+    owns a fourth-mixed U provider.
     """
 
     h: float
@@ -226,12 +313,38 @@ class Section5LowerHistoryJetHierarchy:
             raise TypeError("phi_second_jet_provider must return ProfileSecondJet")
         return value
 
+    def axial_fourth_mixed_jet(
+        self, order: int, X: float, eta: float
+    ) -> AxialFourthMixedJet:
+        """Return the owned fourth-mixed axial jet, or fail closed if absent."""
+
+        source = self._source(order)
+        provider = source.axial_fourth_mixed_jet_provider
+        if provider is None:
+            raise ValueError(
+                f"coefficient order {source.order} does not own fourth-mixed U data"
+            )
+        value = provider(float(X), float(eta))
+        if not isinstance(value, AxialFourthMixedJet):
+            raise TypeError(
+                "axial_fourth_mixed_jet_provider must return AxialFourthMixedJet"
+            )
+        return value
+
     def axial_third_mixed_jet(
         self, order: int, X: float, eta: float
     ) -> AxialThirdMixedJet:
-        """Return the owned coherent axial jet used by both U and beta paths."""
+        """Return the owned coherent axial jet used by both U and beta paths.
 
-        value = self._source(order).axial_third_mixed_jet_provider(float(X), float(eta))
+        If a fourth-mixed provider exists it is authoritative and projected to
+        third order here, so the lower-history path cannot silently diverge from
+        the stronger derivative layer.
+        """
+
+        source = self._source(order)
+        if source.axial_fourth_mixed_jet_provider is not None:
+            return self.axial_fourth_mixed_jet(order, X, eta).third()
+        value = source.axial_third_mixed_jet_provider(float(X), float(eta))
         if not isinstance(value, AxialThirdMixedJet):
             raise TypeError(
                 "axial_third_mixed_jet_provider must return AxialThirdMixedJet"
@@ -246,13 +359,41 @@ class Section5LowerHistoryJetHierarchy:
     def beta_second_jet(self, order: int, X: float, eta: float) -> ProfileSecondJet:
         """Derive the owned ``beta_order=V_order/X`` second jet via Eq. (5.2)."""
 
-        source = self._source(order)
+        self._source(order)
+
+        def axial_provider(x: float, e: float) -> AxialThirdMixedJet:
+            return self.axial_third_mixed_jet(order, x, e)
+
         return regular_flux_second_jet_eq_5_2(
             self.h,
             order,
             X,
             eta,
-            source.axial_third_mixed_jet_provider,
+            axial_provider,
+            quadrature_points=self.quadrature_points,
+        )
+
+    def beta_third_mixed_jet(
+        self, order: int, X: float, eta: float
+    ) -> RegularFluxThirdMixedJet:
+        """Derive the owned third-mixed ``beta=V/X`` jet via Eq. (5.2).
+
+        This path intentionally has no fallback to caller-supplied beta
+        derivatives.  It requires the same coefficient source to own the
+        fourth-mixed U jet and fails closed otherwise.
+        """
+
+        self._source(order)
+
+        def axial_provider(x: float, e: float) -> AxialFourthMixedJet:
+            return self.axial_fourth_mixed_jet(order, x, e)
+
+        return regular_flux_third_mixed_jet_eq_5_2(
+            self.h,
+            order,
+            X,
+            eta,
+            axial_provider,
             quadrature_points=self.quadrature_points,
         )
 
