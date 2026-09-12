@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/NaturalAxisCoefficients.lean",
+    "symbols": [
+      "realGradient",
+      "realPhase",
+      "realAmplitude"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "actual SchedulePressure theorem-selected realAmplitude materialized as a radial-degree-zero signed-log coefficient-jet state using the pinned wide Lambda/C choice",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_amplitude.py",
+      "tests/test_axis_coefficient_amplitude.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_AMPLITUDE_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "radial_degree": 0,
+      "parameter_derivatives": "Bell recurrence from a'=Lambda*realGradient*a",
+      "magnitude_representation": "signed log"
+    },
+    "validation": [
+      "wide Lambda and symbolic log(C) agree with the actual-schedule scale-chain selection",
+      "log realAmplitude at eta=0 equals -log(C) without exponentiating C",
+      "first eta derivative satisfies a'=Lambda*realGradient*a in signed-log magnitude",
+      "all positive radial rows vanish exactly",
+      "binary64 projection fails closed rather than silently underflowing a nonzero theorem amplitude"
+    ],
+    "remaining_boundary": "bridge the signed-log/wide theorem amplitude and t=1/Lambda into the binary64 coefficientOperators/naturalRemainder backend without silent range loss; then evaluate naturalRemainder(x0), execute genuine Picard x1/fixed point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
