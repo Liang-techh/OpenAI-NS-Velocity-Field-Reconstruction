@@ -1,0 +1,34 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Sections 6-7; pinned PrimaryGeometryAssembly physical-base field identities",
+    "formal_repository": "openai/NavierStokesAndEuler",
+    "formal_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "base_main_commit": "5c3495b341e5fd078e3069a65304ff8b962ae2a0"
+  },
+  "layer": {
+    "id": "stage-3-section7-large-band-physical-base-admission",
+    "status": "formal-structure",
+    "capability": "Bind one admitted Prepared slow box fail-closed to the pinned construction frequency/axial fields and their exact FinalSlowBase.velocity component identities on the active carrier.",
+    "paper_locations": [
+      "Sections 6-7 slow base and primary phase construction",
+      "PrimaryGeometryAssembly.construction_frequency",
+      "PrimaryGeometryAssembly.construction_axial",
+      "PrimaryGeometryAssembly.frequency_eq_physical",
+      "PrimaryGeometryAssembly.axial_eq_physical"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_physical_base.py",
+      "tests/test_phase_large_band_physical_base.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_PHYSICAL_BASE_PROVENANCE.json",
+    "remaining_boundary": "The adapter verifies metadata consistency for an external theorem application only. It does not evaluate the noncomputable Prepared object or FinalSlowBase.velocity, enumerate actual CellIndex carriers, independently prove theorem hypotheses, close all-active-family Eqs. (7.9)-(7.11), construct stress amplitudes/curl waves, or make the paper-exact velocity available."
+  },
+  "forbidden_inferences": [
+    "theorem-certified physical-base identity metadata implies Python evaluated the actual FinalSlowBase field",
+    "construction_frequency/axial identity metadata implies actual all-active-carrier coverage",
+    "same physical base for both signs implies uniform phase/frame/damping estimates are machine verified",
+    "green tests for this admission gate imply paper-exact velocity reconstruction"
+  ]
+}
