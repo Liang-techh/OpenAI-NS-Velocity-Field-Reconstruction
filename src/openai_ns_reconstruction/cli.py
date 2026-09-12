@@ -83,8 +83,16 @@ def main(argv: list[str] | None=None) -> int:
     demo.add_argument('--grid-size',type=int,default=41)
     demo.add_argument('--tau',type=float,default=1e-3)
     demo.add_argument('--h',type=float,default=.005)
+    demo.add_argument('--require-paper-exact',action='store_true')
     args=parser.parse_args(argv)
     try:
+        if (
+            args.command == 'demo'
+            and args.require_paper_exact
+            and not construction_status()['paper_exact_velocity_available']
+        ):
+            print('Incomplete paper construction: no paper-exact velocity instance is available.',file=sys.stderr)
+            return 2
         if args.command=='status':
             result=construction_status()
         elif args.command=='audit':
