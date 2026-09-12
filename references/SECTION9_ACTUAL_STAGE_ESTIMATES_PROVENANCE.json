@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "e28306a9062ae83f1c1a8b10e6628b2d90e74d63",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-actual-finite-stage-estimates",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_actual_stage_estimates.py",
+    "test": "tests/test_section9_actual_stage_estimates.py",
+    "provenance": "references/SECTION9_ACTUAL_STAGE_ESTIMATES_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/ActualStageEstimates.lean",
+        "NavierStokes/MixedCandidateAssembly.lean",
+        "NavierStokes/ActualIterationLedger.lean"
+      ],
+      "symbols": [
+        "NavierStokes.ActualStageEstimates.stageEstimates_of_representations",
+        "NavierStokes.ActualStageEstimates.stageEstimates_ledger",
+        "NavierStokes.MixedCandidateAssembly.StageEstimates",
+        "NavierStokes.ActualIterationLedger.finiteVelocity",
+        "NavierStokes.ActualIterationLedger.finitePressure",
+        "NavierStokes.ActualIterationLedger.finiteForcing"
+      ]
+    },
+    "landed_capability": "Fail-closed formal-export admission for the literal correction-cycle finite-stage StageEstimates on the canonical finite velocity, pressure and forcing ledgers, with the pinned q1/gain/loss schedule and exact ledger identifications.",
+    "truth_boundary": {
+      "stage_estimates_theorem_machine_replayed": false,
+      "actual_run_data_materialized": false,
+      "actual_physical_data_materialized": false,
+      "finite_stage_fields_materialized": false,
+      "stagewise_quantitative_bounds_materialized": false,
+      "section9_iteration_machine_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "generic theorem metadata without the exact stageEstimates_of_representations application",
+      "a hand-tuned or fitted q/gain/loss schedule as the pinned formal schedule",
+      "synthetic RunData, PhysicalData or stage fields as materialized paper objects",
+      "paper-exact velocity availability from metadata coherence alone"
+    ]
+  }
+}
