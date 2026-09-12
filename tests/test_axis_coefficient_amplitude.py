@@ -42,10 +42,13 @@ def test_amplitude_is_bound_to_actual_theorem_scale(amplitude) -> None:
 def test_log_amplitude_at_origin_uses_symbolic_C_without_exponentiating(amplitude) -> None:
     # realPhase(0)=0 exactly in the landed implementation, so this identity
     # checks the theorem-selected normalization without ever materializing C.
-    assert amplitude.log_amplitude(0.0) == -amplitude.C_exponent
+    expected = amplitude.C_exponent.copy_negate()
+    assert amplitude.log_amplitude(0.0) == expected
     jet = amplitude.jet_log(0, 0, 0.0)
     assert jet.sign == 1
-    assert jet.log_abs == -amplitude.C_exponent
+    assert jet.log_scale == expected
+    assert jet.log_factor == Decimal(0)
+    assert jet.log_abs == expected
 
 
 def test_first_parameter_jet_uses_real_gradient_identity(amplitude) -> None:
@@ -64,15 +67,17 @@ def test_first_parameter_jet_uses_real_gradient_identity(amplitude) -> None:
     assert derivative.sign == (1 if expected_factor > 0 else -1)
     assert derivative.log_abs is not None
     assert value.log_abs is not None
+    assert derivative.log_factor is not None
+    assert value.log_factor == Decimal(0)
 
-    # a' = Lambda*g*a, compared in log magnitude so the actual theorem scale
-    # need not fit binary64.
+    # a' = Lambda*g*a, compared using the stored Bell-factor logarithm so the
+    # O(10^3) correction is not swallowed by the O(10^784) amplitude log scale.
     with pytest.raises(ArithmeticError):
         # The origin is deliberately far below binary64 on the current
         # conservative scale.  The projection must not silently manufacture 0.
         amplitude.binary64_state().jet(0, 0, 0.0)
 
-    assert float(derivative.log_abs - value.log_abs) == pytest.approx(
+    assert float(derivative.log_factor) == pytest.approx(
         float(abs(expected_factor).ln()),
         rel=1e-12,
         abs=1e-12,
@@ -85,6 +90,8 @@ def test_radial_rows_above_zero_are_exactly_zero(amplitude) -> None:
             jet = amplitude.jet_log(n, m, 0.11)
             assert jet.sign == 0
             assert jet.log_abs is None
+            assert jet.log_scale is None
+            assert jet.log_factor is None
             assert amplitude.binary64_state().jet(n, m, 0.11) == 0.0
 
 
