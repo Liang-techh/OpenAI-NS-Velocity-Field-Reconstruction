@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisContraction.lean"
+    ],
+    "symbols": [
+      "AxisOperators.averageData",
+      "AxisContraction.coefficientOperators",
+      "AxisContraction.naturalRemainder"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the pinned coefficientOperators.average(u1) action on the genuine theorem-scale first Picard axial field as a lossless mixed-scale decomposition, applying the exact row factor 1/(n+1) without collapsing inverse-Lambda or signed-log pressure terms",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_average.py",
+      "tests/test_axis_coefficient_wide_first_picard_average.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_AVERAGE_PROVENANCE.md",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "radial_average_override": false,
+      "Lambda_override": false,
+      "pressure_override": false,
+      "coefficient_table_override": false,
+      "surrogate_state": false,
+      "row_action": "each ordinary component is divided by exact Decimal(n+1); nonzero signed-log pressure preserves sign/common log_scale and subtracts ln(n+1) from log_factor",
+      "collapsed_total_value": false
+    },
+    "validation": [
+      "the average state is bound to the landed genuine theorem-scale x1",
+      "reference and both inverse-Lambda numerators satisfy the exact 1/(n+1) row identity",
+      "the O(1) reference component cross-checks the independent landed axis_coefficient_average operator",
+      "signed-log pressure preserves sign and common log scale while applying exactly -ln(n+1) to the factor log",
+      "exact zero pressure remains exactly zero at row zero",
+      "nonzero theorem-scale pressure is never silently replaced by binary64 zero",
+      "negative radial degree and non-first-Picard input states fail closed",
+      "naturalRemainder(x1), x2, fixed-point finality/convergence, global AxisSpace certification, and paper exactness remain false"
+    ],
+    "remaining_boundary": "lift the remaining mixed-scale product/bilinear, inverse, slow, source-pressure and resolvent operations needed to evaluate naturalRemainder(x1), then materialize x2 and certify convergence to the fixed point phi/u; afterward derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
