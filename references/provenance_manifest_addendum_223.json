@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "06d345487fa19dae8a4db59116ab85bb74f53156",
+  "integrated_prs": [223],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 analytic Eq. (5.2) fourth-mixed beta=V/X derivative map from a minimal fifth-mixed axial U contract. Lower beta fields delegate to the landed third-mixed adapter; no production finite difference, sampled V/X quotient, generic cutoff, fitted coefficient, hierarchy-ownership claim, or paper-exact velocity claim is introduced.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_regular_flux_fourth_mixed_jets.py",
+      "test": "tests/test_background_regular_flux_fourth_mixed_jets.py",
+      "provenance": "references/REGULAR_FLUX_FOURTH_MIXED_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eq. (5.6)", "Eq. (5.7)", "Lemma 5.2", "Appendix A"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #223 adds the analytic Eq. (5.2) map from a minimal fifth-mixed axial U jet to the fourth-mixed regular-flux beta entries consumed by the landed second-eta Eq. (5.6) Omega/X path, while delegating every lower beta field to the existing third-mixed adapter.",
+      "remaining_boundary": "AxialFifthMixedJet remains an explicit upstream contract; the compact Lemma 5.2 repaired hierarchy currently owns U only through the fourth-mixed layer. Caller/test polynomial fifth-mixed jets are not paper-exact. Issue #1 still owns the real leading profile; hierarchy-owned beta fourth-mixed jets, hierarchy-owned partial_eta^2 Omega/X / actualLowerSource / f_n, partial_eta W_n^(1), further Picard iteration/convergence, recursive coefficient materialization, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
