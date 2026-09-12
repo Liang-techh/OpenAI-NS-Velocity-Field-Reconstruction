@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-section-10-localized-velocity-time-derivative",
+    "status": "formal-structure",
+    "capability": "analytic one-point time derivative of the finite-prefix localized velocity using the fixed Section 10 spatial cutoff and mixed Section 9 prefix jets",
+    "artifacts": [
+      "src/openai_ns_reconstruction/section9_section10_localized_velocity_time_derivative.py",
+      "tests/test_section9_section10_localized_velocity_time_derivative.py"
+    ],
+    "paper_locations": [
+      "Eq. (9.21)",
+      "Eq. (10.4)"
+    ],
+    "provenance": "references/SECTION9_SECTION10_LOCALIZED_VELOCITY_TIME_DERIVATIVE_PROVENANCE.md",
+    "truth_boundary": {
+      "provider_supplied_finite_prefix_jets": true,
+      "production_finite_difference_used": false,
+      "actual_section9_sequence_verified": false,
+      "eq_9_21_infinite_sum_constructed": false,
+      "section9_field_smooth_extension_through_t1_constructed": false,
+      "residual_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "paper_exact_velocity_available": false
+    }
+  }
+}
