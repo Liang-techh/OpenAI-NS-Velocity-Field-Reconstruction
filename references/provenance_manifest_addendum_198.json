@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "44d8f60584ada7ddf2acbb4b2c6be17f92061d79",
+  "integrated_prs": [198],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 exact second-eta commutation for the first Eq. (5.7) Picard term. Production evaluates partial_eta^2(G f_n)=G(partial_eta^2 f_n) from an explicit analytic second-source provider; no finite-difference production derivative, fitted coefficient, generic cutoff, or claim of hierarchy ownership is introduced.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_first_picard_second_parameter_jet.py",
+      "test": "tests/test_background_first_picard_second_parameter_jet.py",
+      "provenance": "references/FIRST_PICARD_SECOND_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.7)", "Lemma 5.1"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #198 adds the exact second parameter jet (G f_n, partial_eta G f_n, partial_eta^2 G f_n) by reusing the landed first-parameter bridge and applying the same singular inverse directly to an analytic partial_eta^2 f_n provider.",
+      "remaining_boundary": "partial_eta^2 f_n is still explicit caller data and is not paper-exact provenance. The repaired hierarchy does not yet own the stronger mixed phi/U/beta jets needed to construct the complete second forcing derivative; hierarchy-owned partial_eta W_n^(1), further Picard iteration/convergence, recursive coefficient materialization, completion of the recursive cutoff argument, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
