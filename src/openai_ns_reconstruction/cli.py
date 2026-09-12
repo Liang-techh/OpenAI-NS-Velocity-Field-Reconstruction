@@ -1,4 +1,4 @@
-"""Status, reproducible verification, and explicitly labelled toy-data exports."""
+"""Status, fail-closed audit, reproducible verification, and labelled toy exports."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -11,6 +11,29 @@ from .status import construction_status
 from .diagnostics import run_diagnostics
 from .profiles import toy_gaussian_profile
 from .velocity import leading_velocity_cartesian_from_tau
+
+
+def construction_audit() -> dict:
+    """Return a compact audit view derived only from the runtime truth surface."""
+    status = construction_status()
+    return {
+        "schema_version": 1,
+        "kind": "construction-audit",
+        "paper_exact_velocity_available": status["paper_exact_velocity_available"],
+        "construction_status": status["status"],
+        "completion_gate_passed": status["paper_exact_velocity_available"],
+        "sources": status["sources"],
+        "stages": [
+            {
+                "id": stage["id"],
+                "name": stage["name"],
+                "status": stage["status"],
+                "remaining": stage["remaining"],
+            }
+            for stage in status["stages"]
+        ],
+        "limitations": status["limitations"],
+    }
 
 
 def export_demo(output: Path, *, grid_size: int=41, tau: float=1e-3, h: float=.005) -> dict:
@@ -50,6 +73,8 @@ def main(argv: list[str] | None=None) -> int:
     sub=parser.add_subparsers(dest='command',required=True)
     status=sub.add_parser('status',help='Print construction status (not a completion claim).')
     status.add_argument('--require-paper-exact',action='store_true')
+    audit=sub.add_parser('audit',help='Print a fail-closed construction/provenance audit view.')
+    audit.add_argument('--require-paper-exact',action='store_true')
     verify=sub.add_parser('verify',help='Run independent numerical diagnostics.')
     verify.add_argument('--output',type=Path,help='Write a new JSON report; existing files are not overwritten.')
     verify.add_argument('--require-paper-exact',action='store_true')
@@ -62,6 +87,8 @@ def main(argv: list[str] | None=None) -> int:
     try:
         if args.command=='status':
             result=construction_status()
+        elif args.command=='audit':
+            result=construction_audit()
         elif args.command=='verify':
             result=run_diagnostics()
             if args.output:
