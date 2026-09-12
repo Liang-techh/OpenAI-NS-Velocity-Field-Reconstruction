@@ -63,8 +63,8 @@ def test_source_provenance_canonical_manifest_and_runtime_remain_fail_closed() -
     stage7_text = (
         ROOT / "references" / "SECTION9_RESIDUAL_ARTIFACT_FINGERPRINT_PROVENANCE.md"
     ).read_text(encoding="utf-8")
-    assert "audit metadata only" in stage7_text
-    assert "does **not** compute the digest from a manuscript-derived Eq. (9.21) artifact" in stage7_text
+    assert "audit/content-identity metadata only" in stage7_text
+    assert "preferred artifact-backed constructors now derive that digest directly" in stage7_text
     assert "source_majorants_derived_from_actual_residual_verified" in stage7_text
     assert "actual_section9_sequence_verified" in stage7_text
     assert "paper_exact_velocity_available" in stage7_text
@@ -105,7 +105,8 @@ def test_latest_capabilities_do_not_erase_picard_wave_or_endpoint_boundaries() -
     assert "actual damping field" in stage3["remaining_boundary"]
     assert "stress-cone wave" in stage3["remaining_boundary"]
 
-    assert "A dishonest caller could still attach the wrong digest" in stage7_text
+    assert "lower-level digest-bearing witness constructors remain available for compatibility" in stage7_text
+    assert "does **not** prove that those bytes encode the manuscript's genuine Eq. (9.21) residual" in stage7_text
     assert "actual_section9_sequence_verified" in stage7_text
     assert "endpoint-limit construction/uniqueness" in stage7_text
     assert "infinite Borel right-jet convergence and all-order smoothness" in stage7_text
