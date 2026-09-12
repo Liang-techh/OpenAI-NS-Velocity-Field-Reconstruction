@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "738e807b92aab78e08ac0bde8981effe3b94b408",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-8-actual-intermediate-rank-debt",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/actual_intermediate_rank_debt.py",
+    "test": "tests/test_actual_intermediate_rank_debt.py",
+    "provenance": "references/ACTUAL_INTERMEDIATE_RANK_DEBT_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/ActualIntermediateDebtBounds.lean",
+        "NavierStokes/CorrectionAnalyticStep.lean",
+        "NavierStokes/CorrectionState.lean"
+      ],
+      "symbols": [
+        "NavierStokes.ActualIntermediateDebtBounds.afterTemporal_debt_from_stepData",
+        "NavierStokes.ActualIntermediateDebtBounds.stage_debt_from_stepData",
+        "NavierStokes.CorrectionState.debt"
+      ]
+    },
+    "landed_capability": "Fail-closed identity bridge from the literal postTemporal CorrectionState.debt produced by checked actual step data to the exact debt instance consumed by the existing compact rank-repair admission.",
+    "truth_boundary": {
+      "theorem_application_machine_replayed": false,
+      "actual_cycle_state_materialized": false,
+      "actual_post_temporal_debt_values_materialized": false,
+      "finite_head_signed_defect_link_verified": false,
+      "compact_mean_correction_field_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "finite-head requested_cross_defect as CorrectionState.debt without a dedicated formal equality/export",
+      "synthetic or numerically inferred debt values as the actual postTemporal debt",
+      "the executable mean_rank_update.py bump as the paper-exact noncomputable compact correction",
+      "paper-exact velocity availability from metadata coherence alone"
+    ]
+  }
+}
