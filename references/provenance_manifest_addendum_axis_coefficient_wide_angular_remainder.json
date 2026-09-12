@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisResolvent.lean",
+      "NavierStokes/NaturalAxisCoefficients.lean"
+    ],
+    "symbols": [
+      "AxisContraction.naturalRemainder",
+      "AxisOperators.average",
+      "AxisOperators.j2",
+      "AxisOperators.dot2",
+      "AxisOperators.param2",
+      "AxisOperators.mixed2",
+      "AxisResolvent.naturalResolvent"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the angular naturalRemainder branch at x0 as naturalResolvent(inverseL*(lin1+quad1)) - naturalResolvent(inverseL*slow1)/Lambda, preserving theorem-selected 1/Lambda without binary64 collapse",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_angular_remainder.py",
+      "tests/test_axis_coefficient_wide_angular_remainder.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_ANGULAR_REMAINDER_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_surrogate": false,
+      "fixed_point_state": "x0 = actual SchedulePressure referencePair",
+      "angular_formula": "naturalResolvent(inverseL * (lin1 + quad1 - slow1/Lambda))",
+      "mixed_scale_representation": "ordinary Decimal base + explicit Decimal numerator/Lambda slow term",
+      "resolvent_evaluation": "coefficientwise exact finite radial-filtration sum"
+    },
+    "validation": [
+      "ordinary naturalResolvent(inverseL*(lin1+quad1)) is cross-checked against the previously landed full naturalRemainder with regression-only a=0,t=0 isolation",
+      "ordinary naturalResolvent(inverseL*slow1) is cross-checked against the regression-only angular difference naturalRemainder(t=0)-naturalRemainder(t=1) with a=0",
+      "Lambda is inherited from the actual theorem-selected wide amplitude scale and cannot be overridden",
+      "a nonzero slow numerator remains nonzero after Decimal division by Lambda instead of being silently underflowed through binary64",
+      "naturalResolvent uses the landed exact row-finite radial filtration rather than a tolerance or arbitrary cutoff",
+      "indices and eta window fail closed"
+    ],
+    "remaining_boundary": "combine the landed mixed-scale angular and axial branches into complete naturalRemainder(x0), carry the outer 1/(2*Lambda) factor to materialize genuine Picard x1, iterate/certify the fixed-point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
