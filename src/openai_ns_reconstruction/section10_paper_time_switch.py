@@ -70,6 +70,7 @@ class Section10PaperTimeSwitchSource:
     lean_commit: str
     source_file: str
     definition_name: str
+    contdiff_theorem: str
     zero_theorem: str
     one_theorem: str
     eventually_one_theorem: str
@@ -84,6 +85,7 @@ class Section10PaperTimeSwitchSource:
             "lean_commit": PINNED_LEAN_COMMIT,
             "source_file": PINNED_SOURCE_FILE,
             "definition_name": PINNED_TIME_SWITCH_DEFINITION,
+            "contdiff_theorem": PINNED_TIME_SWITCH_CONTDIFF,
             "zero_theorem": PINNED_ZERO_THEOREM,
             "one_theorem": PINNED_ONE_THEOREM,
             "eventually_one_theorem": PINNED_EVENTUALLY_ONE_THEOREM,
@@ -110,6 +112,7 @@ class Section10PaperTimeSwitchSource:
             lean_commit=PINNED_LEAN_COMMIT,
             source_file=PINNED_SOURCE_FILE,
             definition_name=PINNED_TIME_SWITCH_DEFINITION,
+            contdiff_theorem=PINNED_TIME_SWITCH_CONTDIFF,
             zero_theorem=PINNED_ZERO_THEOREM,
             one_theorem=PINNED_ONE_THEOREM,
             eventually_one_theorem=PINNED_EVENTUALLY_ONE_THEOREM,
@@ -163,7 +166,7 @@ class Section10PaperTimeSwitchSource:
 
     @property
     def time_switch_contdiff_theorem_bound(self) -> bool:
-        return True
+        return self.contdiff_theorem == PINNED_TIME_SWITCH_CONTDIFF
 
     @property
     def endpoint_t1_switch_value_certified_one(self) -> bool:
