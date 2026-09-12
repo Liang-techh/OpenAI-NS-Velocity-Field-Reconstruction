@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "9e683d44c48eb84d12985a62c56d6c59023efdd1",
+  "integrated_prs": [153],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 analytic eta derivative for the exact PositiveAxis preceding-diffusion strict-lower source term. Exposes the exact third-mixed scalar jet requirements and differentiates Z_(b-D)(Z_b F) analytically without production finite differences.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_preceding_diffusion_parameter_jet.py",
+      "provenance": "references/PRECEDING_DIFFUSION_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Eqs. (5.3)-(5.7)", "Lemma 5.1", "Lemma 5.2"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #153 analytically materializes the eta derivative of precedingDiffusion = Z_(b-D)(Z_b F_(n-1)) from a scalar third-mixed jet. Regression independently finite-differences the older value-only source path on exact polynomial jets across multiple orders/powers including the axis, and separately verifies all three newly required mixed derivatives are consumed.",
+      "remaining_boundary": "The repaired hierarchy does not yet own the required phi third-mixed jet and Issue #1 still owns the real leading profile. Therefore hierarchy-owned partial_eta actualLowerSource, hierarchy-owned partial_eta f_n, the genuine k=1 Eq. (5.7) Picard application, recursive coefficient materialization, recursive cutoff completion, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
