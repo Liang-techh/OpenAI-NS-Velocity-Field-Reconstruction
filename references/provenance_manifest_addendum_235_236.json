@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "c7fabfe1798ec8e416c543556bf91348a7bceebe",
+  "integrated_prs": [235, 236],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the Section-5 hierarchy-owned repaired phi fourth-mixed provider and the Section-8 compact mean-correction formal admission. PR #236 is transplanted file-for-file from its CI-green but stale-base head onto the current main after PR #235 merged.",
+  "layers": [
+    {
+      "pr": 235,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_phi_fourth_mixed.py",
+      "test": "tests/test_background_repaired_history_phi_fourth_mixed.py",
+      "provenance": "references/provenance_manifest_addendum_235.json",
+      "capability": "Makes the landed Lemma 5.2 repaired ProfileFourthMixedJet for phi hierarchy-owned in the strong lower-history source, with exact lower projections, while preserving the same hierarchy's repaired U fifth-mixed ownership and Eq. (5.2)-derived beta path.",
+      "remaining_boundary": "The genuine Issue-#1 order-zero strong profile remains upstream. This does not yet assemble hierarchy-owned partial_eta^2 actualLowerSource or forcing, partial_eta W_n^(1), Picard convergence, recursive coefficient materialization, the recursive cutoff schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    },
+    {
+      "pr": 236,
+      "stage": "stage-5-section-8-mean-correction",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/compact_mean_correction_formal.py",
+      "test": "tests/test_compact_mean_correction_formal.py",
+      "provenance": "references/COMPACT_MEAN_CORRECTION_FORMAL_PROVENANCE.json",
+      "capability": "Adds a fail-closed lean-formal-export admission for CorrectionState.rank_rows_on_patch on the actual CorrectionState.debt identity and the pinned physical_five_rows dependency, without reusing the executable surrogate bump.",
+      "remaining_boundary": "No theorem application is machine-replayed and no actual debt values, Mathlib bump values, finite-head signed-defect bridge, compact correction field, or paper-exact velocity is materialized."
+    }
+  ],
+  "forbidden_inferences": [
+    "Hierarchy-owned repaired fourth/fifth mixed Section-5 jets do not by themselves close hierarchy-owned partial_eta^2 actualLowerSource/forcing, Picard convergence, or Proposition 5.3.",
+    "A formal rank_rows_on_patch admission does not materialize CorrectionState.debt values, the Mathlib bump, or the compact mean-correction field.",
+    "The finite-head signed mean defect is not CorrectionState.debt without a separately admitted formal bridge.",
+    "The executable mean_rank_update.py surrogate bump must not be promoted to the paper-exact Mathlib bump.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote provider-contract, theorem-admission, diagnostic, toy, or formal-structure artifacts to paper-exact status."
+  ]
+}
