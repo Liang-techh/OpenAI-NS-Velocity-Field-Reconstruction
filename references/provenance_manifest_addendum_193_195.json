@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "f02883fb0a9a298857ad3190e5783063f260f38a",
+  "integrated_prs": [193, 194, 195],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the Stage 1 angular remainder, canonical Section 7 physical-base identity, and Section 9 Eq. (4.1) similarity-coordinate jet increments landed through PR #195.",
+  "layers": [
+    {
+      "pr": 193,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "equation_or_source": "AxisContraction.naturalRemainder angular branch at x0 = SchedulePressure referencePair",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_angular_remainder.py",
+      "test": "tests/test_axis_coefficient_wide_angular_remainder.py",
+      "provenance": "references/AXIS_COEFFICIENT_WIDE_ANGULAR_REMAINDER_PROVENANCE.md",
+      "capability": "Materializes the theorem-selected mixed-scale angular branch naturalResolvent(inverseL*(lin1+quad1)) - naturalResolvent(inverseL*slow1)/Lambda with the actual wide SchedulePressure scale and coefficientwise-exact finite-row naturalResolvent.",
+      "remaining_boundary": "The separately landed angular and axial decompositions are not yet assembled into complete naturalRemainder(x0); the outer 1/(2*Lambda) factor has not materialized genuine Picard x1, and fixed-point convergence, phi/u, average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and global all-index AxisSpace certification remain open."
+    },
+    {
+      "pr": 194,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "equation_or_source": "PrimaryGeometryAssembly.canonicalPrepared/canonicalPhases and FinalSlowBase.scales identity chain",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_canonical_physical_base.py",
+      "test": "tests/test_phase_large_band_canonical_physical_base.py",
+      "provenance": "references/PHASE_LARGE_BAND_CANONICAL_PHYSICAL_BASE_PROVENANCE.md",
+      "capability": "Fail-closed binding of the landed Prepared -> FinalSlowBase.velocity identity to the pinned canonicalPrepared/canonicalPhases path, including upper = 2*activeRight and canonical FinalSlowBase.scales reuse.",
+      "remaining_boundary": "Python still does not evaluate the noncomputable canonical Prepared application, materialize the actual FullTrueCone witness or CellIndex slice, compute actual physical-base values, replay the phase/base/frame/damping theorems, or verify uniform Eqs. (7.9)-(7.11)."
+    },
+    {
+      "pr": 195,
+      "stage": "stage-6-residual-improvement",
+      "status": "formal-structure",
+      "equation_or_source": "Eq. (4.1): q - z^2 q^(2h) = tau = 1-t, feeding the Section 9 chi(a_j q) cutoff-composition path",
+      "artifact": "src/openai_ns_reconstruction/section9_eq41_similarity_jet.py",
+      "test": "tests/test_section9_eq41_similarity_jet.py",
+      "provenance": null,
+      "capability": "Derives any requested finite spacetime q-jet analytically from Eq. (4.1) by normalized Taylor implicit recurrence and feeds it into the existing finite cutoff-composition path, removing the externally supplied q-derivative table from that path.",
+      "remaining_boundary": "The manuscript's one-dimensional cutoff derivative table is still provider input; the infinite Eq. (9.21) sum, t=1 smooth extension, genuine residual/forcing, endpoint convergence/Borel closure, and paper-exact velocity remain unconstructed."
+    }
+  ],
+  "forbidden_inferences": [
+    "Having executable angular and axial naturalRemainder branches separately does not imply complete naturalRemainder(x0), genuine Picard x1, a fixed point, or a paper-exact leading profile.",
+    "A theorem-metadata binding to canonicalPrepared/canonicalPhases does not imply that the noncomputable Prepared object, actual CellIndex slice, FinalSlowBase.velocity values, or Eqs. (7.9)-(7.11) theorem applications were machine replayed.",
+    "Finite q jets derived from Eq. (4.1) do not identify provider-supplied cutoff derivatives with the manuscript cutoff and do not imply an infinite Eq. (9.21) field, its t=1 extension, a genuine residual, or final forcing.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote toy, diagnostic-only, or formal-structure artifacts to paper-exact status."
+  ]
+}
