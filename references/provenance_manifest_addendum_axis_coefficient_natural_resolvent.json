@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/AxisResolvent.lean",
+    "symbols": [
+      "alternatingResolvent",
+      "AxisVanishesBelow",
+      "axisLinearOperator_increases_order",
+      "naturalOperator",
+      "naturalResolvent",
+      "naturalResolvent_equation"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "coefficientwise exact naturalResolvent via the pinned radial filtration; row n is the exact finite alternating sum of Q^k through k=n",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_natural_resolvent.py",
+      "tests/test_axis_coefficient_natural_resolvent.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_NATURAL_RESOLVENT_PROVENANCE.md",
+    "actual_data": {
+      "input_anchor": "ActualScheduleReferenceAxisState",
+      "operator": "actual SchedulePressure-derived AxisCoefficientNaturalOperator",
+      "epsilon_caller_supplied": false,
+      "chi_caller_supplied": false,
+      "series_tolerance_caller_supplied": false,
+      "arbitrary_iteration_cutoff": false
+    },
+    "exact_coordinate_identity": "R(A)[n,m](eta)=sum_{k=0}^n (-1)^k (Q^k A)[n,m](eta), since Q^k A vanishes below radial degree k",
+    "validation": [
+      "naturalResolvent(one) agrees with the independently landed actual angular reference coefficient jets",
+      "R(A)+Q(R(A))=A is checked on the actual axial reference state",
+      "row-zero identity and epsilon mismatch fail closed"
+    ],
+    "remaining_boundary": "global all-index weighted AxisSpace norm/membership and continuous-linear-map norm certificate; executable pinned naturalRemainder and naturalRemainder(x0); genuine Picard x1/fixed point phi/u; derived average/pressure; NaturalProfileAssembly; support/moment/matching/cone closure"
+  }
+}
