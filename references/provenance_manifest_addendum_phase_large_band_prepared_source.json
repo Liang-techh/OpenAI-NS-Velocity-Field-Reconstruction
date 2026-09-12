@@ -1,0 +1,36 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "paper": "Finite Time Blowup for Navier-Stokes, Sections 6-7; pinned PrimaryGeometryAssembly prepared primary-geometry chain",
+    "formal_repository": "openai/NavierStokesAndEuler",
+    "formal_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "base_main_commit": "53a32a02b2abd51dde116112ead17a96f474a1e1"
+  },
+  "layer": {
+    "id": "stage-3-section7-large-band-prepared-source-admission",
+    "status": "formal-structure",
+    "capability": "Bind an existing sign-free large-band base-source revision fail-closed to the pinned PrimaryGeometryAssembly.Prepared / exists_prepared / prepared / family / construction / phases identity chain, including same-prepared reuse for both signs.",
+    "paper_locations": [
+      "Sections 6-7 primary geometry and phase construction",
+      "PrimaryGeometryAssembly.Prepared",
+      "PrimaryGeometryAssembly.exists_prepared",
+      "PrimaryGeometryAssembly.prepared",
+      "PrimaryGeometryAssembly.family",
+      "PrimaryGeometryAssembly.construction",
+      "PrimaryGeometryAssembly.phases"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_prepared_source.py",
+      "tests/test_phase_large_band_prepared_source.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_PREPARED_SOURCE_PROVENANCE.json",
+    "remaining_boundary": "The adapter records external theorem identity only. It does not machine-discharge exists_prepared hypotheses, evaluate the noncomputable prepared object, enumerate the actual CellIndex, materialize Prepared.base/jets, verify all-active-family Eqs. (7.9)-(7.11), construct stress amplitudes/curl waves, or make the paper-exact velocity available."
+  },
+  "forbidden_inferences": [
+    "a theorem-provenanced Prepared identity witness implies that Python independently verified the concrete exists_prepared hypotheses",
+    "a stable prepared_instance_id implies that the noncomputable Prepared object or its base fields were evaluated",
+    "same-prepared certification for both signs implies actual all-active-family phase/frame/damping verification",
+    "green tests for the admission gate imply paper-exact velocity reconstruction"
+  ]
+}
