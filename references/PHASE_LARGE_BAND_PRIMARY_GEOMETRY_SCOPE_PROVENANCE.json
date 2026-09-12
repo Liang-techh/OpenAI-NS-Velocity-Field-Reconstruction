@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "layer": "section-7-large-band-primary-geometry-scope",
+  "status": "formal-structure",
+  "artifacts": [
+    "src/openai_ns_reconstruction/phase_large_band_primary_geometry_scope.py",
+    "tests/test_phase_large_band_primary_geometry_scope.py",
+    "references/PHASE_LARGE_BAND_PRIMARY_GEOMETRY_SCOPE_PROVENANCE.md"
+  ],
+  "formal_source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "definitions": [
+      "BaseChartJets.CellIndex",
+      "PrimaryGeometryAssembly.cellDomain",
+      "PrimaryGeometryAssembly.family"
+    ]
+  },
+  "implemented_claim": "Fail-closed exact-set bridge from a theorem-provenanced fixed-band unsigned primary-geometry manifest to the declared Section 7 signed active-family scope. Python reconstructs both signs for every unsigned box and rejects missing, extra, duplicate, stale-source, or non-theorem manifests.",
+  "accepted_evidence": [
+    "analytic-theorem",
+    "formal-theorem"
+  ],
+  "rejected_as_proof": [
+    "sampled",
+    "fitted",
+    "numeric-scan"
+  ],
+  "truth_flags": {
+    "actual_cell_index_enumeration_machine_verified": false,
+    "actual_active_family_scope_machine_verified": false,
+    "actual_base_fields_verified": false,
+    "uniform_eq_7_9_to_7_11_verified": false,
+    "paper_exact_velocity_available": false
+  },
+  "remaining_for_paper_exact": [
+    "an actual theorem/export enumerating the fixed-band BaseChartJets.CellIndex slice used by the manuscript construction",
+    "a machine-linked proof that the exported cell coordinates correspond to the repository's AsymptoticSlowLabel addresses",
+    "the genuine Proposition 5.5 base/background provider and all-active-family theorem applications",
+    "actual field-level phase/frame/damping conclusions for Eqs. (7.9)-(7.11)",
+    "stress-cone amplitudes and curl-realized oscillatory waves"
+  ]
+}
