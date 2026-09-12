@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "2d74857236cac1f3e553e82c040e1bee386e2d89",
+  "integrated_prs": [202, 203, 204, 205, 206, 207, 208],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the theorem-scale first Picard x1, canonical Prepared export handoff, Section 10 endpoint-jet transparency, the pinned radial average on u1, the Stage 2 preceding-diffusion second-eta jet, the actual signed common-curl theorem-admission bridge, and the finite Section 9 prefix-jet to fixed Section 10 localized-velocity bridge landed through PR #208.",
+  "layers": [
+    {
+      "pr": 202,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard.json",
+      "capability": "Materializes the first genuine theorem-scale Picard iterate x1 from the actual SchedulePressure referencePair and complete landed naturalRemainder(x0), preserving inverse-Lambda and signed-log pieces.",
+      "remaining_boundary": "naturalRemainder(x1), x2, iterative convergence/finality, global AxisSpace certification, final phi/u, final average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain open."
+    },
+    {
+      "pr": 203,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_canonical_application_export.py",
+      "test": "tests/test_phase_large_band_canonical_application_export.py",
+      "provenance": "references/PHASE_LARGE_BAND_CANONICAL_APPLICATION_EXPORT_PROVENANCE.json",
+      "capability": "Adds a content-addressed fail-closed handoff contract for a future external formal export of one canonical Prepared application and its exact active scope.",
+      "remaining_boundary": "No Lean theorem is replayed, producer authenticity is not established, prepared_N remains opaque, actual CellIndex is not machine-enumerated, physical base values are not materialized, and Eqs. (7.9)-(7.11) remain unverified."
+    },
+    {
+      "pr": 204,
+      "stage": "stage-6-section-10-time-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section10_paper_time_switch_endpoint_jet.py",
+      "test": "tests/test_section10_paper_time_switch_endpoint_jet.py",
+      "provenance": "references/SECTION10_PAPER_TIME_SWITCH_ENDPOINT_JET_PROVENANCE.md",
+      "capability": "Shows that the pinned Section 10 timeSwitch is analytically transparent at t=1 for any supplied finite scalar/vector spacetime jet.",
+      "remaining_boundary": "The actual Section 9 all-order one-sided endpoint jet, convergence, smooth extension through t=1, endpoint residual closure, final compact forcing, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 205,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_average.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_average.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_average.json",
+      "capability": "Materializes coefficientOperators.average(u1) with the exact row factor 1/(n+1), preserving the mixed-scale decomposition and signed-log pressure scaling.",
+      "remaining_boundary": "The remaining mixed-scale operations needed for naturalRemainder(x1) are not yet lifted; x2, fixed-point convergence, final average/pressure, NaturalProfileAssembly, and global AxisSpace closure remain open."
+    },
+    {
+      "pr": 206,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_preceding_diffusion_second_parameter_jet.py",
+      "test": "tests/test_background_preceding_diffusion_second_parameter_jet.py",
+      "provenance": "references/provenance_manifest_addendum_206.json",
+      "capability": "Adds the analytic second-eta derivative of the exact preceding-diffusion strict-lower source term from an explicit fourth-mixed scalar jet.",
+      "remaining_boundary": "The repaired hierarchy does not yet own the fourth-mixed data required for hierarchy-owned partial_eta^2 actualLowerSource or partial_eta^2 f_n; Picard convergence, recursive coefficient materialization, and Proposition 5.3 remain open."
+    },
+    {
+      "pr": 207,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/actual_signed_common_curl.py",
+      "test": "tests/test_actual_signed_common_curl.py",
+      "provenance": "references/ACTUAL_SIGNED_COMMON_CURL_PROVENANCE.json",
+      "capability": "Adds a fail-closed theorem-application admission contract for the pinned ActualSignedCommonDynamics.common_curl_and_divergence theorem and its hypotheses/source identities.",
+      "remaining_boundary": "The theorem is not machine replayed, actual signed-wave values are not materialized, canonical-scope/amplitude inputs are not verified, and no paper-exact divergence-free wave or final velocity is available."
+    },
+    {
+      "pr": 208,
+      "stage": "stage-6-section-10-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_localized_velocity_jet.py",
+      "test": "tests/test_section9_section10_localized_velocity_jet.py",
+      "provenance": "references/SECTION9_SECTION10_LOCALIZED_VELOCITY_JET_PROVENANCE.md",
+      "capability": "Connects an already-admitted finite Eq. (9.21) prefix jet to the fixed Section 10 product-rule velocity u_cut = c curl(A) + grad(c) x A + c B e_theta using analytic first Cartesian derivatives and the canonical localization cutoff/gradient pair.",
+      "remaining_boundary": "The spacetime point binding is caller-supplied; actual Section 7/8 correction fields, the infinite/locally-finite Eq. (9.21) sequence, one-sided all-order t->1- limits, smooth extension through t=1, genuine residual/forcing closure, bounded-energy conclusion, and blow-up path remain unverified."
+    }
+  ],
+  "forbidden_inferences": [
+    "A genuine theorem-scale first Picard x1 does not imply naturalRemainder(x1), x2, Picard convergence, fixed-point finality, final phi/u, or paper-exact leading-profile completion.",
+    "Materializing coefficientOperators.average(u1) does not imply final average/pressure closure or NaturalProfileAssembly.",
+    "A content-addressed canonical Prepared export contract does not imply Lean replay, producer authentication, actual CellIndex enumeration, physical base materialization, or Eqs. (7.9)-(7.11).",
+    "Endpoint-jet transparency of the official timeSwitch at t=1 does not supply the missing actual Section 9 one-sided endpoint jet, prove all-order convergence, construct a smooth extension through t=1, close the endpoint residual, or construct final forcing.",
+    "An analytic second-eta preceding-diffusion jet from explicit fourth-mixed input does not imply hierarchy ownership of partial_eta^2 actualLowerSource or partial_eta^2 f_n, Picard convergence, or Proposition 5.3 residual flatness.",
+    "Admitting theorem-grade metadata for ActualSignedCommonDynamics.common_curl_and_divergence does not replay Lean, materialize the actual signed wave, verify canonical-scope/amplitude inputs, or produce paper-exact divergence-free velocity.",
+    "A finite Eq. (9.21) prefix jet localized by the fixed Section 10 product rule does not imply the actual infinite correction sequence, t=1 smooth extension, residual artifact, forcing closure, bounded energy, or blow-up path.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote toy, diagnostic-only, analytic-adapter, or formal-structure artifacts to paper-exact status."
+  ]
+}
