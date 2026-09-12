@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "8a512ffadcc574b15ceaa54f251421a411537281",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-8-actual-signed-mean-tail",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/actual_signed_mean_tail.py",
+    "test": "tests/test_actual_signed_mean_tail.py",
+    "provenance": "references/ACTUAL_SIGNED_MEAN_TAIL_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "file": "NavierStokes/ActualSignedMeanBinding.lean",
+      "symbols": [
+        "NavierStokes.ActualSignedMeanBinding.literal_requested_cross_tail",
+        "NavierStokes.ActualSignedMeanBinding.requested_cross_tail",
+        "NavierStokes.ActualSignedMeanBinding.cycle_cross_eq",
+        "NavierStokes.ActualSignedMeanBinding.parameters_eq_cycle"
+      ]
+    },
+    "landed_capability": "Fail-closed admission that the literal correction-cycle signed mean cross equals requested stress on theorem-certified tail bands, bound to the same canonical B/N0 and selected Prepared.N as the admitted signed scope.",
+    "truth_boundary": {
+      "literal_requested_cross_tail_theorem_machine_replayed": false,
+      "actual_mean_cross_values_materialized": false,
+      "finite_head_mean_defect_solved": false,
+      "compact_mean_correction_available": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "synthetic finite-head debt as actual Section 8 debt",
+      "executable bump representative as the noncomputable formal bump",
+      "paper-exact compact mean correction"
+    ]
+  }
+}
