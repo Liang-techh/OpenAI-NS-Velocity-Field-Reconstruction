@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "file": "NavierStokes/PrimaryGeometryAssembly.lean",
+    "symbols": [
+      "PrimaryGeometryAssembly.canonicalPrepared",
+      "PrimaryGeometryAssembly.canonicalPhases",
+      "NominalConeAssembly.activeRight",
+      "PrimaryGeometryAssembly.frequency",
+      "PrimaryGeometryAssembly.axial",
+      "FinalSlowBase.scales",
+      "LeadingStressWeights.FullTrueCone"
+    ]
+  },
+  "layer": {
+    "id": "stage-3-to-6-oscillatory-corrections",
+    "status": "formal-structure",
+    "capability": "binds the landed Prepared -> FinalSlowBase.velocity identity to the pinned canonicalPrepared/canonicalPhases path, including upper=2*activeRight and canonical FinalSlowBase.scales reuse",
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_canonical_physical_base.py",
+      "tests/test_phase_large_band_canonical_physical_base.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_CANONICAL_PHYSICAL_BASE_PROVENANCE.md",
+    "validation": [
+      "exact source_id/source_revision identity with the existing physical-base binding",
+      "exact prepared_instance_id identity with the existing physical-base binding",
+      "B and N0 are nonnegative integers and r0 is finite positive",
+      "canonical Prepared and canonical phase application facts are independently required",
+      "the exact upper=2*NominalConeAssembly.activeRight choice is independently required",
+      "frequency and axial reuse of the canonical FinalSlowBase.scales source are independently required",
+      "both phase signs must share the same canonical source",
+      "sampled, fitted and numeric-scan evidence is rejected",
+      "all formal source symbols are pinned to the exact upstream commit"
+    ],
+    "truth_boundary": {
+      "actual_canonical_prepared_application_machine_verified": false,
+      "actual_cell_index_enumeration_machine_verified": false,
+      "actual_physical_base_values_materialized": false,
+      "actual_base_fields_verified": false,
+      "uniform_eq_7_9_to_7_11_verified": false,
+      "paper_exact_velocity_available": false
+    },
+    "remaining_boundary": "machine-linked formal export/replay of the actual canonical Prepared application, its active CellIndex slice, physical base values and the phase/base/frame/damping theorem applications"
+  }
+}
