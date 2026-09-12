@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "004ee70394e0226ff426c4e447f5134e5aadc301",
+  "integrated_prs": [216],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 analytic second-eta derivative for the exact regular Eq. (5.6) Omega_k/X row. The stronger fourth-mixed beta jet is an explicit upstream contract; no production finite difference, sampled quotient, generic cutoff, fitted coefficient, hierarchy-ownership claim, or paper-exact velocity claim is introduced.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_omega_second_parameter_jet.py",
+      "test": "tests/test_background_omega_second_parameter_jet.py",
+      "provenance": "references/OMEGA_SECOND_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.6)", "Eq. (5.7)", "Lemma 5.1", "Lemma 5.2"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #216 adds the analytic second eta derivative of the regular Eq. (5.6) quotient Omega_k/X from a fourth-mixed regular-flux jet, while delegating value and first derivative to the already-landed first-parameter implementation.",
+      "remaining_boundary": "The repaired hierarchy does not yet own beta fourth-mixed jets; deriving them through Eq. (5.2) requires a stronger U derivative layer. Caller/test polynomial jets are not paper-exact. Issue #1 still owns the real leading profile; hierarchy-owned partial_eta^2 actualLowerSource and partial_eta^2 f_n, partial_eta W_n^(1), further Picard iteration/convergence, recursive coefficient materialization, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
