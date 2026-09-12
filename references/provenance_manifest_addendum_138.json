@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "ec01ead4e45eee181e25536e3216c8a61efd24d4",
+  "integrated_prs": [138],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Lemma 5.2 repaired fourth-mixed U-jet increment. Analytically lifts the compact U repair to U_XXetaeta, U_Xetaetaeta, and U_etaetaetaeta so the landed Eq. (5.2) beta third-mixed adapter can consume a repaired coefficient without production finite differences.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_fourth_mixed_jets.py",
+      "provenance": "references/LEMMA_5_2_FOURTH_MIXED_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.2", "Eqs. (5.14)-(5.16)", "Eq. (5.2)", "Eqs. (5.3)-(5.7)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #138 lifts the actual compact Lemma 5.2 U repair to the exact three fourth-mixed derivatives required by the landed analytic Eq. (5.2) beta third-mixed path. Regression independently centered-differences the prior repaired third-mixed adapter, preserves all lower fields, checks the function-level beta value, and fails closed on missing active-support high eta rows.",
+      "remaining_boundary": "The unrepaired/base AxialFourthMixedJet plus moment/patch eta jets remain upstream inputs, and Section5LowerHistoryJetHierarchy does not yet own this layer. It must next derive repaired fourth-mixed U jets from each owned coefficient, generate beta third-mixed jets, and feed the landed Eq. (5.6) parameter-jet route before partial_eta(Omega/X), partial_eta f_n, and the genuine hierarchy-owned k=1 Picard term are available. Full Picard convergence, recursive coefficient materialization, recursive cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
