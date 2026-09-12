@@ -67,6 +67,9 @@ def _source(bridge, **overrides):
         source_revision="fixture-r1",
         evidence_kind="formal-theorem",
         provenance="formal fixture asserting one residual source identity",
+        majorant_evidence_kinds=tuple(
+            row.evidence_kind for row in bridge.bridge_records
+        ),
         majorant_evidence_provenance=tuple(
             row.evidence_provenance for row in bridge.bridge_records
         ),
@@ -85,6 +88,11 @@ def test_source_binding_freezes_one_revision_through_endpoint_borel_admission():
 
     assert binding.formal_source_binding_ready
     assert binding.source_key == ("section9-residual-fixture", "fixture-r1")
+    assert binding.expected_majorant_evidence_kinds == (
+        "paper-derived",
+        "paper-derived",
+        "paper-derived",
+    )
     assert binding.expected_majorant_provenance == tuple(
         _majorant_provenance(degree) for degree in range(3)
     )
@@ -125,6 +133,16 @@ def test_binding_rejects_majorants_from_a_different_source_revision():
         Section9ResidualEndpointSourceBinding(bridge, source)
 
 
+def test_binding_rejects_changed_evidence_kind_even_with_same_provenance():
+    bridge = _bridge()
+    mismatched = list(_source(bridge).majorant_evidence_kinds)
+    mismatched[1] = "certified-numerical"
+    source = _source(bridge, majorant_evidence_kinds=tuple(mismatched))
+
+    with pytest.raises(ValueError, match="majorant_evidence_kind_identity"):
+        Section9ResidualEndpointSourceBinding(bridge, source)
+
+
 def test_binding_rejects_stage_or_spatial_window_mismatch():
     bridge = _bridge()
 
@@ -150,6 +168,12 @@ def test_source_witness_rejects_sampled_evidence_or_missing_identity_fact():
 
     with pytest.raises(ValueError, match="source_revision"):
         _source(bridge, source_revision="   ")
+
+    with pytest.raises(ValueError, match="majorant evidence kind degree 1"):
+        _source(
+            bridge,
+            majorant_evidence_kinds=("paper-derived", "   ", "paper-derived"),
+        )
 
 
 def test_source_bound_api_does_not_accept_an_unbound_past_provider():
