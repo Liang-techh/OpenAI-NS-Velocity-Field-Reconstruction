@@ -148,23 +148,20 @@ def test_all_scale_numerators_follow_literal_product_convolution(square_state) -
 
 def test_nonzero_pressure_terms_keep_a2_and_a4_log_scales(square_state) -> None:
     eta = 0.0
-    n = next(
+    selected = next(
         (
-            row
+            (row, literal)
             for row in range(1, 10)
-            if square_state.x1.remainder.axial.pressure_normalized_factor(
-                row, 0, eta
-            )
-            != 0
+            for literal in [_literal_square(square_state, row, 0, eta)]
+            if any(value != 0 for value in literal[1][1:])
+            and literal[2] != 0
         ),
         None,
     )
-    assert n is not None
+    assert selected is not None
+    n, (ordinary, pressure_linear, pressure_square) = selected
 
     actual = square_state.jet(n, 0, eta)
-    ordinary, pressure_linear, pressure_square = _literal_square(
-        square_state, n, 0, eta
-    )
     assert any(value != 0 for value in pressure_linear[1:])
     assert pressure_square != 0
     assert ordinary[0] == actual.ordinary_reference
