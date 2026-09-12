@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisWeightEstimates.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisContraction.lean"
+    ],
+    "symbols": [
+      "AxisWeightEstimates.jetProduct",
+      "AxisOperators.productFamily",
+      "AxisContraction.naturalRemainder"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the pinned mixed-scale coefficient product u1 * u1 at the genuine theorem-scale first Picard state, preserving ordinary Lambda^0..Lambda^-4 terms, pressure-linear a^2 Lambda^-1..Lambda^-3 terms, and the pressure-square a^4 Lambda^-2 term without binary64 scale collapse",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_axial_square.py",
+      "tests/test_axis_coefficient_wide_first_picard_axial_square.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_AXIAL_SQUARE_PROVENANCE.md",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_override": false,
+      "pressure_override": false,
+      "axial_coefficient_table_override": false,
+      "derivative_table_override": false,
+      "product_cutoff": false,
+      "radial_product": "exact finite convolution over i+j=n",
+      "parameter_product": "exact finite eta-Leibniz sum over k+l=m with binomial(m,k)",
+      "ordinary_inverse_lambda_powers": [0, 1, 2, 3, 4],
+      "pressure_linear_amplitude_power": 2,
+      "pressure_linear_inverse_lambda_powers": [1, 2, 3],
+      "pressure_square_amplitude_power": 4,
+      "pressure_square_inverse_lambda_power": 2,
+      "collapsed_total_value": false
+    },
+    "validation": [
+      "the product state is bound to the landed genuine theorem-scale x1",
+      "the O(1) radial/eta convolution cross-checks the independently landed axis_coefficient_product on reference.u",
+      "all five ordinary, all three pressure-linear, and the pressure-square numerators agree with a literal radial-convolution/eta-Leibniz reconstruction",
+      "ordinary inverse-Lambda corrections remain separate from the O(1) reference coefficient",
+      "actual nonzero pressure-linear product terms retain the exact common a^2 log scale",
+      "the actual nonzero pressure-square product term retains the exact common a^4 log scale",
+      "explicit inverse-Lambda powers are kept in signed-log factor corrections rather than collapsed into binary64",
+      "current nonzero theorem-scale pressure-product terms fail closed on binary64 underflow instead of becoming zero",
+      "invalid indices, out-of-window eta, and non-first-Picard inputs fail closed",
+      "naturalRemainder(x1), x2, fixed-point finality/convergence, global AxisSpace certification, and paper exactness remain false"
+    ],
+    "remaining_boundary": "lift the remaining mixed-scale products and bilinear/parameter/mixed/inverse/resolvent operations needed to evaluate naturalRemainder(x1), including terms coupling average(u1), phi1, and u1; then materialize x2 and certify convergence to the fixed point phi/u; afterward derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
