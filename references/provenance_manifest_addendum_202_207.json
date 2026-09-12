@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "e4b17581a915e230e506f6beeb5cd19789fdea37",
+  "integrated_prs": [202, 203, 204, 205, 206, 207],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the theorem-scale first Picard x1, canonical Prepared export handoff, Section 10 endpoint-jet transparency, the pinned radial average on u1, the Stage 2 preceding-diffusion second-eta jet, and the actual signed common-curl theorem-admission bridge landed through PR #207.",
+  "layers": [
+    {
+      "pr": 202,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "equation_or_source": "AxisContraction: x1 = referencePair + naturalRemainder(referencePair)/(2*Lambda)",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard.json",
+      "capability": "Materializes the first genuine theorem-scale Picard iterate x1 from the actual SchedulePressure referencePair and the complete landed naturalRemainder(x0), preserving ordinary inverse-Lambda pieces and signed-log pressure without binary64 collapse.",
+      "remaining_boundary": "This is one Picard iterate only. naturalRemainder(x1), x2, iterative fixed-point convergence/finality, global AxisSpace certification, final phi/u, average/pressure completion, NaturalProfileAssembly, and support/moment/matching/cone closure remain open."
+    },
+    {
+      "pr": 203,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "equation_or_source": "PrimaryGeometryAssembly.canonicalPrepared / canonicalPhases external formal-export handoff",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_canonical_application_export.py",
+      "test": "tests/test_phase_large_band_canonical_application_export.py",
+      "provenance": "references/PHASE_LARGE_BAND_CANONICAL_APPLICATION_EXPORT_PROVENANCE.json",
+      "capability": "Adds a content-addressed fail-closed handoff contract for a future external formal export of one canonical Prepared application and its exact active scope, binding source/revision, Prepared identity, (B,r0,N0), unsigned boxes, signed labels, required symbols, scope digest, and payload digest.",
+      "remaining_boundary": "No Lean theorem is replayed, producer authenticity is not established, prepared_N remains opaque, the actual CellIndex slice is not machine-enumerated, physical base values are not materialized, and Eqs. (7.9)-(7.11) remain unverified."
+    },
+    {
+      "pr": 204,
+      "stage": "stage-6-section-10-time-localization",
+      "status": "formal-structure",
+      "equation_or_source": "SmoothCutoffs.timeSwitch endpoint Leibniz rule at t=1",
+      "artifact": "src/openai_ns_reconstruction/section10_paper_time_switch_endpoint_jet.py",
+      "test": "tests/test_section10_paper_time_switch_endpoint_jet.py",
+      "provenance": "references/SECTION10_PAPER_TIME_SWITCH_ENDPOINT_JET_PROVENANCE.md",
+      "capability": "Shows for any supplied finite scalar/vector spacetime jet that the pinned Section 10 timeSwitch is analytically transparent at t=1: timeSwitch(1)=1 and every positive-order time derivative vanishes, so the endpoint jet is preserved exactly by Leibniz expansion.",
+      "remaining_boundary": "The actual Section 9 all-order one-sided endpoint jet is still missing, its convergence is unproved, no smooth field extension through t=1 is constructed, endpoint residual closure is absent, and no final paper-exact forcing or velocity follows."
+    },
+    {
+      "pr": 205,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "equation_or_source": "AxisOperators.averageData / coefficientOperators.average(u1)",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_average.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_average.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_average.json",
+      "capability": "Materializes the pinned radial average action on the genuine theorem-scale first Picard axial state using the exact row factor 1/(n+1), preserving the mixed-scale decomposition and signed-log pressure scaling.",
+      "remaining_boundary": "The remaining mixed-scale product/bilinear, inverse, slow, source-pressure, and resolvent operations needed for naturalRemainder(x1) are not yet lifted; x2, convergence to fixed-point phi/u, final average/pressure, NaturalProfileAssembly, and global AxisSpace closure remain open."
+    },
+    {
+      "pr": 206,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "equation_or_source": "Eqs. (5.3)-(5.7): partial_eta^2 of precedingDiffusion = Z_(b-D)(Z_b F_(n-1))",
+      "artifact": "src/openai_ns_reconstruction/background_preceding_diffusion_second_parameter_jet.py",
+      "test": "tests/test_background_preceding_diffusion_second_parameter_jet.py",
+      "provenance": "references/provenance_manifest_addendum_206.json",
+      "capability": "Adds an analytic second-eta derivative for the exact preceding-diffusion strict-lower source term from an explicit fourth-mixed scalar jet while delegating value and first derivative to the already-landed analytic path.",
+      "remaining_boundary": "The repaired hierarchy does not yet own the complete fourth-mixed data required for hierarchy-owned partial_eta^2 actualLowerSource or partial_eta^2 f_n; caller/test jets are not paper-exact, and Picard convergence, recursive coefficient materialization, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 207,
+      "stage": "stage-3-to-6-oscillatory-corrections",
+      "status": "formal-structure",
+      "equation_or_source": "ActualSignedCommonDynamics.common_curl_and_divergence at openai/NavierStokesAndEuler@f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "artifact": "src/openai_ns_reconstruction/actual_signed_common_curl.py",
+      "test": "tests/test_actual_signed_common_curl.py",
+      "provenance": "references/ACTUAL_SIGNED_COMMON_CURL_PROVENANCE.json",
+      "capability": "Adds a fail-closed theorem-application admission contract for the pinned actual signed common-curl/divergence theorem, requiring theorem-grade metadata for UniformLocalJets/domain hypotheses, signed-copy identity, parameter identity, exact source revision, and dependency symbols.",
+      "remaining_boundary": "The theorem application is not machine replayed, actual signed-wave values are not materialized, canonical-scope linkage and amplitude-ODE inputs are not verified, and no paper-exact divergence-free wave or final velocity is available."
+    }
+  ],
+  "forbidden_inferences": [
+    "A genuine theorem-scale first Picard x1 does not imply naturalRemainder(x1), x2, Picard convergence, fixed-point finality, final phi/u, or paper-exact leading-profile completion.",
+    "Materializing coefficientOperators.average(u1) does not imply that the remaining mixed-scale naturalRemainder(x1) operators, final average/pressure fields, or NaturalProfileAssembly are closed.",
+    "A content-addressed canonical Prepared export contract does not imply Lean replay, producer authentication, actual CellIndex enumeration, physical base materialization, or verification of Eqs. (7.9)-(7.11).",
+    "Endpoint-jet transparency of the official timeSwitch at t=1 does not supply the missing actual Section 9 one-sided endpoint jet, prove all-order convergence, construct a smooth extension through t=1, close the endpoint residual, or construct final forcing.",
+    "An analytic second-eta preceding-diffusion jet driven by explicit fourth-mixed input does not imply hierarchy ownership of partial_eta^2 actualLowerSource or partial_eta^2 f_n, Picard convergence, or Proposition 5.3 residual flatness.",
+    "Admitting theorem-grade metadata for ActualSignedCommonDynamics.common_curl_and_divergence does not replay the Lean theorem, materialize the actual signed wave, verify its canonical-scope/amplitude inputs, or produce paper-exact divergence-free velocity.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote toy, diagnostic-only, analytic-adapter, or formal-structure artifacts to paper-exact status."
+  ]
+}
