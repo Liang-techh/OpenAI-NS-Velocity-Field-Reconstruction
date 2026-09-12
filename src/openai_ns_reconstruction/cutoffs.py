@@ -55,6 +55,38 @@ def standard_cutoff_second_derivative(s: float) -> float:
     return second
 
 
+def standard_cutoff_third_derivative(s: float) -> float:
+    """Exact third derivative of the explicit transition representative.
+
+    With the notation used by :func:`standard_cutoff_second_derivative`,
+    ``f'= -f(1-f)L'`` and direct differentiation gives
+
+    ``f''' = f(1-f)[(-1+6f-6f^2)(L')^3 + 3(1-2f)L'L'' - L''']``.
+
+    This derivative belongs only to the repository's executable C-infinity
+    representative.  It is not a pointwise realization of Mathlib's
+    noncomputable ``ContDiffBump`` in its transition collar.
+    """
+    s = _finite(s, "s")
+    if s <= 0.5 or s >= 1.0:
+        return 0.0
+    value, _derivative = _transition(s)
+    if value == 0.0 or value == 1.0:
+        return 0.0
+    v = 2.0 * s - 1.0
+    l_prime = 2.0 * (1.0 / v**2 + 1.0 / (1.0 - v) ** 2)
+    l_second = -8.0 / v**3 + 8.0 / (1.0 - v) ** 3
+    l_third = 48.0 / v**4 + 48.0 / (1.0 - v) ** 4
+    third = value * (1.0 - value) * (
+        (-1.0 + 6.0 * value - 6.0 * value * value) * l_prime**3
+        + 3.0 * (1.0 - 2.0 * value) * l_prime * l_second
+        - l_third
+    )
+    if not math.isfinite(third):
+        raise ArithmeticError("standard cutoff third derivative is not finite")
+    return third
+
+
 def smooth_cutoff(s: float) -> float:
     """Compatibility name used by the Section-10 geometry module on main."""
     return standard_cutoff(s)
