@@ -1,0 +1,24 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd"
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "Executable jet-level assembly of the complete pinned AxisContraction.coefficientOperators field record on the actual SchedulePressure-derived coefficient scale, reusing the landed product/average/primitive/parameterPrimitive/mulY/j1/j2/param1/param2/dot1/dot2/mixed1/mixed2 primitives",
+    "paper_locations": [
+      "NavierStokes/AxisContraction.lean: NaturalOperators and coefficientOperators",
+      "NavierStokes/AxisOperators.lean: product, average, primitive, parameterPrimitive, mulY, regularInverse, inverseParamProduct, inverseDotProduct, inverseMixed",
+      "NavierStokes/AxisContraction.lean: naturalRemainder downstream use"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_operators.py",
+      "tests/test_axis_coefficient_operators.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_OPERATORS_PROVENANCE.md",
+    "remaining_boundary": "The representation-level coefficientOperators record is assembled, but no global all-index weighted norm certificate or genuine complete AxisCoefficientSpace/AxisSpace membership has been materialized. The continuous-linear/bilinear operator norm layer, executable pinned naturalRemainder on the actual coefficient data, naturalRemainder(x0), first real Picard iterate, fixed-point phi/u, derived average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved. paper_exact_velocity_available must remain false."
+  }
+}
