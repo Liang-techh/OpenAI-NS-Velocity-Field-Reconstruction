@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "4b01ec10be9eed10d6c1737f5f2a7f237c9e4912",
+  "integrated_prs": [220, 221],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the canonical actual signed mean-cross tail admission and the analytic off-axis Cartesian spatial Jacobian of the fixed Section 10 localized finite-prefix velocity.",
+  "layers": [
+    {
+      "pr": 220,
+      "stage": "stage-5-mean-corrections",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/actual_signed_mean_tail.py",
+      "test": "tests/test_actual_signed_mean_tail.py",
+      "provenance": "references/ACTUAL_SIGNED_MEAN_TAIL_PROVENANCE.json",
+      "capability": "Binds the already-admitted canonical signed scope to the pinned ActualSignedMeanBinding.literal_requested_cross_tail theorem on exactly the theorem-certified tail bands Prepared.N + 1 <= n, requiring the same B/N0, selected Prepared.N, formal-source pins, active-label identity, strip membership, cycle-parameter identity, and theorem application metadata while rejecting sampled, fitted, and numeric-scan evidence.",
+      "remaining_boundary": "Lean literal_requested_cross_tail is not machine replayed in this repository, actual mean-cross values are not materialized, the finite-head cutoff deficit remains unsolved, no genuine Section 8 debt has been fed into compact mean repair, the executable bump is not identified with the noncomputable formal bump, and no compact mean correction or paper-exact velocity is available."
+    },
+    {
+      "pr": 221,
+      "stage": "stage-7-8-section-10-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_localized_velocity_spatial_jacobian.py",
+      "test": "tests/test_section9_section10_localized_velocity_spatial_jacobian.py",
+      "provenance": null,
+      "provenance_note": "PR #221 cites Eq. (10.4), the existing Section9FinitePrefixJetCertificate bridge, and the fixed Section 10 cutoff geometry already pinned in the repository. This integration addendum records the truth boundary for the new derivative adapter; PR #221 did not add a dedicated provenance file.",
+      "capability": "Differentiates u_cut = c curl(A) + grad(c) x A + c B e_theta once in Cartesian space from a finite Section 9 prefix jet of total order at least two, using analytic second spatial derivatives of A, the fixed cutoff gradient and Hessian, and the exact off-axis Cartesian derivative of e_theta. Production evaluation uses no finite differencing and fails closed on the symmetry axis.",
+      "remaining_boundary": "The Section 9 prefix remains provider-supplied, axis spatial derivatives require separate paper-field regularity, the actual Section 7/8 correction exporter and infinite Eq. (9.21) are not constructed, smooth extension through t=1 is unproved, and no genuine Navier-Stokes residual/forcing, endpoint closure, bounded-energy conclusion, blow-up path, or paper-exact velocity follows from this Jacobian adapter."
+    }
+  ],
+  "forbidden_inferences": [
+    "A theorem-admitted exact signed mean-cross identity on tail bands does not materialize the actual mean field, solve the finite-head mean defect, produce the compact mean correction, or establish paper-exact velocity.",
+    "An analytic off-axis spatial Jacobian of the localized finite-prefix velocity does not make the provider-supplied prefix the manuscript's actual correction sequence, construct the infinite Eq. (9.21), prove the t=1 smooth extension, or establish a genuine Navier-Stokes residual or forcing.",
+    "The off-axis e_theta derivative formula must not be extrapolated through the symmetry axis without the actual paper field's axis-regularity structure.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote theorem-admission, analytic-adapter, diagnostic, toy, or formal-structure artifacts to paper-exact status."
+  ]
+}
