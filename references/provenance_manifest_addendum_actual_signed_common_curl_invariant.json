@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/ActualSignedStageControls.lean",
+      "NavierStokes/ActualSignedCommonDynamics.lean"
+    ],
+    "symbols": [
+      "ActualSignedStageControls.fullRequest_jets_from_invariant",
+      "ActualSignedCommonDynamics.common_curl_and_divergence",
+      "LocalSignedRequest.fullRequest",
+      "ActualSignedStageControls.phaseCell",
+      "ActualSignedStageControls.fullStrip",
+      "ActualPrimaryBounds.strip",
+      "CorrectionStep.CycleAnalyticInvariant",
+      "PeriodizedWaveBounds.UniformLocalJets",
+      "HarmonicWaveInteraction.productStrip"
+    ]
+  },
+  "layer": {
+    "id": "section-7-actual-signed-common-curl-invariant-jets",
+    "status": "formal-structure",
+    "capability": "fail-closed composition of the actual cycle-invariant fullRequest jet theorem with the previously admitted actual common-curl/divergence theorem for the same B/N0, request, exponent, actual strip, and phaseCell domain",
+    "artifacts": [
+      "src/openai_ns_reconstruction/actual_signed_common_curl_invariant.py",
+      "tests/test_actual_signed_common_curl_invariant.py"
+    ],
+    "provenance": "references/ACTUAL_SIGNED_COMMON_CURL_INVARIANT_PROVENANCE.md",
+    "truth_boundary": {
+      "theorem_evidence_only": true,
+      "sampled_or_fitted_evidence_accepted": false,
+      "full_request_jets_theorem_machine_replayed": false,
+      "actual_cycle_invariant_machine_verified": false,
+      "common_curl_theorem_machine_replayed": false,
+      "actual_signed_wave_values_materialized": false,
+      "canonical_scope_link_verified": false,
+      "paper_exact_divergence_free_wave_available": false,
+      "paper_exact_velocity_available": false
+    }
+  }
+}
