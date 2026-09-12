@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "c7cd9a1aa8e5008c937af44cb8436c7d0d45aa3c",
+  "base_main_commit": "a64fe5c54cc85289f2ceaa8cc70dc29f7f291050",
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
   "scope_note": "Issue #4 endpoint provenance gate: bind the finite Section 9 endpoint-majorant ladder and the dense pre-endpoint residual-jet evaluator to one stable residual source revision before the existing Section 10 candidate/Borel-prefix admission is allowed to run; ordered majorant evidence kinds and provenance strings must both match the admitted ladder.",
