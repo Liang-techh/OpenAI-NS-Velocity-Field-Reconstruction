@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "527d2eb0989ea6104b5359c0ecd5330ff253d717",
+  "integrated_prs": [178, 179, 180, 181],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Cross-agent integration truth for the newest Stage 1, Stage 2, Section 6-7, and Section 9 increments. This ledger records what is actually executable or theorem-provenance-bound on main while keeping every unresolved paper-exact gate fail-closed.",
+  "layers": [
+    {
+      "pr": 178,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "equation_or_source": "AxisContraction.naturalRemainder source term a^2 * phi0^2 at x0=referencePair",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_natural_source.py",
+      "test": "tests/test_axis_coefficient_wide_natural_source.py",
+      "provenance": "references/AXIS_COEFFICIENT_WIDE_NATURAL_SOURCE_PROVENANCE.md",
+      "capability": "Materializes the theorem-selected a^2*phi0^2 source at the pinned SchedulePressure reference pair in split signed-log coefficient jets, including exact finite eta-derivative algebra without binary64 amplitude underflow.",
+      "remaining_boundary": "This is one source term, not a complete naturalRemainder(x0). The pressure-operator propagation, combination with the ordinary remainder terms, theorem-selected t, Picard x1/fixed point, average/pressure fields, NaturalProfileAssembly, global AxisSpace certification, and support/moment/matching/cone closure remain open."
+    },
+    {
+      "pr": 179,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "equation_or_source": "Eq. (5.7) hierarchy-owned first Picard parameter jet",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_first_picard_parameter.py",
+      "test": "tests/test_background_repaired_history_source_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_FIRST_PICARD_PARAMETER_PROVENANCE.md",
+      "capability": "Composes the hierarchy-owned analytic (f_n, partial_eta f_n) provider with the exact singular inverse to obtain the k=0 pair (G f_n, partial_eta G f_n), with an axis preflight that fails closed when strong leading data are unavailable.",
+      "remaining_boundary": "The nontrivial k=1 application G(A0 W^(0)+A1 partial_eta W^(0)+f_n), Picard convergence, recursively materialized coefficients, completed cutoff sequence, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 180,
+      "stage": "stage-3-section7-large-band-physical-base-admission",
+      "status": "formal-structure",
+      "equation_or_source": "Sections 6-7 PrimaryGeometryAssembly construction_frequency/construction_axial to FinalSlowBase.velocity identities",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_physical_base.py",
+      "test": "tests/test_phase_large_band_physical_base.py",
+      "provenance": "references/PHASE_LARGE_BAND_PHYSICAL_BASE_PROVENANCE.md",
+      "capability": "Binds one admitted Prepared slow-box source fail-closed to the pinned construction frequency/axial fields and their exact physical slow-base component identities, rejecting sampled/fitted substitutes and provenance drift.",
+      "remaining_boundary": "The adapter does not evaluate the noncomputable Prepared object or FinalSlowBase.velocity, enumerate actual CellIndex carriers, independently discharge theorem hypotheses, close the all-active-family Eqs. (7.9)-(7.11), construct stress amplitudes/curl waves, or make paper-exact velocity available."
+    },
+    {
+      "pr": 181,
+      "stage": "stage-6-section9-residual-iteration",
+      "status": "formal-structure",
+      "equation_or_source": "Eq. (9.21) admitted finite-prefix physical spacetime derivative jet aggregation",
+      "artifact": "src/openai_ns_reconstruction/section9_eq921_prefix_jet.py",
+      "test": "tests/test_section9_eq921_prefix_jet.py",
+      "provenance": "references/SECTION9_EQ921_PREFIX_JET_PROVENANCE.md",
+      "capability": "Aggregates complete provider-supplied spacetime derivative jets for weighted positive-stage summands in an already-admitted finite contiguous Eq. (9.21) prefix, enforcing exact stage/scale/q, admission evidence, provider revision, and zero-order agreement with the independent finite-prefix evaluator.",
+      "remaining_boundary": "The derivatives are not machine-derived from the actual Section 7/8 correction fields or manuscript cutoff; the locally finite infinite Eq. (9.21) field, t=1 endpoint, genuine Navier-Stokes residual artifact, endpoint convergence/Borel closure, smooth compact forcing, bounded energy, and blow-up closure remain open."
+    }
+  ],
+  "forbidden_inferences": [
+    "Materializing a^2*phi0^2 at x0 does not imply naturalRemainder(x0), Picard x1, or a fixed point has been constructed.",
+    "The k=0 hierarchy-owned pair (G f_n, partial_eta G f_n) does not imply the k=1 Eq. (5.7) Picard application, convergence, or Proposition 5.3.",
+    "Prepared/FinalSlowBase identity metadata does not imply Python evaluated the noncomputable Prepared object, actual CellIndex carriers, or all-active-family phase hypotheses.",
+    "Complete provider-supplied finite-prefix derivative tables do not imply derivatives were derived from actual correction fields, the infinite Eq. (9.21) field exists, or a genuine residual artifact is ready.",
+    "Setting f=R and then observing R-f=0 is not independent verification.",
+    "Green tests or CI do not promote toy, diagnostic, or formal-structure artifacts to paper-exact reconstruction."
+  ]
+}
