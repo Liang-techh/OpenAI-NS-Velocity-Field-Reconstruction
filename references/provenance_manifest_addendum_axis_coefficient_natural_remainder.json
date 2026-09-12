@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/AxisContraction.lean",
+    "symbols": [
+      "angularLinearCoefficient",
+      "angularQuadraticCoefficient",
+      "averageCoefficient",
+      "angularSlowCoefficient",
+      "axialLinearCoefficient",
+      "axialQuadraticCoefficient",
+      "naturalRemainder"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "executable pinned naturalRemainder composition on actual SchedulePressure-derived coefficient jets, coefficientOperators, AxisData and naturalResolvent",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_natural_remainder.py",
+      "tests/test_axis_coefficient_natural_remainder.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_NATURAL_REMAINDER_PROVENANCE.md",
+    "actual_data": {
+      "reference_anchor": "ActualScheduleReferenceAxisState",
+      "coefficient_operators_caller_supplied": false,
+      "axis_data_caller_supplied": false,
+      "natural_resolvent_caller_supplied": false,
+      "epsilon_caller_supplied": false,
+      "t_and_a_are_theorem_arguments_not_selected_here": true
+    },
+    "validation": [
+      "radial row zero vanishes through the pinned regular inverse structure",
+      "angular component is amplitude-independent and axial pressure contribution is quadratic in a",
+      "both components are affine in t",
+      "epsilon mismatch fails closed"
+    ],
+    "remaining_boundary": "materialize the actual normalized amplitude coefficient state from theorem-selected Lambda/C, set t=1/Lambda, evaluate naturalRemainder(x0), execute genuine Picard x1/fixed point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
