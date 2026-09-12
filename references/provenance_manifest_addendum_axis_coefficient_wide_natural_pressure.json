@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisWeightEstimates.lean"
+    ],
+    "symbols": [
+      "AxisContraction.naturalRemainder",
+      "AxisOperators.primitive",
+      "AxisOperators.parameterPrimitive",
+      "AxisOperators.mulY",
+      "AxisOperators.j1"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "propagates the actual theorem-selected wide a^2*phi0^2 source through the complete pinned naturalRemainder pressure chain at x0 while preserving the common nonzero a^2 scale in signed-log form",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_natural_pressure.py",
+      "tests/test_axis_coefficient_wide_natural_pressure.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_NATURAL_PRESSURE_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_surrogate": false,
+      "fixed_point_state": "x0 = actual SchedulePressure referencePair",
+      "source_formula": "a^2 * phi0^2",
+      "pressure_formula": "j1 (-(4 A eta) * primitive(source) + d * parameterPrimitive(source) - (2 eta) * mulY(source))",
+      "magnitude_representation": "common 2*log(a) scale plus signed Decimal normalized pressure factor"
+    },
+    "validation": [
+      "actual theorem-selected wide source/reference epsilon is inherited without caller overrides",
+      "primitive, parameterPrimitive, and mulY use the exact pinned predecessor-row maps",
+      "ordinary-field products use the exact finite radial convolution and eta Leibniz rule",
+      "pressure input matches an independently written literal Decimal evaluation of the pinned formula",
+      "final j1 uses radialDivisor(1,n-1)=n^2",
+      "nonzero wide pressure coefficients never silently project to binary64 zero",
+      "indices and eta window fail closed"
+    ],
+    "remaining_boundary": "combine the wide pressure with ordinary axial lin2 - t*slow2 without scale loss, represent theorem-selected t=1/Lambda and outer 1/(2*Lambda) in the mixed-scale coefficient arithmetic, then evaluate genuine naturalRemainder(x0), execute Picard x1/fixed-point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
