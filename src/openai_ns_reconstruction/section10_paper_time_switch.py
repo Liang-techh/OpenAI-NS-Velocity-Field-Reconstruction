@@ -52,8 +52,8 @@ def _as_exact_rational(value: object, name: str) -> Fraction:
     if isinstance(value, Fraction):
         return value
     raise TypeError(
-        f"{name} must be int or fractions.Fraction; float input is rejected "
-        "at exact theorem boundaries"
+        f"{name} must be an exact rational (int or fractions.Fraction); "
+        "float input is rejected at exact theorem boundaries"
     )
 
 
