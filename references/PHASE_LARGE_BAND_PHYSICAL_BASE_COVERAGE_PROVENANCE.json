@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/PrimaryGeometryAssembly.lean",
+    "symbols": [
+      "BaseChartJets.CellIndex",
+      "PrimaryGeometryAssembly.cellDomain",
+      "PrimaryGeometryAssembly.family",
+      "PrimaryGeometryAssembly.Prepared",
+      "PrimaryGeometryAssembly.construction_frequency",
+      "PrimaryGeometryAssembly.construction_axial",
+      "PrimaryGeometryAssembly.frequency_eq_physical",
+      "PrimaryGeometryAssembly.axial_eq_physical",
+      "FinalSlowBase.velocity"
+    ]
+  },
+  "layer": {
+    "id": "stage-3-6-section-7-physical-base-scope-coverage",
+    "status": "formal-structure",
+    "capability": "requires exact unsigned-box and signed-family coverage by pinned physical-base identity bindings over an already admitted primary-geometry fixed-band scope",
+    "artifacts": [
+      "src/openai_ns_reconstruction/phase_large_band_physical_base_coverage.py",
+      "tests/test_phase_large_band_physical_base_coverage.py"
+    ],
+    "provenance": "references/PHASE_LARGE_BAND_PHYSICAL_BASE_COVERAGE_PROVENANCE.md",
+    "mechanical_checks": [
+      "exactly one physical-base binding per admitted unsigned box",
+      "no missing, extra, or duplicate box bindings",
+      "all bindings reuse the admitted source revision",
+      "all per-box physical-base identity bindings remain internally theorem-certified",
+      "union of per-box sign pairs equals the admitted signed family scope"
+    ],
+    "truth_boundary": {
+      "declared_scope_physical_base_coverage_machine_checked": true,
+      "actual_cell_index_enumeration_machine_verified": false,
+      "actual_physical_base_values_materialized": false,
+      "actual_base_fields_verified": false,
+      "uniform_eq_7_9_to_7_11_verified": false,
+      "paper_exact_velocity_available": false
+    },
+    "remaining_boundary": "supply a machine-linked concrete fixed-band BaseChartJets.CellIndex export/proof and corresponding Prepared or field witnesses, then feed those actual applications through this exact-set gate and the existing phase/base/frame/damping coverage chain"
+  }
+}
