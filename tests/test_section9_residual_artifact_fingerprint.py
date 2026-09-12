@@ -1,3 +1,4 @@
+import hashlib
 from fractions import Fraction
 
 import pytest
@@ -13,6 +14,7 @@ from openai_ns_reconstruction.section9_residual_artifact_fingerprint import (
     Section9ContentAddressedResidualSourceWitness,
     Section9ContentAddressedUniformEnvelopeWitness,
     bind_content_addressed_section9_uniform_envelopes_to_residual_source,
+    section9_residual_artifact_sha256,
 )
 from openai_ns_reconstruction.section9_stage_certificate import CertifiedBoundDatum
 
@@ -23,6 +25,8 @@ STAGE = 20
 WINDOW = 3
 ARTIFACT_SHA256 = "ab" * 32
 OTHER_ARTIFACT_SHA256 = "cd" * 32
+ARTIFACT_BYTES = b"section9-eq921-residual-artifact\nrevision=fixture-a\n"
+OTHER_ARTIFACT_BYTES = b"section9-eq921-residual-artifact\nrevision=fixture-b\n"
 
 
 def _envelope(degree: int):
@@ -153,3 +157,64 @@ def test_noncanonical_digest_is_rejected_before_binding():
             envelope=envelope,
             residual_artifact_sha256="A" * 64,
         )
+
+
+def test_preferred_constructors_compute_digest_from_exact_raw_artifact_bytes():
+    envelopes = tuple(_envelope(n) for n in range(3))
+    expected_digest = hashlib.sha256(ARTIFACT_BYTES).hexdigest()
+    assert section9_residual_artifact_sha256(ARTIFACT_BYTES) == expected_digest
+
+    addressed = tuple(
+        Section9ContentAddressedUniformEnvelopeWitness.from_artifact_bytes(
+            envelope=row,
+            residual_artifact=ARTIFACT_BYTES,
+        )
+        for row in envelopes
+    )
+    addressed_source = Section9ContentAddressedResidualSourceWitness.from_artifact_bytes(
+        source=_source(envelopes),
+        residual_artifact=ARTIFACT_BYTES,
+    )
+    record = bind_content_addressed_section9_uniform_envelopes_to_residual_source(
+        addressed,
+        addressed_source,
+        max_endpoint_degree=2,
+    )
+
+    assert record.residual_artifact_sha256 == expected_digest
+    assert all(row.residual_artifact_sha256 == expected_digest for row in addressed)
+    assert addressed_source.residual_artifact_sha256 == expected_digest
+    assert record.formal_content_addressed_binding_ready
+    assert record.source_majorants_derived_from_actual_residual_verified is False
+    assert record.actual_section9_sequence_verified is False
+    assert record.paper_exact_velocity_available is False
+
+
+def test_one_byte_artifact_change_fails_closed_without_manual_digest_input():
+    envelopes = tuple(_envelope(n) for n in range(2))
+    addressed = tuple(
+        Section9ContentAddressedUniformEnvelopeWitness.from_artifact_bytes(
+            envelope=row,
+            residual_artifact=ARTIFACT_BYTES,
+        )
+        for row in envelopes
+    )
+    addressed_source = Section9ContentAddressedResidualSourceWitness.from_artifact_bytes(
+        source=_source(envelopes),
+        residual_artifact=OTHER_ARTIFACT_BYTES,
+    )
+
+    with pytest.raises(ValueError, match="residual_artifact_sha256 mismatch"):
+        bind_content_addressed_section9_uniform_envelopes_to_residual_source(
+            addressed,
+            addressed_source,
+            max_endpoint_degree=1,
+        )
+
+
+def test_artifact_fingerprint_rejects_text_and_empty_payloads():
+    with pytest.raises(TypeError, match="exact bytes"):
+        section9_residual_artifact_sha256("not raw bytes")
+
+    with pytest.raises(ValueError, match="nonempty"):
+        section9_residual_artifact_sha256(b"")
