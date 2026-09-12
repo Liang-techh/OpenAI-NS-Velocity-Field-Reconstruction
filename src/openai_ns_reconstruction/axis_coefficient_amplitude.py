@@ -65,6 +65,17 @@ def _decimal_from_float(value: float, name: str) -> Decimal:
     return Decimal.from_float(value)
 
 
+def _sum_precision(a: Decimal, b: Decimal) -> int:
+    """Precision sufficient to retain a small log correction beside a huge one."""
+
+    if a == 0 or b == 0:
+        gap = 0
+    else:
+        gap = abs(a.adjusted() - b.adjusted())
+    digits = max(len(a.as_tuple().digits), len(b.as_tuple().digits))
+    return max(_DECIMAL_PRECISION, gap + digits + 16)
+
+
 with localcontext() as _ctx:
     _ctx.prec = _DECIMAL_PRECISION
     _BINARY64_MAX_LOG = Decimal.from_float(sys.float_info.max).ln()
@@ -73,37 +84,59 @@ with localcontext() as _ctx:
 
 @dataclass(frozen=True)
 class SignedLogCoefficientJet:
-    """One real coefficient jet represented by sign and ``log(abs(value))``."""
+    """One real coefficient jet with a lossless split logarithmic magnitude.
+
+    ``log_scale`` is the common amplitude logarithm and ``log_factor`` is the
+    derivative-specific Bell-factor logarithm.  Keeping them separate matters
+    on the current theorem scale: ``log_scale`` is about 10^784 in magnitude,
+    while a derivative correction can be only about 10^3.  A fixed-precision
+    Decimal sum would erase that correction even though both inputs are known.
+    """
 
     sign: int
-    log_abs: Decimal | None
+    log_scale: Decimal | None
+    log_factor: Decimal | None
 
     def __post_init__(self) -> None:
         if self.sign not in (-1, 0, 1):
             raise ValueError("sign must be -1, 0, or 1")
         if self.sign == 0:
-            if self.log_abs is not None:
-                raise ValueError("zero jet must not carry a logarithmic magnitude")
+            if self.log_scale is not None or self.log_factor is not None:
+                raise ValueError("zero jet must not carry logarithmic components")
             return
-        if self.log_abs is None:
-            raise ValueError("nonzero jet requires a logarithmic magnitude")
-        _finite_decimal(self.log_abs, "log_abs")
+        if self.log_scale is None or self.log_factor is None:
+            raise ValueError("nonzero jet requires both logarithmic components")
+        _finite_decimal(self.log_scale, "log_scale")
+        _finite_decimal(self.log_factor, "log_factor")
 
     @classmethod
     def zero(cls) -> "SignedLogCoefficientJet":
-        return cls(sign=0, log_abs=None)
+        return cls(sign=0, log_scale=None, log_factor=None)
+
+    @property
+    def log_abs(self) -> Decimal | None:
+        """Return log(abs(value)) without losing the small factor correction."""
+
+        if self.sign == 0:
+            return None
+        assert self.log_scale is not None
+        assert self.log_factor is not None
+        with localcontext() as ctx:
+            ctx.prec = _sum_precision(self.log_scale, self.log_factor)
+            return +(self.log_scale + self.log_factor)
 
     def to_binary64(self) -> float:
         """Project to a finite binary64 value, failing closed on range loss."""
 
         if self.sign == 0:
             return 0.0
-        assert self.log_abs is not None
-        if self.log_abs > _BINARY64_MAX_LOG:
+        log_abs = self.log_abs
+        assert log_abs is not None
+        if log_abs > _BINARY64_MAX_LOG:
             raise ArithmeticError("nonzero amplitude jet overflows binary64")
-        if self.log_abs < _BINARY64_MIN_SUBNORMAL_LOG:
+        if log_abs < _BINARY64_MIN_SUBNORMAL_LOG:
             raise ArithmeticError("nonzero amplitude jet underflows binary64")
-        magnitude = math.exp(float(self.log_abs))
+        magnitude = math.exp(float(log_abs))
         if magnitude == 0.0:
             raise ArithmeticError("nonzero amplitude jet underflows binary64")
         if not math.isfinite(magnitude):
@@ -168,6 +201,11 @@ class ActualScheduleAmplitudeLogState:
         eta = float(eta)
         if not math.isfinite(eta):
             raise ValueError("eta must be finite")
+        # The landed real_phase implementation returns 0 exactly here. Preserve
+        # the symbolic normalization exponent without passing a no-op through
+        # the working Decimal precision.
+        if eta == 0.0:
+            return self.C_exponent.copy_negate()
         phase = real_phase(
             self.data.h,
             self.data.j,
@@ -224,10 +262,11 @@ class ActualScheduleAmplitudeLogState:
 
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
-            log_abs = +(self.log_amplitude(float(eta)) + abs(factor).ln())
+            log_factor = +abs(factor).ln()
         return SignedLogCoefficientJet(
             sign=1 if factor > 0 else -1,
-            log_abs=log_abs,
+            log_scale=self.log_amplitude(float(eta)),
+            log_factor=log_factor,
         )
 
     def binary64_state(self) -> AxisCoefficientJetState:
