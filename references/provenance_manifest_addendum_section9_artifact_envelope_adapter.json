@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "3fff875b1ce9d01cf355fdd72f7a2a1bfd0b4edd",
+  "scope": "Issue #4 Section 9 residual-artifact theorem-manifest adapter",
+  "status": "formal-structure",
+  "artifact": "src/openai_ns_reconstruction/section9_residual_artifact_envelope.py",
+  "test": "tests/test_section9_residual_artifact_envelope.py",
+  "provenance": "references/SECTION9_RESIDUAL_ARTIFACT_ENVELOPE_ADAPTER_PROVENANCE.md",
+  "paper_locations": [
+    "Section 9 Lemma 9.8 / Eq. (9.18)",
+    "Section 9 Eq. (9.21)",
+    "Section 10 endpoint time localization / smooth extension through t=1"
+  ],
+  "capability": "Strictly parse a contiguous Eq. (9.18) theorem-data sidecar whose declared SHA-256 matches exact residual-artifact bytes, materialize content-addressed uniform-envelope witnesses from those bytes, and feed them through the existing analytic endpoint-majorant adapter without a separately supplied endpoint coefficient.",
+  "remaining_boundary": "The genuine Eq. (9.21) residual/provider and machine derivation of C_{j,m}, K_m, P_{j,m}, all-order flat-remainder bounds, endpoint limits, infinite Borel smoothness, smooth compact forcing, finite-energy/blow-up closure remain unconstructed or unverified.",
+  "source_majorants_derived_from_actual_residual_verified": false,
+  "actual_section9_sequence_verified": false,
+  "endpoint_limits_constructed": false,
+  "all_order_borel_smoothness_verified": false,
+  "smooth_compact_forcing_verified": false,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false
+}
