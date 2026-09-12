@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "c0e398b4c3c778c5f539b75fd6a064cff9575193",
+  "integrated_prs": [165],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Integration truth for the Section 9 residual-artifact fingerprint after PR #165. The preferred source/envelope constructors compute one SHA-256 directly from exact nonempty raw artifact bytes and therefore reject bytewise source drift without a caller-supplied digest. This is content-addressed audit identity only, not evidence that the bytes are the manuscript Eq. (9.21) residual or that Eq. (9.18) majorants were derived from it.",
+  "layers": [
+    {
+      "id": "stage-6-residual-improvement-iteration",
+      "status": "formal-structure",
+      "paper_locations": [
+        "Section 9",
+        "Eq. (9.18)",
+        "Eq. (9.21)",
+        "Proposition 9.9"
+      ],
+      "artifacts": [
+        "src/openai_ns_reconstruction/section9_residual_artifact_fingerprint.py",
+        "tests/test_section9_residual_artifact_fingerprint.py",
+        "references/SECTION9_RESIDUAL_ARTIFACT_FINGERPRINT_PROVENANCE.md"
+      ],
+      "landed_capability": "Preferred content-addressed witnesses derive a canonical SHA-256 from the exact serialized residual-artifact bytes with no decoding or normalization; empty/non-bytes fail closed and bytewise-different source/envelope artifacts fail digest binding before the existing Eq. (9.18) source gate runs.",
+      "compatibility_boundary": "Lower-level constructors that accept an already-computed canonical digest remain available; direct digest acceptance is compatibility plumbing and is not promoted to independent mathematical evidence.",
+      "truth_flags": {
+        "preferred_raw_byte_fingerprint_path_available": true,
+        "caller_supplied_digest_required_on_preferred_path": false,
+        "actual_eq_9_21_residual_verified": false,
+        "source_majorants_derived_from_actual_residual_verified": false,
+        "actual_section9_sequence_verified": false,
+        "proposition_9_9_verified": false,
+        "endpoint_limits_verified": false,
+        "infinite_borel_smoothness_verified": false,
+        "smooth_compact_forcing_verified": false,
+        "bounded_energy_and_blowup_closure_verified": false,
+        "paper_exact_velocity_available": false
+      },
+      "remaining_boundary": "Construct/import the genuine manuscript-derived Eq. (9.21) residual artifact from actual Section 7/8 data and derive the uniform Eq. (9.18) envelope ladder from that same artifact. Then prove the infinite Section 9 sequence/Proposition 9.9 closure and the downstream endpoint, Borel, forcing, energy, and blow-up obligations. A SHA-256 match alone proves none of these."
+    }
+  ]
+}
