@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "layer": "section-7-large-band-damping-error-admission",
+  "status": "formal-structure",
+  "artifacts": [
+    "src/openai_ns_reconstruction/phase_large_band_damping.py",
+    "tests/test_phase_large_band_damping.py",
+    "references/PHASE_LARGE_BAND_DAMPING_PROVENANCE.md"
+  ],
+  "formal_source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/BasePhaseGeometry.lean",
+    "theorems": [
+      "BasePhaseGeometry.FamilyData.damping_error"
+    ]
+  },
+  "implemented_claim": "Fail-closed theorem-identity/provenance admission tying the pinned damping_error application to one already-admitted active signed family/source revision and exposing only dampingConstant(M)/S_*.",
+  "accepted_evidence": [
+    "analytic-theorem",
+    "formal-theorem"
+  ],
+  "rejected_as_proof": [
+    "sampled",
+    "fitted",
+    "numeric-scan"
+  ],
+  "truth_flags": {
+    "actual_damping_field_materialized": false,
+    "damping_error_machine_verified": false,
+    "all_active_family_damping_verified": false,
+    "uniform_eq_7_9_to_7_11_verified": false,
+    "paper_exact_velocity_available": false
+  },
+  "remaining_for_paper_exact": [
+    "genuine Section 6 active carrier/slot family",
+    "genuine Proposition 5.5 base/background provider",
+    "machine-linked all-active-family damping_error proof",
+    "actual phase/base/frame field conclusions",
+    "stress-cone amplitudes and curl-realized oscillatory waves"
+  ]
+}
