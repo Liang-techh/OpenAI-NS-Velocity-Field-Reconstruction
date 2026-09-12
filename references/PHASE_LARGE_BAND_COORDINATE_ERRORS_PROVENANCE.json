@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "layer": "section-7-large-band-base-estimates-coordinate-errors-admission",
+  "status": "formal-structure",
+  "artifacts": [
+    "src/openai_ns_reconstruction/phase_large_band_coordinate_errors.py",
+    "tests/test_phase_large_band_coordinate_errors.py",
+    "references/PHASE_LARGE_BAND_COORDINATE_ERRORS_PROVENANCE.md"
+  ],
+  "formal_source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/BasePhaseGeometry.lean",
+    "theorems": [
+      "BasePhaseGeometry.FamilyData.base_estimates",
+      "BasePhaseGeometry.FamilyData.coordinate_errors"
+    ]
+  },
+  "implemented_claim": "Fail-closed theorem-identity/provenance admission tying pinned base_estimates and coordinate_errors applications to one already-admitted phase_estimates family/source revision, exposing only their scalar theorem envelopes.",
+  "accepted_evidence": [
+    "analytic-theorem",
+    "formal-theorem"
+  ],
+  "rejected_as_proof": [
+    "sampled",
+    "fitted",
+    "numeric-scan"
+  ],
+  "truth_flags": {
+    "actual_base_values_materialized": false,
+    "actual_shear_vectors_materialized": false,
+    "actual_coordinate_errors_materialized": false,
+    "base_estimates_machine_verified": false,
+    "coordinate_errors_machine_verified": false,
+    "uniform_eq_7_9_to_7_11_verified": false,
+    "paper_exact_velocity_available": false
+  },
+  "remaining_for_paper_exact": [
+    "genuine Section 6 active carrier/slot family",
+    "genuine Proposition 5.5 base/background provider",
+    "machine-linked all-active-family base_estimates and coordinate_errors proof",
+    "actual frame/damping conclusions",
+    "stress-cone amplitudes and curl-realized oscillatory waves"
+  ]
+}
