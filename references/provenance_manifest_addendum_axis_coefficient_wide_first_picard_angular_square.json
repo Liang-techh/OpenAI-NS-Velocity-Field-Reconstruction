@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisWeightEstimates.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/AxisContraction.lean"
+    ],
+    "symbols": [
+      "AxisWeightEstimates.jetProduct",
+      "AxisOperators.productFamily",
+      "AxisContraction.naturalRemainder"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the pinned mixed-scale coefficient product phi1 * phi1 at the genuine theorem-scale first Picard state, preserving the Lambda^0 through Lambda^-4 radial-convolution/eta-Leibniz components without binary64 scale collapse",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_angular_square.py",
+      "tests/test_axis_coefficient_wide_first_picard_angular_square.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_ANGULAR_SQUARE_PROVENANCE.md",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "Lambda_override": false,
+      "angular_coefficient_table_override": false,
+      "surrogate_state": false,
+      "product_cutoff": false,
+      "radial_product": "exact finite convolution over i+j=n",
+      "parameter_product": "exact finite eta-Leibniz sum over k+l=m with binomial(m,k)",
+      "inverse_lambda_powers": [0, 1, 2, 3, 4],
+      "collapsed_total_value": false
+    },
+    "validation": [
+      "the product state is bound to the landed genuine theorem-scale x1",
+      "row zero agrees exactly with the closed five-power square expansion",
+      "the O(1) radial/eta convolution cross-checks the independently landed axis_coefficient_product on reference.phi",
+      "all five inverse-Lambda numerators agree with a literal radial-convolution/eta-Leibniz reconstruction",
+      "correction terms remain separate under Lambda^-1 through Lambda^-4 scaling",
+      "invalid indices and non-first-Picard inputs fail closed",
+      "naturalRemainder(x1), x2, fixed-point finality/convergence, global AxisSpace certification, and paper exactness remain false"
+    ],
+    "remaining_boundary": "lift the remaining mixed-scale product/bilinear operators, including signed-log pressure-aware products involving u1, plus parameter/mixed/inverse/source-pressure/resolvent operations needed to evaluate naturalRemainder(x1); then materialize x2 and certify convergence to the fixed point phi/u; afterward derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
