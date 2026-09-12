@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "a5431dd5aac603fb0af6aa91f601d8ab40c8d66e",
+  "integrated_prs": [
+    235
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 hierarchy-ownership increment. Makes the landed compact Lemma 5.2 repaired phi fourth-mixed provider authoritative in the same strong lower-history source that owns repaired U fifth-mixed data. The genuine leading strong profile remains upstream in Issue #1.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_phi_fourth_mixed.py",
+      "provenance": "references/REPAIRED_HISTORY_PHI_FOURTH_MIXED_PROVENANCE.md",
+      "paper_locations": [
+        "Eq. (5.2)",
+        "Eqs. (5.3)-(5.7)",
+        "Lemma 5.2",
+        "Appendix A"
+      ],
+      "official_lean_modules": [
+        "NavierStokes/PositiveAxisSystem.lean",
+        "NavierStokes/PositiveAxisExistence.lean"
+      ],
+      "landed_capability": "PR #235 makes repaired ProfileFourthMixedJet phi data hierarchy-owned, with exact third/second projections, while preserving the same hierarchy's repaired U fifth-mixed ownership and Eq. (5.2)-derived beta path. Missing or incoherent stronger phi ownership fails closed.",
+      "remaining_boundary": "Issue #1 still must supply the genuine order-zero strong profile. This does not yet assemble hierarchy-owned partial_eta^2 actualLowerSource or forcing, partial_eta W_n^(1), Picard convergence, recursive coefficient materialization, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    }
+  ]
+}
