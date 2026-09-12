@@ -72,9 +72,10 @@ def test_latest_bindings_preserve_upstream_dependencies_and_evidence_semantics()
     stage3 = _load(
         ROOT / "references" / "provenance_manifest_addendum_phase_large_band_family_inputs.json"
     )["layer"]
-    stage7 = _load(
+    stage7_addendum = _load(
         ROOT / "references" / "provenance_manifest_addendum_section9_endpoint_residual_source.json"
-    )["layer"]
+    )
+    stage7 = stage7_addendum["layer"]
 
     assert stage1["status"] == "formal-structure"
     assert "complete coefficientOperators record is not yet assembled" in stage1["remaining_boundary"]
@@ -89,9 +90,8 @@ def test_latest_bindings_preserve_upstream_dependencies_and_evidence_semantics()
     assert "oscillatory wave" in stage3["remaining_boundary"]
 
     assert stage7["status"] == "formal-structure"
-    assert "ordered-majorant-evidence-kind" in _load(
-        ROOT / "references" / "provenance_manifest_addendum_section9_endpoint_residual_source.json"
-    )["scope_note"]
+    assert "ordered majorant evidence kinds" in stage7_addendum["scope_note"]
+    assert "provenance strings must both match" in stage7_addendum["scope_note"]
     assert "actual Eq. (9.21) residual sequence" in stage7["remaining_boundary"]
     assert "machine-derived all-order uniform endpoint majorants" in stage7["remaining_boundary"]
     assert "smooth compact forcing" in stage7["remaining_boundary"]
