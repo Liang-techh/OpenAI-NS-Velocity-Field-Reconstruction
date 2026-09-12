@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "symbols": [
+      "PrimaryGeometryAssembly.canonicalPhases",
+      "ActualSignedOutputBounds.copies",
+      "ActualSignedStageControls.phaseCell",
+      "LocalSignedRequest.fullRequest",
+      "ActualSignedStageControls.fullRequest_jets_from_invariant",
+      "ActualSignedCommonDynamics.common_curl_and_divergence"
+    ]
+  },
+  "layer": {
+    "id": "stage-6-to-7-canonical-actual-signed-scope",
+    "status": "formal-structure",
+    "capability": "fail-closed exact-scope identity handoff from the content-addressed canonical Prepared signed-label roster to admitted cycle-invariant/common-curl applications while keeping Lean SignedLabel opaque",
+    "artifacts": [
+      "src/openai_ns_reconstruction/actual_signed_canonical_scope.py",
+      "tests/test_actual_signed_canonical_scope.py"
+    ],
+    "provenance": "references/ACTUAL_SIGNED_CANONICAL_SCOPE_PROVENANCE.md",
+    "validation": [
+      "exact canonical signed-label roster coverage is required",
+      "scope SHA-256 and selected Prepared N must match the canonical export",
+      "B/N0 and pinned repository/commit must match the actual invariant/common-curl application",
+      "opaque SignedLabel identities must match their admitted actual applications and cannot be reused across canonical labels",
+      "external mapping producer kind is restricted to lean-formal-export",
+      "required exporter facts and pinned dependency symbols are fail-closed",
+      "no Python encoding of Lean SignedLabel and no cross-layer mapping theorem are invented"
+    ],
+    "truth_boundary": {
+      "actual_signed_label_export_machine_verified": false,
+      "canonical_prepared_application_machine_replayed": false,
+      "actual_cycle_invariant_machine_verified": false,
+      "common_curl_theorem_machine_replayed": false,
+      "actual_signed_wave_values_materialized": false,
+      "paper_exact_divergence_free_wave_available": false,
+      "paper_exact_velocity_available": false
+    },
+    "remaining_boundary": "machine-linked formal export/replay of the canonical Prepared application, selected N, true active label slice, and canonical-label to actual SignedLabel identities used by cycle-invariant/common-curl applications"
+  }
+}
