@@ -120,7 +120,17 @@ def test_normalized_taylor_composition_derives_mixed_spacetime_derivative():
 
 
 def test_composition_rejects_q_identity_drift():
-    q_jet = replace(_q_jet(), q=Fraction(1, 15))
+    original = _q_jet()
+    derivatives = dict(original.derivatives)
+    derivatives[ZERO] = 1.0 / 15.0
+    q_jet = Section9SimilarityCoordinateJet(
+        q=Fraction(1, 15),
+        derivative_order=original.derivative_order,
+        derivatives=derivatives,
+        provider_id=original.provider_id,
+        provider_revision=original.provider_revision,
+        provider_provenance=original.provider_provenance,
+    )
     with pytest.raises(ValueError, match="finite-prefix evaluation q"):
         derive_section9_cutoff_weight_jet(
             _evaluation(), _admission(), q_jet, _cutoff_jet()
