@@ -73,7 +73,8 @@ def test_landed_truth_sources_for_223_224_remain_fail_closed() -> None:
     assert "finite_energy_verified: bool = False" in divergence_source
     assert "blowup_path_verified: bool = False" in divergence_source
     assert "paper_exact_velocity_available: bool = False" in divergence_source
-    assert "axis regularity must come from the actual paper field" in divergence_source
+    assert "divergence certificate requires an off-axis point" in divergence_source
+    assert "must come from the actual paper field" in divergence_source
     assert "it is not an analytic-error or convergence bound" in divergence_source
 
     canonical = _load(ROOT / "references" / "provenance_manifest.json")
