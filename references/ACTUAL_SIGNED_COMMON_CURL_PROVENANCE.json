@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "artifact": "src/openai_ns_reconstruction/actual_signed_common_curl.py",
+  "status": "formal-structure",
+  "issue": 3,
+  "section": "Section 7 actual signed curl realization",
+  "formal_source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "file": "NavierStokes/ActualSignedCommonDynamics.lean",
+    "theorem": "ActualSignedCommonDynamics.common_curl_and_divergence",
+    "dependency_symbols": [
+      "ActualSignedOutputBounds.copies",
+      "ActualSignedStageControls.parameters",
+      "ActualSignedStageControls.phaseCell",
+      "ActualSignedCommonDynamics.rawJets",
+      "ClosedNativeWaveIdentities.native_realizes_curl_at",
+      "ClosedNativeWaveIdentities.native_divergence_zero_at",
+      "LocalizedCurlRealization.native_identities_of_zero_germ"
+    ]
+  },
+  "admission_requires": [
+    "theorem-grade evidence",
+    "uniform-local-jet hypothesis certification",
+    "fullStrip.domain membership certification",
+    "actual signed-copy identity certification",
+    "actual parameter identity certification",
+    "theorem-application certification",
+    "exact pinned source and dependency symbols"
+  ],
+  "synthetic_regression_fixtures_only": true,
+  "surrogate_background_or_wave_introduced": false,
+  "truth_boundary": {
+    "theorem_application_machine_replayed": false,
+    "actual_signed_wave_values_materialized": false,
+    "canonical_scope_link_verified": false,
+    "amplitude_ode_inputs_verified": false,
+    "paper_exact_divergence_free_wave_available": false,
+    "paper_exact_velocity_available": false
+  }
+}
