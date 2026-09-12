@@ -6,20 +6,23 @@ Those labels are necessary but do not, by themselves, prevent an integration
 caller from accidentally reusing the same revision string after replacing the
 concrete residual artifact/provider.
 
-This module adds one deliberately narrow provenance gate.  Every theorem-facing
+This module adds one deliberately narrow provenance gate. Every theorem-facing
 uniform Eq. (9.18) envelope and the corresponding residual-source witness are
 wrapped with the same canonical SHA-256 digest of the concrete residual artifact
-being referenced.  Only after exact digest agreement is established does this
-module delegate to the already-landed analytic-majorant/source binding path.
+being referenced. The preferred constructors derive that digest from the exact
+raw artifact bytes, rather than accepting a caller-written digest string. Only
+after exact digest agreement is established does this module delegate to the
+already-landed analytic-majorant/source binding path.
 
 The digest is audit metadata, not a proof that the artifact is the manuscript's
-actual Eq. (9.21) residual.  This module does not derive any residual estimate,
+actual Eq. (9.21) residual. This module does not derive any residual estimate,
 construct endpoint limits, prove all-order smoothness, or promote any paper-exact
-truth flag.  ``paper_exact_velocity_available`` therefore remains false.
+truth flag. ``paper_exact_velocity_available`` therefore remains false.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 import re
 from typing import Iterable
 
@@ -40,6 +43,27 @@ def _canonical_sha256(value: object, name: str) -> str:
     return value
 
 
+def section9_residual_artifact_sha256(payload: bytes) -> str:
+    """Hash the exact serialized residual artifact bytes with SHA-256.
+
+    No text decoding, newline normalization, JSON reserialization, or other
+    canonicalization is performed. Callers that have a file-backed residual
+    artifact should pass the exact file bytes. This makes the digest depend on
+    the artifact itself instead of on a separately typed provenance string.
+
+    Empty payloads are rejected because they cannot represent a materialized
+    Eq. (9.21) residual artifact. The returned digest is still only an identity
+    witness: this function does not certify that the bytes encode the genuine
+    manuscript residual.
+    """
+
+    if not isinstance(payload, bytes):
+        raise TypeError("residual artifact payload must be exact bytes")
+    if not payload:
+        raise ValueError("residual artifact payload must be nonempty")
+    return hashlib.sha256(payload).hexdigest()
+
+
 @dataclass(frozen=True)
 class Section9ContentAddressedUniformEnvelopeWitness:
     """Pair one Eq. (9.18) envelope with its concrete residual-artifact digest."""
@@ -55,6 +79,22 @@ class Section9ContentAddressedUniformEnvelopeWitness:
             "residual_artifact_sha256",
             _canonical_sha256(
                 self.residual_artifact_sha256, "residual_artifact_sha256"
+            ),
+        )
+
+    @classmethod
+    def from_artifact_bytes(
+        cls,
+        *,
+        envelope: Section9UniformResidualEnvelopeWitness,
+        residual_artifact: bytes,
+    ) -> "Section9ContentAddressedUniformEnvelopeWitness":
+        """Bind an envelope to a digest computed from the exact artifact bytes."""
+
+        return cls(
+            envelope=envelope,
+            residual_artifact_sha256=section9_residual_artifact_sha256(
+                residual_artifact
             ),
         )
 
@@ -74,6 +114,22 @@ class Section9ContentAddressedResidualSourceWitness:
             "residual_artifact_sha256",
             _canonical_sha256(
                 self.residual_artifact_sha256, "residual_artifact_sha256"
+            ),
+        )
+
+    @classmethod
+    def from_artifact_bytes(
+        cls,
+        *,
+        source: Section9ResidualEndpointSourceWitness,
+        residual_artifact: bytes,
+    ) -> "Section9ContentAddressedResidualSourceWitness":
+        """Bind a residual provider to a digest computed from exact artifact bytes."""
+
+        return cls(
+            source=source,
+            residual_artifact_sha256=section9_residual_artifact_sha256(
+                residual_artifact
             ),
         )
 
@@ -133,7 +189,7 @@ def bind_content_addressed_section9_uniform_envelopes_to_residual_source(
     """Require one artifact digest, then run the existing Eq. (9.18) source gate.
 
     This function intentionally delegates all degree/stage/window/evidence checks
-    to ``bind_section9_uniform_envelope_ladder_to_residual_source``.  Its sole new
+    to ``bind_section9_uniform_envelope_ladder_to_residual_source``. Its sole new
     responsibility is fail-closed content identity: every wrapped envelope and
     the wrapped source must name exactly the same canonical SHA-256 digest.
     """
