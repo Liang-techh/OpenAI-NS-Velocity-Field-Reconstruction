@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "dbfff865aacda062ba3b7ea7eebb42ddcf427156",
+  "integrated_prs": [189],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 hierarchy-owned analytic eta jets of the Eq. (5.7) A0/A1 matrices after PR #184. Matrix values reuse the landed PositiveAxis formulas and derivatives are computed only from hierarchy-owned order-zero phi/U/beta second jets; no caller-supplied matrix derivative, production finite difference, generic cutoff, sampled derivative table, or fitted coefficient family is admitted.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_matrix_parameter.py",
+      "test": "tests/test_background_repaired_history_matrix_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_MATRIX_PARAMETER_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.7)", "Lemma 5.1", "Lemma 5.2", "Appendix A"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #189 analytically materializes hierarchy-owned (A0, partial_eta A0) and (A1, partial_eta A1) from the same structured order-zero base history used by Eq. (5.7), retaining analytic Eq. (5.2) ownership of beta_0 and cross-checking the derivatives against the pre-existing matrix value path.",
+      "remaining_boundary": "The genuine Issue #1 leading mixed profile remains upstream. Differentiating PR #184's W_n^(1) still requires partial_eta^2 W_n^(0), so a hierarchy-owned second eta jet of the forcing/first Picard term remains open. Picard convergence/final recursive coefficient materialization, the paper's recursive cutoff-scale schedule, Proposition 5.3 all-jets truncation/residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
