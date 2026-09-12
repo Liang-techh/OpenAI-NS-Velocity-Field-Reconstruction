@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "integration-truth-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "2f2423fd73727ac6846a5efd32a8d270f86c2f15",
+  "integrated_prs": [157, 158, 159, 160],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration ledger for the four landed increments immediately after PR #156. This records executable/formal-structure capability without modifying the mathematical constructors or promoting any layer to paper-exact status.",
+  "layers": [
+    {
+      "pr": 157,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_natural_operator.py",
+      "test": "tests/test_axis_coefficient_natural_operator.py",
+      "provenance": "references/AXIS_COEFFICIENT_NATURAL_OPERATOR_PROVENANCE.md",
+      "equation_or_source": "AxisResolvent.naturalOperator / AxisReference.reference_coefficient / NaturalAxisData.chi",
+      "capability": "The pinned linear natural-axis map Q(A)=(1/2)J2(chi*A) is now executable on the actual SchedulePressure-derived coefficient-jet representation, with chi recovered from the pinned phi0[1]=-chi/4 identity and the landed coefficient product/J2 operators.",
+      "remaining_boundary": "No global all-index weighted AxisSpace norm certificate or infinite alternating naturalResolvent evaluation/truncation certificate is supplied. The naturalResolvent action needed by naturalRemainder, naturalRemainder(x0), the first genuine Picard iterate, fixed-point phi/u, derived average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and paper-exact velocity remain unresolved."
+    },
+    {
+      "pr": 158,
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_phi_third_mixed_jets.py",
+      "test": "tests/test_background_moment_repair_phi_third_mixed_jets.py",
+      "provenance": "references/LEMMA_5_2_PHI_THIRD_MIXED_JET_PROVENANCE.md",
+      "equation_or_source": "Lemma 5.2 / Eq. (5.14) / Eqs. (5.3)-(5.7) / repaired phi=C E/R third-mixed jets",
+      "capability": "The exact compact Lemma 5.2 phi=C E/R repair now exposes one coherent repaired ProfileThirdMixedJet, analytically supplying phi_XXeta, phi_Xetaeta, and phi_etaetaeta on active E-repair support while preserving the existing second jet and the base jet off support/at the axis.",
+      "remaining_boundary": "The unrepaired phi third-mixed jet, normalization C, moment/patch eta-jets, and Issue #1 leading profile remain upstream. The repaired lower-history hierarchy does not yet own this stronger phi layer, so hierarchy-owned partial_eta actualLowerSource/f_n, the genuine k=1 Eq. (5.7) Picard application, recursive coefficient/cutoff completion, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 159,
+      "id": "stage-3-dyadic-charts-and-transported-phases",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_damping.py",
+      "test": "tests/test_phase_large_band_damping.py",
+      "provenance": "references/PHASE_LARGE_BAND_DAMPING_PROVENANCE.md",
+      "equation_or_source": "Sections 6-7 / BasePhaseGeometry.FamilyData.damping_error / dampingConstant(M)/S_*",
+      "capability": "The pinned FamilyData.damping_error theorem identity is now fail-closed bound to one admitted active signed family/source revision and the existing exact large-band scalar dampingConstant(M)/S_* envelope.",
+      "remaining_boundary": "No genuine Section 6 carrier/slot family, Proposition 5.5 paper-exact base provider, actual damping field, all-active-family theorem application, stress-cone wave, curl-realized oscillatory correction, or paper-exact velocity is supplied."
+    },
+    {
+      "pr": 160,
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_residual_artifact_fingerprint.py",
+      "test": "tests/test_section9_residual_artifact_fingerprint.py",
+      "provenance": "references/SECTION9_RESIDUAL_ARTIFACT_FINGERPRINT_PROVENANCE.md",
+      "equation_or_source": "Section 9 Eqs. (9.18),(9.21) / Section 10 endpoint-majorant source binding / SHA-256 residual-artifact identity",
+      "capability": "The Section 9 envelope-to-residual-source bridge now also requires one canonical lowercase SHA-256 residual-artifact fingerprint across every endpoint-degree Eq. (9.18) envelope and the frozen Eq. (9.21) residual-source witness before the existing semantic source/stage/window/evidence/provenance checks can pass.",
+      "remaining_boundary": "The fingerprint is audit metadata only: it is not computed from a manuscript-derived Eq. (9.21) residual artifact and does not prove that the uniform Eq. (9.18) envelopes were derived from that artifact. The actual Section 9 residual sequence, machine-derived all-order endpoint majorants, endpoint-limit construction/uniqueness, infinite Borel right-jet convergence/all-order smoothness, smooth compact forcing, bounded-energy/blow-up closure, and paper-exact velocity remain unverified."
+    }
+  ]
+}
