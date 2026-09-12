@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "actual-signed-mean-defect-admission",
+  "base_main_commit": "fdaf4be8af0a4d858bef87b0fab9ffdb61b9927c",
+  "issue": 3,
+  "section": 8,
+  "status": "formal-structure",
+  "artifact": "src/openai_ns_reconstruction/actual_signed_mean_defect.py",
+  "tests": "tests/test_actual_signed_mean_defect.py",
+  "formal_repository": "https://github.com/openai/NavierStokesAndEuler",
+  "formal_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+  "formal_file": "NavierStokes/ActualSignedMeanBinding.lean",
+  "theorem": "NavierStokes.ActualSignedMeanBinding.requested_cross_defect",
+  "dependencies": [
+    "NavierStokes.ActualSignedMeanBinding.requested_cross_factor",
+    "NavierStokes.ActualPrimaryCovariance.partitionFactor_eq_one_sub_missing"
+  ],
+  "identity": "meanBar(actualCross) - requestedStress = -missingWeight(Prepared.N, physicalScale) * requestedStress",
+  "tail_threshold_required_for_this_identity": false,
+  "producer_kind": "lean-formal-export",
+  "sampled_or_fitted_evidence_allowed": false,
+  "requested_cross_defect_theorem_machine_replayed": false,
+  "actual_mean_cross_values_materialized": false,
+  "missing_weight_values_materialized": false,
+  "finite_head_mean_defect_values_materialized": false,
+  "finite_head_mean_defect_solved": false,
+  "compact_mean_correction_available": false,
+  "paper_exact_velocity_available": false
+}
