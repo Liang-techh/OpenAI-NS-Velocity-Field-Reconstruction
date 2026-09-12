@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "0780ff0bf3c73b552170752d2ac1a66137edb0fb",
+  "integrated_prs": [163],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 hierarchy ownership for the already-landed Lemma 5.2 repaired phi third-mixed jet. A strong coefficient source keeps repaired phi third-mixed and repaired U fourth-mixed data together and exposes lower phi/U jets only as exact projections, while failing closed on absent or incoherent strong phi data.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_phi_third_mixed.py",
+      "provenance": "references/REPAIRED_HISTORY_PHI_THIRD_MIXED_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.2", "Eq. (5.14)", "Eqs. (5.3)-(5.7)", "Appendix A"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #163 makes the repaired positive-order phi third-mixed provider a coefficient-history-owned object. Its ordinary phi second jet is the exact projection of the same repaired provider, the same coefficient source also owns the repaired U fourth-mixed provider, older sources fail closed on strong phi queries, and incoherent third-to-second phi projections are rejected.",
+      "remaining_boundary": "The genuine Issue #1 leading third-mixed profile remains upstream, as do unrepaired positive-order base mixed jets and moment/patch eta-jets. Complete hierarchy-owned partial_eta actualLowerSource, hierarchy-owned partial_eta f_n, the genuine k=1 Eq. (5.7) Picard application, recursive coefficient materialization, recursive cutoff-scale completion, Proposition 5.3 all-jets truncation/residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
