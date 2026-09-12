@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/NaturalAxisCoefficients.lean"
+    ],
+    "symbols": [
+      "AxisContraction.naturalRemainder",
+      "AxisContraction.referencePair",
+      "NaturalAxisCoefficients.realAmplitude"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the genuine theorem-selected naturalRemainder source a^2*phi0^2 at x0=referencePair as a split signed-log coefficient-jet state without narrowing the actual SchedulePressure amplitude to binary64",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_natural_source.py",
+      "tests/test_axis_coefficient_wide_natural_source.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_NATURAL_SOURCE_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_surrogate": false,
+      "fixed_point_state": "x0 = actual SchedulePressure referencePair",
+      "source_formula": "a^2 * phi0^2",
+      "eta_derivatives": "exact finite Leibniz rule with complete Bell recurrence for d^k(a^2)/a^2",
+      "magnitude_representation": "common 2*log(a) scale plus signed Decimal derivative factor"
+    },
+    "validation": [
+      "actual theorem-selected epsilon/reference pair is inherited from the landed amplitude state",
+      "zeroth eta jets extract the common a^2 scale and retain the exact phi0^2 radial row",
+      "first eta jet satisfies the direct product rule with 2*Lambda*realGradient",
+      "second eta jet satisfies the explicit Bell/Leibniz identity",
+      "nonzero current-scale source refuses silent binary64 underflow",
+      "indices and eta window fail closed"
+    ],
+    "remaining_boundary": "propagate the wide a^2*phi0^2 source through primitive/parameterPrimitive/mulY/coefficient multiplications/j1 to materialize the pressure component; combine that component with ordinary remainder terms without scale loss; represent theorem-selected t=1/Lambda and 1/(2*Lambda) without binary64 loss; then evaluate genuine naturalRemainder(x0), execute Picard x1/fixed-point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
