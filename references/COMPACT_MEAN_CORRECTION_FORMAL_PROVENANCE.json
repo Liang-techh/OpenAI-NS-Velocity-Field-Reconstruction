@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "a5431dd5aac603fb0af6aa91f601d8ab40c8d66e",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-8-compact-mean-correction-formal",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/compact_mean_correction_formal.py",
+    "test": "tests/test_compact_mean_correction_formal.py",
+    "provenance": "references/COMPACT_MEAN_CORRECTION_FORMAL_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/CorrectionState.lean",
+        "NavierStokes/MeanRankUpdate.lean"
+      ],
+      "symbols": [
+        "NavierStokes.CorrectionState.rank_rows_on_patch",
+        "NavierStokes.MeanRankUpdate.physical_five_rows"
+      ]
+    },
+    "landed_capability": "Fail-closed admission of one exact compact five-row rank_rows_on_patch application on the actual CorrectionState debt, without using the executable surrogate bump.",
+    "truth_boundary": {
+      "theorem_application_machine_replayed": false,
+      "actual_debt_values_materialized": false,
+      "actual_bump_values_materialized": false,
+      "finite_head_signed_defect_link_verified": false,
+      "compact_mean_correction_field_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "mean_rank_update.py polynomial bump as the paper-exact Mathlib bump",
+      "actual_signed_mean_defect finite-head defect as CorrectionState.debt without a formal bridge",
+      "paper-exact compact correction field without materialized formal data"
+    ]
+  }
+}
