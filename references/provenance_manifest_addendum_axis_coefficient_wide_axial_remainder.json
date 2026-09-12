@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/AxisOperators.lean",
+      "NavierStokes/NaturalAxisCoefficients.lean"
+    ],
+    "symbols": [
+      "AxisContraction.naturalRemainder",
+      "AxisOperators.average",
+      "AxisOperators.j1",
+      "AxisOperators.dot1",
+      "AxisOperators.param1",
+      "AxisOperators.mixed1"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "materializes the axial naturalRemainder branch at x0 as the mixed-scale decomposition inverseL*lin2 - inverseL*slow2/Lambda + inverseL*pressure, preserving theorem-selected 1/Lambda and the nonzero a^2 pressure scale without binary64 collapse",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_axial_remainder.py",
+      "tests/test_axis_coefficient_wide_axial_remainder.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_AXIAL_REMAINDER_PROVENANCE.md",
+    "actual_data": {
+      "schedule_caller_supplied_only": true,
+      "pressure_datum_override": false,
+      "sigma_override": false,
+      "epsilon_override": false,
+      "Lambda_override": false,
+      "C_override": false,
+      "amplitude_surrogate": false,
+      "fixed_point_state": "x0 = actual SchedulePressure referencePair",
+      "axial_formula": "inverseL * (lin2 - (1/Lambda) * slow2 + pressure)",
+      "pressure_source": "a^2 * phi0^2",
+      "mixed_scale_representation": "ordinary Decimal base + explicit Decimal numerator/Lambda slow term + signed-log a^2 pressure term"
+    },
+    "validation": [
+      "ordinary inverseL*lin2 is cross-checked against the previously landed full naturalRemainder with regression-only a=0,t=0 isolation",
+      "ordinary inverseL*slow2 is cross-checked against the regression-only difference naturalRemainder(t=0)-naturalRemainder(t=1) with a=0",
+      "the final inverseL multiplication on wide pressure is checked against the exact radial-degree-zero AxisData identity at eta derivative orders 0 and 1; constant-amplitude replacement is explicitly rejected because parameterPrimitive contains genuine amplitude-derivative terms",
+      "the final inverseL multiplication on wide pressure uses exact radial convolution and eta Leibniz expansion",
+      "Lambda is inherited from the actual theorem-selected wide amplitude and cannot be overridden",
+      "nonzero pressure remains signed-log nonzero and binary64 projection fails closed on range loss",
+      "indices and eta window fail closed"
+    ],
+    "remaining_boundary": "materialize the angular naturalRemainder branch with theorem-selected 1/Lambda through naturalResolvent, combine both components into genuine naturalRemainder(x0), apply the outer 1/(2*Lambda) Picard scale to form Picard x1, iterate/certify the fixed-point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+  }
+}
