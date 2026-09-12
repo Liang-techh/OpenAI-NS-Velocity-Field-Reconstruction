@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3966b0c00e0cfe5c92fbf64ae568234132034fef",
+  "integrated_prs": [148],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 hierarchy-owned Eq. (5.6) omega parameter-jet bridge. Connects contiguous fourth-mixed U ownership to the existing analytic Eq. (5.2) beta-third-mixed and Eq. (5.6) parameter-jet paths, while failing closed when any required coefficient lacks the stronger U derivative layer.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_omega_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_OMEGA_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eq. (5.6)", "Eq. (5.7)", "Lemma 5.2", "Eqs. (5.14)-(5.16)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #148 adds a fail-closed ownership bridge from Section5LowerHistoryJetHierarchy to the analytic Eq. (5.6) omega parameter jet. Every beta third-mixed jet is derived from hierarchy-owned fourth-mixed U data through Eq. (5.2), ordinary axial jets come from the same coherent hierarchy source, and no independent beta derivative record or sampled Omega/X derivative is accepted. Regression uses actual Lemma 5.2 compact repair geometry for the positive-order coefficient, cross-checks the value against the existing actualLowerSource path, checks the eta derivative by an independent centered finite difference of that old value path, and covers X=0 plus missing-leading-fourth-mixed failure.",
+      "remaining_boundary": "The real order-zero fourth-mixed leading profile is still upstream in Issue #1, and positive-order unrepaired/base fourth-mixed U plus moment/patch eta jets remain inputs. Therefore a complete paper-owned strict-lower omega-parameter history, hierarchy-owned partial_eta f_n, the genuine k=1 Eq. (5.7) Picard application, Picard convergence, recursive coefficient materialization, recursive cutoff completion, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
