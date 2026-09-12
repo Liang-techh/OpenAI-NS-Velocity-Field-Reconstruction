@@ -16,18 +16,22 @@ and outer radius 1. Consequently the cutoff is one on
 The exact numerical transition values of Mathlib's ``ContDiffBump`` are not
 reimplemented here. ``section10_spatial_cutoff`` uses this repository's
 explicit C-infinity representative with the *same plateau and support
-geometry*. ``section10_spatial_cutoff_gradient`` is the exact analytic gradient
-of that representative, so it can be used in the product rule
-``curl(c A) = c curl(A) + grad(c) cross A`` without finite-differencing the
-cutoff. Neither function is promoted to a paper-exact scalar realization in
-the transition collar.
+geometry*. ``section10_spatial_cutoff_gradient`` and
+``section10_spatial_cutoff_hessian`` are exact analytic derivatives of that
+representative, so product-rule paths do not need to finite-difference the
+cutoff. None of these functions is promoted to a paper-exact scalar
+realization in the transition collar.
 """
 from __future__ import annotations
 
 import math
 import numpy as np
 
-from .cutoffs import smooth_cutoff, standard_cutoff_derivative
+from .cutoffs import (
+    smooth_cutoff,
+    standard_cutoff_derivative,
+    standard_cutoff_second_derivative,
+)
 
 SUPPORT_RADIUS_SQUARED = 1.0 / 16.0
 SUPPORT_HALF_HEIGHT = 1.0 / 4.0
@@ -71,6 +75,12 @@ def symmetric_smooth_bump_derivative(s: float) -> float:
         return 0.0
     sign = 1.0 if s > 0.0 else -1.0
     return sign * standard_cutoff_derivative(abs(s))
+
+
+def symmetric_smooth_bump_second_derivative(s: float) -> float:
+    """Exact second derivative of this repository's even representative."""
+    (s,) = _finite(s)
+    return standard_cutoff_second_derivative(abs(s))
 
 
 def support_cylinder_contains(x: float, y: float, z: float) -> bool:
@@ -125,6 +135,45 @@ def section10_spatial_cutoff_gradient(
     if not np.all(np.isfinite(gradient)):
         raise ArithmeticError("spatial cutoff gradient is not finite")
     return gradient
+
+
+def section10_spatial_cutoff_hessian(
+    x: float, y: float, z: float, t: float = 0.0
+) -> np.ndarray:
+    """Analytic Cartesian Hessian of the fixed Section 10 cutoff representative.
+
+    This is a derivative adapter for later analytic ``grad(u)``/``Delta u``
+    assembly. It preserves the already-fixed support/plateau geometry and does
+    not promote the executable transition collar to the paper's noncomputable
+    Mathlib ``ContDiffBump`` values.
+    """
+    x, y, z, _t = _finite(x, y, z, t)
+    r_arg = 16.0 * radial_square(x, y)
+    z_arg = 4.0 * z
+    radial = symmetric_smooth_bump(r_arg)
+    axial = symmetric_smooth_bump(z_arg)
+    radial_d1 = symmetric_smooth_bump_derivative(r_arg)
+    axial_d1 = symmetric_smooth_bump_derivative(z_arg)
+    radial_d2 = symmetric_smooth_bump_second_derivative(r_arg)
+    axial_d2 = symmetric_smooth_bump_second_derivative(z_arg)
+
+    h_xx = (32.0 * radial_d1 + 1024.0 * x * x * radial_d2) * axial
+    h_yy = (32.0 * radial_d1 + 1024.0 * y * y * radial_d2) * axial
+    h_xy = 1024.0 * x * y * radial_d2 * axial
+    h_xz = 128.0 * x * radial_d1 * axial_d1
+    h_yz = 128.0 * y * radial_d1 * axial_d1
+    h_zz = 16.0 * radial * axial_d2
+    hessian = np.array(
+        [
+            [h_xx, h_xy, h_xz],
+            [h_xy, h_yy, h_yz],
+            [h_xz, h_yz, h_zz],
+        ],
+        dtype=float,
+    )
+    if not np.all(np.isfinite(hessian)):
+        raise ArithmeticError("spatial cutoff Hessian is not finite")
+    return hessian
 
 
 def section10_localized_field(local: "LocalField") -> "LocalizedField":
