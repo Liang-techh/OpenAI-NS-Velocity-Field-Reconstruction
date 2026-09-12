@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3aa14a3b74f487f871535d34de368d5269d5d450",
+  "integrated_prs": [158],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Lemma 5.2 repaired phi third-mixed jet bridge. Extends the exact compact phi=C E/R repair with the three scalar third-mixed derivatives required by the landed analytic preceding-diffusion eta derivative, without production finite differences or axis division.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_phi_third_mixed_jets.py",
+      "provenance": "references/LEMMA_5_2_PHI_THIRD_MIXED_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.2", "Eq. (5.14)", "Eqs. (5.3)-(5.7)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #158 lifts the compact repaired phi_n = C E_n / R bridge to one coherent ProfileThirdMixedJet. On active E-repair support it analytically supplies phi_XXeta, phi_Xetaeta, and phi_etaetaeta from ordinary eta derivatives of the actual Lemma 5.2 repair coefficients, while preserving the existing second jet exactly and returning the base jet unchanged off support and at the axis.",
+      "remaining_boundary": "The unrepaired phi third-mixed jet, normalization C, moment/patch eta-jets, and Issue #1 leading profile remain upstream. The repaired lower-history hierarchy does not yet own this stronger phi layer, so hierarchy-owned partial_eta actualLowerSource, hierarchy-owned partial_eta f_n, the genuine k=1 Eq. (5.7) Picard application, recursive coefficient materialization, recursive cutoff completion, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
