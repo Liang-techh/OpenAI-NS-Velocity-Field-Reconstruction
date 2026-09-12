@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "runtime-status-integration-truth",
+  "baseline_main_commit": "c343ce3196841c1df0b16032f00b4e626e1c896b",
+  "canonical_manifest": "references/provenance_manifest.json",
+  "canonical_truth_required": {
+    "full_reconstruction": false,
+    "stage_3_to_6_layer_id": "stage-3-to-6-oscillatory-corrections",
+    "stage_3_to_6_status": "formal-structure",
+    "paper_exact_velocity_available": false
+  },
+  "status_surface_change": {
+    "reason": "runtime status still labeled Stages 5 and 6 pending after formal-structure artifacts and provenance had landed",
+    "promotion_ceiling": "formal-structure",
+    "paper_exact_gate_changed": false
+  },
+  "stages": [
+    {
+      "stage": 5,
+      "name": "compact mean corrections",
+      "status": "formal-structure",
+      "paper_locations": [
+        "Section 8 five-equation mean repair",
+        "Equation (35) in the pinned formalization"
+      ],
+      "artifacts": [
+        "src/openai_ns_reconstruction/mean_rank_update.py",
+        "tests/test_mean_rank_update.py",
+        "references/MEAN_RANK_UPDATE_PROVENANCE.md"
+      ],
+      "implemented_boundary": [
+        "separated three-cell angular and two-cell axial repair geometry",
+        "physical debt normalization and five power-moment systems",
+        "compact executable increments on the pinned inner support intervals",
+        "independent adaptive-quadrature regression of the completed five physical rows"
+      ],
+      "not_verified": [
+        "actual mean debt and lambda,C,ell,U from the genuine completed upstream hierarchy",
+        "paper-exact equality of the executable CompactMomentBump with the noncomputable pinned ContDiffBump",
+        "actual Section 8 support/glue and associated defect solve",
+        "paper-exact compact mean correction family"
+      ]
+    },
+    {
+      "stage": 6,
+      "name": "residual-improvement iteration",
+      "status": "formal-structure",
+      "paper_locations": [
+        "Section 9",
+        "Eqs. (9.17)-(9.21)",
+        "Proposition 9.9"
+      ],
+      "artifacts": [
+        "src/openai_ns_reconstruction/section9_stage_certificate.py",
+        "src/openai_ns_reconstruction/section9_flat_remainder.py",
+        "src/openai_ns_reconstruction/section9_correction_extension_admission.py",
+        "src/openai_ns_reconstruction/section9_local_sum_admission.py",
+        "src/openai_ns_reconstruction/section9_finite_prefix.py",
+        "src/openai_ns_reconstruction/section9_physical_window.py",
+        "src/openai_ns_reconstruction/section9_stage_physical_support.py",
+        "src/openai_ns_reconstruction/section9_endpoint_residual_source.py",
+        "src/openai_ns_reconstruction/section9_endpoint_majorant_adapter.py",
+        "references/SECTION9_STAGE_CERTIFICATE_PROVENANCE.md",
+        "references/SECTION9_FINITE_PREFIX_PROVENANCE.md",
+        "references/SECTION9_ENDPOINT_MAJORANT_ADAPTER_PROVENANCE.md"
+      ],
+      "implemented_boundary": [
+        "fail-closed Eq. (9.17)-(9.18) stage-certificate arithmetic",
+        "finite flat-remainder and power-ladder gates",
+        "source-bound correction-extension and local-sum admission",
+        "contiguous finite Eq. (9.21) prefix evaluation",
+        "pre-endpoint physical-window and support transfer",
+        "endpoint residual-source and uniform-envelope-to-majorant plumbing"
+      ],
+      "not_verified": [
+        "actual Section 9 correction fields from genuine Section 7/8 data",
+        "the theorem-selected infinite scale sequence and common-domain all-orders bounds",
+        "the manuscript fixed cutoff pointwise evaluator",
+        "the locally finite infinite Eq. (9.21) field sums",
+        "convergence to the Proposition 9.9 residual-flat limit",
+        "endpoint smooth forcing, bounded energy, or blow-up closure"
+      ]
+    }
+  ],
+  "forbidden_inferences": [
+    "green tests imply paper-exact reconstruction",
+    "finite prefixes imply the infinite Eq. (9.21) construction",
+    "synthetic five-row data imply the actual Section 8 correction",
+    "a supplied or derived endpoint majorant implies actual endpoint convergence without the genuine residual sequence",
+    "defining f=R and observing R-f=0 is independent verification"
+  ]
+}
