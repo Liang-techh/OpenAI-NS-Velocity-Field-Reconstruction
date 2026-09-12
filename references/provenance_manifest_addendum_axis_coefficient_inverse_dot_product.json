@@ -1,0 +1,25 @@
+{
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd"
+  },
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "capability": "Executable pinned AxisOperators.inverseDotProduct / differentialFamily(p=0,d(j)=j) map on actual SchedulePressure-derived coefficient eta-jets, including the dot1 (r=1) and dot2 (r=2) instances required by coefficientOperators",
+    "paper_locations": [
+      "NavierStokes/AxisOperators.lean: differentialFamily, inverseDotProductData, inverseDotProduct, norm_inverseDotProduct_le, jet_inverseDotProduct",
+      "NavierStokes/AxisEvaluationAlgebra.lean: inverseDotProduct_equation",
+      "NavierStokes/NaturalAxisBridge.lean: evaluated profile A * (Y * partialY(profile B)) identity",
+      "NavierStokes/AxisContraction.lean: coefficientOperators dot1/dot2 / naturalRemainder downstream use"
+    ],
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_inverse_dot_product.py",
+      "tests/test_axis_coefficient_inverse_dot_product.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_INVERSE_DOT_PRODUCT_PROVENANCE.md",
+    "remaining_boundary": "No global all-index weighted norm certificate or genuine AxisSpace membership; inverse mixed remains the last missing pinned inverse bilinear composite before assembling the complete coefficientOperators record. naturalRemainder(x0), the first real Picard iterate, fixed-point phi/u, average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved. paper_exact_velocity_available must remain false."
+  }
+}
