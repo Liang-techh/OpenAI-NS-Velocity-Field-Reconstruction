@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "f3545b839ccd4c91dc207b4ca4c4020e8ec997e0",
+  "integrated_prs": [237],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Safe current-main integration of Agent 4 PR #237 after its original a5431dd5 base became non-mergeable. The three PR files are transplanted byte-for-byte; this ledger records only the bounded truth surface and adds no mathematical promotion.",
+  "layers": [
+    {
+      "pr": 237,
+      "stage": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_localized_velocity_laplacian.py",
+      "test": "tests/test_section9_section10_localized_velocity_laplacian.py",
+      "provenance": "references/SECTION10_LOCALIZED_VELOCITY_LAPLACIAN_PROVENANCE.md",
+      "capability": "Analytically evaluates the off-axis spatial Laplacian of the already-admitted finite Section-9 prefix after the fixed Section-10 localization, requiring a complete provider-supplied spacetime jet through total order three and using analytic cutoff derivatives rather than production finite differences.",
+      "remaining_boundary": "The symmetry axis remains fail-closed. The actual Section-7/8 correction exporter, infinite/locally-finite Eq. (9.21), all-order t-to-1 extension, genuine Navier-Stokes residual/forcing, endpoint closure, bounded-energy/blow-up closure, and paper-exact velocity are not materialized."
+    }
+  ],
+  "forbidden_inferences": [
+    "A finite-prefix off-axis analytic Laplacian is not the infinite/local-finite Eq. (9.21) field and does not establish axis regularity.",
+    "Analytic Delta u_cut for provider-supplied jets is not a genuine Navier-Stokes residual or forcing artifact.",
+    "A numerical finite-difference regression oracle is validation of the analytic derivative implementation, not a paper-exact proof certificate.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote formal-structure or finite-prefix derivative adapters to paper-exact status."
+  ]
+}
