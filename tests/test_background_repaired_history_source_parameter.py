@@ -3,7 +3,10 @@ import math
 import numpy as np
 import pytest
 
-from openai_ns_reconstruction.background_inner_solver import first_picard_term_eq_5_7
+from openai_ns_reconstruction.background_inner_solver import (
+    first_picard_term_eq_5_7,
+    singular_inverse_eq_5_7,
+)
 from openai_ns_reconstruction.background_lower_history_source import (
     positive_axis_point_data_from_lower_history,
 )
@@ -23,6 +26,9 @@ from openai_ns_reconstruction.background_repaired_history_first_picard_parameter
 )
 from openai_ns_reconstruction.background_repaired_history_forcing_parameter import (
     hierarchy_owned_positive_axis_forcing_parameter_jet,
+)
+from openai_ns_reconstruction.background_repaired_history_k1_picard import (
+    hierarchy_owned_k1_picard_value_eq_5_7,
 )
 from openai_ns_reconstruction.background_repaired_history_phi_third_mixed import (
     Section5LowerHistoryPhiThirdMixedHierarchy,
@@ -301,6 +307,71 @@ def test_hierarchy_owned_first_picard_parameter_jet_matches_value_finite_differe
     )
 
 
+def test_hierarchy_owned_k1_picard_matches_independent_rhs_composition():
+    hierarchy = _hierarchy()
+    order = 2
+    xi = math.sqrt(0.5) * 2.17
+    eta = 0.23
+    quadrature_points = 6
+
+    actual = hierarchy_owned_k1_picard_value_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta,
+        quadrature_points=quadrature_points,
+    )
+    fields = hierarchy.positive_axis_fields(order)
+
+    def rhs(s, eta_value):
+        first = hierarchy_owned_first_picard_parameter_jet_eq_5_7(
+            hierarchy,
+            order,
+            s,
+            eta_value,
+            quadrature_points=quadrature_points,
+        )
+        forcing = hierarchy_owned_positive_axis_forcing_parameter_jet(
+            hierarchy,
+            order,
+            s,
+            eta_value,
+        ).value
+        return (
+            fields.A0(s, eta_value) @ first.value
+            + fields.A1(s, eta_value) @ first.parameter
+            + forcing
+        )
+
+    expected = singular_inverse_eq_5_7(
+        xi,
+        eta,
+        rhs,
+        quadrature_points=quadrature_points,
+    )
+    first = hierarchy_owned_first_picard_parameter_jet_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta,
+        quadrature_points=quadrature_points,
+    ).value
+
+    np.testing.assert_allclose(actual, expected, rtol=0.0, atol=2.0e-13)
+    assert not np.allclose(actual, first, rtol=1.0e-10, atol=1.0e-12)
+
+
+def test_hierarchy_owned_k1_picard_axis_is_zero_after_strong_preflight():
+    actual = hierarchy_owned_k1_picard_value_eq_5_7(
+        _hierarchy(),
+        2,
+        0.0,
+        0.23,
+        quadrature_points=6,
+    )
+    np.testing.assert_array_equal(actual, np.zeros(6))
+
+
 def test_order_one_fails_closed_without_leading_fourth_mixed_u():
     hierarchy = Section5LowerHistoryPhiThirdMixedHierarchy(
         H,
@@ -335,6 +406,16 @@ def test_order_one_fails_closed_without_leading_fourth_mixed_u():
             quadrature_points=16,
         )
 
+    # The nontrivial Picard bridge must preserve the same fail-closed boundary.
+    with pytest.raises(ValueError, match="fourth-mixed U"):
+        hierarchy_owned_k1_picard_value_eq_5_7(
+            hierarchy,
+            1,
+            0.0,
+            0.1,
+            quadrature_points=6,
+        )
+
 
 def test_source_eta_jet_requires_strong_phi_history():
     with pytest.raises(TypeError, match="Section5LowerHistoryPhiThirdMixedHierarchy"):
@@ -349,3 +430,8 @@ def test_forcing_eta_jet_requires_strong_phi_history():
 def test_first_picard_eta_jet_requires_strong_phi_history():
     with pytest.raises(TypeError, match="Section5LowerHistoryPhiThirdMixedHierarchy"):
         hierarchy_owned_first_picard_parameter_jet_eq_5_7(object(), 1, 0.5, 0.1)
+
+
+def test_k1_picard_requires_strong_phi_history():
+    with pytest.raises(TypeError, match="Section5LowerHistoryPhiThirdMixedHierarchy"):
+        hierarchy_owned_k1_picard_value_eq_5_7(object(), 1, 0.5, 0.1)
