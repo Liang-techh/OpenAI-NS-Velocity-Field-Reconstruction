@@ -4,6 +4,9 @@ import numpy as np
 import pytest
 
 from openai_ns_reconstruction.background_moment_repair import Lemma52MomentRepair
+from openai_ns_reconstruction.background_moment_repair_fourth_mixed_jets import (
+    Lemma52RepairedFourthMixedJetAdapter,
+)
 from openai_ns_reconstruction.background_moment_repair_phi_third_mixed_jets import (
     Lemma52RepairedPhiThirdMixedJetAdapter,
 )
@@ -161,30 +164,24 @@ def test_hierarchy_owns_actual_repaired_phi_third_mixed_and_projects_second_jet(
     X = 0.5 * 2.17**2
     eta = 0.23
 
-    independent = Lemma52RepairedPhiThirdMixedJetAdapter(
+    independent_phi = Lemma52RepairedPhiThirdMixedJetAdapter(
         functional,
         C,
         _base_phi_third_mixed_jet,
     )
-    expected = independent.phi_third_mixed_jet(X, eta)
-    actual = hierarchy.phi_third_mixed_jet(1, X, eta)
+    expected_phi = independent_phi.phi_third_mixed_jet(X, eta)
+    actual_phi = hierarchy.phi_third_mixed_jet(1, X, eta)
 
-    assert actual == expected
-    assert hierarchy.phi_second_jet(1, X, eta) == expected.second()
-    assert hierarchy.axial_fourth_mixed_jet(1, X, eta) == pytest.approx(
-        _independent_repaired_u(functional, X, eta)
-    )
+    assert actual_phi == expected_phi
+    assert hierarchy.phi_second_jet(1, X, eta) == expected_phi.second()
 
-
-def _independent_repaired_u(functional, X, eta):
-    from openai_ns_reconstruction.background_moment_repair_fourth_mixed_jets import (
-        Lemma52RepairedFourthMixedJetAdapter,
-    )
-
-    return Lemma52RepairedFourthMixedJetAdapter(
+    independent_u = Lemma52RepairedFourthMixedJetAdapter(
         functional,
         _base_u_fourth_mixed_jet,
-    ).U_fourth_mixed_jet(X, eta)
+    )
+    assert hierarchy.axial_fourth_mixed_jet(
+        1, X, eta
+    ) == independent_u.U_fourth_mixed_jet(X, eta)
 
 
 def test_phi_third_mixed_path_fails_closed_for_old_fourth_mixed_source():
