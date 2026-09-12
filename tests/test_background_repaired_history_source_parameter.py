@@ -3,6 +3,7 @@ import math
 import numpy as np
 import pytest
 
+from openai_ns_reconstruction.background_inner_solver import first_picard_term_eq_5_7
 from openai_ns_reconstruction.background_lower_history_source import (
     positive_axis_point_data_from_lower_history,
 )
@@ -16,6 +17,9 @@ from openai_ns_reconstruction.background_preceding_diffusion_parameter_jet impor
 )
 from openai_ns_reconstruction.background_regular_flux_third_mixed_jets import (
     AxialFourthMixedJet,
+)
+from openai_ns_reconstruction.background_repaired_history_first_picard_parameter import (
+    hierarchy_owned_first_picard_parameter_jet_eq_5_7,
 )
 from openai_ns_reconstruction.background_repaired_history_forcing_parameter import (
     hierarchy_owned_positive_axis_forcing_parameter_jet,
@@ -186,6 +190,16 @@ def _landed_source(hierarchy, order, X, eta):
     ).source
 
 
+def _landed_forcing(hierarchy, order, xi, eta):
+    return positive_axis_forcing(
+        hierarchy.h,
+        hierarchy.C,
+        xi,
+        eta,
+        _landed_source(hierarchy, order, xi * xi, eta),
+    )
+
+
 @pytest.mark.parametrize("X", [0.0, 0.5 * 2.17**2])
 def test_full_lower_source_eta_jet_matches_landed_value_finite_difference(X):
     hierarchy = _hierarchy()
@@ -221,7 +235,6 @@ def test_hierarchy_owned_forcing_eta_jet_matches_landed_value_finite_difference(
     order = 2
     eta = 0.23
     eps = 2.0e-6
-    X = xi * xi
 
     actual = hierarchy_owned_positive_axis_forcing_parameter_jet(
         hierarchy,
@@ -230,18 +243,9 @@ def test_hierarchy_owned_forcing_eta_jet_matches_landed_value_finite_difference(
         eta,
     )
 
-    def landed_forcing(e):
-        return positive_axis_forcing(
-            H,
-            C,
-            xi,
-            e,
-            _landed_source(hierarchy, order, X, e),
-        )
-
-    center = landed_forcing(eta)
-    plus = landed_forcing(eta + eps)
-    minus = landed_forcing(eta - eps)
+    center = _landed_forcing(hierarchy, order, xi, eta)
+    plus = _landed_forcing(hierarchy, order, xi, eta + eps)
+    minus = _landed_forcing(hierarchy, order, xi, eta - eps)
     finite_difference = (plus - minus) / (2.0 * eps)
 
     np.testing.assert_array_equal(actual.value, center)
@@ -250,6 +254,50 @@ def test_hierarchy_owned_forcing_eta_jet_matches_landed_value_finite_difference(
         finite_difference,
         rtol=2.0e-5,
         atol=2.0e-7,
+    )
+
+
+@pytest.mark.parametrize("xi", [0.0, math.sqrt(0.5) * 2.17])
+def test_hierarchy_owned_first_picard_parameter_jet_matches_value_finite_difference(xi):
+    hierarchy = _hierarchy()
+    order = 2
+    eta = 0.23
+    eps = 2.0e-6
+    quadrature_points = 32
+
+    actual = hierarchy_owned_first_picard_parameter_jet_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta,
+        quadrature_points=quadrature_points,
+    )
+
+    def landed_first_picard(e):
+        return first_picard_term_eq_5_7(
+            order,
+            xi,
+            e,
+            lambda s, eta_value: _landed_forcing(
+                hierarchy,
+                order,
+                s,
+                eta_value,
+            ),
+            quadrature_points=quadrature_points,
+        )
+
+    center = landed_first_picard(eta)
+    plus = landed_first_picard(eta + eps)
+    minus = landed_first_picard(eta - eps)
+    finite_difference = (plus - minus) / (2.0 * eps)
+
+    np.testing.assert_allclose(actual.value, center, rtol=0.0, atol=1.0e-13)
+    np.testing.assert_allclose(
+        actual.parameter,
+        finite_difference,
+        rtol=3.0e-5,
+        atol=3.0e-7,
     )
 
 
@@ -277,6 +325,16 @@ def test_order_one_fails_closed_without_leading_fourth_mixed_u():
             0.1,
         )
 
+    # G(0)=0 must not bypass the hierarchy truth boundary at the axis.
+    with pytest.raises(ValueError, match="fourth-mixed U"):
+        hierarchy_owned_first_picard_parameter_jet_eq_5_7(
+            hierarchy,
+            1,
+            0.0,
+            0.1,
+            quadrature_points=16,
+        )
+
 
 def test_source_eta_jet_requires_strong_phi_history():
     with pytest.raises(TypeError, match="Section5LowerHistoryPhiThirdMixedHierarchy"):
@@ -286,3 +344,8 @@ def test_source_eta_jet_requires_strong_phi_history():
 def test_forcing_eta_jet_requires_strong_phi_history():
     with pytest.raises(TypeError, match="Section5LowerHistoryPhiThirdMixedHierarchy"):
         hierarchy_owned_positive_axis_forcing_parameter_jet(object(), 1, 0.5, 0.1)
+
+
+def test_first_picard_eta_jet_requires_strong_phi_history():
+    with pytest.raises(TypeError, match="Section5LowerHistoryPhiThirdMixedHierarchy"):
+        hierarchy_owned_first_picard_parameter_jet_eq_5_7(object(), 1, 0.5, 0.1)
