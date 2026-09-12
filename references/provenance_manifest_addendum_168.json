@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "bd5c81bc0bcf0e26d9b992fb0c38f473dad53792",
+  "integrated_prs": [168],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 analytic eta jet for the complete strict-lower actualLowerSource, assembled only from hierarchy-owned strong phi/U history, Eq. (5.2) beta jets, analytic preceding-diffusion derivatives, and the hierarchy-owned Eq. (5.6) Omega parameter jet. No production finite differences or caller-supplied derivative tables are admitted.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_source_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_LOWER_SOURCE_PARAMETER_PROVENANCE.md",
+      "paper_locations": ["Eqs. (5.3)-(5.7)", "Lemma 5.2", "Eq. (5.14)", "Appendix A"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #168 differentiates every field of the landed strict-lower actualLowerSource analytically in eta from the same strong coefficient hierarchy: angular and axial lower products, both preceding-diffusion rows, the pressure product, and Omega_(n-1)/X. The ordinary value remains delegated to the prior source path, and missing leading strong data fail closed.",
+      "remaining_boundary": "The genuine Issue #1 leading mixed profile remains upstream. An analytic eta jet of the final Eq. (5.7) forcing f_n, the genuine hierarchy-owned k=1 Picard application, recursive coefficient materialization, recursive cutoff-scale completion, Proposition 5.3 all-jets truncation/residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
