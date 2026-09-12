@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "f14bc94dd074b2be44fb60dfd1cb707263c550b1",
+  "integrated_prs": [227],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Lemma 5.2 repaired fifth-mixed U-jet increment. Analytically lifts the compact five-bump U repair to U_XXetaetaeta, U_Xetaetaetaeta, and U_etaetaetaetaeta so the landed Eq. (5.2) fourth-mixed beta adapter can consume the real repair contribution without production finite differences.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_fifth_mixed_jets.py",
+      "provenance": "references/LEMMA_5_2_FIFTH_MIXED_JET_PROVENANCE.md",
+      "paper_locations": ["Lemma 5.2", "Eqs. (5.14)-(5.16)", "Eq. (5.2)", "Eqs. (5.3)-(5.7)"],
+      "official_lean_modules": ["NavierStokes/PositiveAxisSystem.lean", "NavierStokes/PositiveAxisExistence.lean"],
+      "landed_capability": "PR #227 lifts the actual compact Lemma 5.2 U repair to the exact three fifth-mixed derivatives required by the landed analytic Eq. (5.2) beta fourth-mixed path. Regression independently centered-differences the prior repaired fourth-mixed U and beta-third-mixed paths, preserves the complete fourth-order projection, and fails closed on missing active-support fifth eta rows.",
+      "remaining_boundary": "The unrepaired/base AxialFifthMixedJet plus moment/patch eta jets remain upstream inputs, and Section5LowerHistoryJetHierarchy does not yet own this stronger layer. It must next derive repaired fifth-mixed U jets from owned coefficients, generate beta fourth-mixed jets, and route them through the landed second-eta Eq. (5.6) Omega/X path before hierarchy-owned partial_eta^2 actualLowerSource, partial_eta^2 f_n, and partial_eta W_n^(1) can close. Full Picard convergence, recursive coefficient materialization, recursive cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    }
+  ]
+}
