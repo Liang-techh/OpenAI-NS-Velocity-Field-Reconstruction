@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "0b2d0b56b350939196cfe83defa0a9afeaca82c4",
+  "integrated_prs": [215, 216, 217, 218],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the theorem-scale first-Picard axial square, the analytic second-eta Eq. (5.6) quotient jet, the canonical signed-scope to admitted common-curl identity handoff, and the analytic Hessian of the fixed Section 10 executable cutoff representative.",
+  "layers": [
+    {
+      "pr": 215,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_axial_square.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_axial_square.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_axial_square.json",
+      "capability": "Materializes the pinned mixed-scale coefficient product u1 * u1 at the genuine theorem-scale first Picard state, preserving ordinary Lambda^0..Lambda^-4, pressure-linear a^2 Lambda^-1..Lambda^-3, and pressure-square a^4 Lambda^-2 contributions in signed-log-aware form.",
+      "remaining_boundary": "This is only one nonlinear primitive used by naturalRemainder.slow2 at x1. Complete naturalRemainder(x1) still requires the remaining mixed-scale products and bilinear/parameter/mixed/inverse/resolvent operations, including couplings with average(u1), phi1, and u1; x2, fixed-point convergence/finality, final phi/u, average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and global all-index AxisSpace certification remain open."
+    },
+    {
+      "pr": 216,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_omega_second_parameter_jet.py",
+      "test": "tests/test_background_omega_second_parameter_jet.py",
+      "provenance": "references/provenance_manifest_addendum_216.json",
+      "capability": "Adds the analytic second eta derivative of the exact regular Eq. (5.6) Omega_k/X quotient from a fourth-mixed regular-flux jet while delegating the value and first derivative to the already-landed first-parameter implementation.",
+      "remaining_boundary": "The repaired hierarchy still does not own the required beta fourth-mixed jets. Hierarchy-owned partial_eta^2 actualLowerSource and partial_eta^2 f_n, partial_eta W_n^(1), further Picard iteration/convergence, recursive coefficient materialization, the recursive cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 217,
+      "stage": "stage-6-to-7-canonical-actual-signed-scope",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/actual_signed_canonical_scope.py",
+      "test": "tests/test_actual_signed_canonical_scope.py",
+      "provenance": "references/ACTUAL_SIGNED_CANONICAL_SCOPE_PROVENANCE.json",
+      "capability": "Adds a fail-closed exact-scope identity handoff from the content-addressed canonical Prepared signed-label roster to admitted CycleAnalyticInvariant/common-curl applications while keeping Lean SignedLabel opaque and requiring exact scope/revision/parameter coherence.",
+      "remaining_boundary": "The canonical Prepared application, selected N, true active label slice, and canonical-label to actual SignedLabel identities are not machine replayed or machine verified; actual signed wave values and paper-exact divergence-free velocity remain unavailable."
+    },
+    {
+      "pr": 218,
+      "stage": "stage-7-8-section-10-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/spatial_localization.py",
+      "test": "tests/test_section10_spatial_cutoff_hessian.py",
+      "provenance": null,
+      "provenance_note": "PR #218 cites the already-fixed official Section 10 support/plateau geometry in spatial_localization.py. This integration addendum is the machine-readable truth record for the new Hessian adapter; no dedicated provenance file was added by PR #218.",
+      "capability": "Adds the exact analytic Cartesian Hessian of the repository's already-admitted geometry-faithful executable Section 10 cutoff representative c(x,y,z)=b(16(x^2+y^2))b(4z), together with the exact second derivative of its explicit 1D cutoff representative.",
+      "remaining_boundary": "The executable transition collar is not claimed pointwise identical to Mathlib's noncomputable ContDiffBump. The actual Section 7/8 correction exporter, infinite or locally-finite Eq. (9.21), smooth extension through t=1, genuine Navier-Stokes residual/forcing, bounded-energy conclusion, blow-up path, and paper-exact velocity remain unverified."
+    }
+  ],
+  "forbidden_inferences": [
+    "A theorem-scale u1 * u1 coefficient product does not imply complete naturalRemainder(x1), x2, Picard convergence/finality, final phi/u, final average/pressure, NaturalProfileAssembly, or paper-exact leading-profile completion.",
+    "An analytic second-eta derivative of Omega_k/X from caller-supplied fourth-mixed regular-flux data does not imply hierarchy-owned fourth-mixed beta jets, hierarchy-owned partial_eta^2 f_n, Picard convergence, Proposition 5.3, or paper-exact background completion.",
+    "An exact-scope metadata handoff from the canonical Prepared signed-label roster to admitted common-curl applications does not replay Lean, machine verify actual SignedLabel identities or CycleAnalyticInvariant values, materialize an actual signed wave, or produce paper-exact divergence-free velocity.",
+    "An analytic Hessian of the geometry-faithful executable Section 10 cutoff representative does not make its transition collar pointwise paper-exact and does not imply a genuine Navier-Stokes residual, smooth compact forcing, bounded energy, blow-up, or final reconstruction.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote toy, diagnostic-only, analytic-adapter, theorem-admission, or formal-structure artifacts to paper-exact status."
+  ]
+}
