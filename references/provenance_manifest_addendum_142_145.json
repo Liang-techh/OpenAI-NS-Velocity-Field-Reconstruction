@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "integration-truth-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "c97eeed84c8e03cdb2973e06258e1056afc12f08",
+  "integrated_prs": [142, 143, 144, 145],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Agent-5 integration ledger for the four landed increments immediately after PR #141. This records real capability without promoting any formal-structure layer to paper-exact status.",
+  "layers": [
+    {
+      "pr": 142,
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_inverse_mixed.py",
+      "test": "tests/test_axis_coefficient_inverse_mixed.py",
+      "provenance": "references/AXIS_COEFFICIENT_INVERSE_MIXED_PROVENANCE.md",
+      "equation_or_source": "AxisOperators.inverseMixed / differentialFamily(p=1,d(j)=j) / NaturalAxisBridge / AxisContraction coefficientOperators mixed1/mixed2",
+      "capability": "Executable pinned inverse-mixed bilinear operator on actual SchedulePressure-derived coefficient eta-jets, including the mixed1 (r=1) and mixed2 (r=2) instances required by coefficientOperators, with independent composition, radial-equation and finite-difference regression.",
+      "remaining_boundary": "No global all-index weighted norm certificate or genuine AxisSpace membership. The pinned inverse-bilinear primitive set is materialized, but the complete coefficientOperators record is not yet assembled as one validated executable object. naturalRemainder(x0), the first real Picard iterate, fixed-point phi/u, average/pressure, NaturalProfileAssembly, support/moment/matching/cone closure, and paper-exact velocity remain unresolved."
+    },
+    {
+      "pr": 143,
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history.py",
+      "test": "tests/test_background_repaired_history_fourth_mixed.py",
+      "provenance": "references/REPAIRED_HISTORY_FOURTH_MIXED_PROVENANCE.md",
+      "equation_or_source": "Lemma 5.2 / Eq. (5.2) / Eq. (5.6) / Eq. (5.7) / Eqs. (5.14)-(5.16)",
+      "capability": "Section5CoefficientJetSource now owns the actual compact Lemma 5.2 repaired fourth-mixed U source for positive orders, and Section5LowerHistoryJetHierarchy derives beta second/third-mixed jets through the analytic Eq. (5.2) adapters from that authoritative U source, failing closed when the stronger jet is unavailable.",
+      "remaining_boundary": "The unrepaired/base AxialFourthMixedJet, moment/patch eta jets, normalization C, and order-zero leading data remain upstream. Complete strict-lower beta-third-mixed history, hierarchy-owned partial_eta(Omega/X) and partial_eta f_n, the genuine k=1 Picard step, Picard convergence, recursive coefficient materialization/cutoff schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open."
+    },
+    {
+      "pr": 144,
+      "id": "stage-3-dyadic-charts-and-transported-phases",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/phase_large_band_family_inputs.py",
+      "test": "tests/test_phase_large_band_family_inputs.py",
+      "provenance": "references/PHASE_LARGE_BAND_FAMILY_INPUTS_PROVENANCE.md",
+      "equation_or_source": "Sections 6-7 / active signed slow labels / BasePhaseGeometry.FamilyData phase_estimates -> coordinate_errors and damping route",
+      "capability": "Fail-closed admission binds one active signed asymptotic family index, carrier/slot theorem membership, representative identity, reference scale, viscosity identity and large-band scalar prerequisites to the same stable base-source revision without forming underflow-prone Q=2^-ell.",
+      "remaining_boundary": "No actual asymptotic partition/carrier/slot, paper-exact Proposition 5.5 base provider, machine-linked all-active-index FamilyData theorem, actual normal/frame field estimate, stress amplitudes, oscillatory wave, or paper-exact velocity is supplied."
+    },
+    {
+      "pr": 145,
+      "id": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_endpoint_residual_source.py",
+      "test": "tests/test_section9_endpoint_residual_source.py",
+      "provenance": "references/SECTION9_ENDPOINT_RESIDUAL_SOURCE_PROVENANCE.md",
+      "equation_or_source": "Section 9 residual iteration / Eqs. (9.18),(9.21) / Section 10 endpoint localization / CandidateFromLimits / SpatialBorelExtension",
+      "capability": "The Section 9 -> Section 10 residual-source witness now binds ordered per-degree majorant evidence kinds as well as provenance strings, stage/window/source identity and revision, rejecting evidence-class swaps before the finite endpoint-candidate/Borel-prefix path can run.",
+      "remaining_boundary": "The source identity and theorem assertions remain inputs: the actual Eq. (9.21) residual sequence, machine-derived all-order uniform endpoint majorants, locally uniform endpoint limits, infinite Borel smoothness, smooth compact forcing, finite-energy/blow-up certificates, and paper-exact velocity remain unverified."
+    }
+  ]
+}
