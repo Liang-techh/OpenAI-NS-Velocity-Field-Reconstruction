@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "a05356dd69869b997d45e0db8a3896ace3aa0faf",
+  "integrated_prs": [226, 227, 228, 229, 231, 232, 233],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the Stage-1 first-Picard slow2 increment, Section-5 repaired derivative hierarchy, Section-8 finite-head signed mean defect, Section-9 residual-flatness theorem admission, and Section-10 analytic cutoff derivative increment. PR #233 is transplanted byte-for-byte from its conflicted Agent-2 head onto this current-main integration base.",
+  "layers": [
+    {
+      "pr": 226,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_axial_quadratic.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_slow2_axial_quadratic.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_slow2_axial_quadratic.json",
+      "capability": "Materializes exactly the first pinned slow2(x1) branch j1((2*A*eta)*(u1*u1)) from the genuine theorem-scale first-Picard state while preserving ordinary, a^2, and a^4 mixed scales and the exact eta product rule plus j1 row divisor.",
+      "remaining_boundary": "This is not complete slow2(x1), complete naturalRemainder(x1), x2, fixed-point convergence/finality, global weighted AxisSpace certification, NaturalProfileAssembly, or paper-exact velocity. The remaining average(u1)-coupled slow2 branches, angular branches, source/pressure/resolvent recombination, later Picard iterates, final phi/u, derived average/pressure, and support/moment/matching/cone closure remain open."
+    },
+    {
+      "pr": 227,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_fifth_mixed_jets.py",
+      "test": "tests/test_background_moment_repair_fifth_mixed_jets.py",
+      "provenance": "references/provenance_manifest_addendum_227.json",
+      "capability": "Lifts the real Lemma 5.2 compact U repair by the three total-order-five axial derivatives required by the analytic Eq. (5.2) fourth-mixed regular-flux adapter, with exact lower projection and no production finite differences.",
+      "remaining_boundary": "The unrepaired/base fifth-mixed U provider and moment/patch eta jets remain upstream contracts. By itself this does not provide the genuine leading fifth-mixed profile, hierarchy-owned second-eta lower source/forcing, Picard convergence, recursive coefficient materialization, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    },
+    {
+      "pr": 228,
+      "stage": "stage-5-section-8-mean-correction",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/actual_signed_mean_defect.py",
+      "test": "tests/test_actual_signed_mean_defect.py",
+      "provenance": "references/ACTUAL_SIGNED_MEAN_DEFECT_PROVENANCE.json",
+      "capability": "Admits the pinned requested_cross_defect identity only on the finite head n<=Prepared.N, bound fail-closed to the canonical signed scope and theorem-grade metadata, complementary to the previously landed exact-cancellation tail.",
+      "remaining_boundary": "Lean replay, actual requested-stress and missingWeight values, the finite-head mean debt, and the compact mean correction are not materialized. Synthetic or sampled debt must not be fed into the mean repair as paper-exact data."
+    },
+    {
+      "pr": 229,
+      "stage": "stage-7-final-localization",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section10_spatial_cutoff_viscous_adapter.py",
+      "test": "tests/test_section10_spatial_cutoff_viscous_adapter.py",
+      "provenance": null,
+      "provenance_note": "PR #229 extends the existing explicit geometry-faithful Section-10 cutoff representative and tests; it adds no dedicated provenance addendum.",
+      "capability": "Adds the exact third derivative of the executable cutoff representative, its analytic Laplacian, and grad(Delta c), supplying the next fixed-localization derivative needed by a future viscous Delta u_cut assembly.",
+      "remaining_boundary": "Transition-collar values are not claimed pointwise identical to Mathlib ContDiffBump. The actual Section 7/8 correction exporter, infinite or locally finite Eq. (9.21), all-order t=1 extension, genuine Navier-Stokes residual/forcing, finite-energy closure, and blow-up closure remain open."
+    },
+    {
+      "pr": 231,
+      "stage": "stage-6-section-9-correction-sequence",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_residual_flatness.py",
+      "test": "tests/test_section9_residual_flatness.py",
+      "provenance": "references/provenance_manifest_addendum_231.json",
+      "capability": "Adds a fail-closed lean-formal-export admission for DiagonalResidual.allJetsFlat_residual_of_stages and records the exact theorem obligations a real finite-stage residual-improvement iteration must discharge.",
+      "remaining_boundary": "No gain schedule, actual stage family, Eq. (9.21), residual constants, background, or wave is constructed; Lean objects remain opaque and theorem replay/materialization flags remain false. This admission is not all-jets residual flatness for the repository's current field."
+    },
+    {
+      "pr": 232,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_omega_second_parameter.py",
+      "test": "tests/test_background_repaired_history_fifth_mixed.py",
+      "provenance": "references/provenance_manifest_addendum_232.json",
+      "capability": "Makes one authoritative repaired fifth-mixed U provider hierarchy-owned for the landed strong lower-history path and routes it analytically through Eq. (5.2) beta fourth-mixed data to the second-eta Eq. (5.6) Omega/X jet.",
+      "remaining_boundary": "The genuine Issue-#1 leading fifth-mixed profile is still missing and fails closed. This does not yet close partial_eta^2 actualLowerSource/forcing, partial_eta W_n^(1), Picard convergence, final coefficient materialization, the infinite recursive cutoff schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    },
+    {
+      "pr": 233,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_moment_repair_phi_fourth_mixed_jets.py",
+      "test": "tests/test_background_moment_repair_phi_fourth_mixed_jets.py",
+      "provenance": "references/provenance_manifest_addendum_233.json",
+      "capability": "Lifts the real Lemma 5.2 compact E-repair to the ProfileFourthMixedJet needed by the analytic second-eta preceding-diffusion operator, preserving exact projection to the landed third-mixed path and using the fourth eta repair row only on active compact support.",
+      "remaining_boundary": "The base fourth-mixed phi jet and moment/patch eta jets remain explicit upstream contracts and the strong Section-5 hierarchy does not yet own this repaired provider. Hierarchy-owned partial_eta^2 actualLowerSource/forcing, partial_eta W_n^(1), further Picard convergence, recursive materialization/cutoff closure, Proposition 5.3 decay, and paper-exact velocity remain open."
+    }
+  ],
+  "forbidden_inferences": [
+    "One landed slow2(x1) branch is not complete slow2(x1), complete naturalRemainder(x1), x2, or fixed-point convergence.",
+    "Provider-driven or partially hierarchy-owned fourth/fifth mixed Section-5 jets do not by themselves close hierarchy-owned partial_eta^2 actualLowerSource/forcing, Picard convergence, or Proposition 5.3.",
+    "A theorem admission for requested_cross_defect does not materialize the finite-head mean debt or construct the compact mean correction.",
+    "A theorem admission for allJetsFlat_residual_of_stages does not prove that the repository has constructed the required Section-9 stages or an all-jets-flat actual residual.",
+    "Analytic derivatives of the executable Section-10 cutoff representative do not construct the actual Section-7/8 correction exporter, infinite Eq. (9.21), smooth endpoint extension, or genuine forcing.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote provider-contract, theorem-admission, analytic-adapter, diagnostic, toy, or formal-structure artifacts to paper-exact status."
+  ]
+}
