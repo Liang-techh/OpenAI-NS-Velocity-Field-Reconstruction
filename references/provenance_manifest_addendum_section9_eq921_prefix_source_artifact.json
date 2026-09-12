@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "1fd5a5e5426a97d6eb90c7f4d38fb91555d29b94",
+  "scope": "Issue #4 Section 9 Eq. (9.21) finite-prefix source artifact provider",
+  "status": "formal-structure",
+  "artifact": "src/openai_ns_reconstruction/section9_eq921_prefix_source_artifact.py",
+  "test": "tests/test_section9_eq921_prefix_source_artifact.py",
+  "provenance": "references/SECTION9_EQ921_PREFIX_SOURCE_ARTIFACT_PROVENANCE.md",
+  "paper_locations": [
+    "Section 9 Eq. (9.18)",
+    "Section 9 Eqs. (9.20)-(9.21)",
+    "Section 9 Proposition 9.9",
+    "Section 10 endpoint smooth extension through t=1"
+  ],
+  "capability": "Materialize deterministic content-addressed UTF-8 bytes from the already-admitted finite Eq. (9.21) correction prefix, preserving exact rational q data and exact binary64 payload identity while machine-labelling the result as source-not-residual.",
+  "remaining_boundary": "The finite prefix still uses externally supplied non-paper correction values and has no spacetime derivative jets. Genuine Section 7/8 correction providers, the locally finite infinite Eq. (9.21) field, its analytic Navier-Stokes residual, machine-derived Eq. (9.18) constants/losses and all-order flat remainder, endpoint limits, all-order Borel smoothness, smooth compact forcing, finite-energy/blow-up closure remain unconstructed or unverified.",
+  "finite_prefix_source_materialized": true,
+  "residual_artifact_ready": false,
+  "source_majorants_derived_from_actual_residual_verified": false,
+  "actual_section9_sequence_verified": false,
+  "eq_9_21_infinite_sum_constructed": false,
+  "endpoint_limits_constructed": false,
+  "all_order_borel_smoothness_verified": false,
+  "smooth_compact_forcing_verified": false,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false
+}
