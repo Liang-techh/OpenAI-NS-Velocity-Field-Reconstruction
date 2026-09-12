@@ -59,15 +59,15 @@ The regression suite checks that:
   `j`, certified sigma/epsilon, and exact theorem-selected Decimal `Lambda`;
 - `jet_pair` preserves the landed mixed-scale angular and axial jet objects,
   including the noncollapsed `1/Lambda` terms and signed-log axial pressure;
-- pairing an axial state with a different **actual theorem-derived** schedule
-  reference is rejected rather than silently mixed;
+- pairing an axial state from a different **actual theorem-derived** schedule
+  branch is rejected rather than silently mixed;
 - non-`TailData` production inputs fail closed;
 - provenance remains machine-readable with `formal-structure` and
   `paper_exact_velocity_available=false`.
 
-The different-`j` state used by the compatibility regression is itself built
-through `actual_schedule_reference_axis_state`; it is not a production
-surrogate or a replacement manuscript parameter.
+The different-`j` axial state used by the compatibility regression is itself
+built through `actual_schedule_reference_wide_axial_remainder_state`; it is not
+a production surrogate or a replacement manuscript parameter.
 
 ## Explicit non-claims / next blocker
 
@@ -78,10 +78,9 @@ materialized.
 
 The next smallest blocker is to carry that outer factor through both mixed
 scales without binary64 collapse, forming the first genuine Picard iterate
-`x1 = x0 + naturalRemainder(x0)/(2*Lambda)` (with the exact sign/form taken
-from the pinned fixed-point definition), and only then advance toward iterative
-fixed-point `phi/u`, derived average/pressure, `NaturalProfileAssembly`, and
-support/moment/matching/cone validation.
+`x1 = x0 + naturalRemainder(x0)/(2*Lambda)`, and only then advance toward
+iterative fixed-point `phi/u`, derived average/pressure,
+`NaturalProfileAssembly`, and support/moment/matching/cone validation.
 
 No global all-index weighted `AxisSpace` membership/norm certificate or
 paper-exact velocity field is claimed. `paper_exact_velocity_available=false`
