@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "979100d169c2dba74f1dc538f9f4360f20bbae02",
+  "integrated_prs": [263],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative-composition increment. Composes the landed hierarchy-owned Eq. (5.7) matrix eta jets, second-eta forcing bridge, and first-Picard second-parameter primitive to expose the analytic eta derivative of the first nontrivial k=1 Picard iterate while preserving the existing value path.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_k1_picard_parameter.py",
+      "test": "tests/test_background_repaired_history_forcing_second_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_K1_PICARD_PARAMETER_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Lemma 5.2",
+        "Appendix A",
+        "Eq. (5.7)"
+      ],
+      "landed_capability": "For a strong Section5LowerHistoryPhiFourthMixedHierarchy, preserves the landed W_n^(1) value and analytically evaluates partial_eta W_n^(1) as G((partial_eta A0)W0 + A0 partial_eta W0 + (partial_eta A1)partial_eta W0 + A1 partial_eta^2 W0 + partial_eta f_n). W0 and its first two eta derivatives are obtained only from hierarchy-owned forcing jets; matrix derivatives are hierarchy-owned. Regression reuses the actual Lemma 5.2 compact five-bump repair and compares the new derivative with centered differentiation of the independently landed k=1 value path.",
+      "remaining_boundary": "The genuine Issue-#1 order-zero fourth/fifth-mixed leading profile remains upstream. This does not establish Picard convergence, finalized positive-order coefficients, the complete all-order recursive coefficient family, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Caller-supplied or test-only leading fourth/fifth-mixed profile data are not paper-exact data.",
+    "Finite-difference regression is a test oracle only and is not used in production or promoted to proof.",
+    "One hierarchy-owned differentiated k=1 Picard iterate does not establish Picard convergence or a finalized recursive coefficient.",
+    "The repository's generic executable cutoff is not the paper's recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
