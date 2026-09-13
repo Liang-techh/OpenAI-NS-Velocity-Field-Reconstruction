@@ -240,7 +240,7 @@ def test_finite_coherent_chain_rejects_cross_wired_residual_endpoint():
     size = 3
     pair = [[0.0 for _ in range(size)] for _ in range(size)]
     pair[2][2] = 1.25
-    shifted = [0.0, 0.0, 0.75]
+    shifted = [0.0, 0.0, 0.8]
     alternate_order2 = certify_full_residual_tail_majorant(
         _cancellations(2),
         q=0.1,
