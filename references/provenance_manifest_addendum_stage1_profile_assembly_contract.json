@@ -3,7 +3,9 @@
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
   "base_main_commit": "aa3f0ee90d871fbbcfb5820471aa0f3dd7b7bb7e",
-  "integrated_prs": [],
+  "integrated_prs": [
+    284
+  ],
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
   "scope_note": "Stage-1 downstream profile-assembly identity guard. It binds any future fixed-point handoff to the same actual SchedulePressure schedule, sigma/epsilon, wide Lambda/log C, coefficient window, and natural amplitude convention without implementing or substituting for Agent 6's coefficient-space backend.",
