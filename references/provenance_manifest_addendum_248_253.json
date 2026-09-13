@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "23025263693addd44f6443dfe95e81bd5940c535",
+  "integrated_prs": [248, 249, 250, 251, 253],
+  "excluded_nonlanded_prs": [252],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the landed Stage-1 first-Picard slow2 branches, hierarchy-owned second-eta Eq. (5.7) forcing jet, Section 9 selected-schedule residual-flatness formal export, and finite-prefix fixed-Section-10 convective-acceleration adapter.",
+  "historical_note": "PR #252 was a closed stale integration attempt and is not a landed capability. The squash commit subject for PR #250 is misleading; the PR metadata and landed files identify it as the Section 9 selected-schedule residual-flatness admission.",
+  "layers": [
+    {
+      "pr": 248,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_average_dot.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_slow2_average_dot.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_slow2_average_dot.json",
+      "landed_capability": "Materializes exactly the pinned slow2(x1) branch dot1((2*D*eta)*average(u1),u1) from the genuine ActualScheduleWideFirstPicardState while preserving the theorem scales.",
+      "remaining_boundary": "This is not complete slow2(x1) or naturalRemainder(x1); the other slow2 and naturalRemainder pieces, x2, Picard convergence/finality, final phi/u and average/pressure fields, NaturalProfileAssembly, global AxisSpace certification, and support/moment/matching/cone closure remain open."
+    },
+    {
+      "pr": 249,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_forcing_second_parameter.py",
+      "test": "tests/test_background_repaired_history_forcing_second_parameter.py",
+      "provenance": "references/provenance_manifest_addendum_249.json",
+      "landed_capability": "Composes the strong repaired lower-history hierarchy into an analytic hierarchy-owned (f_n, partial_eta f_n, partial_eta^2 f_n) jet for the exact Section 5 Eq. (5.7) positive-axis forcing.",
+      "remaining_boundary": "The genuine Issue #1 order-zero strong profile, partial_eta W_n^(1), Picard convergence, final recursive coefficient materialization, recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain unresolved."
+    },
+    {
+      "pr": 250,
+      "stage": "section-9-selected-schedule-residual-flatness",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_selected_schedule_flatness.py",
+      "test": "tests/test_section9_selected_schedule_flatness.py",
+      "provenance": "references/SECTION9_SELECTED_SCHEDULE_FLATNESS_PROVENANCE.json",
+      "landed_capability": "Adds a fail-closed formal-export admission for the pinned LocalResidualFlatness.selected_schedule theorem, tying one common existential diagonal schedule, ThreeCutBounds, and AllResidualJetRates to the actual selected stage families.",
+      "remaining_boundary": "The theorem is not replayed in Lean; schedule values, finite stage fields, residual-rate values, and the Section 9 iteration are not machine-materialized, and no genuine executable residual/forcing artifact is constructed."
+    },
+    {
+      "pr": 251,
+      "stage": "section-10-localized-convective-acceleration",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_convective_acceleration.py",
+      "test": "tests/test_section9_section10_convective_acceleration.py",
+      "provenance": "references/SECTION10_CONVECTIVE_ACCELERATION_PROVENANCE.md",
+      "landed_capability": "Computes the off-axis analytic finite-prefix fixed-Section-10 convective term (u_cut dot grad)u_cut from the localized velocity and analytic Cartesian spatial Jacobian, with exact zero outside the fixed support.",
+      "remaining_boundary": "The Section9FinitePrefixJetCertificate remains provider-supplied and finite; axis regularity, actual Section 7/8 correction exporter, infinite/locally-finite Eq. (9.21), t=1 all-order smooth extension, genuine Navier-Stokes residual/forcing, endpoint closure, bounded-energy/blow-up closure, and paper-exact velocity remain unconstructed."
+    },
+    {
+      "pr": 253,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_average_mixed.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_slow2_average_mixed.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_slow2_average_mixed.json",
+      "landed_capability": "Materializes exactly the pinned product AxisData.d * mixed1(average(u1),u1) branch of slow2(x1) on the theorem-selected first Picard state, preserving ordinary Lambda^0..Lambda^-4, signed-log a^2 Lambda^-1..Lambda^-3, and signed-log a^4 Lambda^-2 contributions.",
+      "remaining_boundary": "The pinned -param1(u1, AxisData.d*u1) slow2 branch remains, so slow2(x1) and naturalRemainder(x1) are still incomplete; x2, fixed-point convergence/finality, final phi/u and average/pressure fields, NaturalProfileAssembly, global AxisSpace certification, and support/moment/matching/cone closure remain downstream."
+    }
+  ],
+  "forbidden_inferences": [
+    "The landed slow2(x1) average/dot1 and average/mixed branches do not establish complete slow2(x1), naturalRemainder(x1), x2, or fixed-point convergence.",
+    "Hierarchy-owned partial_eta^2 f_n does not establish partial_eta W_n^(1), recursive coefficient completion, the infinite cutoff schedule, or Proposition 5.3 all-jets residual decay.",
+    "A formal-export admission for LocalResidualFlatness.selected_schedule does not replay Lean, materialize the existential schedule or actual stage fields, or construct a genuine executable residual/forcing artifact.",
+    "A finite-prefix off-axis analytic convective term is not the full Navier-Stokes residual, does not prove axis regularity, and does not materialize the infinite Eq. (9.21) field or endpoint closure.",
+    "The misleading squash commit subject for PR #250 is not provenance evidence for a different capability; the PR metadata and landed files are authoritative.",
+    "PR #252 is a closed stale integration attempt and must not be counted as landed work.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote provider-contract, theorem-admission, analytic-adapter, diagnostic, toy, or formal-structure artifacts to paper-exact status."
+  ]
+}
