@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1ea24db9524d34a191ebf07d3e22a7b5a1ecdd6f",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-finite-prefix-fields",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_finite_prefix_fields.py",
+    "test": "tests/test_section9_finite_prefix_fields.py",
+    "provenance": "references/SECTION9_FINITE_PREFIX_FIELDS_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/DiagonalJetBounds.lean",
+        "NavierStokes/MixedDiagonalResidual.lean",
+        "NavierStokes/WholeDomainActualStageBounds.lean",
+        "NavierStokes/ActualStageEstimates.lean"
+      ],
+      "symbols": [
+        "NavierStokes.DiagonalJetBounds.uncutPrefix",
+        "NavierStokes.MixedDiagonalResidual.uncutVelocity",
+        "NavierStokes.WholeDomainStageBounds.finiteVelocity",
+        "NavierStokes.WholeDomainStageBounds.finitePressure",
+        "NavierStokes.ActualStageEstimates.stageEstimates_of_representations"
+      ]
+    },
+    "landed_capability": "Executable contiguous finite-prefix velocity/pressure assembly tied to the admitted canonical Section 9 finite ledgers; missing stages, cross-wired families, nonfinite values, and sampled/fitted/toy payload kinds fail closed.",
+    "truth_boundary": {
+      "finite_prefix_algebra_executable": true,
+      "actual_paper_stage_fields_materialized": false,
+      "actual_rank_stage_values_materialized": false,
+      "section9_infinite_iteration_closed": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "test fixture callables as actual paper stage fields",
+      "sampled/fitted/toy payloads as machine-materialized stages",
+      "filling missing stage indices with zero",
+      "a finite prefix evaluation as proof of Section 9 convergence",
+      "paper-exact velocity availability before actual stage materialization and infinite closure"
+    ]
+  }
+}
