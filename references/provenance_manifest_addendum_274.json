@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "051aa05d40bf490f4c0f5371542a82c73960b4fc",
+  "integrated_prs": [274],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 solver prerequisite: exact third-eta differentiation of the displayed Eq. (5.7) positive-axis forcing from an explicit analytic strict-lower source jet through eta order three.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_positive_axis_forcing_third_parameter.py",
+      "test": "tests/test_background_positive_axis_forcing_third_parameter.py",
+      "provenance": "references/POSITIVE_AXIS_FORCING_THIRD_PARAMETER_PRIMITIVE_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Eq. (5.7)"
+      ],
+      "landed_capability": "Given the strict-lower source and its first three analytic eta derivatives, returns the exact third eta derivative of the six-component Eq. (5.7) positive-axis forcing, including the third-order Leibniz expansion of (eta/ell)*pressureSource.",
+      "remaining_boundary": "The current repaired hierarchy does not yet own the third eta derivative of actualLowerSource. The source third jet accepted here is therefore an explicit structural input and this primitive does not by itself construct hierarchy-owned f_n''', W_n^(1)'', Picard convergence, finalized positive-order coefficients, the recursive cutoff-scale schedule, Proposition 5.3 residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "A caller-supplied strict-lower source third jet is not paper-exact coefficient data.",
+    "Centered finite differences in regression are test oracles only and are not production derivative paths.",
+    "Exact third differentiation of the forcing does not establish hierarchy ownership of actualLowerSource'''.",
+    "The repository generic executable cutoff is not the paper recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
