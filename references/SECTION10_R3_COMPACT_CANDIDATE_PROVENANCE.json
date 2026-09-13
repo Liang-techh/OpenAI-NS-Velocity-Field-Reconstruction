@@ -1,0 +1,37 @@
+{
+  "artifact": "section10_r3_compact_candidate",
+  "issue": 4,
+  "base_main_commit": "30caa67ce4b9d6e95c93dd9fd0323f30298defd1",
+  "status": "formal-structure",
+  "formal_repository": "https://github.com/openai/NavierStokesAndEuler",
+  "formal_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+  "formal_file": "NavierStokes/R3CompactCandidate.lean",
+  "theorem_symbol": "NavierStokes.R3CompactCandidate.of_localized_fields",
+  "producer_kind_required": "lean-formal-export",
+  "admitted_outputs": {
+    "compact_spatial_support_theorem_output": true,
+    "divergence_free_theorem_output": true,
+    "forced_navier_stokes_theorem_output": true,
+    "speed_unbounded_theorem_output": true
+  },
+  "runtime_truth": {
+    "theorem_machine_replayed": false,
+    "r3_compact_fields_materialized": false,
+    "compact_force_field_materialized": false,
+    "residual_artifact_ready": false,
+    "forcing_artifact_ready": false,
+    "compact_support_runtime_verified": false,
+    "divergence_free_closure_verified": false,
+    "blow_up_closure_verified": false,
+    "finite_energy_closure_verified": false,
+    "endpoint_residual_closure_verified": false,
+    "paper_exact_velocity_available": false
+  },
+  "next_formal_boundary": "NavierStokesR3.CompactComparisonBounds.uniformFiniteEnergy_of_compact_slab",
+  "notes": [
+    "The gate consumes the already-admitted mixed periodic candidate and requires exact identity agreement across the handoff.",
+    "The compact whole-space theorem is paper-specific; no generic cutoff or residual-defined numeric force is admitted as evidence.",
+    "Uniform finite energy is intentionally left for a separate theorem-level admission.",
+    "Green CI cannot promote formal-structure metadata to a paper-exact velocity or forcing artifact."
+  ]
+}
