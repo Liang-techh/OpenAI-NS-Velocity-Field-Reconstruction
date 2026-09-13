@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "05ef960f29d8b9b21955c0eacbe9132a610c4cb1",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-selected-estimates-binding",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_selected_estimates_binding.py",
+    "test": "tests/test_section9_selected_estimates_binding.py",
+    "provenance": "references/SECTION9_SELECTED_ESTIMATES_BINDING_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/ActualCandidateAssembly.lean",
+        "NavierStokes/LocalResidualFlatness.lean",
+        "NavierStokes/ActualStageEstimates.lean"
+      ],
+      "symbols": [
+        "NavierStokes.LocalResidualFlatness.selectedEstimates",
+        "NavierStokes.ActualCandidateAssembly.estimates",
+        "NavierStokes.GluedStageEstimates.actualStageEstimates",
+        "NavierStokes.ActualStageEstimates.stageEstimates_of_representations",
+        "NavierStokes.ActualCandidateConstruction.selectedBudget",
+        "NavierStokes.ActualCandidateConstruction.selectedThreshold",
+        "NavierStokes.ActualCandidateConstruction.selectedThreshold_geometry",
+        "NavierStokes.ActualCandidateConstruction.selectedQbig",
+        "NavierStokes.ActualCandidateAssembly.selectedPotentialStages",
+        "NavierStokes.ActualCandidateAssembly.selectedDirectStages",
+        "NavierStokes.ActualCandidateAssembly.selectedPressureStages"
+      ]
+    },
+    "landed_capability": "Fail-closed identity bridge proving that the opaque selectedEstimates/selectedQbig/selected potential-direct-pressure stage identities admitted by the closed selected-schedule gate are the same closed actual-candidate specialization selected by the pinned formal source.",
+    "truth_boundary": {
+      "closed_estimate_binding_machine_replayed": false,
+      "selected_estimates_values_materialized": false,
+      "selected_stage_fields_materialized": false,
+      "selected_schedule_values_materialized": false,
+      "section9_iteration_machine_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as formal identity proof",
+      "cross-wiring selected_schedule to a different StageEstimates object",
+      "cross-wiring selectedQbig or any selected stage family",
+      "Python evaluation of the existential Lean schedule as a replacement for the formal witness",
+      "materialized paper velocity from theorem-metadata coherence alone"
+    ]
+  }
+}
