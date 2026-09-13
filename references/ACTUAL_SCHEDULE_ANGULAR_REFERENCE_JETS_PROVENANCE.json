@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "artifact": "actual-schedule angular reference parameter jets",
+  "issue": 1,
+  "truth_status": "formal-structure",
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisCoefficientSpace.lean",
+      "NavierStokes/AxisReference.lean",
+      "NavierStokes/AxisWeightEstimates.lean"
+    ]
+  },
+  "implemented": [
+    "all-order analytic eta derivatives of the actual-schedule angular reference radial coefficients",
+    "exact finite Taylor algebra for H^2/(H^2+sigma^2), with no finite-difference production derivative",
+    "pinned AxisWeightEstimates.weight normalization",
+    "epsilon=rho/2 bound to the existing actual-schedule analytic-neighborhood certificate"
+  ],
+  "construction_boundary": {
+    "angular_reference_all_parameter_jets_materialized": true,
+    "axial_reference_all_parameter_jets_materialized": false,
+    "uniform_infinite_weighted_norm_bound_certified": false,
+    "complete_axis_coefficient_space_reference_state_materialized": false,
+    "natural_remainder_x1_materialized": false,
+    "x2_materialized": false,
+    "fixed_point_materialized": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "remaining_blockers": [
+    "derive and materialize all eta jets of the axial reference coefficient from actual SchedulePressure data",
+    "close a uniform weighted supremum bound for the infinite angular and axial jet families so AxisCoefficientSpace.ofJetFamily hypotheses are machine-certified",
+    "combine both members into the typed reference CoefficientState consumed by naturalRemainder"
+  ]
+}
