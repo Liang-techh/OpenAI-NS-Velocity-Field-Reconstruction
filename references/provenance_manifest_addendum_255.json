@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "05ef960f29d8b9b21955c0eacbe9132a610c4cb1",
+  "source_pr": 255,
+  "source_merge_commit": "05ef960f29d8b9b21955c0eacbe9132a610c4cb1",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-10-finite-prefix-formal-ns-operator",
+    "stage": "section-10-final-localization",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_section10_formal_ns_operator.py",
+    "test": "tests/test_section9_section10_formal_ns_operator.py",
+    "paper_scope": [
+      "finite Section 9 Eq. (9.21) prefix input",
+      "fixed Section 10 spatial localization",
+      "Navier-Stokes operator combination u_t + (u dot grad)u - nu Delta u + grad(c p)"
+    ],
+    "landed_capability": "Atomically composes the already-landed analytic finite-prefix localized time derivative, convective acceleration, velocity Laplacian, and cut-pressure gradient from one Section9FinitePrefixJetCertificate and one off-axis spacetime point. It verifies common point/provider/prefix identity and fixed Section 10 cutoff coherence before exposing the deliberately named formal_operator_sum.",
+    "truth_boundary": {
+      "provider_supplied_finite_eq921_prefix": true,
+      "off_axis_only": true,
+      "component_source_identity_verified": true,
+      "fixed_section10_cutoff_coherent": true,
+      "formal_ns_operator_combination_verified": true,
+      "actual_section7_8_correction_sequence_constructed": false,
+      "eq_9_21_infinite_sum_constructed": false,
+      "axis_regularity_from_actual_paper_field_constructed": false,
+      "section9_field_smooth_extension_through_t1_constructed": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "finite_energy_closure_verified": false,
+      "blow_up_closure_verified": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "Treating formal_operator_sum as a genuine Navier-Stokes residual before the actual correction sequence, infinite/local-finite Eq. (9.21), axis regularity, and endpoint closure are constructed.",
+      "Treating the finite-prefix formal operator as a forcing artifact or as proof of compactly supported smooth forcing.",
+      "Inferring bounded energy, blow-up closure, or paper-exact velocity from one-point/off-axis finite-prefix operator evaluation.",
+      "Using f=R(u,p) and then R-f=0 as independent verification of the forcing or equation closure.",
+      "Promoting formal-structure to paper-exact because the analytic component tests or CI are green."
+    ]
+  }
+}
