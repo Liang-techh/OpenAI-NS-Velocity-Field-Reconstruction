@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "artifact": "actual-schedule angular reference parameter jets",
+  "issue": 1,
+  "truth_status": "formal-structure",
+  "base_main": "1ea24db9524d34a191ebf07d3e22a7b5a1ecdd6f",
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisCoefficientSpace.lean",
+      "NavierStokes/AxisReference.lean",
+      "NavierStokes/AxisWeightEstimates.lean"
+    ]
+  },
+  "implemented": [
+    "analytic eta derivatives of the actual-schedule angular reference radial coefficients from the pinned factorial reference formula",
+    "guarded Decimal Taylor algebra for H^2/(H^2+sigma^2), preventing the actual tiny sigma^2 term from being rounded away by binary64 before differentiation",
+    "checked binary64 projection that fails closed rather than turning a nonzero wide coefficient into underflowed zero",
+    "pinned AxisWeightEstimates.weight normalization",
+    "epsilon=rho/2 bound to the existing actual-schedule analytic-neighborhood certificate"
+  ],
+  "numerical_boundary": [
+    "input schedule values remain the repository's certified runtime binary64 data and are embedded exactly into Decimal; this is not interval arithmetic or a Lean proof",
+    "parameter_jet_decimal uses an order-growing guarded Decimal precision; parameter_jet is only a checked binary64 view",
+    "the previous pure-binary64 quotient path was rejected after CI showed mathematically nonconstant higher jets collapsing to zero when H^2+sigma^2 rounded to H^2"
+  ],
+  "construction_boundary": {
+    "angular_reference_parameter_jets_executable": true,
+    "axial_reference_all_parameter_jets_materialized": false,
+    "uniform_infinite_weighted_norm_bound_certified": false,
+    "complete_axis_coefficient_space_reference_state_materialized": false,
+    "natural_remainder_x1_materialized": false,
+    "x2_materialized": false,
+    "fixed_point_materialized": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "remaining_blockers": [
+    "derive and materialize all eta jets of the axial reference coefficient from actual SchedulePressure data",
+    "close a uniform weighted supremum bound for the infinite angular and axial jet families so AxisCoefficientSpace.ofJetFamily hypotheses are machine-certified",
+    "combine both members into the typed reference CoefficientState consumed by naturalRemainder"
+  ]
+}
