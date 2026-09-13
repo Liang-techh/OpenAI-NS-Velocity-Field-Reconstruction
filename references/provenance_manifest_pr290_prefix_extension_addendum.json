@@ -5,7 +5,7 @@
   "integrated_prs": [290],
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
-  "scope_note": "Stage-2 finite-prefix convergence-lane increment. Couples hierarchy-bound SlowBorel cutoff prefixes and exact retained-recurrence cancellation certificates across one successive truncation step N->N+1, checks exact first-omitted exponent gain 2h, and admits finite residual improvement only when the certified log-majorant at the same q does not increase.",
+  "scope_note": "Stage-2 finite-prefix convergence-lane increment. Couples hierarchy-bound SlowBorel cutoff prefixes and exact retained-recurrence cancellation certificates across successive truncation steps, checks exact first-omitted exponent gain 2h per step, admits finite residual improvement only when the certified log-majorant at the same q does not increase, and composes arbitrary caller-supplied finite chains only when every shared cutoff/residual endpoint is literally identical.",
   "layers": [
     {
       "id": "stage-2-successive-slowborel-residual-extension",
@@ -20,8 +20,8 @@
         "SlowExpansionResidual.recurrence_truncation_of_zero",
         "Proposition 5.3"
       ],
-      "landed_capability": "Certifies one coherent N->N+1 finite-prefix extension only when prior hierarchy-bound C[j,m] entries, recursive cutoff scales, and exact retained recurrence identities are preserved verbatim; requires common hierarchy/source/coefficient-state provenance, common q/h/base power, exact Fraction-level first-omitted exponent gain 2h, and a nonincreasing certified full finite-residual log-majorant. Exponent gain alone cannot override coefficient-prefactor growth.",
-      "remaining_boundary": "No actual arbitrary-order hierarchy provider is supplied. Uniform paper-derived C[j,m] bounds, genuine exact recurrence rows from the hierarchy, an infinite coherent extension family, all-jets-flatness, Proposition 5.3, and super-algebraic residual convergence remain unresolved."
+      "landed_capability": "Certifies one coherent N->N+1 finite-prefix extension only when prior hierarchy-bound C[j,m] entries, recursive cutoff scales, and exact retained recurrence identities are preserved verbatim; requires common hierarchy/source/coefficient-state provenance, common q/h/base power, exact Fraction-level first-omitted exponent gain 2h, and a nonincreasing certified full finite-residual log-majorant. Also composes any nonempty finite tuple of already certified steps only when adjacent cutoff and residual endpoints are exactly equal, orders are contiguous, and the cumulative first-omitted exponent gain is exactly 2h times the finite step count. Exponent gain alone cannot override coefficient-prefactor growth.",
+      "remaining_boundary": "No actual arbitrary-order hierarchy provider is supplied. Uniform paper-derived C[j,m] bounds, genuine exact recurrence rows from the hierarchy at every requested order, a constructive uniform extension theorem/infinite coherent family, all-jets-flatness, Proposition 5.3, and super-algebraic residual convergence remain unresolved. Arbitrary chosen finite chain length is explicitly not an all-order claim."
     }
   ]
 }

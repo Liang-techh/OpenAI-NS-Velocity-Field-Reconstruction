@@ -9,6 +9,7 @@ from openai_ns_reconstruction.background_hierarchy_cutoff_bounds import (
     build_slow_borel_schedule_from_hierarchy_certificate,
 )
 from openai_ns_reconstruction.background_prefix_extension import (
+    certify_finite_coherent_slow_borel_residual_chain,
     certify_successive_slow_borel_residual_extension,
 )
 from openai_ns_reconstruction.background_recurrence_cancellation import (
@@ -18,6 +19,7 @@ from openai_ns_reconstruction.background_recurrence_cancellation import (
     RetainedRecurrenceDependency,
     certify_full_residual_tail_majorant,
 )
+from openai_ns_reconstruction.background_truncation_residual import slow_order_exact
 
 
 H = 0.01
@@ -101,22 +103,21 @@ def _cancellations(max_order: int, *, replacement_order1=None):
 
 
 def _residual(max_order: int, *, q: float = 0.1, large_new_prefactor: bool = False):
+    if max_order < 1:
+        raise ValueError("fixture requires max_order >= 1")
     cancellations = _cancellations(max_order)
     size = max_order + 1
     pair = [[0.0 for _ in range(size)] for _ in range(size)]
     shifted = [0.0 for _ in range(size)]
-    if max_order == 1:
+    if large_new_prefactor:
+        pair[max_order][max_order] = 100.0
+        shifted[max_order] = 100.0
+    elif max_order == 1:
         pair[1][1] = 3.0
         shifted[1] = 1.0
-    elif max_order == 2:
-        if large_new_prefactor:
-            pair[2][2] = 100.0
-            shifted[2] = 100.0
-        else:
-            pair[2][2] = 1.0
-            shifted[2] = 1.0
     else:
-        raise ValueError("fixture only defines orders one and two")
+        pair[max_order][max_order] = 1.0
+        shifted[max_order] = 1.0
     return certify_full_residual_tail_majorant(
         cancellations,
         q=q,
@@ -124,6 +125,15 @@ def _residual(max_order: int, *, q: float = 0.1, large_new_prefactor: bool = Fal
         base_power=1.0,
         pair=pair,
         shifted=shifted,
+    )
+
+
+def _extension(previous_order: int, *, q: float = 0.1):
+    return certify_successive_slow_borel_residual_extension(
+        _cutoff(previous_order),
+        _cutoff(previous_order + 1),
+        _residual(previous_order, q=q),
+        _residual(previous_order + 1, q=q),
     )
 
 
@@ -205,3 +215,35 @@ def test_extension_rejects_exponent_gain_without_majorant_improvement():
             _residual(1),
             _residual(2, large_new_prefactor=True),
         )
+
+
+def test_finite_coherent_chain_composes_multiple_exact_prefix_extensions():
+    first = _extension(1)
+    second = _extension(2)
+
+    chain = certify_finite_coherent_slow_borel_residual_chain((first, second))
+
+    assert chain.start_order == 1
+    assert chain.end_order == 3
+    assert chain.step_count == 2
+    assert chain.total_first_omitted_exponent_gain == slow_order_exact(
+        Fraction.from_float(H), 2
+    )
+    assert chain.final_log_majorant <= chain.initial_log_majorant
+    assert chain.strict_improvement_count == 2
+    assert chain.overall_majorant_improvement > 0.0
+    assert chain.infinite_coherent_family is False
+    assert chain.paper_exact is False
+
+
+def test_finite_coherent_chain_rejects_cross_wired_residual_endpoint():
+    first = _extension(1, q=0.1)
+    second = _extension(2, q=0.2)
+
+    with pytest.raises(ValueError, match="exact residual endpoint"):
+        certify_finite_coherent_slow_borel_residual_chain((first, second))
+
+
+def test_finite_coherent_chain_rejects_empty_input():
+    with pytest.raises(ValueError, match="at least one step"):
+        certify_finite_coherent_slow_borel_residual_chain(())
