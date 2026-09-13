@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "c30a95d661d92c93dbb4cc49772434fcfdd92928",
+  "integrated_prs": [249],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative-composition increment. Exposes a hierarchy-owned analytic second eta jet of the exact Eq. (5.7) positive-axis forcing by composing the already-landed second-eta strict-lower source with the authoritative value/first-eta forcing bridge and analytically differentiating only eta/ell(h,eta).",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_forcing_second_parameter.py",
+      "test": "tests/test_background_repaired_history_forcing_second_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_POSITIVE_AXIS_FORCING_SECOND_PARAMETER_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.2",
+        "Appendix A",
+        "Eqs. (5.3)-(5.7)"
+      ],
+      "landed_capability": "Requires the strong hierarchy-owned repaired phi fourth-mixed/U fifth-mixed history, obtains value and first eta derivative from the existing forcing bridge, obtains second-eta actualLowerSource from the landed strong source bridge, and analytically assembles partial_eta^2 f_n including the exact second derivative of eta/ell(h,eta). Regression uses the actual Lemma 5.2 compact five-bump repair and cross-checks against centered differentiation of the prior analytic first-eta forcing path.",
+      "remaining_boundary": "The genuine Issue-#1 order-zero strong profile remains upstream. This does not establish partial_eta W_n^(1), Picard convergence, final recursive coefficient materialization, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Caller-supplied or test-only leading fourth/fifth mixed profile data are not paper-exact data.",
+    "Finite-difference regression is a test oracle only and is not used in production or promoted to proof.",
+    "Hierarchy-owned second eta forcing does not by itself establish partial_eta W_n^(1), Picard convergence, recursive coefficient materialization, or Proposition 5.3.",
+    "The repository's generic executable cutoff is not the paper's recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
