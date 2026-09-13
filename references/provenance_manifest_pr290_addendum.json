@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1d812ff01d4575551f804c3599d6efa8985c7d2f",
+  "integrated_prs": [
+    290
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 convergence-lane increment. Adds a fail-closed dependency-tracked finite-prefix C[j,m] certificate before the landed SlowBorel/DiagonalScale recursive cutoff scheduler.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_hierarchy_cutoff_bounds.py",
+      "test": "tests/test_background_hierarchy_cutoff_bounds.py",
+      "provenance": "references/HIERARCHY_CUTOFF_BOUND_PREFIX_PROVENANCE.md",
+      "paper_locations": [
+        "Section 5 SlowBorel construction",
+        "SlowBorelBase.exists_admissibleScales",
+        "DiagonalScale.exists_diagonal_scales",
+        "Proposition 5.3"
+      ],
+      "landed_capability": "Requires every finite-prefix normalized-template bound C[j,m] to carry one hierarchy identity, one source revision, and an explicit nonfuture coefficient dependency chain containing order j; requires the exact triangular index set 1<=j<=J, 0<=m<=j+2; then feeds exactly those certified rows into the existing recursive SlowBorel cutoff scheduler. Missing, duplicate, malformed, wrong-index, cross-hierarchy, cross-revision, future-dependent, or own-order-unbound entries fail closed.",
+      "remaining_boundary": "No uniform paper-derived C[j,m] bounds are derived by this increment. A genuine analytic hierarchy-bound provider remains required, followed by retained recurrence cancellation identities, first-omitted-order residual factorization, infinite recursive cutoff/all-jets-flat closure, and Proposition 5.3 arbitrary-order/super-algebraic residual decay. Agent-2 stronger coefficient hierarchy work remains an upstream dependency."
+    }
+  ]
+}
