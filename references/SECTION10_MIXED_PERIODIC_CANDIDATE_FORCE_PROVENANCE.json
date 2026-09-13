@@ -1,0 +1,37 @@
+{
+  "artifact": "section10_mixed_periodic_candidate_force",
+  "issue": 4,
+  "base_main_commit": "051aa05d40bf490f4c0f5371542a82c73960b4fc",
+  "status": "formal-structure",
+  "formal_repository": "https://github.com/openai/NavierStokesAndEuler",
+  "formal_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+  "formal_file": "NavierStokes/MixedPeriodicAssembly.lean",
+  "theorem_symbol": "NavierStokes.MixedPeriodicAssembly.exists_candidate_force",
+  "producer_kind_required": "lean-formal-export",
+  "paper_endpoint": "1",
+  "admitted_outputs": {
+    "candidate_properties_theorem_output": true,
+    "smooth_force_theorem_output": true,
+    "force_endpoint_jets_equal_boundary_limits_theorem_output": true
+  },
+  "runtime_truth": {
+    "theorem_machine_replayed": false,
+    "actual_input_fields_materialized": false,
+    "residual_limit_values_materialized": false,
+    "candidate_force_field_materialized": false,
+    "actual_section9_sequence_verified": false,
+    "section9_field_smooth_extension_through_t1_constructed": false,
+    "residual_artifact_ready": false,
+    "forcing_artifact_ready": false,
+    "divergence_free_closure_verified": false,
+    "blow_up_closure_verified": false,
+    "finite_energy_closure_verified": false,
+    "endpoint_residual_closure_verified": false,
+    "paper_exact_velocity_available": false
+  },
+  "notes": [
+    "The gate binds the paper-specific mixed periodic candidate-force theorem rather than a generic numerical time window or manufactured residual-defined force.",
+    "verify.reconstruct_forcing_numeric remains diagnostic only and is not used as theorem evidence.",
+    "Green CI cannot promote formal-structure metadata to a paper-exact velocity or forcing artifact."
+  ]
+}
