@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1d812ff01d4575551f804c3599d6efa8985c7d2f",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-6-7-slow-box-theorem-physical-base-binding",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/slow_base_field_binding.py",
+    "test": "tests/test_slow_base_field_binding.py",
+    "provenance": "references/SLOW_BASE_FIELD_BINDING_PROVENANCE.md",
+    "local_inputs": [
+      "src/openai_ns_reconstruction/charts.py",
+      "src/openai_ns_reconstruction/slow_labels.py",
+      "src/openai_ns_reconstruction/phase.py",
+      "src/openai_ns_reconstruction/phase_large_band_scale.py",
+      "src/openai_ns_reconstruction/phase_large_band_prepared_source.py",
+      "src/openai_ns_reconstruction/phase_large_band_physical_base.py"
+    ],
+    "paper_locations": [
+      "Section 6.2 / Eqs. (6.8)-(6.9)",
+      "Section 7.1 / Eqs. (7.1)-(7.11)",
+      "PrimaryGeometryAssembly.frequency_eq_physical",
+      "PrimaryGeometryAssembly.axial_eq_physical"
+    ],
+    "landed_capability": "Fail-closed composition from a sign-free slow-box/provider registry identity to the existing theorem-facing Prepared/physical-base chain ending at FinalSlowBase.velocity, with explicit separation between asymptotic theorem band identities and the ell<=1000 binary64 runtime.",
+    "truth_boundary": {
+      "actual_physical_base_values_materialized": false,
+      "base_jet_values_machine_certified": false,
+      "uniform_phase_estimates_proved": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "treating theorem identity linkage as materialized FinalSlowBase.velocity values",
+      "coercing an asymptotic ell>1000 theorem box into the binary64 DyadicChart/SlowLabel runtime",
+      "treating an arbitrary TangentialBaseJetProvider as a machine-certified physical-base jet",
+      "claiming Eqs. (7.9)-(7.11) from identity composition alone",
+      "constructing or tuning a surrogate background/profile/amplitude/wave"
+    ],
+    "upstream_blockers": [
+      "machine-linked replay/export of the actual canonical Prepared application and active CellIndex slice",
+      "materialized/certified FinalSlowBase.velocity values and normalized tangential derivative jets",
+      "actual all-active-box LocalBase/vector hypotheses and theorem applications required for uniform Eqs. (7.9)-(7.11)",
+      "analytic localized coefficient derivative jets/support/glue needed for a genuine supported curl wave"
+    ]
+  }
+}
