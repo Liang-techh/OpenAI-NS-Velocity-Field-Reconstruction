@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "aa3f0ee90d871fbbcfb5820471aa0f3dd7b7bb7e",
+  "integrated_prs": [],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-1 downstream profile-assembly identity guard. It binds any future fixed-point handoff to the same actual SchedulePressure schedule, sigma/epsilon, wide Lambda/log C, coefficient window, and natural amplitude convention without implementing or substituting for Agent 6's coefficient-space backend.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/stage1_profile_assembly_contract.py",
+      "test": "tests/test_stage1_profile_assembly_contract.py",
+      "provenance": "references/STAGE1_PROFILE_ASSEMBLY_CONTRACT_PROVENANCE.md",
+      "paper_locations": [
+        "Theorem 4.6",
+        "NavierStokes/AxisCoefficientSpace.lean",
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/NaturalProfile.lean",
+        "NavierStokes/SchedulePressure.lean"
+      ],
+      "landed_capability": "A fail-closed typed identity handshake derived only from current actual-schedule providers. Exact schedule, j, sigma, epsilon, wide Lambda, symbolic log C, pinned coefficient window, and amplitude convention must agree before a future backend state may be accepted for downstream profile assembly.",
+      "remaining_boundary": "The dedicated coefficient-space lane must still deliver the genuine AxisCoefficientSpace/naturalRemainder and fixed-point state. phi/u/average/pressure materialization, NaturalProfileAssembly instantiation, regular-inner-core/heat-exterior matching, support/moment/matching/cone closure, full reconstruction, and paper-exact velocity remain open."
+    }
+  ]
+}
