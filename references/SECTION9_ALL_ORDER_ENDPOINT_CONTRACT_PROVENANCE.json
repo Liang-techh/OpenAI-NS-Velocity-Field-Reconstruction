@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "3615d71a602824304455682b49968788ff777859",
+  "base_main_commit": "dbf04a047129502c83293f7275eba7fe0c3f2547",
   "issue": 4,
   "pull_request": 287,
   "full_reconstruction": false,
