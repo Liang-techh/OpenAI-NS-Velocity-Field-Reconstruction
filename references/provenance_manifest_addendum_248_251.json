@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "base_main_commit": "ac9b2f065e2ad6be57a324941a840b8372348a96",
+  "integrated_prs": [248, 249, 250, 251],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "purpose": "Cross-agent integration truth for the theorem-scale first-Picard slow2 average/dot1 branch, the hierarchy-owned second-eta Eq. (5.7) forcing jet, the Section 9 selected-schedule residual-flatness formal export, and the finite-prefix fixed-Section-10 analytic convective-acceleration adapter.",
+  "historical_note": "The squash commit subject for PR #250 is misleading and does not describe its landed files. PR #250 itself and its landed files implement the Section 9 selected-schedule residual-flatness admission; this ledger records the file/PR truth and must not infer Eq. (8.33) finite-head-debt capability from that commit subject.",
+  "layers": [
+    {
+      "pr": 248,
+      "stage": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_average_dot.py",
+      "test": "tests/test_axis_coefficient_wide_first_picard_slow2_average_dot.py",
+      "provenance": "references/provenance_manifest_addendum_axis_coefficient_wide_first_picard_slow2_average_dot.json",
+      "landed_capability": "Materializes exactly the pinned slow2(x1) branch dot1((2*D*eta)*average(u1),u1) from the genuine ActualScheduleWideFirstPicardState while preserving ordinary, pressure-linear, and pressure-square theorem scales.",
+      "remaining_boundary": "This is not complete slow2(x1) or naturalRemainder(x1). The remaining mixed1/param1 average-coupled branches and remaining angular/source/pressure/resolvent operations are open; x2, fixed-point convergence/finality, final phi/u and average/pressure fields, NaturalProfileAssembly, global AxisSpace certification, and support/moment/matching/cone closure remain downstream."
+    },
+    {
+      "pr": 249,
+      "stage": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_forcing_second_parameter.py",
+      "test": "tests/test_background_repaired_history_forcing_second_parameter.py",
+      "provenance": "references/provenance_manifest_addendum_249.json",
+      "landed_capability": "Composes the strong repaired lower-history hierarchy into an analytic hierarchy-owned (f_n, partial_eta f_n, partial_eta^2 f_n) jet for the exact Section 5 Eq. (5.7) positive-axis forcing, differentiating the explicit eta/ell geometry analytically and using finite differences only as a regression oracle.",
+      "remaining_boundary": "The genuine Issue #1 order-zero strong profile remains upstream. This does not establish partial_eta W_n^(1), Picard convergence, final recursive coefficient materialization, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    },
+    {
+      "pr": 250,
+      "stage": "section-9-selected-schedule-residual-flatness",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_selected_schedule_flatness.py",
+      "test": "tests/test_section9_selected_schedule_flatness.py",
+      "provenance": "references/SECTION9_SELECTED_SCHEDULE_FLATNESS_PROVENANCE.json",
+      "landed_capability": "Adds a fail-closed lean-formal-export admission for the pinned LocalResidualFlatness.selected_schedule theorem, tying one common existential diagonal schedule, ThreeCutBounds, and AllResidualJetRates to the actual selected potential/direct/pressure stage families.",
+      "remaining_boundary": "The selected_schedule theorem is not replayed in Lean here; schedule values, finite stage fields, residual-rate values, and the Section 9 iteration are not machine-materialized. The theorem-metadata handoff does not construct paper-exact velocity or a genuine executable residual/forcing artifact."
+    },
+    {
+      "pr": 251,
+      "stage": "section-10-localized-convective-acceleration",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/section9_section10_convective_acceleration.py",
+      "test": "tests/test_section9_section10_convective_acceleration.py",
+      "provenance": "references/SECTION10_CONVECTIVE_ACCELERATION_PROVENANCE.md",
+      "landed_capability": "Computes the off-axis analytic finite-prefix fixed-Section-10 convective term (u_cut dot grad)u_cut=(grad u_cut)u_cut from the already-landed localized velocity and analytic Cartesian spatial Jacobian, with no production finite differencing and exact zero outside the official fixed support.",
+      "remaining_boundary": "The underlying Section9FinitePrefixJetCertificate remains provider-supplied and finite. Axis regularity, the actual Section 7/8 correction exporter, infinite/locally-finite Eq. (9.21), all-order smooth extension through t=1, a genuine Navier-Stokes residual or smooth forcing, endpoint residual closure, bounded-energy/blow-up closure, and paper-exact velocity remain unconstructed."
+    }
+  ],
+  "forbidden_inferences": [
+    "One theorem-scale slow2(x1) average/dot1 branch does not establish complete slow2(x1), naturalRemainder(x1), x2, or fixed-point convergence.",
+    "Hierarchy-owned partial_eta^2 f_n does not establish partial_eta W_n^(1), recursive coefficient completion, the infinite cutoff schedule, or Proposition 5.3 all-jets residual decay.",
+    "A formal-export admission for LocalResidualFlatness.selected_schedule does not replay Lean, materialize the existential schedule or actual stage fields, or construct a genuine executable residual/forcing artifact.",
+    "A finite-prefix off-axis analytic convective term is not the full Navier-Stokes residual, does not prove axis regularity, and does not materialize the infinite Eq. (9.21) field or endpoint closure.",
+    "The misleading squash commit subject for PR #250 is not provenance evidence for an Eq. (8.33) finite-head-debt capability; the PR metadata and landed files are authoritative for this integration ledger.",
+    "Setting f=R and then observing R-f=0 is not independent verification of forcing or Navier-Stokes closure.",
+    "Green tests or CI do not promote provider-contract, theorem-admission, analytic-adapter, diagnostic, toy, or formal-structure artifacts to paper-exact status."
+  ]
+}
