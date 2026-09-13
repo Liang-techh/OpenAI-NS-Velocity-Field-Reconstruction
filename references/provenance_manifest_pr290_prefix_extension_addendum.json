@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "integrated_prs": [290],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 finite-prefix convergence-lane increment. Couples hierarchy-bound SlowBorel cutoff prefixes and exact retained-recurrence cancellation certificates across one successive truncation step N->N+1, checks exact first-omitted exponent gain 2h, and admits finite residual improvement only when the certified log-majorant at the same q does not increase.",
+  "layers": [
+    {
+      "id": "stage-2-successive-slowborel-residual-extension",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_prefix_extension.py",
+      "test": "tests/test_background_prefix_extension.py",
+      "provenance": "references/SUCCESSIVE_SLOWBOREL_RESIDUAL_EXTENSION_PROVENANCE.md",
+      "paper_locations": [
+        "Section 5 SlowBorel construction",
+        "SlowBorelBase.exists_admissibleScales",
+        "DiagonalScale.exists_diagonal_scales",
+        "SlowExpansionResidual.recurrence_truncation_of_zero",
+        "Proposition 5.3"
+      ],
+      "landed_capability": "Certifies one coherent N->N+1 finite-prefix extension only when prior hierarchy-bound C[j,m] entries, recursive cutoff scales, and exact retained recurrence identities are preserved verbatim; requires common hierarchy/source/coefficient-state provenance, common q/h/base power, exact Fraction-level first-omitted exponent gain 2h, and a nonincreasing certified full finite-residual log-majorant. Exponent gain alone cannot override coefficient-prefactor growth.",
+      "remaining_boundary": "No actual arbitrary-order hierarchy provider is supplied. Uniform paper-derived C[j,m] bounds, genuine exact recurrence rows from the hierarchy, an infinite coherent extension family, all-jets-flatness, Proposition 5.3, and super-algebraic residual convergence remain unresolved."
+    }
+  ]
+}
