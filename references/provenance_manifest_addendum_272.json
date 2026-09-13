@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "e42cce1c499f7a2e97a303a2fc22c8d06aceb553",
+  "integrated_prs": [272],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 solver prerequisite: an exact second-eta differentiation primitive for one Eq. (5.7) Picard update, with the required previous-iterate third eta derivative exposed explicitly rather than approximated.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_picard_second_parameter_jet.py",
+      "test": "tests/test_background_picard_second_parameter_jet.py",
+      "provenance": "references/PICARD_SECOND_PARAMETER_PRIMITIVE_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Eq. (5.7)"
+      ],
+      "landed_capability": "Given analytic A0/A1 jets through d_eta^2, forcing through d_eta^2, and a previous Picard iterate through d_eta^3, returns the next Picard iterate through d_eta^2 by exact product-rule assembly followed by the canonical Eq. (5.7) singular inverse G.",
+      "remaining_boundary": "The current repaired hierarchy does not yet own the previous-iterate third eta derivative needed by the A1*d_eta W term. This primitive therefore remains generic solver infrastructure and does not by itself construct hierarchy-owned d_eta^2 W_n^(1), Picard convergence, finalized positive-order coefficients, the recursive cutoff-scale schedule, Proposition 5.3 residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Caller-supplied analytic matrix, forcing, or iterate jets are not paper-exact coefficient data.",
+    "Centered finite differences in regression are test oracles only and are not production derivative paths.",
+    "Second eta differentiation of one Picard update does not establish Picard convergence.",
+    "The repository generic executable cutoff is not the paper recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
