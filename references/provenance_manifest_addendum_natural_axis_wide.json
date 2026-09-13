@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "locations": [
+      "NaturalProfile.lean:559-599",
+      "ProfileHistories.lean:301-328",
+      "NaturalAxisBridge.lean:321-342"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-wide-natural-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/natural_axis_wide.py",
+      "references/NATURAL_AXIS_WIDE_PROVENANCE.md"
+    ],
+    "provenance": "references/NATURAL_AXIS_WIDE_PROVENANCE.md",
+    "factory": "wide_natural_profile_prefix(solver, max_n, X, eta)",
+    "coordinates": {
+      "physical_radial": "X",
+      "formal_radial": "Y = Lambda * X",
+      "domain": "X >= 0, 0 <= Y < 20, |eta| <= 1"
+    },
+    "fields": [
+      "F",
+      "E",
+      "U",
+      "dU_deta",
+      "average_U",
+      "d_average_U_deta",
+      "V0",
+      "Pi"
+    ],
+    "representation": {
+      "channel_key": "(q,p)",
+      "meaning": "a^q Lambda^(-p)",
+      "q_domain": "nonnegative integers, including odd q for F = a phi",
+      "channels_preserved": true,
+      "amplitude_or_Lambda_powers_formed": false,
+      "decimal_precision": 96,
+      "signed_log_scale": "q * amplitude_log",
+      "signed_log_factor": "ln(abs(numerator)) - p * ln(Lambda)"
+    },
+    "physical_assembly": {
+      "F": "value angular prefix multiplied by symbolic q=1 channel",
+      "E": "sqrt(2*X) * F, exact zero at X=0",
+      "U": "ordinary(4*eta+j) + axial prefix shifted by Lambda^-1",
+      "dU_deta": "ordinary(4) + eta_order=1 axial prefix shifted by Lambda^-1",
+      "average_U": "ordinary(4*eta+j) + radial-average axial prefix shifted by Lambda^-1",
+      "d_average_U_deta": "ordinary(4) + eta_order=1 radial-average axial prefix shifted by Lambda^-1",
+      "V0": "X/L * (2*eta*U - 2*D*eta*average_U - (1-eta^2)*d_average_U_deta), structural zero at X=0",
+      "Pi": "quadrature axis pressure + primitive pressure prefix shifted by Lambda^-1"
+    },
+    "transport_geometry": {
+      "D": "actual solver.data.D imported with Decimal.from_float",
+      "h": "actual solver.data.h imported with Decimal.from_float",
+      "L": "1 - 2*h*eta^2, validated positive on the physical chart",
+      "domain": "|eta| <= 1",
+      "decimal_precision": 96
+    },
+    "conditional_bound_api": {
+      "method": "WideNaturalProfilePrefix.conditional_truncation_bounds(budget)",
+      "output": "immutable eight-field Decimal mapping",
+      "d_average_U_deta": "eta_order=1 averaged tail divided by Lambda",
+      "V0": "exact-Fraction triangle bound from X, eta, D, h, and positive L, rounded upward at final Decimal96 conversion",
+      "conditional_on_axis_space_identification": true,
+      "includes_coefficient_roundoff": false,
+      "includes_axis_pressure_quadrature_roundoff": false
+    },
+    "truth_flags": {
+      "formal_prefix_materialized": true,
+      "paper_exact": false,
+      "global_axis_norm_certified": false,
+      "fixed_point_materialized": false,
+      "truncation_certified": false,
+      "coefficient_roundoff_certified": false
+    },
+    "validation": [
+      "bounded py_compile check",
+      "one actual-axis wide-prefix smoke target; reciprocal Decimal inputs can retain their finite-product residual",
+      "conditional bounds use exact Fraction scaling and upward Decimal conversion"
+    ],
+    "remaining_boundary": "The finite prefix leaves an unknown radial tail and does not prove global AxisSpace membership, fixed-point convergence, paper-exact velocity, forcing, or a physical-coordinate theorem profile. Decimal96 arithmetic is not exact real arithmetic or an interval certificate."
+  },
+  "forbidden_promotions": [
+    "forming a^q or Lambda^-p as a floating-point value",
+    "dropping nonzero sparse channels or projecting to binary64",
+    "treating the schedule axis-pressure quadrature as the remainder pressure forcing",
+    "treating conditional omitted-row bounds as unconditional AxisSpace certification",
+    "claiming paper exactness, fixed-point convergence, or global profile membership"
+  ]
+}

@@ -1,6 +1,6 @@
 # Reconstruction plan and truth-status ledger
 
-Updated 2026-09-10. The target remains an executable counterpart of the **entire published
+Updated 2026-09-13. The target remains an executable counterpart of the **entire published
 velocity construction**, not merely the blow-up exponent. Every construction layer needs
 source-mapped choices and independent verification. The goal has not been downgraded.
 
@@ -47,15 +47,122 @@ The radial averages now use cached Gauss–Legendre nodes or user-supplied exact
 Regular-axis profile data can provide `F` with `E=sqrt(2X)F`; invalid nonzero axis swirl
 is rejected instead of silently erased.
 
+The actual schedule now has a staged coefficientwise leading-profile chain in
+`axis_coefficient_wide_natural_remainder.py`, `axis_coefficient_wide_first_picard.py`, and
+`axis_coefficient_wide_first_picard_remainder.py`. The wide mixed-scale adapters represent the
+complete `naturalRemainder(x0)`, the first Picard state `x1`, the full coefficientwise
+`naturalRemainder(x1)`, and the second Picard state `x2`; ordinary,
+pressure-linear, and pressure-square channels remain explicit rather than being collapsed into
+binary64 values. The generic sparse mixed-scale algebra and formal triangular solver are now
+implemented. The solver computes each requested formal coefficient directly from lower radial rows
+and uses no fixed iteration cutoff. These are local formal coefficient recursions and do not provide
+weighted-space membership, a converged fixed point, global `AxisSpace` certification, or a
+paper-exact `phi/u` profile.
+
+The one-graph solver `jet_prefix` now feeds `axis_coefficient_profile_prefix.py` through
+`formal_axis_profile_prefix`: finite natural-radial `Y` polynomial prefixes evaluate `phi`, `u`,
+radial derivatives, eta-derivative jets, radial averages, and the scaled formal pressure primitive
+`P = primitive((a phi)^2)` while retaining every split signed-log amplitude/Lambda channel. The
+pressure primitive uses the full Bell eta family for `a^2` and remains separate from the axial
+remainder pressure forcing. `axis_coefficient_radial_tail.py` supplies a conditional omitted-row
+majorant using the pinned `AxisSpace` weight; it does not establish global membership or absorb
+coefficient roundoff. This prefix does not provide a converged or paper-exact profile; the
+reviewed wide prefix now carries the corresponding sparse physical `Pi` map.
+`NaturalProfileAssembly` now exposes the smooth ratio `F = a phi` separately
+from the physical swirl `E = sqrt(2 X) F`; its focused normalization target
+passed `4` tests in `0.15 s`.
+
+The reviewed `wide_natural_profile_prefix` now retains the actual Decimal
+`Lambda` and symbolic amplitude while exposing the maps `F`, `E`, `U`,
+`d_eta U`, `Ubar`, and `Pi`. The reviewed conditional `F/P` norm-budget
+extension reuses the same actual reference/remainder chain, and its optional
+six-field `conditional_truncation_bounds` interface applies exact Fraction
+scaling and upward square-root rounding. The focused command
+`python -m pytest -q tests\test_natural_axis_wide.py tests\test_axis_coefficient_profile_prefix.py -W error`
+returned `5 passed in 0.66 s`; the final wide-only check returned `4 passed in
+0.64 s`. These remain conditional formal prefixes: no global weighted
+membership, coefficient/phase-quadrature roundoff budget, or physical
+certification is claimed.
+
+The formal finite-Picard bridge is now available through
+`formal_axis_picard_family_state(solver)`. Its
+`jet_prefix(iterations, max_n, m, eta)` starts at the actual reference `x0`
+when `iterations=0` and applies the same routed sparse map
+`reference + R(input)/(2 Lambda)` for each requested finite step. The wide
+physical prefix also retains `d_average_U_deta` and the regular radial
+velocity numerator `V0`. Its conditional eight-field tail mapping uses exact
+Fraction scaling, including an upward-verified `sqrt(2 X)` factor. The
+source-pinned manual finite-filtration proof has been accepted: under the
+theorem-side hypotheses, formal row `n` stabilizes after update `n` and
+identifies the compatible fixed-point coefficient. This exact-arithmetic
+conclusion concerns formal recurrence dependence and does not bound errors in
+the evaluated scalar jets or coefficient roundoff; the jet values are finite,
+but their numerical errors lack certified bounds. Focused runtime acceptance
+passed the assigned bridge targets. Even with the conditional exact-identification
+proof, evaluated scalar jet enclosures and
+coefficient-roundoff control remain the next Stage 1 blocker.
+
+The exact rational input seam is now available through
+`RationalAxisCoefficientData(actual_data)`. It treats selected `h`, `j`, and `sigma`
+as exact binary rationals, recomputes `A` and `D` from `h`, and evaluates the fixed
+scalar fields, `chi`, and angular reference coefficients with exact Fraction Taylor
+algebra. Nearest Decimal96 values and directed scalar/angular enclosures are exposed;
+the exact domain is `[-11/10, 11/10]`, so binary64 `1.1` is outside this interface
+while the physical `|eta| <= 1` chart is unchanged. `zStar`, pressure/Bell-phase
+inputs, and accumulated coefficient errors remain outside this seam. The measured
+baseline command `python -m pytest -q tests\test_axis_coefficient_rational_data.py
+tests\test_axis_coefficient_formal_solver.py tests\test_axis_coefficient_picard_family.py
+tests\test_axis_coefficient_profile_prefix.py tests\test_natural_axis_wide.py -W error`
+returned `16 passed in 25.22 s`; the remaining cleanup only removes a discarded
+reference-half evaluation and preserves the value formulas.
+
+The rational input provider also supplies exact normalized amplitude-power Bell jets through
+`amplitude_power_bell_fraction(power, order, eta, Lambda)`. It uses the selected rational
+`normalizedGradient` full derivatives and Bell recurrence without forming amplitude, phase, or
+`C`, with nearest Decimal96 and directed enclosure wrappers. The affected-source command
+`python -m pytest -q tests\test_axis_coefficient_wide_natural_source.py tests\test_axis_coefficient_rational_bell.py -W error` returned `12 passed in 0.30 s`, using independent Fraction expectations for the first two Bell values. The broader formal/Picard/profile/wide integration command
+`python -m pytest -q tests\test_axis_coefficient_formal_solver.py tests\test_axis_coefficient_picard_family.py tests\test_axis_coefficient_profile_prefix.py tests\test_natural_axis_wide.py -W error` returned `13 passed in 24.37 s`; phase and total-product construction and accumulated coefficient-error control remain outside this boundary.
+
+The new `axis_phase_log_enclosure.py` primitive maps an externally supplied phase interval through the
+exact Fraction affine relation `log a = Lambda * phase - log_C`, then presents directed Decimal bounds
+with `paper_exact=False`. The focused command `python -m pytest -q tests\test_axis_phase_log_enclosure.py -W error`
+returned `4 passed in 0.14 s`. This does not replace runtime phase quadrature or certify `C`, scalar
+parameter selection, or global reconstruction. Fixed-order Cauchy bisection requires order growth to
+meet arbitrary tolerance; the related GitHub `hub281`/`task282` exchange remains unintegrated.
+
+`axis_phase_integral.py` now implements the linked exact-rational phase path. It expands the rational
+kernel on centered cells, requires the exact denominator gate `theta < 1/2`, and adaptively subdivides
+and increases Taylor order under finite caps, failing closed when a cap is reached. The actual
+`ActualScheduleAmplitudeLogState.log_amplitude_enclosure` bridge supplies exact rational
+`h,j,sigma,eta`, requests phase tolerance `absolute_log_tolerance/Fraction(Lambda)`, and applies the
+selected finite `Lambda` and symbolic `C` exponent without forming `C`. Focused acceptance returned
+`5 passed in 0.17 s` for `tests\test_axis_phase_integral.py` and `3 passed in 0.17 s` for
+`tests\test_axis_amplitude_phase_enclosure.py`; the prior amplitude compatibility target returned
+`6 passed in 0.16 s`. The default 4001-point trapezoid remains a numerical point estimate for
+`log_amplitude`. On the actual selected fixture at `eta=-1/50`, direct phase tolerance `10^-12`
+returned in `10.664 s` with `225` cells, maximum order `64`, estimate `0.05073499503328993`, and
+error `7.357907e-13`; the legacy 4001-point call took `0.002 s`, returned `1.521550417558555`, and
+fell outside the validated interval by about `+1.470815`. This is one fixture, not a general
+benchmark. Replacing or reworking the default phase path used by `log_amplitude` is the next blocker
+for crossing-root evaluations. The exact bridge remains conditional on the selected rational kernel
+and resource caps; it does not certify SchedulePressure, `C` selection, coefficient roundoff, global
+`AxisSpace`, or the full reconstruction.
+
 **New constructed component:** `heat_exterior.py` implements Appendix A.6, Eqs. (A.32)–(A.38):
 H and its derivatives, exterior K(r,t), E_heat(X,eta), and centrifugal pressure normalized
 at infinity. It includes derivative/ODE checks and independently tested NS balance for
 this exterior-only flow. This component is not smooth at r=0 and cannot stand in for the core.
 
-**Still required:** translate Theorem 4.6 and Appendices A/B/C into a regular inner profile,
-matching moments, compact moment corrections, shear modification and admissible cone
-conditions. Emit all constants/choices and generated coefficient hashes. Do not splice a
-Gaussian into the missing core and mark the result complete.
+**Still required:** identify compatible global weighted `AxisSpace` majorants and control
+coefficient roundoff, preserve adjacent-eta compatibility and approximation-error budgets, and
+complete the compatible weighted profile around the reviewed
+`wide_natural_profile_prefix` maps. The scaled formal pressure primitive and sparse physical `Pi`
+map are present, remain separate from remainder forcing, and are not a paper-exact converged
+profile. The reviewed conditional `F/P` norm-budget and six-field truncation interfaces remain
+conditional on the actual chain and compatible `AxisSpace` identification; then translate Theorem 4.6
+and Appendices A/B/C into a regular inner profile, matching moments, compact moment corrections,
+shear modification and admissible cone conditions. Emit all constants/choices and generated
+coefficient hashes. Do not splice a Gaussian into the missing core and mark the result complete.
 
 ## Stage 2 — all-order background: assembly only
 

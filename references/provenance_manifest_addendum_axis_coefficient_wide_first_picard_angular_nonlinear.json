@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_angular_nonlinear.py",
+      "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_ANGULAR_NONLINEAR_PROVENANCE.md"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_ANGULAR_NONLINEAR_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.product",
+        "NavierStokes.AxisOperators.regularInverse",
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.AxisOperators.inverseDotProduct",
+        "NavierStokes.AxisOperators.inverseMixed",
+        "NavierStokes.AxisOperators.average",
+        "NavierStokes.NaturalAxisCoefficients.CoefficientFamily.axisData"
+      ],
+      "locations": {
+        "coefficient_definitions": "NavierStokes/AxisContraction.lean:327-334",
+        "natural_remainder": "NavierStokes/AxisContraction.lean:339-365",
+        "product": "NavierStokes/AxisOperators.lean:86-95",
+        "regular_inverse": "NavierStokes/AxisOperators.lean:501-504",
+        "differential_family": "NavierStokes/AxisOperators.lean:512-518",
+        "operator_bindings": "NavierStokes/AxisOperators.lean:681-717",
+        "radial_divisor": "NavierStokes/AxisWeightEstimates.lean:388",
+        "coefficient_window": "NavierStokes/NaturalAxisCoefficients.lean:27"
+      }
+    },
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "same_x1_for_all_terms": true,
+      "Lambda_override": false,
+      "amplitude_log_override": false,
+      "coefficient_table_override": false,
+      "radial_product": "finite convolution over i+j=n",
+      "parameter_product": "finite eta-Leibniz sum over k+l=m with binomial(m,k)",
+      "inverse_divisor": "n*(n+1)",
+      "ordinary_powers": [0, 1, 2, 3, 4],
+      "pressure_linear_powers": [1, 2, 3],
+      "pressure_square_channel": false,
+      "outer_inverseL_or_resolvent": false,
+      "decimal_precision": 96
+    },
+    "capability": "Materializes raw quad1(x1) and complete slow1(x1) as mixed-scale coefficient jets, preserving ordinary Lambda^0..Lambda^-4 and normalized a^2 Lambda^-1..Lambda^-3 channels.",
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "quad1_materialized": true,
+      "slow1_materialized": true,
+      "angular_nonlinear_materialized": true,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted Lambda, amplitude, pressure, coefficient, or surrogate x1 data",
+      "mixing terms from different x1 or SchedulePressure datum",
+      "silently truncating a nonzero channel above the declared ordinary or pressure-linear widths",
+      "creating or discarding an unrepresented pressure-pressure a^4 product",
+      "binary64 collapse of the signed-log pressure contribution",
+      "applying an outer inverseL or resolvent and calling that naturalRemainder(x1)",
+      "naturalRemainder(x1), x2, fixed-point, convergence, global AxisSpace, or paper-exact claims from this layer alone"
+    ],
+    "remaining_boundary": "The outer angular inverseL/resolvent recombination, remaining linear angular terms, complete axial recombination, source-pressure path, naturalRemainder(x1), later Picard iterates, fixed-point convergence, derived average/pressure, NaturalProfileAssembly, global AxisSpace certification, and downstream support/moment/matching/cone checks remain unresolved.",
+    "numerical_caveats": [
+      "the channel products and sums use ordinary Decimal arithmetic at precision 96; this is a numerical representation, not exact real arithmetic, interval certification, or an independent theorem proof",
+      "rounded cancellation in a channel numerator can lose digits; the implementation does not promote the truth status",
+      "the phase and amplitude logarithm retain the landed numerical quadrature boundary",
+      "pressure terms remain in normalized signed-log form and are never converted to binary64",
+      "validation beyond the bounded import and smoke check is left to the parent batch verification"
+    ]
+  }
+}

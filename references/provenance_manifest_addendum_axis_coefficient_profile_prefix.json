@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/AxisOperators.lean:86-95",
+      "NavierStokes/AxisOperators.lean:501-504",
+      "NavierStokes/AxisOperators.lean:512-518",
+      "NavierStokes/AxisOperators.lean:681-717",
+      "NavierStokes/AxisWeightEstimates.lean:388",
+      "NavierStokes/NaturalAxisCoefficients.lean:27"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-finite-formal-profile-prefix",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py",
+      "src/openai_ns_reconstruction/axis_coefficient_profile_prefix.py",
+      "references/AXIS_COEFFICIENT_PROFILE_PREFIX_PROVENANCE.md"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_PROFILE_PREFIX_PROVENANCE.md",
+    "capability": "Evaluate finite natural-radial polynomial prefixes and radial-average prefixes of formal sparse mixed-scale coefficient rows while preserving every channel.",
+    "factories": [
+      "formal_axis_coefficient_solver(x1)",
+      "formal_axis_profile_prefix(solver, max_n, Y, eta, radial_order=0, eta_order=0)"
+    ],
+    "pure_helper": "evaluate_mixed_scale_radial_prefix(coefficients, Y, radial_order=0, average=False)",
+    "prefix_maps": {
+      "polynomial": "sum(n>=r) n!/(n-r)! * Y^(n-r) * c_n",
+      "radial_average": "sum(n>=r) n!/(n-r)! * Y^(n-r) * c_n/(n+1)",
+      "zero_Y": "only row n=r contributes",
+      "rows": "finite rows 0..max_n from one eta-local family graph"
+    },
+    "representation": {
+      "channel_key": "(q,p)",
+      "channels_preserved": true,
+      "amplitude_or_Lambda_powers_formed": false,
+      "decimal_precision": 96,
+      "signed_log_scale": "q * amplitude_log",
+      "signed_log_factor": "ln(abs(numerator)) - p * ln(Lambda)",
+      "q_zero_supported": true
+    },
+    "truth_flags": {
+      "formal_prefix_materialized": true,
+      "paper_exact": false,
+      "global_axis_norm_certified": false,
+      "fixed_point_materialized": false,
+      "truncation_certified": false,
+      "paper_exact_velocity_available": false
+    },
+    "validation": {
+      "scope": "bounded compile and one small Y=0 prefix smoke",
+      "full_test_suite_run": false,
+      "tail_or_convergence_certificate": false
+    },
+    "remaining_boundary": "The finite prefix leaves an unknown radial tail and does not prove global weighted AxisSpace membership, fixed-point convergence, paper-exact velocity, forcing, or a physical-coordinate theorem profile. Decimal96 rounding is not exact real or interval arithmetic."
+  },
+  "forbidden_inferences": [
+    "a finite prefix is a converged or fixed-point profile",
+    "retained rows imply a tail or truncation bound",
+    "formal sparse channel maps imply omitted physical channels are zero",
+    "a signed-log view evaluates the amplitude or Lambda powers",
+    "a small polynomial smoke proves the natural-axis theorem",
+    "Decimal96 rounded arithmetic is exact real arithmetic or a certification"
+  ]
+}

@@ -18,10 +18,11 @@ Official Lean source (pinned by ``references/provenance_manifest.json``):
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import exp
+from math import exp, sqrt
 from typing import Callable
 
 import numpy as np
+from .coordinates import _finite
 
 Scalar1D = Callable[[float], float]
 Scalar2D = Callable[[float, float], float]
@@ -176,11 +177,22 @@ class NaturalProfileAssembly:
     def rescale_point(self, X: float, eta: float) -> tuple[float, float]:
         return self.parameters.Lambda * float(X), float(eta)
 
-    def E(self, X: float, eta: float) -> float:
-        """Angular profile: ``a(eta) * phi(Lambda*X, eta)``."""
+    def F(self, X: float, eta: float) -> float:
+        """Smooth angular ratio ``a(eta) * phi(Lambda*X, eta)``."""
 
+        X = _finite(X, "X")
+        if X < 0.0:
+            raise ValueError("profile domain requires X>=0")
         Y, eta = self.rescale_point(X, eta)
         return self.parameters.amplitude(eta) * float(self.phi(Y, eta))
+
+    def E(self, X: float, eta: float) -> float:
+        """Physical swirl factor ``sqrt(2*X) * F(X, eta)``."""
+
+        X = _finite(X, "X")
+        if X < 0.0:
+            raise ValueError("profile domain requires X>=0")
+        return sqrt(2.0 * X) * self.F(X, eta)
 
     def U(self, X: float, eta: float) -> float:
         """Axial profile: ``(4 eta + j) + Lambda^-1 u(Lambda X,eta)``."""
@@ -216,6 +228,7 @@ class NaturalProfileAssembly:
             U=self.U,
             dU_deta=self.dU_deta,
             Pi=self.Pi,
+            F=self.F,
             name="natural-profile-rescaling (fixed-point inputs unresolved)",
             paper_exact=False,
         )

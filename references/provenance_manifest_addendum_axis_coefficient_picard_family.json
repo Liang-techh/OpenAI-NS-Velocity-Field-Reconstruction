@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/AxisContraction.lean:339-369",
+      "NavierStokes/AxisContraction.lean:536-545",
+      "NavierStokes/AxisOperators.lean:90-95",
+      "NavierStokes/AxisOperators.lean:182-190",
+      "NavierStokes/AxisOperators.lean:380-390",
+      "NavierStokes/AxisOperators.lean:494-508",
+      "NavierStokes/AxisResolvent.lean:321-345",
+      "NavierStokes/AxisResolvent.lean:398-405",
+      "NavierStokes/AxisResolvent.lean:464-471",
+      "NavierStokes/AxisReference.lean:65-105",
+      "NavierStokes/AxisResolvent.lean:312-319",
+      "NavierStokes/AxisCoefficientSpace.lean:55-69",
+      "NavierStokes/AxisCoefficientSpace.lean:202-220",
+      "NavierStokes/AxisCoefficientSpace.lean:441-455"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-formal-picard-family-filtration",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py",
+      "references/AXIS_COEFFICIENT_PICARD_FAMILY_PROVENANCE.md"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_PICARD_FAMILY_PROVENANCE.md",
+    "capability": "Rowwise formal coefficient oracle with conditional finite Picard stabilization under the pinned radial filtration.",
+    "radial_causality": {
+      "natural_remainder_row_n_reads_rows_lt_n": true,
+      "raw_j1_j2_predecessor_shift": true,
+      "product_is_finite_antidiagonal": true,
+      "average_preserves_row_before_outer_radial_gain": true,
+      "primitive_parameterPrimitive_mulY_predecessor_shift": true,
+      "pressure_source_has_at_least_two_radial_gains": true,
+      "angular_resolvent_Q_raises_radial_order": true,
+      "remainder_row_zero_is_zero": true,
+      "assumes_pinned_compatible_fixed_data": true
+    },
+    "picard_stabilization": {
+      "map": "T(x)=x0+(1/(2*Lambda))*naturalRemainder(x)",
+      "initial_state": "x^(0)=x0=referencePair",
+      "row_zero_fixed": "R(x)[0,m]=0, hence x*[0,m]=x0[0,m]",
+      "induction": "x^(r) agrees with the fixed point through rows <= r",
+      "row_n_depth": "formal row n agrees with x^(n)_n and all later Picard iterates",
+      "scope": "conditional exact-arithmetic identity; not convergence certification"
+    },
+    "conditional_banach_limit_identification": {
+      "compatible_fixed_point_source": "AxisContraction.exists_fixedPoint_of_controlled:227-284 and exists_unique_natural_fixedPoint:536-545",
+      "norm_limit_route": "The complete-space contraction construction invokes ContractingWith.exists_fixedPoint'; an exact Picard sequence therefore converges under the theorem hypotheses",
+      "coefficient_evaluation_bound": "AxisCoefficientSpace.continuous_jet:55-69 and abs_jet_sub_le:216-220; abs_jet_le:202-208 bounds the limiting projection",
+      "logic": "If exact Picard x^(r) agrees with x* through row r, radial causality gives agreement of R through row r+1; for fixed n the row stabilizes at r>=n, and bounded evaluation identifies that stabilized row with x*",
+      "formal_prefix_norm": "No independent global norm proof is needed for each finite formal prefix once the theorem-side compatible x* and its all-index norm witness are supplied",
+      "status": "manual conditional corollary; not separately formalized in Lean at the pinned commit",
+      "runtime_gap": "The local Decimal96/float jet oracle still lacks an exact or interval-certified equality bridge to theorem-side coefficient projections"
+    },
+    "local_solver_locations": {
+      "family_construction": "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py:FormalAxisCoefficientSolverState._build_families",
+      "lower_angular_resolvent_recurrence": "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py:get_angular_r",
+      "raw_axial_remainder": "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py:get_axial_r",
+      "reference_plus_recursive_rows": "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py:get_phi and get_u",
+      "jet_pair_and_prefix": "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py:jet_pair and jet_prefix",
+      "picard_family_api": "src/openai_ns_reconstruction/axis_coefficient_picard_family.py:formal_axis_picard_family_state"
+    },
+    "required_axis_space_bridge": [
+      "shared epsilon, Lambda, AxisData, amplitude, reference identity, and natural remainder",
+      "pinned operator/resolvent hypotheses and Lambda >= contractionThreshold",
+      "theorem-side compatible fixed point x* with its all-index AxisSpace norm witness",
+      "adjacent-eta derivative identity and coefficient projections matching local (n,m,eta) values",
+      "exact or interval-certified runtime bridge from Decimal/float jets to theorem-side projections"
+    ],
+    "truth_flags": {
+      "formal_coefficients_materialized": true,
+      "finite_picard_row_stabilization_derived": true,
+      "compatible_axis_space_fixed_point_materialized": false,
+      "global_axis_norm_certified": false,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "paper_exact": false,
+      "paper_exact_velocity_available": false
+    },
+    "validation": {
+      "scope": "source and formula provenance artifact update",
+      "tests_run": false,
+      "decimal96_is_interval_certificate": false,
+      "global_norm_or_compatibility_proved": false
+    },
+    "remaining_boundary": "The theorem-side compatible fixed point and actual majorants can identify exact formal rows conditionally, without a separate norm proof for each finite prefix. The local artifacts still do not materialize that theorem-side object or prove the runtime Decimal/float jet equality and compatibility bridge; final profiles and paper-exact velocity therefore remain unproved."
+  },
+  "forbidden_inferences": [
+    "finite row stabilization proves global weighted-space convergence",
+    "formal jet rows alone establish adjacent-eta compatibility",
+    "Decimal96 evaluation is exact real or interval arithmetic",
+    "a finite x1 or x2 comparison proves the compatible AxisSpace fixed point",
+    "the natural resolvent's infinite series can be replaced by a finite row calculation without the theorem-side norm hypotheses",
+    "the formal solver materializes paper-exact phi/u or the final physical profile"
+  ]
+}

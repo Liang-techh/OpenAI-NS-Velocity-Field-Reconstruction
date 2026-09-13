@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_remainder.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_REMAINDER_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisResolvent.naturalResolvent",
+        "NavierStokes.AxisOperators.regularInverse",
+        "NavierStokes.AxisOperators.inverseDotProduct",
+        "NavierStokes.AxisOperators.inverseMixed",
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.AxisOperators.average",
+        "NavierStokes.NaturalAxisCoefficients.CoefficientFamily.axisData"
+      ],
+      "locations": {
+        "natural_remainder": "NavierStokes/AxisContraction.lean:327-365",
+        "product_and_inverses": "NavierStokes/AxisOperators.lean:86-95,501-518",
+        "operator_bindings": "NavierStokes/AxisOperators.lean:681-717",
+        "radial_divisor": "NavierStokes/AxisWeightEstimates.lean:388",
+        "coefficient_window": "NavierStokes/NaturalAxisCoefficients.lean:27"
+      }
+    },
+    "capability": "Assembles complete coefficientwise naturalRemainder(x1), preserving six ordinary scale channels, five normalized a^2 pressure-linear channels, the normalized a^4 Lambda^-3 pressure-square channel, and a coefficientwise second Picard shift.",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "fixed_axis_data_source": "x1.reference only",
+      "same_x1_branch_binding": true,
+      "Lambda_override": false,
+      "epsilon_override": false,
+      "coefficient_table_override": false,
+      "inverseL_radial_degree": 0,
+      "chi_radial_degree": 0,
+      "amplitude_derivative_reapplied": false,
+      "collapsed_total_value": false
+    },
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "natural_remainder_x1_materialized": true,
+      "natural_remainder_coefficientwise_complete": true,
+      "picard_x2_coefficientwise_materialized": true,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted branch, Lambda, epsilon, amplitude, coefficient, or pressure data",
+      "mixing branches from different x1 or SchedulePressure datum",
+      "applying the angular natural resolvent to the axial expression",
+      "differentiating the already full pressure derivatives a second time",
+      "binary64 collapse of nonzero theorem-scale pressure channels",
+      "global convergence, fixed-point, downstream profile, or paper-exact claims"
+    ],
+    "remaining_boundary": "Global weighted AxisSpace membership and infinite natural-resolvent convergence, final fixed-point convergence, derived average/pressure fields, NaturalProfileAssembly, downstream support/moment/matching/cone checks, and paper-exact velocity data remain unresolved.",
+    "numerical_caveats": [
+      "finite coefficient channels are accumulated in local 96-digit Decimal arithmetic; this is not exact real arithmetic or an interval certificate",
+      "the recurrence is coefficientwise finite and does not imply an all-index weighted-space bound",
+      "the second Picard view is a coefficientwise algebraic shift and does not certify convergence to a fixed point"
+    ]
+  }
+}

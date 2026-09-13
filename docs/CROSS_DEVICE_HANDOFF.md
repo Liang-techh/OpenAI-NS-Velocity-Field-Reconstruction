@@ -1,0 +1,35 @@
+# Cross-device handoff — 2026-09-13 battery checkpoint
+
+Continue the full reconstruction goal in GOAL_OBJECTIVE.md. Read AGENTS.md, README.md, RECONSTRUCTION_PLAN.md, references/provenance_manifest.json, and recent reports. Do not mark Stage 1 or the full goal complete.
+
+## Resume first
+This is an emergency checkpoint, not a release. Work was interrupted because the current laptop battery was low. The latest default-phase replacement is present in source but its new regression tests and final review were NOT completed before this checkpoint. Inspect current code before continuing. Preserve all changes; no force push.
+
+Branch: codex/stage1-complete-slow2. Repository: Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction.
+
+## Completed before latest in-progress replacement
+- Rational actual-data coefficient jets and Bell factors; formal/Picard coefficient families, profile pressure, radial tail budgets, mixed-scale wide profile representation. See reports and provenance artifacts.
+- Exact Fraction phase-cell Cauchy enclosure, adaptive subdivision plus order growth, finite resource failures.
+- Explicit actual-amplitude log interval bridge and exact rational affine interval transport.
+- Relevant measured checks: phase integrator 5 passed in 0.17 s; explicit amplitude bridge 3 passed in 0.17 s; existing amplitude tests 6 passed in 0.16 s. Affine transport 4 passed in 0.14 s. These predate the latest default replacement and are NOT verification of this emergency commit.
+- Earlier Bell integration: 12 passed in 0.30 s plus 13 passed in 24.37 s. Historical full suite: 1684 passed in 1404.39 s, not rerun for this checkpoint.
+
+## Critical measured finding and next work
+Actual fixture TailData(P=2,m=1,lam=.05,wait=30,h=.01), j=.05 selects sigma about 1.518624346196426e-9. At eta=-1/50, exact rational phase integration with tolerance 1e-12 took 10.664 s, 225 accepted cells, maximum order64. Midpoint 0.05073499503328993, error bound about 7.357907e-13. Legacy 4001-point real_phase gave 1.521550417558555, outside the validated interval.
+
+Latest work being saved: axis_coefficient_amplitude.py switches default log_amplitude to a validated phase midpoint with phase_absolute_tolerance Fraction(1,10**12), bounded cache, phase_enclosure/default_log_amplitude_enclosure, and a named legacy diagnostic. axis_phase_log_enclosure.py adds midpoint_decimal. Inspect what actually landed; interrupted workers may not have finished all details. Complete regression tests for actual crossing-root default, hostile Decimal context, error scaling by Lambda, caching, origin, and existing amplitude compatibility. Then audit downstream users still calling legacy natural_axis.real_phase directly. Do not substitute legacy quadrature as the oracle.
+
+The phase error is multiplied by huge Lambda; phase tolerance1e-12 is NOT log-amplitude tolerance1e-12. Chosen finite rational inputs and selected C exponent are not a proof of theorem parameter admissibility. SchedulePressure and upstream TailData quadratures, coefficient roundoff, global AxisSpace/fixed-point and all later construction stages remain incomplete.
+
+## Agent routing and user preference
+Root GPT-6 Astra/low; bounded workers GPT-5.6 Luna/max, fresh fork, no Astra children. User prefers fewer repetitive checks and more implementation. Reuse workers where possible. Exact current code, measured outputs, and provenance govern acceptance.
+
+## GitHub/Antigravity exchange
+Hub: https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/issues/281
+Task282 is PAUSED: https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/issues/282
+Antigravity could read GitHub but lacked comment-writing tools. Its candidate was NOT integrated. Codex implemented local phase work after marking task released/paused. Do not duplicate task282. Codex harvesting heartbeat named GitHub 协作结果回收 (id github), every30min, was configured on the original local thread; do not assume it migrates to another machine.
+
+## Conversation access
+Immutable public conversation snapshot created for cross-device access:
+https://chatgpt.com/s/cx_6aa6e2315874819191bab6d1499e9009
+This is a snapshot, not guaranteed live thread synchronization. Use this handoff plus repository code to resume in a new Codex task on another computer.

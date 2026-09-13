@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2.py",
+      "tests/test_axis_coefficient_wide_first_picard_slow2.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_SLOW2_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.regularInverse",
+        "NavierStokes.AxisOperators.inverseDotProduct",
+        "NavierStokes.AxisOperators.inverseMixed",
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.AxisOperators.average",
+        "NavierStokes.NaturalAxisCoefficients.CoefficientFamily.axisData"
+      ],
+      "locations": {
+        "coefficient_definitions": "NavierStokes/AxisContraction.lean:327-334",
+        "natural_remainder": "NavierStokes/AxisContraction.lean:339-365",
+        "product": "NavierStokes/AxisOperators.lean:86-95",
+        "regular_inverse": "NavierStokes/AxisOperators.lean:501-504",
+        "differential_family": "NavierStokes/AxisOperators.lean:512-518",
+        "operator_bindings": "NavierStokes/AxisOperators.lean:681-717",
+        "radial_divisor": "NavierStokes/AxisWeightEstimates.lean:388",
+        "coefficient_window": "NavierStokes/NaturalAxisCoefficients.lean:27"
+      }
+    },
+    "prerequisite": {
+      "pull_request": 279,
+      "head": "11811fb66101bf31b5be892062f6291f3091a410",
+      "required_artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_param.py"
+    },
+    "capability": "Aggregates all four pinned theorem-scale slow2(x1) branches into one mixed-scale coefficient jet, preserving ordinary Lambda^0..Lambda^-4, normalized a^2 Lambda^-1..Lambda^-3, and normalized a^4 Lambda^-2 contributions.",
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "slow2_axial_quadratic_branch_materialized": true,
+      "slow2_average_dot_branch_materialized": true,
+      "slow2_average_mixed_branch_materialized": true,
+      "slow2_param_branch_materialized": true,
+      "slow2_all_constituent_branches_materialized": true,
+      "slow2_complete": true,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted branch, d, Lambda, C, amplitude, or pressure data",
+      "mixing branch states from different x1 or SchedulePressure datum",
+      "applying an extra minus sign to the PR 279 parameter branch",
+      "binary64 collapse of nonzero signed-log pressure terms",
+      "naturalRemainder(x1), x2, fixed-point, or paper-exact claims from complete slow2 alone"
+    ],
+    "remaining_boundary": "The companion lin2 module materializes raw axial lin2(x1). Its recombination with this slow2 aggregate, the remaining mixed-scale angular lin1/quad1/slow1 terms, x1 source-pressure-resolvent path, complete naturalRemainder(x1), later Picard iterates, fixed-point convergence, derived average/pressure, NaturalProfileAssembly, global AxisSpace certification, and downstream support/moment/matching/cone checks remain unresolved.",
+    "numerical_caveats": [
+      "the four branch numerators are summed in ordinary Decimal arithmetic with precision 96; this is a numerical representation, not exact real arithmetic, interval certification, or an independent theorem proof",
+      "rounded cancellation in a summed numerator can lose digits; the implementation preserves the formal-structure truth boundary and does not promote the result",
+      "the outer naturalRemainder(x1) factor -slow2/Lambda is intentionally outside this aggregate"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/AxisContraction.lean:327-365",
+      "NavierStokes/AxisOperators.lean:86-95",
+      "NavierStokes/AxisOperators.lean:501-504",
+      "NavierStokes/AxisOperators.lean:512-518",
+      "NavierStokes/AxisOperators.lean:681-717",
+      "NavierStokes/AxisWeightEstimates.lean:388",
+      "NavierStokes/NaturalAxisCoefficients.lean:27"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-axis-coefficient-formal-triangular-solver",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_FORMAL_SOLVER_PROVENANCE.md",
+    "capability": "Bind the actual first Picard reference and scale data to a local recursive sparse mixed-scale coefficient solver with the pinned angular natural resolvent, axial remainder, full normalized eta derivatives, and unbounded channel support.",
+    "factory": "formal_axis_coefficient_solver(x1)",
+    "coefficient_api": "jet_pair(n,m,eta) -> (MixedScaleCoefficient, MixedScaleCoefficient)",
+    "identity_binding": [
+      "x1 must be ActualScheduleWideFirstPicardState",
+      "AxisData and wide source epsilon must equal x1.epsilon",
+      "wide source amplitude Lambda must equal x1.Lambda",
+      "fixed AxisData fields are rebuilt from x1.reference",
+      "amplitude_log is read from x1.remainder.axial.wide_pressure.amplitude"
+    ],
+    "radial_causality": {
+      "fixed_fields_radial_degree_zero": true,
+      "raw_j_and_primitive_read_predecessor_row": true,
+      "pressure_positive_radial_gain": true,
+      "angular_resolvent_reads_lower_resolved_rows": true,
+      "local_per_jet_pair_memoization": true,
+      "finite_picard_row_stabilization_is_formal_only": true
+    },
+    "truth_flags": {
+      "formal_coefficients_materialized": true,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
+      "paper_exact": false,
+      "implementation_validation_pending": false,
+      "weighted_space_membership_verified": false,
+      "paper_exact_velocity_available": false
+    },
+    "measured_validation": {
+      "command": "python -m pytest -q tests\\test_axis_coefficient_formal_solver.py -W error",
+      "result": "3 passed in 1.02s",
+      "coverage": [
+        "eta-binomial hand polynomial and a4 channel",
+        "row-zero reference and false flags",
+        "n=1,2 comparison with landed x2"
+      ],
+      "not_claimed": [
+        "m=1 coverage",
+        "higher-row coverage",
+        "global norm or weighted-space membership",
+        "convergence or real-arithmetic proof"
+      ]
+    },
+    "remaining_boundary": "The formal recursion does not prove global weighted AxisSpace membership, contraction convergence, a fixed point, paper-exact profile data, final velocity, forcing, or a real-arithmetic theorem. The focused checks do not cover m=1 or higher rows."
+  },
+  "forbidden_inferences": [
+    "formal all-order coefficient maps imply a convergent weighted-space fixed point",
+    "rowwise Picard stabilization proves a global norm bound or convergence rate",
+    "a finite smoke check or polynomial provider proves the actual theorem profile",
+    "sparse channel support is evidence that omitted channels are zero",
+    "formal-structure status can be promoted to paper-exact velocity"
+  ]
+}
