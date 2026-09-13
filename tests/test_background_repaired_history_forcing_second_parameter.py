@@ -22,6 +22,12 @@ from openai_ns_reconstruction.background_repaired_history_forcing_parameter impo
 from openai_ns_reconstruction.background_repaired_history_forcing_second_parameter import (
     hierarchy_owned_positive_axis_forcing_second_parameter_jet,
 )
+from openai_ns_reconstruction.background_repaired_history_k1_picard import (
+    hierarchy_owned_k1_picard_value_eq_5_7,
+)
+from openai_ns_reconstruction.background_repaired_history_k1_picard_parameter import (
+    hierarchy_owned_k1_picard_parameter_jet_eq_5_7,
+)
 from openai_ns_reconstruction.background_repaired_history_phi_fourth_mixed import (
     Section5LowerHistoryPhiFourthMixedHierarchy,
     Section5PhiFourthMixedCoefficientJetSource,
@@ -265,5 +271,64 @@ def test_second_eta_forcing_fails_closed_without_leading_phi_fourth_ownership():
             hierarchy,
             1,
             0.0,
+            0.1,
+        )
+
+
+@pytest.mark.parametrize(
+    "xi",
+    [0.0, math.sqrt(0.5 * 2.17**2)],
+)
+def test_k1_picard_parameter_jet_matches_landed_value_and_finite_difference(xi):
+    hierarchy = _hierarchy()
+    order = 2
+    eta = 0.23
+    eps = 2.0e-5
+    quadrature_points = 12
+
+    actual = hierarchy_owned_k1_picard_parameter_jet_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta,
+        quadrature_points=quadrature_points,
+    )
+    old_value = hierarchy_owned_k1_picard_value_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta,
+        quadrature_points=quadrature_points,
+    )
+    plus = hierarchy_owned_k1_picard_value_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta + eps,
+        quadrature_points=quadrature_points,
+    )
+    minus = hierarchy_owned_k1_picard_value_eq_5_7(
+        hierarchy,
+        order,
+        xi,
+        eta - eps,
+        quadrature_points=quadrature_points,
+    )
+
+    assert np.array_equal(actual.value, old_value)
+    finite_difference = (plus - minus) / (2.0 * eps)
+    assert actual.parameter == pytest.approx(
+        finite_difference,
+        rel=8.0e-4,
+        abs=8.0e-6,
+    )
+
+
+def test_k1_picard_parameter_jet_requires_strong_phi_fourth_hierarchy():
+    with pytest.raises(TypeError, match="Section5LowerHistoryPhiFourthMixedHierarchy"):
+        hierarchy_owned_k1_picard_parameter_jet_eq_5_7(
+            object(),
+            1,
+            0.5,
             0.1,
         )
