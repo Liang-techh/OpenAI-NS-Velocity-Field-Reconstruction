@@ -226,9 +226,7 @@ def test_finite_coherent_chain_composes_multiple_exact_prefix_extensions():
     assert chain.start_order == 1
     assert chain.end_order == 3
     assert chain.step_count == 2
-    assert chain.total_first_omitted_exponent_gain == slow_order_exact(
-        Fraction.from_float(H), 2
-    )
+    assert chain.total_first_omitted_exponent_gain == slow_order_exact(H, 2)
     assert chain.final_log_majorant <= chain.initial_log_majorant
     assert chain.strict_improvement_count == 2
     assert chain.overall_majorant_improvement > 0.0
@@ -237,8 +235,26 @@ def test_finite_coherent_chain_composes_multiple_exact_prefix_extensions():
 
 
 def test_finite_coherent_chain_rejects_cross_wired_residual_endpoint():
-    first = _extension(1, q=0.1)
-    second = _extension(2, q=0.2)
+    first = _extension(1)
+
+    size = 3
+    pair = [[0.0 for _ in range(size)] for _ in range(size)]
+    pair[2][2] = 1.25
+    shifted = [0.0, 0.0, 0.75]
+    alternate_order2 = certify_full_residual_tail_majorant(
+        _cancellations(2),
+        q=0.1,
+        h=H,
+        base_power=1.0,
+        pair=pair,
+        shifted=shifted,
+    )
+    second = certify_successive_slow_borel_residual_extension(
+        _cutoff(2),
+        _cutoff(3),
+        alternate_order2,
+        _residual(3),
+    )
 
     with pytest.raises(ValueError, match="exact residual endpoint"):
         certify_finite_coherent_slow_borel_residual_chain((first, second))
