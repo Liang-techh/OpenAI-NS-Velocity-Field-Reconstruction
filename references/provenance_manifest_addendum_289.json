@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1d812ff01d4575551f804c3599d6efa8985c7d2f",
+  "integrated_prs": [],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 ownership increment. Adds compact repaired sixth-mixed U ownership and analytically derives the fifth-mixed regular flux beta=V/X through Eq. (5.2), without caller-maintained beta tables.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_sixth_mixed.py",
+      "test": "tests/test_background_repaired_history_sixth_mixed.py",
+      "provenance": "references/HIERARCHY_OWNED_SIXTH_MIXED_U_FIFTH_BETA_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eqs. (5.3)-(5.7)", "Lemma 5.2", "Appendix A"],
+      "landed_capability": "The strong lower-history hierarchy owns compact-repaired sixth-mixed U jets, verifies exact lower projections, and derives fifth-mixed beta=V/X jets only through the analytic Eq. (5.2) map.",
+      "truth_boundary": "Unrepaired strong jets, moment/patch eta jets, normalization C, and genuine order-zero data remain upstream contracts. No third-eta Omega/source closure, convergence, recursive cutoff certificate, all-order residual claim, full reconstruction, or paper-exact velocity is asserted."
+    }
+  ]
+}
