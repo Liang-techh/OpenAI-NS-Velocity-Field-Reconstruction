@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "860705b59e79652ded56221de6ca94d3b812c360",
+  "integrated_prs": [
+    278
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 ownership increment. Makes the landed Lemma 5.2 compact-repaired phi fifth-mixed jet authoritative inside the strict lower-history hierarchy while preserving exact lower angular projections and the existing repaired U fifth-mixed ownership.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_phi_fifth_mixed.py",
+      "test": "tests/test_background_repaired_history_phi_fifth_mixed.py",
+      "provenance": "references/HIERARCHY_OWNED_PHI_FIFTH_MIXED_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.2",
+        "Appendix A",
+        "Eqs. (5.2)-(5.7)"
+      ],
+      "landed_capability": "A strong Section-5 coefficient source can own one repaired ProfileFifthMixedJet for phi together with repaired fifth-mixed U data; fifth->fourth->third->second phi projections are checked exactly and beta continues to be derived only through analytic Eq. (5.2).",
+      "remaining_boundary": "Base/unrepaired fifth-mixed phi data, fifth-order moment/patch eta jets, normalization C, and genuine order-zero strong data remain upstream contracts. This does not yet build third-eta preceding diffusion, hierarchy-owned actualLowerSource''' or f_n''', W_n^(1)'', Picard convergence, the recursive cutoff schedule, Proposition 5.3 residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Hierarchy ownership of a caller-backed fifth-mixed phi provider does not make that provider paper-exact.",
+    "Polynomial regression fixtures are not recursive coefficient data.",
+    "The repository generic executable cutoff is not the paper recursive cutoff-scale schedule.",
+    "This ownership layer does not establish third-eta strict-lower source closure or Picard convergence."
+  ]
+}
