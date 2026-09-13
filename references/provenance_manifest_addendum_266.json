@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "781fc5f22074fb864a6c0e36bc4355a0c801ecd8",
+  "integrated_prs": [266],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 Picard-recursion increment. Uses the landed hierarchy-owned k=1 value/eta jet together with hierarchy-owned Eq. (5.7) matrices and forcing to materialize the second nontrivial value W_n^(2) without caller-maintained recursion data.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_k2_picard.py",
+      "test": "tests/test_background_repaired_history_k2_picard.py",
+      "provenance": "references/HIERARCHY_OWNED_K2_PICARD_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Lemma 5.2",
+        "Appendix A",
+        "Eq. (5.7)"
+      ],
+      "landed_capability": "For a strong Section5LowerHistoryPhiFourthMixedHierarchy, evaluates W_n^(2)=G(A0 W_n^(1)+A1 partial_eta W_n^(1)+f_n). The previous iterate and its eta derivative come only from the landed hierarchy-owned k=1 parameter bridge; matrices and forcing remain hierarchy-owned. Regression reuses the actual Lemma 5.2 compact five-bump repair and cross-checks against a direct second application of the landed Eq. (5.7) Picard primitive.",
+      "remaining_boundary": "The genuine Issue-#1 order-zero fourth/fifth-mixed leading profile remains upstream. Two explicit nontrivial Picard applications do not establish Picard convergence, finalized positive-order coefficients, the complete all-order recursive coefficient family, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Caller-supplied or test-only leading fourth/fifth-mixed profile data are not paper-exact data.",
+    "The k=2 regression fixture does not promote its analytic leading test provider to manuscript data.",
+    "Two hierarchy-owned nontrivial Picard iterates do not establish Picard convergence or a finalized recursive coefficient.",
+    "The repository's generic executable cutoff is not the paper's recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
