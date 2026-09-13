@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "formal-structure",
+  "scope": "Section 10 constructive spacetime endpoint-extension admission",
+  "base_main_commit": "05ef960f29d8b9b21955c0eacbe9132a610c4cb1",
+  "formal_source": {
+    "repository": "https://github.com/openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "file": "NavierStokes/SpacetimeGluing.lean",
+    "theorem": "NavierStokes.SpacetimeGluing.exists_smooth_periodic_extension_of_limits",
+    "endpoint_time": "1"
+  },
+  "dependency_symbols": [
+    "NavierStokes.SpacetimeGluing.exists_smooth_periodic_extension_of_limits",
+    "NavierStokes.SpacetimeGluing.smoothExtension",
+    "NavierStokes.SpacetimeGluing.smoothExtension_contDiff",
+    "NavierStokes.SpacetimeGluing.smoothExtension_eqOn_past",
+    "NavierStokes.SpacetimeGluing.smoothExtension_zero_from",
+    "NavierStokes.SpacetimeGluing.smoothExtension_iteratedFDeriv",
+    "NavierStokes.SpacetimeEndpoint.boundary_jets_eq_limits",
+    "NavierStokes.SpacetimeEndpoint.contDiffOn_joint_extension",
+    "NavierStokes.SpatialBorelExtension.rightExtension",
+    "NavierStokes.SpatialBorelExtension.rightExtension_right_jets"
+  ],
+  "required_export_evidence": [
+    "actual Section 9 field identity",
+    "open-past zeroth-value identity",
+    "all-order joint derivative recurrence",
+    "locally-uniform left limits for every derivative",
+    "unit spatial periodicity on the open past",
+    "exact theorem application",
+    "global ContDiff output",
+    "agreement with the open-past field",
+    "global unit spatial periods",
+    "zero output from T+1 onward",
+    "full mixed endpoint jets equal the limiting jet family"
+  ],
+  "producer_kind_required": "lean-formal-export",
+  "rejected_evidence": [
+    "sampled convergence",
+    "fitted rates",
+    "numeric scan",
+    "generic time window",
+    "caller-selected endpoint jets"
+  ],
+  "truth_boundary": {
+    "endpoint_extension_theorem_machine_replayed": false,
+    "section9_endpoint_limit_values_materialized": false,
+    "global_extension_field_materialized": false,
+    "actual_section9_sequence_verified": false,
+    "section9_field_smooth_extension_through_t1_constructed": false,
+    "residual_artifact_ready": false,
+    "forcing_artifact_ready": false,
+    "endpoint_residual_closure_verified": false,
+    "paper_exact_velocity_available": false
+  }
+}
