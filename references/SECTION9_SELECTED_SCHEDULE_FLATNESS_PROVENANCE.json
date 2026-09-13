@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "c30a95d661d92c93dbb4cc49772434fcfdd92928",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-selected-schedule-residual-flatness",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_selected_schedule_flatness.py",
+    "test": "tests/test_section9_selected_schedule_flatness.py",
+    "provenance": "references/SECTION9_SELECTED_SCHEDULE_FLATNESS_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/LocalResidualFlatness.lean",
+        "NavierStokes/ActualCandidateAssembly.lean",
+        "NavierStokes/ActualStageEstimates.lean"
+      ],
+      "symbols": [
+        "NavierStokes.LocalResidualFlatness.selected_schedule",
+        "NavierStokes.LocalResidualFlatness.exists_schedule_all_jetRates",
+        "NavierStokes.LocalResidualFlatness.AllResidualJetRates",
+        "NavierStokes.LocalResidualFlatness.selectedEstimates",
+        "NavierStokes.ActualCandidateAssembly.estimates",
+        "NavierStokes.ActualCandidateAssembly.selectedPotentialStages",
+        "NavierStokes.ActualCandidateAssembly.selectedDirectStages",
+        "NavierStokes.ActualCandidateAssembly.selectedPressureStages",
+        "NavierStokes.ActualCandidateConstruction.selectedQbig",
+        "NavierStokes.MixedCandidateWitness.SelectedSchedule",
+        "NavierStokes.MixedDiagonalSchedule.ThreeCutBounds"
+      ]
+    },
+    "landed_capability": "Fail-closed formal-export admission for the closed actual selected_schedule theorem: one common selected diagonal schedule on the actual selected stage families, its ThreeCutBounds, and AllResidualJetRates for every derivative order and every nonnegative decay power.",
+    "truth_boundary": {
+      "selected_schedule_theorem_machine_replayed": false,
+      "selected_schedule_values_materialized": false,
+      "finite_stage_fields_materialized": false,
+      "residual_jet_rate_values_materialized": false,
+      "section9_iteration_machine_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "generic theorem metadata without the exact LocalResidualFlatness.selected_schedule application",
+      "a Python-chosen or fitted diagonal schedule as the Lean existential witness",
+      "synthetic finite-stage fields or residual-rate constants as materialized paper objects",
+      "paper-exact velocity availability from theorem-metadata coherence alone"
+    ]
+  }
+}
