@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "d875ab912b137a7d909b087ade6faaa12d69ec89",
+  "integrated_prs": [270],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative prerequisite for the recursive Eq. (5.7) Picard solver: hierarchy-owned second eta derivatives of A0/A1, with value and first derivative delegated unchanged to the landed matrix-parameter bridge.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_matrix_second_parameter.py",
+      "test": "tests/test_background_repaired_history_matrix_second_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_MATRIX_SECOND_PARAMETER_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Eq. (5.7)",
+        "PositiveAxis matrix formulas"
+      ],
+      "landed_capability": "For a strong Section5LowerHistoryPhiThirdMixedHierarchy, returns (A0,d_eta A0,d_eta^2 A0) and (A1,d_eta A1,d_eta^2 A1). The lower two layers are exactly the existing hierarchy-owned matrix-parameter outputs; only the second derivative is new and is obtained by exact second-order eta-jet arithmetic from hierarchy-owned phi/U/beta data.",
+      "remaining_boundary": "Issue #1 still owns genuine order-zero leading data. This derivative layer is a prerequisite for higher differentiated Picard states; it does not establish Picard convergence, finalized positive-order coefficients, the all-order recursive coefficient family, the recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Caller-supplied or test-only leading jets are not paper-exact data.",
+    "The centered finite difference in regression is a test oracle only and is not a production derivative path.",
+    "Second eta derivatives of A0/A1 do not establish Picard convergence or a finalized recursive coefficient.",
+    "The repository generic executable cutoff is not the paper recursively chosen cutoff-scale schedule.",
+    "Green CI does not promote formal-structure infrastructure to paper-exact velocity."
+  ]
+}
