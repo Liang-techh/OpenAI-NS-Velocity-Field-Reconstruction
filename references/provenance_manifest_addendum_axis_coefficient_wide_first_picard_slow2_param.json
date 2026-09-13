@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "781fc5f22074fb864a6c0e36bc4355a0c801ecd8",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_param.py",
+      "tests/test_axis_coefficient_wide_first_picard_slow2_param.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_SLOW2_PARAM_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.AxisOperators.product",
+        "NavierStokes.NaturalAxisCoefficients.CoefficientFamily.axisData"
+      ]
+    },
+    "capability": "Materializes the actual theorem-scale -param1(u1, AxisData.d*u1) branch of slow2(x1), preserving ordinary Lambda^0..-4, signed-log a^2 Lambda^-1..-3, and signed-log a^4 Lambda^-2 contributions without collapse.",
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "slow2_axial_quadratic_branch_materialized": true,
+      "slow2_average_dot_branch_materialized": true,
+      "slow2_average_mixed_branch_materialized": true,
+      "slow2_param_branch_materialized": true,
+      "slow2_all_constituent_branches_materialized": true,
+      "slow2_complete": false,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted d/Lambda/C/amplitude/pressure data",
+      "toy or surrogate x1 states represented as theorem-selected data",
+      "binary64 collapse of nonzero signed-log theorem-scale pressure terms",
+      "arbitrary radial/product truncation in place of the pinned coefficient identities",
+      "complete slow2(x1), naturalRemainder(x1), x2, or fixed-point claims from one unsummed constituent branch"
+    ],
+    "remaining_boundary": "The four pinned slow2(x1) constituent branches have separate theorem-scale materializations, but they must still be combined into one typed complete slow2(x1) state with shared x1/Lambda/epsilon/amplitude identity checks. After that, the other mixed-scale naturalRemainder(x1) pieces, source/pressure/resolvent path, x2, convergence/fixed-point phi/u, derived average/pressure, NaturalProfileAssembly, global AxisSpace certification, and support/moments/matching/cone checks remain unresolved."
+  }
+}
