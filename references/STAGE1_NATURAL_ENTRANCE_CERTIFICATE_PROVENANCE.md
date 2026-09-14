@@ -46,17 +46,21 @@ For the pinned `R=5`, parameter-derivative order zero jet sums,
 `stabilityScale` reduces exactly to
 `1 + (14000/9) * remainderBound`. The existing wide scale selector already
 implements this theorem-side algebra with upward-rounded 96-digit `Decimal`.
-The fixed-point theorem supplies the norm-error radius
-`remainderBound/(2*Lambda)`, exposed by the existing
-`NaturalPicardContractionCertificate`.
+The fixed-point theorem supplies the exact admissible norm-error radius
+`remainderBound/(2*Lambda)`. The landed Picard certificate carries an
+upward-rounded product for contraction accounting; this new gate deliberately
+does **not** use that upper rounding as an admissible error threshold.
 
 ## New certificate
 
 `NaturalEntranceScaleCertificate` accepts only a
 `WideNaturalScaleSelection` whose stored stability threshold is exactly the
-pinned wide value and whose `Lambda` dominates it. The fixed-point error radius
-is cross-bound to the landed Picard certificate; an eventual backend error
-witness must be a finite nonnegative `Decimal` no larger than that radius.
+pinned wide value and whose `Lambda` dominates it. It computes a 96-digit
+**downward-rounded** lower bound for `K/(2*Lambda)` and admits a backend error
+upper bound only when it is no larger than that safe radius. This direction is
+fail-closed: an upward-rounding ulp can never make a too-large backend error
+look theorem-admissible. The safe radius is also cross-checked not to exceed
+the landed Picard certificate's upward-rounded one-step product.
 
 The exact formal constants are recorded as rational `Fraction` values:
 
@@ -78,8 +82,8 @@ wait=30,h=0.01), j=0.05` fixture used by the landed Picard tests. It checks the
 actual wide chain closes the NaturalEntrance scalar scale gate while
 `paper_exact` and `full_reconstruction` remain false. Independent fail-closed
 regressions reject a nonpinned stability threshold, `Lambda` below stability,
-a backend norm error above `K/(2*Lambda)`, non-Decimal error metadata, and
-inexact/insufficient chi bounds.
+a backend norm error above the downward-safe `K/(2*Lambda)` gate, non-Decimal
+error metadata, and inexact/insufficient chi bounds.
 
 These tests do not prove that a coefficient-space fixed point exists in the
 Python reconstruction; they only verify the exact scalar interface that the
