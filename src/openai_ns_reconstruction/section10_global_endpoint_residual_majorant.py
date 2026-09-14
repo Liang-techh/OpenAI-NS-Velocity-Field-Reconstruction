@@ -12,6 +12,12 @@ sublevel:
 
     ||D^m R(w)|| <= C * q(w)^r.
 
+The proof contract also records the two sign facts needed by that split:
+``Xext > 0`` follows from ``LocalPaper.Properties.edges_ordered`` before
+instantiating residual flatness at ``X=Xext``, and ``q(w)>0`` on the
+preterminal domain makes the exterior zero bound compatible with the same
+nonnegative right-hand side.
+
 The quantifiers over ``m`` and ``r`` remain outside any finite frontier.  This
 closes the singular small-scale corner of the late-time residual estimate at
 the formal theorem level.  It does not materialize the existential constants,
@@ -35,7 +41,9 @@ from openai_ns_reconstruction.section10_paper_localization_spine import (
 PINNED_LOCAL_PAPER_FILE = "NavierStokes/LocalPaperTheorem.lean"
 PINNED_LOCAL_DOMAIN_FILE = "NavierStokes/LocalPaperDomain.lean"
 PINNED_RESIDUAL_FLATNESS_FIELD = "NavierStokes.LocalPaper.Properties.residual_flatness"
+PINNED_EDGES_ORDERED_FIELD = "NavierStokes.LocalPaper.Properties.edges_ordered"
 PINNED_QSTAR_POS_THEOREM = "NavierStokes.LocalPaperDomain.qstar_pos"
+PINNED_PHYSICAL_Q_POS_THEOREM = "NavierStokes.PhysicalWaveSum.physicalQ_pos"
 PINNED_OUTER_EDGE = "NavierStokes.LocalPaperDomain.outerEdge"
 PINNED_EXTERIOR_CONDITIONS = "NavierStokes.LocalPaperDomain.exterior_conditions"
 PINNED_EVIDENCE_KIND = "lean-proof-chain-export"
@@ -50,7 +58,9 @@ MAJORANT_TEMPLATE = "norm(iteratedFDeriv(m,residual,w))<=C*q(w)^r"
 
 REQUIRED_FORMAL_SYMBOLS = (
     PINNED_RESIDUAL_FLATNESS_FIELD,
+    PINNED_EDGES_ORDERED_FIELD,
     PINNED_QSTAR_POS_THEOREM,
+    PINNED_PHYSICAL_Q_POS_THEOREM,
     PINNED_OUTER_EDGE,
     PINNED_EXTERIOR_CONDITIONS,
 )
@@ -85,7 +95,9 @@ class Section10GlobalEndpointResidualMajorantWitness:
     local_paper_file: str = PINNED_LOCAL_PAPER_FILE
     local_domain_file: str = PINNED_LOCAL_DOMAIN_FILE
     residual_flatness_field: str = PINNED_RESIDUAL_FLATNESS_FIELD
+    edges_ordered_field: str = PINNED_EDGES_ORDERED_FIELD
     qstar_pos_theorem: str = PINNED_QSTAR_POS_THEOREM
+    physical_q_pos_theorem: str = PINNED_PHYSICAL_Q_POS_THEOREM
     outer_edge_symbol: str = PINNED_OUTER_EDGE
     exterior_conditions_theorem: str = PINNED_EXTERIOR_CONDITIONS
     dependency_symbols: tuple[str, ...] = REQUIRED_FORMAL_SYMBOLS
@@ -108,8 +120,10 @@ class Section10GlobalEndpointResidualMajorantWitness:
     same_local_velocity_as_paper_spine_certified: bool = False
     same_local_pressure_as_paper_spine_certified: bool = False
     same_residual_as_exterior_zero_germ_certified: bool = False
+    outer_edge_positive_from_edges_ordered_certified: bool = False
     inner_residual_flatness_at_outer_edge_all_orders_certified: bool = False
     qstar_positive_certified: bool = False
+    physical_q_positive_on_preterminal_certified: bool = False
     outer_all_order_zero_jets_certified: bool = False
     inner_outer_radius_split_exhaustive_certified: bool = False
     global_delta_min_positive_certified: bool = False
@@ -133,7 +147,9 @@ class Section10GlobalEndpointResidualMajorantWitness:
             "local_paper_file": PINNED_LOCAL_PAPER_FILE,
             "local_domain_file": PINNED_LOCAL_DOMAIN_FILE,
             "residual_flatness_field": PINNED_RESIDUAL_FLATNESS_FIELD,
+            "edges_ordered_field": PINNED_EDGES_ORDERED_FIELD,
             "qstar_pos_theorem": PINNED_QSTAR_POS_THEOREM,
+            "physical_q_pos_theorem": PINNED_PHYSICAL_Q_POS_THEOREM,
             "outer_edge_symbol": PINNED_OUTER_EDGE,
             "exterior_conditions_theorem": PINNED_EXTERIOR_CONDITIONS,
             "dependency_symbols": REQUIRED_FORMAL_SYMBOLS,
@@ -165,8 +181,10 @@ class Section10GlobalEndpointResidualMajorantWitness:
             "same_local_velocity_as_paper_spine_certified",
             "same_local_pressure_as_paper_spine_certified",
             "same_residual_as_exterior_zero_germ_certified",
+            "outer_edge_positive_from_edges_ordered_certified",
             "inner_residual_flatness_at_outer_edge_all_orders_certified",
             "qstar_positive_certified",
+            "physical_q_positive_on_preterminal_certified",
             "outer_all_order_zero_jets_certified",
             "inner_outer_radius_split_exhaustive_certified",
             "global_delta_min_positive_certified",
