@@ -1,7 +1,7 @@
 """Fail-closed bridge to the pinned all-order mixed candidate witness theorem.
 
 The pinned OpenAI formalization already contains
-``MixedCandidateWitness.exists_candidate_witness_of_finite_stages``.  Given the
+``MixedCandidateWitness.exists_candidate_witness_of_finite_stages``. Given the
 actual mixed stage families, their genuine ``StageEstimates`` and shrinking
 support / one-sided-extension hypotheses, that theorem selects one common
 physical schedule and returns the three ``AwayExtensions``, a smooth forcing,
@@ -9,12 +9,14 @@ physical schedule and returns the three ``AwayExtensions``, a smooth forcing,
 and the endpoint force-jet identity.
 
 Python does *not* replay Lean and this file does not manufacture the missing
-actual stage data.  The contract therefore admits only a pinned
-``lean-formal-export`` for one exact source/revision.  It also requires the
-exported ``StageEstimates`` identity to agree with the repository's landed
-``Section9ActualStageEstimatesAdmission`` rather than accepting an unrelated
-opaque string plus a boolean.  That admission is itself formal-structure only;
-it does not materialize paper fields or promote runtime truth flags.
+actual stage data. The contract therefore admits only a pinned
+``lean-formal-export`` for one exact source/revision. It also requires the
+exported ``StageEstimates`` identity *and* the upstream ``RunData`` /
+``PhysicalData`` / ``MixedPhysicalData`` identities to agree with the
+repository's landed ``Section9ActualStageEstimatesAdmission``. This prevents a
+correct StageEstimates identifier from being cross-wired to unrelated theorem
+inputs. That admission is itself formal-structure only; it does not materialize
+paper fields or promote runtime truth flags.
 """
 from __future__ import annotations
 
@@ -55,6 +57,9 @@ class MixedCandidateWitnessFormalExport:
     source_revision: str
     field_bundle_id: str
     stage_estimates_id: str
+    run_data_id: str
+    physical_data_id: str
+    mixed_physical_data_id: str
     potential_stage_family_id: str
     direct_stage_family_id: str
     pressure_stage_family_id: str
@@ -90,6 +95,9 @@ class MixedCandidateWitnessFormalExport:
             "source_revision",
             "field_bundle_id",
             "stage_estimates_id",
+            "run_data_id",
+            "physical_data_id",
+            "mixed_physical_data_id",
             "potential_stage_family_id",
             "direct_stage_family_id",
             "pressure_stage_family_id",
@@ -148,6 +156,10 @@ class MixedCandidateWitnessFormalExport:
             self.pressure_stage_family_id,
         )
 
+    @property
+    def stage_input_key(self) -> tuple[str, str, str]:
+        return self.run_data_id, self.physical_data_id, self.mixed_physical_data_id
+
 
 @dataclass(frozen=True)
 class MixedCandidateWitnessContractCertificate:
@@ -182,6 +194,14 @@ class MixedCandidateWitnessContractCertificate:
         )
 
     @property
+    def actual_stage_input_identity_bound(self) -> bool:
+        witness = self.stage_estimates_admission.witness
+        return (
+            self.export.stage_input_key
+            == (witness.run_data_id, witness.physical_data_id, witness.mixed_physical_data_id)
+        )
+
+    @property
     def formal_witness_chain_ready(self) -> bool:
         return (
             self.export.source_key == self.expected_source_key
@@ -190,6 +210,7 @@ class MixedCandidateWitnessContractCertificate:
             and self.export.theorem_symbol == PINNED_THEOREM
             and self.export.max_derivative_order is None
             and self.stage_estimates_identity_bound
+            and self.actual_stage_input_identity_bound
             and not self.actual_section9_sequence_verified
             and not self.section9_all_order_endpoint_limits_verified
             and not self.residual_artifact_ready
@@ -217,9 +238,10 @@ def admit_mixed_candidate_witness_export(
     """Admit a pinned theorem export only for the already-selected actual data.
 
     The ``StageEstimates`` object is no longer trusted from an opaque ID alone:
-    its identity must equal the object carried by the landed Section 9 formal
-    admission.  Both remain theorem-facing metadata until actual stage data are
-    materialized upstream.
+    its identity and the upstream ``RunData`` / ``PhysicalData`` /
+    ``MixedPhysicalData`` identities must equal the objects carried by the
+    landed Section 9 formal admission. Both remain theorem-facing metadata
+    until actual stage data are materialized upstream.
     """
 
     if not isinstance(export, MixedCandidateWitnessFormalExport):
@@ -228,10 +250,18 @@ def admit_mixed_candidate_witness_export(
         raise TypeError(
             "stage_estimates_admission must be a Section9ActualStageEstimatesAdmission"
         )
-    if stage_estimates_admission.witness.stage_estimates_id != export.stage_estimates_id:
+
+    witness = stage_estimates_admission.witness
+    if witness.stage_estimates_id != export.stage_estimates_id:
         raise ValueError("mixed candidate StageEstimates identity mismatch")
-    if stage_estimates_admission.witness.formal_commit != PINNED_FORMAL_COMMIT:
+    if witness.formal_commit != PINNED_FORMAL_COMMIT:
         raise ValueError("mixed candidate StageEstimates formal commit mismatch")
+    if witness.run_data_id != export.run_data_id:
+        raise ValueError("mixed candidate RunData identity mismatch")
+    if witness.physical_data_id != export.physical_data_id:
+        raise ValueError("mixed candidate PhysicalData identity mismatch")
+    if witness.mixed_physical_data_id != export.mixed_physical_data_id:
+        raise ValueError("mixed candidate MixedPhysicalData identity mismatch")
 
     expected_source_key = (
         _text(expected_source_id, "expected_source_id"),
