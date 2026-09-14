@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "depends_on_prs": [319, 322, 326],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 ownership increment: project the Eq. (5.7) PositiveAxis base jet and A0/A1 value matrices only from coefficient order zero of Section5LowerHistorySixthMixedHierarchy, with beta_0 regenerated analytically through Eq. (5.2).",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_positive_axis_base.py",
+      "test": "tests/test_background_repaired_history_positive_axis_base.py",
+      "provenance": "references/HIERARCHY_OWNED_POSITIVE_AXIS_BASE_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Eq. (5.2)",
+        "Eq. (5.7)"
+      ],
+      "landed_capability": "The Eq. (5.7) A0/A1 value matrices can now be built without an independently caller-maintained PositiveAxisBaseJet: phi_0/U_0 are exact downward projections of the strong hierarchy and beta_0 comes from the hierarchy-owned analytic Eq. (5.2) adapter.",
+      "truth_boundary": "This owns matrix values only. Higher eta jets of A0/A1 needed for W_n^(1) eta derivatives still require genuine order-zero leading-profile mixed jets from the same upstream hierarchy. It does not establish a Picard fixed point, positive-order coefficient convergence, arbitrary-order coefficient assembly, all-order cutoff convergence, full reconstruction, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Hierarchy ownership of A0/A1 value rows does not certify the upstream order-zero profile as the paper's final Theorem 4.6 profile.",
+    "No finite difference, fitted matrix derivative, independent beta table, sampled V/X division, or generic cutoff may be substituted for missing higher matrix jets.",
+    "Finite/stagewise Agent-7 C[j,m] and cutoff artifacts are not promoted to an all-order theorem by this increment.",
+    "Green CI does not promote Stage 2 formal-structure infrastructure to paper-exact velocity."
+  ]
+}
