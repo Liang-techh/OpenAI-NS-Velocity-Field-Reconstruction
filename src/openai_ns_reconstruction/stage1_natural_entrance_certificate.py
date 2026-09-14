@@ -35,7 +35,9 @@ from fractions import Fraction
 
 from .axis_fixed_point_picard import NaturalPicardContractionCertificate
 from .natural_scale_selection_wide import (
+    SymbolicExponentialThreshold,
     WideNaturalScaleSelection,
+    contraction_threshold_wide,
     stability_scale_wide,
 )
 from .outgoing_tail import TailData
@@ -101,19 +103,21 @@ class NaturalEntranceScaleCertificate:
         if Lambda < stability:
             raise ValueError("Lambda does not dominate the pinned stability threshold")
 
-        # AxisContraction's fixed-point theorem gives exactly K/(2*Lambda).
-        # Reuse the landed certificate rather than independently reimplementing
-        # its upward-rounded Decimal division.
-        scale = WideNaturalScaleSelection(
+        # Reuse the landed Picard arithmetic to pin the theorem's
+        # K/(2*Lambda) radius while keeping this constructor independent of the
+        # naturalRemainder/coefficient-space backend.
+        scalar_scale = WideNaturalScaleSelection(
             remainder_bound=bound,
             remainder_lipschitz=Decimal(0),
             phase_real_part_sup=Decimal(0),
-            contraction=Decimal(1) + bound,
+            contraction=contraction_threshold_wide(bound, Decimal(0)),
             stability=stability,
             Lambda=Lambda,
-            C=type(_zero_scale().C)(Decimal(0)),
+            C=SymbolicExponentialThreshold(Decimal(0)),
         )
-        expected = NaturalPicardContractionCertificate.from_scale(scale).one_step_radius_upper
+        expected = NaturalPicardContractionCertificate.from_scale(
+            scalar_scale
+        ).one_step_radius_upper
         if radius != expected:
             raise ValueError("fixed-point error radius is not the pinned K/(2*Lambda) bound")
 
@@ -187,18 +191,6 @@ class NaturalEntranceScaleCertificate:
     @property
     def full_reconstruction(self) -> bool:
         return False
-
-
-def _zero_scale() -> WideNaturalScaleSelection:
-    """Internal constructor used only to obtain the symbolic-C dataclass type."""
-
-    from .natural_scale_selection_wide import select_natural_scale_wide
-
-    return select_natural_scale_wide(
-        remainder_bound=Decimal(0),
-        remainder_lipschitz=Decimal(0),
-        phase_real_part_sup=Decimal(0),
-    )
 
 
 def actual_schedule_natural_entrance_scale_certificate(
