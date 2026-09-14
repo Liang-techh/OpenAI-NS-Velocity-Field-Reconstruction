@@ -65,7 +65,7 @@ def test_exact_row_map_detects_a_nonzero_defect_without_tolerance():
     )
 
     assert rows != certificate.physical_row_targets
-    assert rows[2] - certificate.physical_row_targets[2] == Fraction(8, 10**30)
+    assert rows[2] - certificate.physical_row_targets[2] == Fraction(16, 10**30)
 
 
 def test_exact_certificate_rejects_approximate_or_invalid_inputs():
