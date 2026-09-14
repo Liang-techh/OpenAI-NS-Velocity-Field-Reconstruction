@@ -38,9 +38,9 @@ REQUIRED_FORMAL_SYMBOLS = (
     "NavierStokesR3.ActualCandidate.compactForce_supported_all_times",
     "NavierStokes.R3CompactCandidate.compactForce",
     "NavierStokes.R3CompactCandidate.outerSupport",
-    "NavierStokes.R3.PositiveTimeForce.force",
-    "NavierStokes.R3.PositiveTimeForce.force_contDiff",
-    "NavierStokes.R3.PositiveTimeForce.force_compactPositiveTimeSupport",
+    "NavierStokesR3.PositiveTimeForce.force",
+    "NavierStokesR3.PositiveTimeForce.force_contDiff",
+    "NavierStokesR3.PositiveTimeForce.force_compactPositiveTimeSupport",
     PINNED_ENERGY_THEOREM,
     PINNED_ACTUAL_CANDIDATE_THEOREM,
 )
