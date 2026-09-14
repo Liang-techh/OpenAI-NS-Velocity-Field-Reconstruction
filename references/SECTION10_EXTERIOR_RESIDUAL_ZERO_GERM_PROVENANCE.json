@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1bc98e6ad4be59893db828d11b9ff0f0217ac3d8",
+  "issue": 4,
+  "stacked_on": {
+    "pull_request": 355,
+    "head_commit": "d187be8783d5a1aba894d03b9ea14f6276e14994",
+    "artifact": "src/openai_ns_reconstruction/section10_paper_localization_spine.py"
+  },
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-10-exterior-residual-zero-germ",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section10_exterior_residual_zero_germ.py",
+    "test": "tests/test_section10_exterior_residual_zero_germ.py",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/LocalPaperTheorem.lean",
+        "NavierStokes/LocalPaperDomain.lean",
+        "NavierStokes/SolenoidalDiagonal.lean"
+      ],
+      "proof_symbols": [
+        "NavierStokes.LocalPaper.selected_exterior_residual_zero",
+        "NavierStokes.LocalPaperDomain.exterior_conditions_eventually",
+        "NavierStokes.SolenoidalDiagonal.iteratedFDeriv_eventuallyEq",
+        "iteratedFDeriv_fun_zero"
+      ]
+    },
+    "landed_capability": "Fail-closed proof-chain admission for the exact same selected schedule/local velocity/local pressure already admitted by the Section-10 PaperLocalization spine. At every point satisfying the pinned strict LocalPaperDomain exterior hypotheses, exterior_conditions_eventually preserves those hypotheses on a neighborhood; selected_exterior_residual_zero then gives literal navierStokesResidual=0 pointwise throughout that neighborhood. The pinned iteratedFDeriv_eventuallyEq theorem transports this zero germ to every natural-order full-spacetime Frechet derivative, yielding a formal all-order exterior residual-zero-jet certificate with no finite derivative frontier.",
+    "formal_implication_chain": [
+      "strict LocalPaperDomain exterior hypotheses at one point",
+      "exterior_conditions_eventually gives a neighborhood on which all strict exterior hypotheses persist",
+      "selected_exterior_residual_zero applies at every point of that neighborhood to the literal residual of the same local velocity/pressure",
+      "the literal residual is eventually equal to the zero function at the original exterior point",
+      "iteratedFDeriv_eventuallyEq preserves that neighborhood equality for every m in N",
+      "iteratedFDeriv_fun_zero identifies every resulting residual jet with zero"
+    ],
+    "identity_binding": [
+      "the schedule id must equal the parent Section10PaperLocalizationSpineAdmission schedule id",
+      "the local velocity id must equal the parent PaperLocalization local velocity id",
+      "the local pressure id must equal the parent PaperLocalization local pressure id",
+      "finite derivative frontiers, sampled/fitted evidence, manufactured residuals, and f=R force shortcuts are rejected"
+    ],
+    "important_scope_boundary": [
+      "Python does not replay the Lean proof and does not materialize the existential paper fields",
+      "this certificate is for the pinned strict LocalPaperDomain exterior zero germ, not a runtime support-cylinder computation",
+      "formal all-order exterior residual zero jets do not by themselves materialize the actual residual artifact or actual force",
+      "the certificate does not prove the whole official 3/4 <= t < 1 plateau analytic majorants needed for independent endpoint closure",
+      "the certificate does not construct or independently verify the t=1 Taylor-Borel force extension",
+      "the certificate does not infer compact force support from defining f=R; f=R is explicitly rejected as independent verification",
+      "runtime compact support, divergence-free closure, finite energy, blow-up, paper-exact velocity, and full reconstruction remain false"
+    ],
+    "forbidden_promotions": [
+      "replacing the universal derivative quantifier by a finite max derivative order",
+      "using sampled or fitted near-zero residual values as a zero-germ proof",
+      "using a manufactured residual or setting force equal to the residual and then checking R-f=0",
+      "cross-wiring the proof chain to a different selected schedule or different local velocity/pressure",
+      "claiming formal exterior zero jets are a materialized runtime support certificate",
+      "claiming this proof chain alone closes the singular-time force"
+    ],
+    "verification": {
+      "isolated_proof_contract_regression": "5 passed",
+      "isolated_syntax_compile": true,
+      "full_repository_suite": "pending fresh GitHub Actions on exact stacked PR head",
+      "cli_audit": "pending fresh GitHub Actions on exact stacked PR head"
+    },
+    "truth_boundary": {
+      "theorem_machine_replayed": false,
+      "actual_fields_materialized": false,
+      "support_exterior_zero_jets_runtime_verified": false,
+      "actual_section9_sequence_verified": false,
+      "section9_all_order_endpoint_limits_verified": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "compact_support_runtime_verified": false,
+      "divergence_free_closure_verified": false,
+      "finite_energy_closure_verified": false,
+      "blow_up_closure_verified": false,
+      "paper_exact_velocity_available": false,
+      "full_reconstruction": false
+    }
+  }
+}
