@@ -71,6 +71,7 @@ class PhysicalChartFiniteBoundShape:
     """Pinned finite ``D=1+sum C_i`` shape on the hierarchy-owned X interval."""
 
     max_derivative_order: int
+    h_exact: Fraction
     x_lower: Fraction
     x_upper: Fraction
     jet_constants: tuple[PhysicalChartExistentialJetConstant, ...]
@@ -84,6 +85,10 @@ class PhysicalChartFiniteBoundShape:
             raise TypeError("max_derivative_order must be an integer")
         if self.max_derivative_order < 0:
             raise ValueError("max_derivative_order must be nonnegative")
+        if not isinstance(self.h_exact, Fraction):
+            raise TypeError("h_exact must be an exact Fraction")
+        if not Fraction(0, 1) < self.h_exact < Fraction(1, 2):
+            raise ValueError("pinned physical-chart theorem requires 0 < h < 1/2")
         if not isinstance(self.x_lower, Fraction) or not isinstance(self.x_upper, Fraction):
             raise TypeError("physical-chart X interval must use exact Fraction endpoints")
         if self.x_lower > self.x_upper:
@@ -173,6 +178,8 @@ class FinitePhysicalTailPrefactorCertificate:
         M = self.first_omitted.uncut.physical.max_derivative_order
         if self.chart_bound.max_derivative_order != M:
             raise ValueError("physical-chart finite bound uses a different derivative budget")
+        if self.chart_bound.h_exact != self.first_omitted.h_exact:
+            raise ValueError("physical-chart finite bound uses a different h")
 
         supported = (
             self.first_omitted.uncut.physical.ordinary.chain.chain.supported_prefix
@@ -276,6 +283,7 @@ def certify_finite_physical_tail_prefactor(
     x_lo, x_hi, _, _ = supported.exact_support_box
     chart = PhysicalChartFiniteBoundShape(
         max_derivative_order=max_derivative_order,
+        h_exact=first.h_exact,
         x_lower=x_lo,
         x_upper=x_hi,
         jet_constants=tuple(

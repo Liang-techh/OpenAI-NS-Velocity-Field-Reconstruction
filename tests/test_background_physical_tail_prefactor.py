@@ -114,6 +114,7 @@ def _certificate() -> FinitePhysicalTailPrefactorCertificate:
 
 def test_physical_chart_bound_uses_hierarchy_owned_support_interval() -> None:
     cert = _certificate()
+    assert cert.chart_bound.h_exact == Fraction(1, 8)
     assert cert.chart_bound.x_lower == Fraction(-1, 1)
     assert cert.chart_bound.x_upper == Fraction(8, 1)
     assert cert.chart_bound.D_expression == (1, ("C_phys_0", "C_phys_1"))
@@ -161,6 +162,7 @@ def test_cross_wired_support_interval_is_rejected() -> None:
     cert = _certificate()
     bad_chart = PhysicalChartFiniteBoundShape(
         max_derivative_order=1,
+        h_exact=cert.first_omitted.h_exact,
         x_lower=Fraction(-2, 1),
         x_upper=Fraction(8, 1),
         jet_constants=(
@@ -179,12 +181,32 @@ def test_missing_or_relabelled_chart_constant_is_rejected() -> None:
     with pytest.raises(ValueError, match="exactly 0..M"):
         PhysicalChartFiniteBoundShape(
             max_derivative_order=1,
+            h_exact=Fraction(1, 8),
             x_lower=Fraction(-1, 1),
             x_upper=Fraction(8, 1),
             jet_constants=(PhysicalChartExistentialJetConstant(0, "C_phys_0"),),
         )
     with pytest.raises(ValueError, match="must be 'C_phys_1'"):
         PhysicalChartExistentialJetConstant(1, "C1")
+
+
+def test_cross_wired_h_is_rejected() -> None:
+    cert = _certificate()
+    bad_chart = PhysicalChartFiniteBoundShape(
+        max_derivative_order=1,
+        h_exact=Fraction(1, 9),
+        x_lower=Fraction(-1, 1),
+        x_upper=Fraction(8, 1),
+        jet_constants=(
+            PhysicalChartExistentialJetConstant(0, "C_phys_0"),
+            PhysicalChartExistentialJetConstant(1, "C_phys_1"),
+        ),
+    )
+    with pytest.raises(ValueError, match="different h"):
+        FinitePhysicalTailPrefactorCertificate(
+            first_omitted=cert.first_omitted,
+            chart_bound=bad_chart,
+        )
 
 
 def test_theorem_drift_is_rejected() -> None:
