@@ -21,14 +21,20 @@
     "contract_dependency": {
       "artifact": "src/openai_ns_reconstruction/section9_actual_stage_estimates.py",
       "type": "Section9ActualStageEstimatesAdmission",
-      "required_identity": "witness.stage_estimates_id must equal the mixed-candidate theorem export stage_estimates_id",
+      "required_identity": [
+        "witness.stage_estimates_id must equal the mixed-candidate theorem export stage_estimates_id",
+        "witness.run_data_id must equal the mixed-candidate theorem export run_data_id",
+        "witness.physical_data_id must equal the mixed-candidate theorem export physical_data_id",
+        "witness.mixed_physical_data_id must equal the mixed-candidate theorem export mixed_physical_data_id"
+      ],
       "status": "formal-structure-only"
     },
-    "landed_capability": "Fail-closed admission boundary for a pinned Lean export of the actual mixed Section 9 stage bundle. The export can no longer satisfy the StageEstimates input using an unrelated opaque identifier plus a boolean: its StageEstimates identity must match the repository's landed Section9ActualStageEstimatesAdmission at the same pinned formal commit. The formal theorem then selects one common physical schedule and returns smooth sums, VanishingJointJets, all three AwayExtensions, a smooth force with CandidateProperties and CandidateConsequences, derivative-H3 blow-up, all-order rapid force-jet decay, and the all-order endpoint force-jet identity. Neither admission replays Lean or materializes the missing actual stage data.",
+    "landed_capability": "Fail-closed admission boundary for a pinned Lean export of the actual mixed Section 9 stage bundle. The export can no longer satisfy the StageEstimates input using an unrelated opaque identifier plus a boolean, nor can it reuse a correct StageEstimates identifier while cross-wiring different RunData, PhysicalData, or MixedPhysicalData theorem inputs. Those identities must match the repository's landed Section9ActualStageEstimatesAdmission at the same pinned formal commit. The formal theorem then selects one common physical schedule and returns smooth sums, VanishingJointJets, all three AwayExtensions, a smooth force with CandidateProperties and CandidateConsequences, derivative-H3 blow-up, all-order rapid force-jet decay, and the all-order endpoint force-jet identity. Neither admission replays Lean or materializes the missing actual stage data.",
     "upstream_contract": [
       "identify one actual potential/direct/pressure stage bundle and one source revision",
       "supply the genuine StageEstimates theorem export through Section9ActualStageEstimatesAdmission with exactly the same stage_estimates_id",
-      "materialize the actual RunData/PhysicalData and raw stage families upstream; the landed StageEstimates admission alone remains formal-structure metadata",
+      "bind the mixed-candidate export to the exact same RunData, PhysicalData, and MixedPhysicalData identities carried by that StageEstimates admission",
+      "materialize those actual RunData/PhysicalData objects and raw stage families upstream; the landed StageEstimates admission alone remains formal-structure metadata",
       "supply shrinking-support hypotheses for the initial and every correction stage",
       "supply one-sided extensions for every stage family at every required terminal-slice point",
       "export the exact pinned Lean mixed-candidate theorem application without changing field identities or schedules"
@@ -46,6 +52,7 @@
       "treating a finite endpoint ladder or max derivative order as the theorem export",
       "using sampled, fitted, or numerical smoothness in place of all-stage one-sided extensions",
       "supplying only an arbitrary StageEstimates string identity without the landed Section9ActualStageEstimatesAdmission",
+      "reusing a correct StageEstimates id while cross-wiring RunData, PhysicalData, or MixedPhysicalData identities",
       "cross-wiring potential, direct, or pressure stage families from different source revisions",
       "using manufactured residual data or f=R followed by R-f=0 as independent closure",
       "claiming runtime force, compact support, energy, or blow-up artifacts merely because the formal theorem symbol is pinned"
