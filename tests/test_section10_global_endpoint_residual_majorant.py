@@ -86,8 +86,10 @@ def _valid() -> Section10GlobalEndpointResidualMajorantWitness:
         same_local_velocity_as_paper_spine_certified=True,
         same_local_pressure_as_paper_spine_certified=True,
         same_residual_as_exterior_zero_germ_certified=True,
+        outer_edge_positive_from_edges_ordered_certified=True,
         inner_residual_flatness_at_outer_edge_all_orders_certified=True,
         qstar_positive_certified=True,
+        physical_q_positive_on_preterminal_certified=True,
         outer_all_order_zero_jets_certified=True,
         inner_outer_radius_split_exhaustive_certified=True,
         global_delta_min_positive_certified=True,
@@ -148,9 +150,12 @@ def test_rejects_finite_sampled_manufactured_or_f_equals_r_shortcuts():
         replace(_valid(), force_defined_as_residual=True)
 
 
-def test_rejects_missing_inner_outer_or_positive_delta_steps():
+def test_rejects_missing_inner_outer_sign_or_positive_delta_steps():
     for field in (
+        "outer_edge_positive_from_edges_ordered_certified",
         "inner_residual_flatness_at_outer_edge_all_orders_certified",
+        "qstar_positive_certified",
+        "physical_q_positive_on_preterminal_certified",
         "outer_all_order_zero_jets_certified",
         "inner_outer_radius_split_exhaustive_certified",
         "global_delta_min_positive_certified",
