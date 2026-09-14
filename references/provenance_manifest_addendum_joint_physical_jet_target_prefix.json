@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 333,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/SlowBorelBase.lean",
+    "theorems": [
+      "NavierStokes.SlowBorelBase.exists_ordinary_uncut_tail",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail",
+      "NavierStokes.SlowBorelBase.physicalChart_finite_bound"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_joint_physical_jet_target_prefix.py"
+  ],
+  "tests": [
+    "tests/test_background_joint_physical_jet_target_prefix.py"
+  ],
+  "provenance": "references/JOINT_PHYSICAL_JET_TARGET_PREFIX_PROVENANCE.md",
+  "landed_capability": "For one finite physical derivative budget M and exact positive power P, select one provider-owned recursive prefix shared by all m<=M and verify exact physical exponent h(J+1)-2m>=P after the pinned derivative loss.",
+  "no_per_derivative_independent_schedule": true,
+  "no_partial_frontier_success": true,
+  "no_caller_supplied_C_rows": true,
+  "truth_boundary": {
+    "joint_finite_physical_jet_target_arithmetic_verified": true,
+    "one_common_recursive_schedule_for_requested_physical_jets": true,
+    "retained_recurrences_exact": true,
+    "finite_physical_jet_prefix_only": true,
+    "physical_chart_finite_bound_verified": false,
+    "uncut_tail_germ_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must eventually supply actual assembled positive-order coefficient objects with theorem-backed derivative majorants, common support, and exact recurrence evidence for every order demanded by arbitrary common physical J(M,P) under one coefficient state."
+}
