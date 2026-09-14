@@ -29,7 +29,7 @@ def test_actual_schedule_closes_only_the_natural_entrance_scalar_gate() -> None:
     cert = actual_schedule_natural_entrance_scale_certificate(_schedule_data(), 0.05)
 
     assert cert.Lambda >= cert.stability_threshold
-    assert cert.fixed_point_error_radius_upper <= Decimal(1)
+    assert cert.fixed_point_error_radius_safe <= Decimal(1)
     assert cert.remainder_bound_upper.is_finite()
     assert cert.paper_exact is False
     assert cert.full_reconstruction is False
@@ -41,9 +41,9 @@ def test_actual_schedule_closes_only_the_natural_entrance_scalar_gate() -> None:
     assert CHI_LOG_SLOPE_MIN == Fraction(99, 100)
     assert LOG_SLOPE_STRICT_LOWER == Fraction(23, 10)
 
-    # The exact theorem radius itself is admissible.  No coefficient value is
+    # The safe lower radius is admissible. No coefficient value is
     # manufactured by this regression.
-    cert.require_backend_norm_error(cert.fixed_point_error_radius_upper)
+    cert.require_backend_norm_error(cert.fixed_point_error_radius_safe)
 
 
 def test_scale_certificate_rejects_nonpinned_stability_metadata() -> None:
@@ -94,10 +94,10 @@ def test_backend_norm_error_gate_is_exact_decimal_and_fail_closed() -> None:
     )
     cert = NaturalEntranceScaleCertificate.from_scale(scale)
 
-    cert.require_backend_norm_error(cert.fixed_point_error_radius_upper)
+    cert.require_backend_norm_error(cert.fixed_point_error_radius_safe)
 
-    with pytest.raises(ValueError, match="exceeds K/\(2\*Lambda\)"):
-        cert.require_backend_norm_error(cert.fixed_point_error_radius_upper + Decimal(1))
+    with pytest.raises(ValueError, match=r"exceeds safe K/\(2\*Lambda\) radius"):
+        cert.require_backend_norm_error(cert.fixed_point_error_radius_safe + Decimal(1))
     with pytest.raises(ValueError, match="finite nonnegative Decimal"):
         cert.require_backend_norm_error(0.0)  # type: ignore[arg-type]
     with pytest.raises(ValueError, match="finite nonnegative Decimal"):
