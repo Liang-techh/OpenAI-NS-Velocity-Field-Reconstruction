@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "issue": 4,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-10-r3-actual-candidate-energy",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section10_r3_actual_candidate_energy.py",
+    "test": "tests/test_section10_r3_actual_candidate_energy.py",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "file": "NavierStokes/R3/ActualCandidate.lean",
+      "theorem": "NavierStokesR3.ActualCandidate.of_localized_fields",
+      "energy_file": "NavierStokes/R3/CompactEnergy.lean",
+      "energy_theorem": "NavierStokesR3.CompactEnergy.uniform_finite_energy"
+    },
+    "contract_dependency": {
+      "artifact": "src/openai_ns_reconstruction/section10_r3_compact_candidate.py",
+      "type": "Section10R3CompactCandidateAdmission",
+      "required_identity": [
+        "periodic candidate force must equal the force identity already carried by the compact R3 admission",
+        "compact velocity and pressure must equal the localized fields from the same compact R3 admission",
+        "compact force, support cylinder, and outer force support must equal the same admitted theorem objects",
+        "the underlying periodic candidate must certify the global smooth force returned by the Section 10 residual-limit theorem"
+      ],
+      "status": "formal-structure-only"
+    },
+    "landed_capability": "Fail-closed admission boundary for the pinned final whole-space theorem NavierStokesR3.ActualCandidate.of_localized_fields. The theorem preserves the same localized velocity and pressure, applies PositiveTimeForce.force to the compact force, proves a globally smooth force with compact positive-time support and the exact forced equation, and invokes NavierStokesR3.CompactEnergy.uniform_finite_energy to obtain one UniformFiniteEnergy bound on Ico 0 1 while retaining speed-unboundedness at t=1. This is the correct singular-interval energy theorem; it is stronger than a separate compact-slab bound on each Icc 0 T with T<1. Python does not replay Lean or materialize any field.",
+    "upstream_contract": [
+      "retain the exact Section10MixedPeriodicCandidateForceAdmission produced by the actual all-order residual-limit theorem chain",
+      "retain the exact Section10R3CompactCandidateAdmission for the same potential/direct/pressure and periodic force identities",
+      "supply the pinned Lean export of NavierStokesR3.ActualCandidate.of_localized_fields with the same identities",
+      "the periodic force must be globally ContDiff, as required by the final theorem",
+      "the theorem application must use the official supportCylinder, R3CompactCandidate.compactForce, PositiveTimeForce.force, and CompactEnergy.uniform_finite_energy chain"
+    ],
+    "formal_outputs_not_runtime_artifacts": [
+      "globally smooth positive-time compact force",
+      "exact whole-space forced Navier-Stokes equation at viscosity one",
+      "divergence-free localized velocity",
+      "UniformFiniteEnergy on Ico 0 1",
+      "speed-unboundedness as t approaches 1 from below"
+    ],
+    "forbidden_promotions": [
+      "using fixed-T compact-slab continuity as a substitute for one energy bound uniform over Ico 0 1",
+      "using a manufactured or residual-defined numerical force in place of the admitted CandidateFromLimits force",
+      "treating theorem identifiers or green CI as materialized paper fields",
+      "setting finite_energy_closure_verified true before the actual field/force theorem chain is replayed or independently materialized",
+      "setting paper_exact_velocity_available or full_reconstruction true before actual Section 9, endpoint, force, energy, and blow-up closure"
+    ],
+    "truth_boundary": {
+      "theorem_machine_replayed": false,
+      "actual_fields_materialized": false,
+      "actual_section9_sequence_verified": false,
+      "section9_all_order_endpoint_limits_verified": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "compact_support_runtime_verified": false,
+      "divergence_free_closure_verified": false,
+      "finite_energy_closure_verified": false,
+      "blow_up_closure_verified": false,
+      "paper_exact_velocity_available": false,
+      "full_reconstruction": false
+    }
+  }
+}
