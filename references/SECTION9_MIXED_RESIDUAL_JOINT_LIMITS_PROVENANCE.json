@@ -1,7 +1,7 @@
 {
   "artifact": "Section 9 actual mixed residual -> all-order joint endpoint limits bridge",
   "status": "formal-structure",
-  "base_main_commit": "13f9c53bbe1a68ddd3fdaf1805e7f8b6bbd38b5d",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
   "purpose": "Bind the selected paper mixed residual identity to the pinned Lean VanishingJointJets/AwayExtensions/boundaryLimits_locallyUniform theorem chain without promoting finite or sampled evidence.",
   "formal_source": {
     "repository": "openai/NavierStokesAndEuler",
