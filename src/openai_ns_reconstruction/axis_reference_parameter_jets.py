@@ -142,11 +142,9 @@ def _h_taylor(reference: ActualScheduleReferencePair, eta: float, order: int) ->
     for k in range(order + 1):
         value = Decimal(0)
         for degree in range(k, len(coefficients)):
-            value += (
-                coefficients[degree]
-                * Decimal(math.comb(degree, k))
-                * x ** (degree - k)
-            )
+            exponent = degree - k
+            monomial = Decimal(1) if exponent == 0 else x ** exponent
+            value += coefficients[degree] * Decimal(math.comb(degree, k)) * monomial
         out.append(value)
     return out
 
