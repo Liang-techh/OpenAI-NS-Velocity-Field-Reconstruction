@@ -3,7 +3,7 @@
   "artifact": "actual-schedule angular reference parameter jets",
   "issue": 1,
   "truth_status": "formal-structure",
-  "base_main": "1ea24db9524d34a191ebf07d3e22a7b5a1ecdd6f",
+  "base_main": "c5d7734ce1b659d309ebe417bc88f60fc3af258e",
   "source_pin": {
     "repository": "openai/NavierStokesAndEuler",
     "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
@@ -17,13 +17,15 @@
     "analytic eta derivatives of the actual-schedule angular reference radial coefficients from the pinned factorial reference formula",
     "guarded Decimal Taylor algebra for H^2/(H^2+sigma^2), preventing the actual tiny sigma^2 term from being rounded away by binary64 before differentiation",
     "checked binary64 projection that fails closed rather than turning a nonzero wide coefficient into underflowed zero",
+    "explicit exponent-zero monomial handling so eta=0 zeroth jets do not invoke Decimal 0**0",
     "pinned AxisWeightEstimates.weight normalization",
     "epsilon=rho/2 bound to the existing actual-schedule analytic-neighborhood certificate"
   ],
   "numerical_boundary": [
     "input schedule values remain the repository's certified runtime binary64 data and are embedded exactly into Decimal; this is not interval arithmetic or a Lean proof",
     "parameter_jet_decimal uses an order-growing guarded Decimal precision; parameter_jet is only a checked binary64 view",
-    "the previous pure-binary64 quotient path was rejected after CI showed mathematically nonconstant higher jets collapsing to zero when H^2+sigma^2 rounded to H^2"
+    "the previous pure-binary64 quotient path was rejected after CI showed mathematically nonconstant higher jets collapsing to zero when H^2+sigma^2 rounded to H^2",
+    "CI run 2131 also exposed Decimal 0**0 at eta=0 in the zeroth Taylor row; production now treats every exponent-zero monomial as exactly one before multiplication"
   ],
   "construction_boundary": {
     "angular_reference_parameter_jets_executable": true,
