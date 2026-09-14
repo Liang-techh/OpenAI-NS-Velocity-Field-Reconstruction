@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "depends_on_prs": [319, 322, 326, 332, 336, 341],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 hierarchy-owned third Picard-series derivative increment stacked on PR #341. It constructs W_n^(2)=K W_n^(1) through eta from hierarchy-owned W_n^(1)[0..2] and A0/A1[0..1], with exact Leibniz differentiation and no caller source/matrix jets.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_picard_third_first_parameter.py",
+      "test": "tests/test_background_repaired_history_picard_third_first_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_THIRD_PICARD_FIRST_PARAMETER_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Eq. (5.7)"
+      ],
+      "landed_capability": "For one positive coefficient order, Section5LowerHistorySixthMixedHierarchy determines W_n^(2)=G(A0 W_n^(1)+A1 partial_eta W_n^(1)) through partial_eta. The derivative row uses only hierarchy-owned W_n^(1) derivatives through eta^2 and hierarchy-owned A0/A1 derivatives through eta, and G commutes with these finite eta derivatives.",
+      "truth_boundary": "This is one finite Picard-series term only. It does not establish Picard convergence, a repaired positive-order coefficient, a total arbitrary-order coefficient provider, recursive-cutoff convergence, Proposition 5.3, full reconstruction, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "A hierarchy-owned W_n^(2) eta jet does not establish convergence of the Lemma 5.1 Picard series.",
+    "Analytic regression fixtures are not paper coefficient data.",
+    "No finite/stagewise Agent-7 cutoff or residual certificate is promoted to an all-order theorem by this increment.",
+    "Green CI does not promote Stage 2 formal-structure infrastructure to paper-exact velocity."
+  ]
+}
