@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "95ba525c8aadab0ae4b05610b2042c9a02fec234",
+  "base_main_commit": "13f9c53bbe1a68ddd3fdaf1805e7f8b6bbd38b5d",
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
   "layer": {
@@ -46,6 +46,7 @@
     ],
     "non_overlap": {
       "sections_8_9_mean_corrections_residual_iteration": "reserved for Agent 8 / parallel work; untouched",
+      "agent8_pr_313": "merged exact Section 8 five-row algebra/debt-normalization certificate is preserved without modification",
       "agent8_pr_305": "merged exact Section 8 compact-support geometry is preserved without modification",
       "agent8_pr_298": "merged Section 9 finite-prefix field assembly is preserved without modification",
       "current_main_pr_300": "Stage 1 actual-schedule angular reference eta jets are preserved without modification",
