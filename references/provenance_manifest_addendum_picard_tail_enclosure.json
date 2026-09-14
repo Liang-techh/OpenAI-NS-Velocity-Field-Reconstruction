@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "depends_on_prs": [319, 322, 326, 332, 336, 341, 344, 348],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 hierarchy-bound conditional Picard enclosure stacked on PR #348. It forms the exact hierarchy-owned four-term value prefix and couples it to the existing Eq. (5.8) omitted-tail arithmetic without inventing analytic bounds.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_picard_enclosure.py",
+      "test": "tests/test_background_repaired_history_picard_enclosure.py",
+      "provenance": "references/HIERARCHY_BOUND_PICARD_TAIL_ENCLOSURE_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Eq. (5.7)",
+        "Eq. (5.8)"
+      ],
+      "landed_capability": "For one positive recursive order, the same Section5LowerHistorySixthMixedHierarchy determines W_n^(0)+W_n^(1)+W_n^(2)+W_n^(3). Conditional Eq. (5.8) majorant inputs can be runtime-bound to that exact hierarchy/order, checked against their radial/eta domain, and converted into a norm-ball enclosure for the complete omitted k>=4 Picard tail.",
+      "truth_boundary": "C_n and complex-strip/radial analytic bounds remain external conditional theorem inputs. This increment does not derive those bounds, does not materialize an exact Picard fixed point or repaired positive-order coefficient, and does not establish an all-order hierarchy or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "A conditional Eq. (5.8) tail radius is not evidence that caller-provided C_n/rho/rho_prime are the paper's certified analytic constants.",
+    "A four-term hierarchy-owned Picard center plus conditional tail radius is not an exact repaired phi/U/Pi/V coefficient provider.",
+    "No finite difference, fitted residual, generic cutoff, or finite small residual may be used to upgrade this formal-structure enclosure to paper-exact status.",
+    "Agent 7 uniform C[j,m], recursive cutoff, and all-order residual-convergence claims remain separate downstream proof obligations.",
+    "Green CI does not promote Stage 2 formal-structure infrastructure to full reconstruction or paper-exact velocity."
+  ]
+}
