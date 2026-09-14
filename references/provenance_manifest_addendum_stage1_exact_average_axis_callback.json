@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1bc98e6ad4be59893db828d11b9ff0f0217ac3d8",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-1 downstream interface increment making supplied exact radial-average callbacks authoritative at X=0 as well as X>0. It does not implement AxisCoefficientSpace, naturalRemainder, x2, a fixed point, or any missing profile field and does not overlap Agent 6's backend lane.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/profiles.py",
+      "test": "tests/test_profiles_exact_average.py",
+      "provenance": "references/STAGE1_EXACT_AVERAGE_AXIS_CALLBACK_PROVENANCE.md",
+      "landed_capability": "When LeadingProfile receives an exact average callback, _average consults it for all admissible X including X=0; only profiles without an exact callback use U(0,eta) as the axis fallback.",
+      "remaining_boundary": "No genuine backend average is created here. AxisCoefficientSpace/naturalRemainder/x2/fixed-point closure, actual phi/u/average/pressure materialization, NaturalProfileAssembly, regular-inner-core/heat-exterior matching, support/moment/matching/cone closure, full reconstruction, and paper-exact velocity remain open."
+    }
+  ]
+}
