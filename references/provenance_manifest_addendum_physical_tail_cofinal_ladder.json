@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 354,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/DiagonalScale.lean",
+      "NavierStokes/SlowBorelBase.lean"
+    ],
+    "theorems": [
+      "NavierStokes.DiagonalScale.doublingEnvelope",
+      "NavierStokes.DiagonalScale.exists_diagonal_scales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_physical_tail_cofinal_ladder.py"
+  ],
+  "tests": [
+    "tests/test_background_physical_tail_cofinal_ladder.py"
+  ],
+  "provenance": "references/PHYSICAL_TAIL_COFINAL_LADDER_PROVENANCE.md",
+  "landed_capability": "Materialize a finite prefix of the exact positive canonical target family level k>=1=(physical derivative budget k, physical q-power k) from one hierarchy provider; require every adjacent level to preserve the same coefficient evidence and recursive SlowBorel/DiagonalScale schedule prefix; compute the least exact rational dominating level k=max(M,ceil(P),1) and fail closed beyond the finite materialized frontier.",
+  "no_caller_supplied_coefficient_table": true,
+  "no_caller_supplied_support_table": true,
+  "no_caller_supplied_recurrence_table": true,
+  "no_caller_supplied_cutoff_schedule": true,
+  "truth_boundary": {
+    "canonical_target_cofinality_arithmetic_verified": true,
+    "finite_shared_schedule_ladder_verified": true,
+    "finite_ladder_only": true,
+    "provider_totality_verified": false,
+    "numeric_physical_chart_constant_materialized": false,
+    "lean_build_verified": false,
+    "actual_pde_residual_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must expose a total stable assembled/repaired positive-order coefficient provider that theorem-owns actual coefficient objects, C[j,m] majorants, common support, exact retained recurrence evidence, and the analytic inputs replacing PR #353's conditional C_n/radial-extent/rho/rho_prime hypotheses at every requested order; deeper requests must preserve every previously emitted object/evidence row."
+}
