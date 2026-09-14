@@ -207,7 +207,15 @@ class NaturalProfileAssembly:
         return float(self.axis_pressure(eta)) + float(self.pressure(Y, eta)) / self.parameters.Lambda
 
     def to_leading_profile(self):
-        """Adapt to ``LeadingProfile`` without falsely claiming paper exactness."""
+        """Adapt to ``LeadingProfile`` without falsely claiming paper exactness.
+
+        The scaled fixed-point state already carries the genuine average field
+        ``B``.  Preserve that exact downstream identity by wiring
+        :meth:`radial_average` into ``LeadingProfile.average_U`` instead of
+        asking the generic adapter to recompute the average by quadrature.
+        ``average_dU_deta`` remains unresolved until the backend exports the
+        corresponding eta-derivative field/certificate.
+        """
 
         from .profiles import LeadingProfile
 
@@ -218,4 +226,5 @@ class NaturalProfileAssembly:
             Pi=self.Pi,
             name="natural-profile-rescaling (fixed-point inputs unresolved)",
             paper_exact=False,
+            average_U=self.radial_average,
         )
