@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 345,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/SlowBorelBase.lean",
+      "NavierStokes/PhysicalCoordinateBounds.lean"
+    ],
+    "theorems": [
+      "NavierStokes.SlowBorelBase.physicalChart_jet_bound",
+      "NavierStokes.SlowBorelBase.physicalChart_finite_bound",
+      "NavierStokes.SlowBorelBase.physical_composition_bound",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_physical_tail_prefactor.py"
+  ],
+  "tests": [
+    "tests/test_background_physical_tail_prefactor.py"
+  ],
+  "provenance": "references/PHYSICAL_TAIL_PREFACTOR_PROVENANCE.md",
+  "landed_capability": "Bind one provider-owned finite first-omitted physical tail request to the pinned symbolic physical-chart finite-bound and chain-rule prefactor m! * 2^-J * D^m, with D = 1 + sum C_i and the X interval taken from the same hierarchy-owned common-support evidence.",
+  "no_caller_supplied_physical_chart_constants": true,
+  "no_caller_supplied_support_interval": true,
+  "no_caller_supplied_coefficient_table": true,
+  "truth_boundary": {
+    "physical_chart_finite_bound_shape_verified": true,
+    "physical_composition_prefactor_shape_verified": true,
+    "numeric_physical_chart_constant_materialized": false,
+    "lean_build_verified": false,
+    "actual_pde_residual_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must replace the current finite Picard derivative triangle with a total hierarchy-owned assembled/repaired coefficient provider: for every requested positive order, the same actual coefficient object/state must own theorem-backed C[j,m] majorants, common compact support, and exact retained-recurrence evidence."
+}
