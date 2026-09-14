@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 337,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/GenericRealizationBounds.lean",
+      "NavierStokes/SmoothCutoffs.lean",
+      "NavierStokes/SlowBorelBase.lean"
+    ],
+    "theorems": [
+      "NavierStokes.GenericRealizationBounds.prefix_eventually_uncut",
+      "NavierStokes.GenericRealizationBounds.realized_tail_bound",
+      "NavierStokes.SmoothCutoffs.scaledCutoff_one_of_abs_le",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_joint_physical_uncut_radius.py"
+  ],
+  "tests": [
+    "tests/test_background_joint_physical_uncut_radius.py"
+  ],
+  "provenance": "references/JOINT_PHYSICAL_UNCUT_RADIUS_PROVENANCE.md",
+  "landed_capability": "Derive the exact open uncut plateau radius 1/(2*a_J) from the same provider-owned recursive SlowBorel/DiagonalScale schedule selected for one finite joint physical-jet target, and verify every retained scale lies on the exact cutoff-one plateau.",
+  "no_caller_supplied_radius": true,
+  "no_second_schedule": true,
+  "no_sampled_cutoff_evaluation": true,
+  "truth_boundary": {
+    "finite_uncut_plateau_arithmetic_verified": true,
+    "one_provider_owned_schedule_used": true,
+    "function_level_uncut_germ_verified": false,
+    "physical_chart_finite_bound_verified": false,
+    "actual_slow_sum_materialized": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must eventually supply actual assembled positive-order coefficient objects with theorem-backed derivative majorants, common support, and exact retained-recurrence evidence for every order demanded by arbitrary physical target requests under one coefficient state."
+}
