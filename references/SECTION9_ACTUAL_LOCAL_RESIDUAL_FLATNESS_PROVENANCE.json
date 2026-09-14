@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "issue": 4,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-actual-local-residual-flatness",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_actual_local_residual_flatness.py",
+    "test": "tests/test_section9_actual_local_residual_flatness.py",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "file": "NavierStokes/LocalResidualFlatness.lean",
+      "theorem": "NavierStokes.LocalResidualFlatness.selected_schedule",
+      "rate_predicate": "NavierStokes.LocalResidualFlatness.AllResidualJetRates"
+    },
+    "actual_objects": {
+      "stage_estimates": "NavierStokes.LocalResidualFlatness.selectedEstimates",
+      "potential_stages": "NavierStokes.ActualCandidateAssembly.selectedPotentialStages",
+      "direct_stages": "NavierStokes.ActualCandidateAssembly.selectedDirectStages",
+      "pressure_stages": "NavierStokes.ActualCandidateAssembly.selectedPressureStages",
+      "residual": "NavierStokes.MixedDiagonalResidual.residual",
+      "physical_scale": "NavierStokes.PhysicalWaveSum.physicalQ"
+    },
+    "landed_capability": "Fail-closed admission boundary for the pinned closed theorem selected_schedule. The theorem uses the actual fixed selected StageEstimates and actual selected A/B/P stage families, chooses one common schedule once, retains ThreeCutBounds, and proves AllResidualJetRates for the literal unlocalized mixed Navier-Stokes residual. The schedule existential is outside both the natural derivative-order quantifier and the nonnegative real decay-order quantifier, so this is genuine all-order formal residual flatness at the open-past singular spacetime point rather than a finite ladder or sampled rate table.",
+    "theorem_scope": [
+      "one common actual selected schedule",
+      "actual selected potential/direct/pressure stage families",
+      "ThreeCutBounds for the same schedule",
+      "for every natural derivative order m",
+      "for every real decay order r with r >= 0",
+      "JetRate for MixedDiagonalResidual.residual against PhysicalWaveSum.physicalQ",
+      "open-past endpoint filter at (t,x) = (1,0)"
+    ],
+    "not_implied": [
+      "uniform derivative majorants on the whole official 3/4 <= t < 1 plateau",
+      "all-order zero neighborhoods outside the Section 10 support cylinder",
+      "locally uniform endpoint limits at every spatial point",
+      "runtime residual or velocity materialization",
+      "the Section 10 Taylor-Borel force artifact",
+      "compact-support, energy, or blow-up runtime closure"
+    ],
+    "forbidden_promotions": [
+      "replacing universal derivative orders with a finite maximum",
+      "replacing universal nonnegative decay orders with a finite maximum",
+      "using sampled or fitted rates as the closed theorem export",
+      "using a manufactured residual or f=R tautology",
+      "cross-wiring another stage family or residual into the selected theorem",
+      "claiming the pointwise open-past theorem is already a whole-plateau majorant",
+      "claiming formal theorem identifiers are materialized paper fields"
+    ],
+    "truth_boundary": {
+      "theorem_machine_replayed": false,
+      "actual_fields_materialized": false,
+      "actual_section9_sequence_verified": false,
+      "section9_all_order_endpoint_limits_verified": false,
+      "official_late_plateau_uniform_bounds_verified": false,
+      "support_exterior_all_order_zero_verified": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "compact_support_runtime_verified": false,
+      "divergence_free_closure_verified": false,
+      "finite_energy_closure_verified": false,
+      "blow_up_closure_verified": false,
+      "paper_exact_velocity_available": false,
+      "full_reconstruction": false
+    }
+  }
+}
