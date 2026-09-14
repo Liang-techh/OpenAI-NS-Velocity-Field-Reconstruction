@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "artifact": "actual-schedule axial reference parameter jets",
+  "issue": 1,
+  "truth_status": "formal-structure",
+  "base_main": "0ea9406195545d04cafd72fbed2ecf78e9f17ca8",
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AxisCoefficientSpace.lean",
+      "NavierStokes/AxisContraction.lean",
+      "NavierStokes/AxisWeightEstimates.lean",
+      "NavierStokes/SchedulePressure.lean"
+    ]
+  },
+  "implemented": [
+    "arbitrary finite eta derivatives of the actual-schedule axial reference coefficient u0[1] by normalized Taylor-series replay of the pinned referencePair formula",
+    "actual SchedulePressure normalized eta jets are consumed through the landed analytic pressure-jet backend; no caller-supplied pressure rows, finite differences, sampling, or fitted coefficients enter production",
+    "the exact radial support statement u0[n]=0 for n!=1 is preserved as a structural consequence of the pinned J_1 regular inverse rather than a default-zero coefficient convention",
+    "the landed zeroth axial coefficient remains authoritative and higher derivatives are generated from the same actual schedule h, j, pressure, and analytic-neighborhood radius",
+    "pinned AxisWeightEstimates.weight normalization with epsilon=rho/2 from the existing actual-schedule analytic-neighborhood certificate"
+  ],
+  "numerical_boundary": [
+    "SchedulePressure higher eta jets are reproducible floating-point evaluations of the paper-defined compact flattening integral using repository Gauss-Legendre quadrature, not interval enclosures",
+    "polynomial/product/quotient differentiation is analytic normalized Taylor algebra; centered finite differences appear only in regression as an independent low-order oracle",
+    "non-finite or non-representable binary64 derivative requests fail closed"
+  ],
+  "construction_boundary": {
+    "angular_reference_parameter_jets_executable": true,
+    "axial_reference_all_parameter_jets_executable": true,
+    "uniform_infinite_weighted_norm_bound_certified": false,
+    "complete_axis_coefficient_space_reference_state_materialized": false,
+    "natural_remainder_x1_materialized": false,
+    "x2_materialized": false,
+    "fixed_point_materialized": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "remaining_blockers": [
+    "close a single uniform all-order weighted supremum bound for the actual angular and axial jet families so AxisCoefficientSpace.ofJetFamily hypotheses are machine-certified",
+    "package the two actual jet families plus their adjacent-derivative compatibility into the typed reference CoefficientState consumed by naturalRemainder",
+    "only after that state exists, execute genuine naturalRemainder(x1) and the next Picard iterate"
+  ]
+}
