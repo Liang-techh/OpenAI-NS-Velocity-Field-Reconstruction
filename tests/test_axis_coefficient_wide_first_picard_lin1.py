@@ -43,21 +43,19 @@ def _decimal(value: float) -> Decimal:
 
 
 def _product_jet(left, right, n: int, m: int, eta: float) -> Decimal:
-    """Independent exact-Decimal replay of the landed coefficient product."""
+    """Independent replay of the landed binary64 coefficient-product semantics."""
 
-    out = Decimal(0)
-    with localcontext() as ctx:
-        ctx.prec = PRECISION
-        for i in range(n + 1):
-            j = n - i
-            for k in range(m + 1):
-                l = m - k
-                out += (
-                    Decimal(math.comb(m, k))
-                    * _decimal(left.jet(i, k, eta))
-                    * _decimal(right.jet(j, l, eta))
-                )
-        return +out
+    terms = []
+    for i in range(n + 1):
+        j = n - i
+        for k in range(m + 1):
+            l = m - k
+            terms.append(
+                float(math.comb(m, k))
+                * left.jet(i, k, eta)
+                * right.jet(j, l, eta)
+            )
+    return _decimal(math.fsum(terms))
 
 
 def _angular_linear_jet(state, n: int, m: int, eta: float) -> Decimal:
