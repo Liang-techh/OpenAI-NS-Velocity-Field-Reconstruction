@@ -1,0 +1,43 @@
+{
+  "artifact": "section9_stage_source_binding",
+  "status": "finite-stage-source-identity-only",
+  "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+  "stacked_parent": {
+    "pull_request": 343,
+    "commit": "128d115095538a07bfa0cde507812eed5ec81526"
+  },
+  "formal_source": {
+    "repository": "https://github.com/openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "files": [
+      "NavierStokes/ActualIterationLedger.lean",
+      "NavierStokes/ActualStageEstimates.lean",
+      "NavierStokes/MixedCandidateAssembly.lean"
+    ],
+    "role": "downstream source identity must stay coherent before actual stage fields can instantiate the finite-stage estimate/summed-field chain"
+  },
+  "machine_contract": {
+    "materialized_stage_required": true,
+    "same_stage_object_required": true,
+    "exact_40_char_lowercase_git_revision_required": true,
+    "producer_artifact_identity_required": true,
+    "stage_source_revision_must_equal_metadata_source_revision": true,
+    "stage_producer_must_equal_metadata_producer": true,
+    "sampled_fitted_toy_source_bindings": "rejected",
+    "field_values_synthesized": false,
+    "surrogate_wave_or_defect": false
+  },
+  "gap_closed": "PR #343 validated the source_revision field carried by exact StageMetadata but Section9MaterializedStage itself had no structured source revision. This increment prevents metadata from one producer revision certifying an unrelated materialized callable-field object that happens to share stage/family labels.",
+  "truth_boundary": {
+    "exact_stage_source_identity_bound": true,
+    "field_values_or_norms_evaluated": false,
+    "support_estimates_consumed": false,
+    "actual_oscillatory_wave_defect_consumed": false,
+    "actual_compact_mean_correction_consumed": false,
+    "infinite_correction_sequence_certified": false,
+    "eq_9_21_summed_field_certified": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_blocker": "Agent 3 / Section 8 still needs to emit the genuine positive-stage callable fields and exact StageMetadata from one named producer artifact and source revision. The current Agent 3 wave lane does not materialize FinalSlowBase.velocity values/jets, and the signed-mean-defect handoff still does not materialize the finite-head mean debt or compact correction field.",
+  "downstream_contract": "A future Agent 3 -> Section 8 stage export should wrap the exact materialized stage in Section9MaterializedStageSource using the same source_revision and producer_artifact_id carried by Section9ExactStageMetadata. Only Section9SourceBoundStageMetadataAdmission should then be handed to later actual support/StageEstimates/Eq. (9.21) consumers."
+}
