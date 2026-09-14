@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "51e7b91bf5bdd9dfd52ecc74f3e1b8cb61def464",
+  "base_main_commit": "9028363db7782e1cea859c8eaab0f81213ab11ec",
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
   "layer": {
@@ -49,7 +49,8 @@
       "agent8_pr_298": "merged Section 9 finite-prefix field assembly is preserved without modification",
       "agent8_pr_287": "merged Section 9 all-order endpoint residual contract is preserved without modification",
       "current_main_pr_300": "Stage 1 actual-schedule angular reference eta jets are preserved without modification",
-      "current_main_pr_301": "Stage 2 hierarchy-owned third-eta Omega/X work is preserved without modification"
+      "current_main_pr_301": "Stage 2 hierarchy-owned third-eta Omega/X work is preserved without modification",
+      "current_main_pr_293": "Stage 1 complete first-Picard slow2 composition is preserved without modification"
     },
     "prior_green_ci": {
       "head": "8e38bb60d99a131a34373ab5f8b4ff11b2caa256",
