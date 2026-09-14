@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 324,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/SlowBorelBase.lean",
+      "NavierStokes/DiagonalScale.lean",
+      "NavierStokes/AssembledSlowBase.lean",
+      "NavierStokes/SlowExpansionResidual.lean"
+    ],
+    "theorems": [
+      "NavierStokes.SlowBorelBase.exists_template_jet_bound",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order",
+      "NavierStokes.AssembledSlowBase.extendedCoefficient_support",
+      "NavierStokes.AssembledSlowBase.extendedCoefficient_compactSupport"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_target_driven_exact_majorants.py"
+  ],
+  "tests": [
+    "tests/test_background_target_driven_exact_majorants.py"
+  ],
+  "provenance": "references/TARGET_DRIVEN_EXACT_MAJORANT_PROVENANCE.md",
+  "landed_capability": "For one exact target-selected finite hierarchy prefix, require provider-owned exact rational C[j,m] upper majorants and materialize each binary64 scheduler row only by verified outward rounding before running the existing support/recurrence dependency chain.",
+  "no_caller_supplied_bound_table": true,
+  "nearest_float_downrounding_forbidden": true,
+  "overflow_fails_closed": true,
+  "exact_majorant_note": "Fraction values are implementation-level certified rational upper majorants; this addendum does not claim the formal source theorem's existential real constants are themselves rational.",
+  "upstream_requirement": "Agent 2 must eventually expose theorem-backed upper majorants for every required C[j,m], bound to the same actual assembled positive-order coefficient artifact and coefficient state as support and exact retained recurrence evidence. Raw binary64 estimates and finite eta-derivative frontiers are insufficient for arbitrary-order closure.",
+  "truth_boundary": {
+    "finite_target_prefix_only": true,
+    "outward_binary64_majorants_verified": true,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  }
+}
