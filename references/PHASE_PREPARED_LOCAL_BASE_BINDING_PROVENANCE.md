@@ -3,9 +3,9 @@
 ## Baseline
 
 - Repository: `Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction`
-- Base `main`: `a69b6449bbc6df2631c8039b3bf61d4cc0b4ed36`
-- Scope: Issue #3, Sections 6–7 only. Sections 8–9 mean corrections/residual iteration remain Agent 8 / parallel scope and are not modified here.
-- Current-main reconciliation: merged PR #287 adds a fail-closed all-order Section 9 endpoint residual contract on top of PR #298's finite-prefix field assembly. Both paths are preserved unchanged; this replay only carries the existing Prepared LocalBase bridge forward onto that newer main.
+- Base `main`: `51e7b91bf5bdd9dfd52ecc74f3e1b8cb61def464`
+- Scope: Issue #3, Sections 6–7 only. Sections 8–9 mean corrections/residual iteration remain Agent 8 scope and are not modified here.
+- Current-main reconciliation: Agent 8's merged Section 9 finite-prefix/all-order endpoint work remains untouched. Current main additionally contains PR #300's Stage 1 actual-schedule angular reference eta jets and PR #301's Stage 2 hierarchy-owned third-eta Omega/X work; neither overlaps this four-file Sections 6–7 increment.
 
 ## Pinned formal source
 
@@ -62,7 +62,7 @@ certificate flags, formal-symbol tampering, malformed asymptotic box keys, and
 wrong composition types.
 
 The identical source/test payload previously completed GitHub Actions run #2108
-successfully on an older main. This replay is based directly on current main
-`a69b6449bbc6df2631c8039b3bf61d4cc0b4ed36`; fresh Actions on this exact head are
-required before merge. Prior green CI is evidence for unchanged source/test payload
-only, not a substitute for current-head CI.
+successfully on an older main. This merge-forward is based on current main
+`51e7b91bf5bdd9dfd52ecc74f3e1b8cb61def464`; fresh Actions on the exact resulting
+head are required before merge. Prior green CI is evidence for unchanged
+source/test payload only, not a substitute for current-head CI.

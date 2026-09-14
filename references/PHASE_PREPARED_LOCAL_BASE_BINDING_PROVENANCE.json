@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "a69b6449bbc6df2631c8039b3bf61d4cc0b4ed36",
+  "base_main_commit": "51e7b91bf5bdd9dfd52ecc74f3e1b8cb61def464",
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
   "layer": {
@@ -46,8 +46,10 @@
     ],
     "non_overlap": {
       "sections_8_9_mean_corrections_residual_iteration": "reserved for Agent 8 / parallel work; untouched",
-      "current_main_pr_287": "Section 9 all-order endpoint residual contract is merged on current main and preserved without modification",
-      "current_main_pr_298": "Section 9 finite-prefix field assembly remains preserved without modification"
+      "agent8_pr_298": "merged Section 9 finite-prefix field assembly is preserved without modification",
+      "agent8_pr_287": "merged Section 9 all-order endpoint residual contract is preserved without modification",
+      "current_main_pr_300": "Stage 1 actual-schedule angular reference eta jets are preserved without modification",
+      "current_main_pr_301": "Stage 2 hierarchy-owned third-eta Omega/X work is preserved without modification"
     },
     "prior_green_ci": {
       "head": "8e38bb60d99a131a34373ab5f8b4ff11b2caa256",
