@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-1 downstream profile-interface increment preserving the genuine scaled radial-average field B when NaturalProfileAssembly is adapted to LeadingProfile. It does not implement AxisCoefficientSpace, naturalRemainder, x2, a fixed point, or missing scaled fields and does not overlap Agent 6's backend lane.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/natural_axis.py",
+      "test": "tests/test_natural_axis.py",
+      "provenance": "references/STAGE1_EXACT_AVERAGE_HANDOFF_PROVENANCE.md",
+      "official_source": {
+        "repository": "openai/NavierStokesAndEuler",
+        "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+        "file": "NavierStokes/NaturalProfile.lean",
+        "symbols": [
+          "NaturalProfile.affineProfile",
+          "NaturalProfile.IsNaturalSolution.average_equation",
+          "NaturalProfile.IsNaturalSolution.average_integral",
+          "NaturalProfile.transportW_reconstruct"
+        ]
+      },
+      "landed_capability": "NaturalProfileAssembly.to_leading_profile preserves the already supplied scaled average field through LeadingProfile.average_U, so the natural-profile path does not replace backend-owned average data by numerical radial quadrature of U.",
+      "remaining_boundary": "average_dU_deta remains unresolved until a genuine backend/theorem handoff supplies its derivative evidence. Genuine AxisCoefficientSpace/naturalRemainder/x2/fixed-point closure, actual phi/u/average/pressure materialization, regular-inner-core/heat-exterior matching, support/moment/matching/cone closure, full reconstruction, and paper-exact velocity remain open."
+    }
+  ]
+}
