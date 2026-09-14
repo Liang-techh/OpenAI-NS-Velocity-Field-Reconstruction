@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 349,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/DiagonalScale.lean",
+      "NavierStokes/SlowBorelBase.lean"
+    ],
+    "theorems": [
+      "NavierStokes.DiagonalScale.doublingEnvelope",
+      "NavierStokes.DiagonalScale.exists_diagonal_scales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_physical_tail_prefix_coherence.py"
+  ],
+  "tests": [
+    "tests/test_background_physical_tail_prefix_coherence.py"
+  ],
+  "provenance": "references/PHYSICAL_TAIL_PREFIX_COHERENCE_PROVENANCE.md",
+  "landed_capability": "Given two dominating finite physical-tail requests built from one hierarchy provider, require literal prefix equality of the shared exact C[j,m] majorants, support witnesses, retained recurrence identities, coefficient dependencies, local cutoff scales, and doubling-envelope scales; certify exact h*(J1-J0) tail-exponent gain and 2^(-(J1-J0)) dyadic improvement.",
+  "no_caller_supplied_coefficient_table": true,
+  "no_caller_supplied_support_table": true,
+  "no_caller_supplied_recurrence_table": true,
+  "no_caller_supplied_cutoff_schedule": true,
+  "truth_boundary": {
+    "shared_schedule_prefix_verified": true,
+    "shared_coefficient_evidence_prefix_verified": true,
+    "increasing_truncation_exponent_gain_verified": true,
+    "finite_request_pair_only": true,
+    "provider_totality_verified": false,
+    "numeric_physical_chart_constant_materialized": false,
+    "lean_build_verified": false,
+    "actual_pde_residual_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must expose a total stable assembled/repaired coefficient provider: extending the requested order must preserve every previously emitted actual coefficient object/state, theorem-backed C[j,m] majorant, common-support witness, and exact retained-recurrence identity, so all finite requests are prefixes of one paper SlowBorel schedule."
+}
