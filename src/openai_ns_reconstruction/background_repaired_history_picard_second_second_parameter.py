@@ -118,19 +118,35 @@ def hierarchy_owned_second_picard_second_parameter_jet(
     xi, eta = _point(xi, eta)
     quadrature_points = hierarchy.quadrature_points
 
+    # The manuscript singular inverse asks for the same vector-valued source
+    # once per component at identical Gauss nodes.  Cache the hierarchy-owned
+    # upstream jets at those exact nodes so derivative rows share one coherent
+    # evaluation rather than recomputing nested Picard quadratures.
+    jet_cache: dict[tuple[float, float], tuple[object, object]] = {}
+
+    def upstream(s: float, eta_value: float) -> tuple[object, object]:
+        key = (float(s), float(eta_value))
+        cached = jet_cache.get(key)
+        if cached is None:
+            cached = (
+                hierarchy_owned_first_picard_third_parameter_jet(
+                    hierarchy,
+                    order,
+                    s,
+                    eta_value,
+                ),
+                hierarchy_owned_positive_axis_matrix_second_parameter_jet(
+                    hierarchy,
+                    order,
+                    s,
+                    eta_value,
+                ),
+            )
+            jet_cache[key] = cached
+        return cached
+
     def rhs_row(s: float, eta_value: float, derivative: int) -> np.ndarray:
-        first = hierarchy_owned_first_picard_third_parameter_jet(
-            hierarchy,
-            order,
-            s,
-            eta_value,
-        )
-        matrices = hierarchy_owned_positive_axis_matrix_second_parameter_jet(
-            hierarchy,
-            order,
-            s,
-            eta_value,
-        )
+        first, matrices = upstream(s, eta_value)
 
         if derivative == 0:
             value = matrices.A0 @ first.value + matrices.A1 @ first.parameter
