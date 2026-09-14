@@ -22,6 +22,9 @@ def _valid_export() -> MixedCandidateWitnessFormalExport:
         source_revision="rev-actual-001",
         field_bundle_id="A-B-P-actual-bundle",
         stage_estimates_id="actual-stage-estimates",
+        run_data_id="actual-run-data",
+        physical_data_id="actual-physical-data",
+        mixed_physical_data_id="actual-mixed-physical-data",
         potential_stage_family_id="A-stages",
         direct_stage_family_id="B-stages",
         pressure_stage_family_id="P-stages",
@@ -97,6 +100,7 @@ def test_accepts_only_pinned_all_order_formal_witness_chain() -> None:
     certificate = _admit(_valid_export())
     assert certificate.formal_witness_chain_ready
     assert certificate.stage_estimates_identity_bound
+    assert certificate.actual_stage_input_identity_bound
     assert certificate.status == "formal-structure"
     assert certificate.export.formal_commit == PINNED_FORMAL_COMMIT
     assert certificate.export.endpoint == Fraction(1, 1)
@@ -152,6 +156,28 @@ def test_rejects_cross_wired_stage_estimates_identity() -> None:
     )
     with pytest.raises(ValueError, match="StageEstimates identity mismatch"):
         _admit(_valid_export(), mismatched)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "bad_value", "message"),
+    (
+        ("run_data_id", "other-run-data", "RunData identity mismatch"),
+        ("physical_data_id", "other-physical-data", "PhysicalData identity mismatch"),
+        (
+            "mixed_physical_data_id",
+            "other-mixed-physical-data",
+            "MixedPhysicalData identity mismatch",
+        ),
+    ),
+)
+def test_rejects_cross_wired_stage_estimates_inputs(
+    field_name: str,
+    bad_value: str,
+    message: str,
+) -> None:
+    export = replace(_valid_export(), **{field_name: bad_value})
+    with pytest.raises(ValueError, match=message):
+        _admit(export)
 
 
 def test_rejects_non_admission_stage_estimates_evidence() -> None:
