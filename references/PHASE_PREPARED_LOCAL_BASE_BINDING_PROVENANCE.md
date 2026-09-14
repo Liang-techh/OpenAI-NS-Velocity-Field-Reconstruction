@@ -1,0 +1,68 @@
+# Sections 6–7 Prepared LocalBase binding provenance
+
+## Baseline
+
+- Repository: `Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction`
+- Base `main`: `a69b6449bbc6df2631c8039b3bf61d4cc0b4ed36`
+- Scope: Issue #3, Sections 6–7 only. Sections 8–9 mean corrections/residual iteration remain Agent 8 / parallel scope and are not modified here.
+- Current-main reconciliation: merged PR #287 adds a fail-closed all-order Section 9 endpoint residual contract on top of PR #298's finite-prefix field assembly. Both paths are preserved unchanged; this replay only carries the existing Prepared LocalBase bridge forward onto that newer main.
+
+## Pinned formal source
+
+- Repository: `openai/NavierStokesAndEuler`
+- Commit: `f9e8bc5b38b6e212696e8a30e3e91517af887bbd`
+- File: `NavierStokes/PrimaryGeometryAssembly.lean`
+- Field: `PrimaryGeometryAssembly.Prepared.base`
+- Codomain: `PhaseEstimates.LocalBaseBounds`
+- Upstream LocalBase theorem: `BaseChartJets.Estimates.localBaseBounds`
+
+The pinned `Prepared.base` field returns LocalBase bounds for the same
+`PrimaryGeometryAssembly.frequency` / `axial` fields that the existing
+physical-base bridge identifies with components of `FinalSlowBase.velocity`.
+This increment connects that exact theorem identity to the existing
+`TheoremBackedSlowBoxBaseFieldBinding`.
+
+## Landed capability
+
+`phase_prepared_local_base_binding.py` adds a fail-closed theorem-shaped
+application witness and a composition that:
+
+1. requires exact slow-box, source/revision, and selected `Prepared` identity;
+2. reuses the `LargeBandLocalBaseAdmission` already nested in the physical-base
+   binding instead of accepting an independent `M`, scale, or derivative-ratio
+   payload;
+3. pins the formal symbols above and rejects sampled/fitted/numeric-scan
+   evidence;
+4. exposes the already-certified large-band phase-error and rounded-normal
+   scalar envelopes for the identical box; and
+5. preserves the shared sign-free LocalBase source for the `sigma=±1` pair.
+
+## Truth boundary
+
+This is `formal-structure`, not a machine replay of the noncomputable Lean
+application. In particular:
+
+- `actual_prepared_base_application_machine_replayed = false`
+- `actual_physical_base_values_materialized = false`
+- `uniform_eq_7_9_to_7_11_verified = false`
+- `full_reconstruction = false`
+- `paper_exact_velocity_available = false`
+
+A successful bridge does **not** manufacture a numerical background, a
+tangential derivative jet, a phase/frame/damping proof, an amplitude, or a wave.
+The next genuine promotion requires a machine-linked export/replay of the active
+`Prepared.base` applications (or equivalent actual derivative data) and the
+remaining vector/frame/damping hypotheses used by the Section 7 estimates.
+
+## Regression coverage
+
+`tests/test_phase_prepared_local_base_binding.py` covers coherent composition,
+cross-wired box/source/Prepared identities, non-theorem evidence, missing
+certificate flags, formal-symbol tampering, malformed asymptotic box keys, and
+wrong composition types.
+
+The identical source/test payload previously completed GitHub Actions run #2108
+successfully on an older main. This replay is based directly on current main
+`a69b6449bbc6df2631c8039b3bf61d4cc0b4ed36`; fresh Actions on this exact head are
+required before merge. Prior green CI is evidence for unchanged source/test payload
+only, not a substitute for current-head CI.
