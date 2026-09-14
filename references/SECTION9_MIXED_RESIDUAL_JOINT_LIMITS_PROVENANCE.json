@@ -1,0 +1,65 @@
+{
+  "artifact": "Section 9 actual mixed residual -> all-order joint endpoint limits bridge",
+  "status": "formal-structure",
+  "base_main_commit": "95ba525c8aadab0ae4b05610b2042c9a02fec234",
+  "purpose": "Bind the selected paper mixed residual identity to the pinned Lean VanishingJointJets/AwayExtensions/boundaryLimits_locallyUniform theorem chain without promoting finite or sampled evidence.",
+  "formal_source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paths": [
+      "NavierStokes/MixedDiagonalResidual.lean",
+      "NavierStokes/MixedPeriodicAssembly.lean"
+    ],
+    "symbols": [
+      "NavierStokes.MixedDiagonalResidual.residual_eq_originalResidual",
+      "NavierStokes.MixedDiagonalResidual.physical_vanishingJointJets",
+      "NavierStokes.MixedPeriodicAssembly.cutResidual_vanishingJointJets",
+      "NavierStokes.MixedPeriodicAssembly.cutResidual_awayExtensions",
+      "NavierStokes.MixedPeriodicAssembly.boundaryLimits_locallyUniform"
+    ]
+  },
+  "upstream_contract": {
+    "evidence_kind": "lean-formal-export",
+    "endpoint": "1",
+    "universal_stage_rate_quantifier": "forall-natural-J-m",
+    "universal_derivative_order_quantifier": "forall-natural-derivative-orders",
+    "finite": false,
+    "requires": [
+      "one selected source_id/source_revision and identical A/B/P field family identities",
+      "the paper physical q and scale schedule, with 0<h<1/2 and scale schedule tending to infinity",
+      "the preterminal open neighborhood and smooth stage fields used by physical_vanishingJointJets",
+      "one monotone unbounded gauge and CutStageBounds for the potential/direct/pressure families",
+      "universal uncut-velocity JetRate hypotheses for every natural J,m",
+      "universal actual Navier-Stokes residual JetRate hypotheses for every natural J,m",
+      "residual_eq_originalResidual applied to the same selected mixed residual",
+      "AwayExtensions for the same potential/direct/pressure field sums",
+      "cutResidual_vanishingJointJets, cutResidual_awayExtensions, and boundaryLimits_locallyUniform applied to those same identities"
+    ]
+  },
+  "not_discharged_here": [
+    "materialization or replay of the actual infinite Section 9 field sequence",
+    "the official 3/4<=t<1 analytic majorant required by the Section 10 all-order endpoint contract",
+    "all-order support-exterior zero-neighborhood residual-jet vanishing on the support cylinder",
+    "the infinite locally-finite Borel family and right-extension construction",
+    "runtime residual values or a residual artifact",
+    "a smooth compactly supported reconstructed force through t=1",
+    "bounded-energy and origin blow-up closure for the actual final field"
+  ],
+  "forbidden_promotions": [
+    "finite max_stage_index or max_derivative_order",
+    "finite endpoint ladders",
+    "sampled, fitted, or certified-numerical evidence",
+    "manufactured residual identities",
+    "f=R followed by R-f=0 as independent verification",
+    "green CI or theorem metadata alone as runtime reconstruction truth"
+  ],
+  "truth_flags": {
+    "actual_section9_sequence_verified": false,
+    "section9_all_order_endpoint_limits_verified": false,
+    "residual_artifact_ready": false,
+    "forcing_artifact_ready": false,
+    "endpoint_residual_closure_verified": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
