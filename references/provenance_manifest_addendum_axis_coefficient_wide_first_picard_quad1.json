@@ -19,24 +19,21 @@
       "repository": "openai/NavierStokesAndEuler",
       "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
       "files": [
-        "NavierStokes/AxisContraction.lean",
-        "NavierStokes/AxisOperators.lean"
+        "NavierStokes/AxisContraction.lean"
       ],
       "symbols": [
-        "NavierStokes.AxisContraction.naturalRemainder",
-        "NavierStokes.AxisOperators.primitive",
-        "NavierStokes.AxisOperators.product",
-        "NavierStokes.AxisOperators.regularInverse",
-        "NavierStokes.AxisOperators.primitiveScale"
+        "NavierStokes.AxisContraction.angularQuadraticCoefficient",
+        "NavierStokes.AxisContraction.naturalRemainder"
       ]
     },
-    "capability": "Materializes genuine quad1(x1) = -j2(product(primitive(phi1), phi1)) on the actual first-Picard angular state while preserving Lambda^0 through Lambda^-4 coefficient families and exact pinned row identities.",
+    "capability": "Materializes the corrected pinned quad1(x1) = j2(product(product(angularQuadraticCoefficient(d), u1), phi1)) with angularQuadraticCoefficient(d)=product(d.d,d.normalizedGradient), preserving ordinary Lambda^0..Lambda^-4 and the genuine pressure-derived a^2 Lambda^-1..Lambda^-3 families.",
     "truth_boundary": {
       "first_picard_x1_materialized": true,
       "natural_source_x1_materialized": true,
       "natural_pressure_x1_materialized": true,
       "slow2_x1_complete": true,
       "quad1_x1_materialized": true,
+      "quad1_x1_pressure_scale_preserved": true,
       "natural_remainder_x1_materialized": false,
       "picard_x2_materialized": false,
       "fixed_point_materialized": false,
@@ -45,12 +42,13 @@
       "paper_exact_velocity_available": false
     },
     "forbidden_promotions": [
-      "caller-supplied or fitted x1/phi1/Lambda/coefficient data",
-      "binary64 collapse of the inverse-Lambda coefficient families before the pinned operations",
+      "the superseded -j2(product(primitive(phi1),phi1)) surrogate formula",
+      "caller-supplied or fitted x1/u1/phi1/Lambda/coefficient data",
+      "dropping or binary64-collapsing the genuine pressure-derived u1 contribution",
       "finite radial cutoff or absent coefficient interpreted as a default zero",
-      "numerical near-zero substituted for primitive/product/j2 coefficient identities",
+      "numerical near-zero substituted for product/j2 coefficient identities",
       "naturalRemainder(x1), x2, fixed-point, AxisCoefficientSpace, or paper-exact claims from quad1(x1) alone"
     ],
-    "remaining_boundary": "The genuine source(x1), pressure(x1), complete slow2(x1), and quad1(x1) constituents are materialized. Complete naturalRemainder(x1) still requires lin1/slow1 and lin2 to be evaluated on genuine x1 and all angular/axial branches to be recombined compatibly. Only then can the outer Picard update produce x2; contraction closure, global AxisCoefficientSpace certification, fixed-point phi/u, derived average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+    "remaining_boundary": "The genuine source(x1), pressure(x1), complete slow2(x1), and corrected pinned quad1(x1) constituents are materialized. Complete naturalRemainder(x1) still requires lin1/slow1 and lin2 to be evaluated on genuine x1 and all angular/axial branches to be recombined compatibly. Only then can the outer Picard update produce x2; contraction closure, global AxisCoefficientSpace certification, fixed-point phi/u, derived average/pressure fields, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
   }
 }

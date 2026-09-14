@@ -8,9 +8,6 @@ import pytest
 from openai_ns_reconstruction.axis_coefficient_wide_first_picard import (
     actual_schedule_wide_first_picard_state,
 )
-from openai_ns_reconstruction.axis_coefficient_wide_first_picard_angular_square import (
-    wide_first_picard_angular_square_state,
-)
 from openai_ns_reconstruction.axis_coefficient_wide_first_picard_quad1 import (
     ActualScheduleWideFirstPicardQuad1State,
     MixedScaleFirstPicardQuad1CoefficientJet,
@@ -35,17 +32,15 @@ def quad1_state():
     return wide_first_picard_quad1_state(x1)
 
 
-def _factors(jet):
-    return (
-        jet.reference,
-        jet.inverse_lambda_numerator,
-        jet.inverse_lambda_squared_numerator,
-        jet.inverse_lambda_cubed_numerator,
-        jet.inverse_lambda_fourth_numerator,
-    )
+def _ordinary(jet):
+    return jet.ordinary_factors_decimal()
 
 
-def test_quad1_is_bound_to_genuine_first_picard_state(quad1_state) -> None:
+def _pressure(jet):
+    return jet.pressure_factors_decimal()
+
+
+def test_quad1_is_bound_to_actual_x1_axisdata_and_pressure(quad1_state) -> None:
     assert isinstance(quad1_state, ActualScheduleWideFirstPicardQuad1State)
     assert quad1_state.x1.picard_x1_materialized is True
     assert quad1_state.quad1_x1_materialized is True
@@ -55,89 +50,112 @@ def test_quad1_is_bound_to_genuine_first_picard_state(quad1_state) -> None:
     assert quad1_state.paper_exact is False
     assert quad1_state.Lambda == quad1_state.x1.Lambda
     assert quad1_state.epsilon == quad1_state.x1.epsilon
+    assert quad1_state.angular_quadratic.epsilon == quad1_state.epsilon
+    assert quad1_state.x1.remainder.axial.wide_pressure.epsilon == quad1_state.epsilon
 
 
-def test_j2_row_zero_is_literal_zero_not_missing_coefficient_default(quad1_state) -> None:
+def test_j2_row_zero_is_literal_zero_for_both_scale_families(quad1_state) -> None:
     actual = quad1_state.jet(0, 3, 0.07)
     assert isinstance(actual, MixedScaleFirstPicardQuad1CoefficientJet)
-    assert _factors(actual) == (Decimal(0),) * 5
+    assert _ordinary(actual) == (Decimal(0),) * 5
+    assert _pressure(actual) == (Decimal(0),) * 3
     assert actual.Lambda == quad1_state.Lambda
 
 
-def test_first_nonzero_radial_row_equals_minus_phi1_square_row_zero_over_six(
-    quad1_state,
-) -> None:
+def test_first_radial_row_matches_pinned_q_times_u1_times_phi1_over_two(quad1_state) -> None:
     eta = -0.09
-    actual = quad1_state.jet(2, 0, eta)
-    square = wide_first_picard_angular_square_state(quad1_state.x1).jet(0, 0, eta)
+    actual = quad1_state.jet(1, 0, eta)
+    phi, u = quad1_state.x1.jet_pair(0, 0, eta)
+    q0 = Decimal.from_float(quad1_state.angular_quadratic.jet(0, 0, eta))
+    u_terms = (u.reference, u.inverse_lambda_numerator, u.inverse_lambda_squared_numerator)
+    phi_terms = (phi.reference, phi.inverse_lambda_numerator, phi.inverse_lambda_squared_numerator)
 
+    expected_ordinary = [Decimal(0) for _ in range(5)]
     with localcontext() as ctx:
         ctx.prec = PRECISION
-        expected = tuple(+(value / Decimal(-6)) for value in _factors(square))
+        for up, uv in enumerate(u_terms):
+            for pp, pv in enumerate(phi_terms):
+                expected_ordinary[up + pp] += q0 * uv * pv / Decimal(2)
 
-    assert _factors(actual) == expected
+        wide_u = +(
+            quad1_state.x1.remainder.axial.pressure_normalized_factor(0, 0, eta)
+            / Decimal(2)
+        )
+        expected_pressure = tuple(
+            +(q0 * wide_u * pv / Decimal(2)) for pv in phi_terms
+        )
+
+    assert _ordinary(actual) == tuple(expected_ordinary)
+    assert _pressure(actual) == expected_pressure
 
 
-def test_general_jet_replays_primitive_product_and_j2_rules_exactly(quad1_state) -> None:
+def test_general_jet_replays_triple_product_eta_leibniz_and_j2_exactly(quad1_state) -> None:
     n, m, eta = 3, 2, 0.04
     actual = quad1_state.jet(n, m, eta)
-    product_row = n - 1
-    expected = [Decimal(0) for _ in range(5)]
+    input_row = n - 1
+    expected_ordinary = [Decimal(0) for _ in range(5)]
+    expected_pressure = [Decimal(0) for _ in range(4)]
+    q = quad1_state.angular_quadratic
 
     with localcontext() as ctx:
         ctx.prec = PRECISION
-        for i in range(product_row + 1):
-            j = product_row - i
-            for k in range(m + 1):
-                l = m - k
-                if i == 0:
-                    left = (Decimal(0), Decimal(0), Decimal(0))
-                else:
-                    phi_pred, _ = quad1_state.x1.jet_pair(i - 1, k, eta)
-                    left = tuple(
-                        +(value / Decimal(i))
-                        for value in (
-                            phi_pred.reference,
-                            phi_pred.inverse_lambda_numerator,
-                            phi_pred.inverse_lambda_squared_numerator,
+        for qr in range(input_row + 1):
+            for ur in range(input_row - qr + 1):
+                pr = input_row - qr - ur
+                for qm in range(m + 1):
+                    remaining = m - qm
+                    for um in range(remaining + 1):
+                        pm = remaining - um
+                        weight = Decimal(math.comb(m, qm) * math.comb(remaining, um))
+                        qv = Decimal.from_float(q.jet(qr, qm, eta))
+                        _, uj = quad1_state.x1.jet_pair(ur, um, eta)
+                        pj, _ = quad1_state.x1.jet_pair(pr, pm, eta)
+                        u_terms = (
+                            uj.reference,
+                            uj.inverse_lambda_numerator,
+                            uj.inverse_lambda_squared_numerator,
                         )
-                    )
-                phi_right, _ = quad1_state.x1.jet_pair(j, l, eta)
-                right = (
-                    phi_right.reference,
-                    phi_right.inverse_lambda_numerator,
-                    phi_right.inverse_lambda_squared_numerator,
-                )
-                weight = Decimal(math.comb(m, k))
-                for p, left_value in enumerate(left):
-                    for q, right_value in enumerate(right):
-                        expected[p + q] += weight * left_value * right_value
+                        p_terms = (
+                            pj.reference,
+                            pj.inverse_lambda_numerator,
+                            pj.inverse_lambda_squared_numerator,
+                        )
+                        for up, uv in enumerate(u_terms):
+                            for pp, pv in enumerate(p_terms):
+                                expected_ordinary[up + pp] += weight * qv * uv * pv
+
+                        wide_u = +(
+                            quad1_state.x1.remainder.axial.pressure_normalized_factor(
+                                ur, um, eta
+                            )
+                            / Decimal(2)
+                        )
+                        for pp, pv in enumerate(p_terms):
+                            expected_pressure[1 + pp] += weight * qv * wide_u * pv
 
         divisor = Decimal(n) * Decimal(n + 1)
-        expected = [+(value / -divisor) for value in expected]
+        expected_ordinary = [+(v / divisor) for v in expected_ordinary]
+        expected_pressure = [+(v / divisor) for v in expected_pressure]
 
-    assert _factors(actual) == tuple(expected)
+    assert _ordinary(actual) == tuple(expected_ordinary)
+    assert _pressure(actual) == tuple(expected_pressure[1:])
 
 
-def test_quad1_keeps_all_inverse_lambda_families_separate(quad1_state) -> None:
-    actual = quad1_state.jet(2, 1, 0.03)
-    assert actual.Lambda == quad1_state.Lambda
-    with localcontext() as ctx:
-        ctx.prec = PRECISION
-        inverse = +(Decimal(1) / actual.Lambda)
-        expected = (
-            +(actual.inverse_lambda_numerator * inverse),
-            +(actual.inverse_lambda_squared_numerator * inverse * inverse),
-            +(actual.inverse_lambda_cubed_numerator * inverse * inverse * inverse),
-            +(
-                actual.inverse_lambda_fourth_numerator
-                * inverse
-                * inverse
-                * inverse
-                * inverse
-            ),
-        )
-    assert actual.correction_terms_decimal() == expected
+def test_pressure_derived_u1_scale_survives_in_signed_log_form(quad1_state) -> None:
+    candidates = [quad1_state.jet(n, 0, 0.03) for n in range(1, 5)]
+    actual = next(jet for jet in candidates if any(value != 0 for value in _pressure(jet)))
+    logs = actual.pressure_terms_log()
+    assert len(logs) == 3
+    for power, (factor, logged) in enumerate(zip(_pressure(actual), logs), start=1):
+        if factor == 0:
+            assert logged.sign == 0
+            continue
+        assert logged.sign == (1 if factor > 0 else -1)
+        assert logged.log_scale == Decimal(2) * actual.amplitude_log
+        with localcontext() as ctx:
+            ctx.prec = PRECISION
+            expected_factor = +(abs(factor).ln() - Decimal(power) * actual.Lambda.ln())
+        assert logged.log_factor == expected_factor
 
 
 def test_quad1_rejects_surrogate_state_and_invalid_coordinates(quad1_state) -> None:
@@ -167,9 +185,10 @@ def test_quad1_provenance_is_machine_readable_and_fail_closed() -> None:
     assert layer["id"] == "stage-1-leading-profile"
     assert layer["status"] == "formal-structure"
     assert layer["truth_boundary"]["quad1_x1_materialized"] is True
+    assert layer["truth_boundary"]["quad1_x1_pressure_scale_preserved"] is True
     assert layer["truth_boundary"]["natural_remainder_x1_materialized"] is False
     assert layer["truth_boundary"]["picard_x2_materialized"] is False
-    assert "quad1(x1)" in layer["capability"]
+    assert "angularQuadraticCoefficient" in layer["capability"]
     assert "lin1/slow1" in layer["remaining_boundary"]
     assert (root / layer["provenance"]).is_file()
     for artifact in layer["artifacts"]:
