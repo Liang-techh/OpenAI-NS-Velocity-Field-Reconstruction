@@ -21,11 +21,14 @@
       "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
       "files": [
         "NavierStokes/LocalPaperTheorem.lean",
-        "NavierStokes/LocalPaperDomain.lean"
+        "NavierStokes/LocalPaperDomain.lean",
+        "NavierStokes/PhysicalWaveSum.lean"
       ],
       "symbols": [
         "NavierStokes.LocalPaper.Properties.residual_flatness",
+        "NavierStokes.LocalPaper.Properties.edges_ordered",
         "NavierStokes.LocalPaperDomain.qstar_pos",
+        "NavierStokes.PhysicalWaveSum.physicalQ_pos",
         "NavierStokes.LocalPaperDomain.outerEdge",
         "NavierStokes.LocalPaperDomain.exterior_conditions"
       ],
@@ -36,12 +39,14 @@
         "iteratedFDeriv_fun_zero"
       ]
     },
-    "formal_implication": "For every natural derivative order m and every real r >= 0, instantiate LocalPaper.Properties.residual_flatness at X=Xext to obtain C>=0 and delta_inner>0 on radius<=Xext. On Xext<=radius, the inherited exterior zero-germ certificate gives every full-spacetime residual jet exactly zero. Since qstar>0, delta=min(delta_inner,qstar)>0. Hence for all preterminal w with q(w)<delta, regardless of spatial position, ||D^m R(w)|| <= C*q(w)^r. The existential C and delta may depend on m and r; there is no finite derivative or decay frontier.",
+    "formal_implication": "For every natural derivative order m and every real r >= 0, LocalPaper.Properties.edges_ordered gives 0<Xa<Xext and hence 0<=Xext, so LocalPaper.Properties.residual_flatness may be instantiated at X=Xext to obtain C>=0 and delta_inner>0 on radius<=Xext. On Xext<=radius, the inherited exterior zero-germ certificate gives every full-spacetime residual jet exactly zero. LocalPaperDomain.qstar_pos gives qstar>0, so delta=min(delta_inner,qstar)>0. PhysicalWaveSum.physicalQ_pos gives q(w)>0 on the preterminal domain, hence C*q(w)^r>=0 for C>=0 and r>=0; the exterior zero jets therefore satisfy the same inequality. Thus for all preterminal w with q(w)<delta, regardless of spatial position, ||D^m R(w)|| <= C*q(w)^r. The existential C and delta may depend on m and r; there is no finite derivative or decay frontier.",
     "landed_capability": [
       "universal m in N quantifier retained",
       "universal real r>=0 decay quantifier retained",
+      "Xext positivity derived from the exact LocalPaper.Properties.edges_ordered field before using it as the residual_flatness radius",
       "inner residual flatness instantiated at the exact LocalPaperDomain.outerEdge split",
       "outer region discharged by the same-residual all-order exterior zero-germ chain",
+      "physical q positivity recorded so the zero exterior jets satisfy the common nonnegative C*q^r majorant",
       "positive global small-scale threshold obtained by min(delta_inner,qstar)",
       "global-in-space residual majorant on the sufficiently small physical-q sublevel",
       "same selected schedule/local velocity/local pressure/residual identities enforced across the parent proof chain"
