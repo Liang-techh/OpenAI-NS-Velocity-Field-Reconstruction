@@ -106,26 +106,32 @@ returned `4 passed in 0.14 s`. It does not replace runtime phase quadrature or c
 parameter selection, or global reconstruction; fixed-order Cauchy bisection requires order growth for
 arbitrary tolerance. The related GitHub `hub281`/`task282` exchange remains unintegrated.
 
-`axis_phase_integral.py` now supplies the linked exact-rational phase bridge: it forms centered
+`axis_phase_integral.py` now supplies the linked exact-rational default phase path: it forms centered
 `P/Q` polynomials for `g=-L*H/(H^2+sigma^2)`, accepts a cell only when the exact Cauchy denominator
 gate `theta < 1/2` holds, and adaptively bisects cells and raises Taylor order until the rational
-error budget is met. `ActualScheduleAmplitudeLogState.log_amplitude_enclosure(eta,
-absolute_log_tolerance=...)` passes the exact `h,j,sigma,eta` rationals to that integrator with phase
-tolerance `absolute_log_tolerance/Fraction(Lambda)`, then transports the interval through the selected
-finite `Lambda` and symbolic `C` exponent. The focused commands
+error budget is met. `ActualScheduleAmplitudeLogState` defaults to phase tolerance `10^-12`;
+`phase_enclosure` uses the selected exact Fraction `h,j,sigma,eta` inputs and an exact-input LRU
+cache of size `16`. `log_amplitude` returns the nearest Decimal96 midpoint of that validated
+log-amplitude interval, while `default_log_amplitude_enclosure` exposes the interval after the
+selected positive `Lambda` amplification and symbolic `C` exponent transport. The explicit
+`log_amplitude_enclosure(eta, absolute_log_tolerance=...)` path requests a log-space tolerance and
+passes the exact quotient `absolute_log_tolerance/Fraction(Lambda)` to the phase integrator.
+`phase_samples` and `legacy_log_amplitude_diagnostic` retain the former 4001-point trapezoid only
+as a named diagnostic; it no longer supplies the default phase value. The focused commands
 `python -m pytest -q tests\test_axis_phase_integral.py -W error` and
 `python -m pytest -q tests\test_axis_amplitude_phase_enclosure.py -W error` returned `5 passed in
 0.17 s` and `3 passed in 0.17 s`; the existing amplitude compatibility command returned `6 passed in
-0.16 s`. The default 4001-point phase trapezoid remains a numerical point estimate used by
-`log_amplitude`; the exact bridge is conditional on its rational kernel and finite resource caps, and
-does not certify SchedulePressure, coefficient roundoff, `C` selection, global `AxisSpace`, or the
-full reconstruction. On the actual selected fixture at `eta=-1/50`, direct phase tolerance `10^-12`
-returned in `10.664 s` with `225` cells, maximum order `64`, estimate `0.05073499503328993`, and
-error `7.357907e-13`; the legacy 4001-point call took `0.002 s`, returned `1.521550417558555`, and
-fell outside the validated interval by about `+1.470815`. This is one fixture, not a general
-benchmark. Replacing or reworking the default phase path used by `log_amplitude` is the next blocker
-for crossing-root evaluations; the exact bridge remains conditional and does not make a paper-exact
-claim.
+0.16 s`. On the actual selected fixture at `eta=-1/50`, direct phase tolerance `10^-12` returned in
+`10.664 s` with `225` cells, maximum order `64`, estimate `0.05073499503328993`, and error
+`7.357907e-13`; the legacy 4001-point call took `0.002 s`, returned `1.521550417558555`, and fell
+outside the validated interval by about `+1.470815`. This is one fixture, not a general benchmark.
+The interval certifies the chosen rational phase kernel and its selected scalar `Lambda` transport;
+it does not certify SchedulePressure quadrature, theorem parameter selection, `C` selection,
+coefficient roundoff, global `AxisSpace`, or the full reconstruction. The combined new-default
+regression command was interrupted after approximately `9` minutes of CPU-heavy exact-phase work
+without a pytest summary or failure traceback; the new default therefore has no accepted production
+test result yet. The `14` focused phase/bridge/amplitude tests listed above are pre-default historical
+evidence, not acceptance of the replacement path.
 
 Section 5 includes pressure/Omega recurrence rows, the Eq. (5.7) singular Picard primitive, a
 theorem-shaped Lemma 5.1 / Eq. (5.8) Picard-term and complete-tail truncation certificate, Lemma 5.2

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1d812ff01d4575551f804c3599d6efa8985c7d2f",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-8-local-rank-solve",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section8_local_rank_solve.py",
+    "test": "tests/test_section8_local_rank_solve.py",
+    "provenance": "references/SECTION8_LOCAL_RANK_SOLVE_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/LocalRankDefect.lean",
+        "NavierStokes/CorrectionState.lean",
+        "NavierStokes/MeanRankUpdate.lean"
+      ],
+      "symbols": [
+        "NavierStokes.LocalRankDefect.RankGeometry",
+        "NavierStokes.LocalRankDefect.RankGeometry.fiveRows",
+        "NavierStokes.LocalRankDefect.RankGeometry.solved_rows",
+        "NavierStokes.LocalRankDefect.RankGeometry.preserve_masses",
+        "NavierStokes.LocalRankDefect.RankGeometry.debt_eq_remainders",
+        "NavierStokes.LocalRankDefect.RankGeometry.increment_supportedGauge"
+      ]
+    },
+    "landed_capability": "Fail-closed theorem-facing composition from the literal postTemporal CorrectionState.debt already bound to compact rank repair into the local variable-gauge five-row solve, exact linear debt cancellation, required mass preservation, post-rank debt=remainder identity, and common moving-support preservation.",
+    "truth_boundary": {
+      "theorem_chain_machine_replayed": false,
+      "actual_rank_increment_materialized": false,
+      "actual_rank_stage_state_materialized": false,
+      "actual_remainder_values_materialized": false,
+      "section9_iteration_input_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "sampled/fitted/numeric-scan evidence as theorem proof",
+      "the diagnostic mean_rank_update.py bump as the paper-exact Mathlib compact correction",
+      "finite-head requested_cross_defect as the full CorrectionState.debt without a dedicated formal equality",
+      "metadata coherence as materialization of the actual rank increment or rank-stage state",
+      "a finite five-row solve as proof of the infinite Section 9 correction sequence",
+      "paper-exact velocity availability before actual field materialization and convergence closure"
+    ]
+  }
+}

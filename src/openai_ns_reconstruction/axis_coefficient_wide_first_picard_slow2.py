@@ -308,6 +308,10 @@ class ActualScheduleWideFirstPicardSlow2State:
         return False
 
     @property
+    def picard_x2_materialized(self) -> bool:
+        return False
+
+    @property
     def fixed_point_materialized(self) -> bool:
         return False
 

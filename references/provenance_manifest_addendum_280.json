@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "integrated_prs": [
+    280
+  ],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative increment. Adds the exact analytic third-eta preceding-diffusion jet and a fail-closed angular bridge from the hierarchy-owned Lemma 5.2 repaired phi fifth-mixed provider.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_preceding_diffusion_third_parameter_jet.py",
+      "test": "tests/test_background_preceding_diffusion_third_parameter_jet.py",
+      "provenance": "references/PRECEDING_DIFFUSION_THIRD_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": [
+        "Eqs. (5.3)-(5.7)",
+        "Lemma 5.2",
+        "Appendix A"
+      ],
+      "landed_capability": "The value/first/second preceding-diffusion rows remain delegated to the landed implementation while the third eta derivative is evaluated analytically from the fifth-mixed profile jet. The angular strict-lower bridge accepts only Section5LowerHistoryPhiFifthMixedHierarchy and consumes its authoritative repaired phi_(n-1) fifth-mixed jet.",
+      "remaining_boundary": "The axial third-eta preceding-diffusion row, complete hierarchy-owned actualLowerSource''' and f_n''', W_n^(0)''' and W_n^(1)'', Picard convergence/final coefficient materialization, the paper recursive cutoff-scale schedule, Proposition 5.3 all-jets residual decay, and paper-exact velocity remain open. Genuine leading strong data remain an Issue #1 dependency."
+    }
+  ]
+}

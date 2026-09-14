@@ -31,9 +31,22 @@ There is no caller override for pressure data, `sigma`, `epsilon`, `Lambda`,
 `C`, or coefficient values.
 
 For radial degree zero it stores each parameter jet as a sign and logarithmic
-absolute magnitude. The zeroth jet uses
+absolute magnitude. The default phase path uses the selected exact rational
+`h,j,sigma,eta` inputs, with `phase_absolute_tolerance=10^-12`; the validated
+cell result is cached for exact scalar inputs and finite settings with an LRU
+capacity of `16`. The zeroth jet uses
 
 `log a(eta) = Lambda * realPhase(eta) - C_exponent`.
+
+`log_amplitude` returns the nearest Decimal96 midpoint of the default validated
+log interval. `default_log_amplitude_enclosure` retains the phase interval after
+the selected positive `Lambda` amplification and subtraction of the selected
+symbolic `C_exponent`; its log-width is therefore the phase width multiplied by
+`Lambda`. The explicit `log_amplitude_enclosure` method accepts a rational
+log-space tolerance and divides it by the selected `Lambda` before calling the
+phase integrator. `phase_samples` is retained only for
+`legacy_log_amplitude_diagnostic`, which names the former 4001-point trapezoid
+as a diagnostic and does not supply the default value.
 
 Higher eta derivatives use the exact structural identity
 
@@ -53,11 +66,16 @@ Regression coverage checks that the state is bound to the actual wide
 `Lambda/C` selection, verifies `log a(0) = -log C`, checks the first derivative
 identity in log magnitude, verifies exact radial-degree-zero behavior, and
 requires binary64 range loss to fail closed on the current conservative scale.
+The linked phase-integral and amplitude-interval targets have passed their
+focused checks; the separate default-path checkpoint regression is recorded in
+`reports/stage1_default_phase_resume_integration.md`.
 
 The remaining boundary is substantive:
 
-1. `realPhase` values are still evaluated by the landed floating-point
-   quadrature, so this is not an interval or Lean certificate.
+1. The validated interval covers the chosen exact rational phase kernel and the
+   selected finite `Lambda/C` affine transport only. It does not certify the
+   SchedulePressure quadrature, theorem parameter selection, or a global phase
+   and amplitude certificate for the reconstruction.
 2. The existing `AxisCoefficientJetState`/`naturalRemainder` backend is
    binary64-valued. The current theorem-selected amplitude and
    `t=1/Lambda` can lie outside that dynamic range. A wide/log coefficient

@@ -15,10 +15,11 @@
   "layer": {
     "id": "stage-1-leading-profile",
     "status": "formal-structure",
-    "capability": "actual SchedulePressure theorem-selected realAmplitude materialized as a radial-degree-zero signed-log coefficient-jet state using the pinned wide Lambda/C choice",
+    "capability": "actual SchedulePressure theorem-selected realAmplitude materialized as a radial-degree-zero signed-log coefficient-jet state using the pinned wide Lambda/C choice and the linked exact-rational default phase interval",
     "artifacts": [
       "src/openai_ns_reconstruction/axis_coefficient_amplitude.py",
-      "tests/test_axis_coefficient_amplitude.py"
+      "tests/test_axis_coefficient_amplitude.py",
+      "tests/test_axis_amplitude_validated_default.py"
     ],
     "provenance": "references/AXIS_COEFFICIENT_AMPLITUDE_PROVENANCE.md",
     "actual_data": {
@@ -30,15 +31,22 @@
       "C_override": false,
       "radial_degree": 0,
       "parameter_derivatives": "Bell recurrence from a'=Lambda*realGradient*a",
-      "magnitude_representation": "signed log"
+      "magnitude_representation": "signed log",
+      "default_phase_absolute_tolerance": "1/10^12",
+      "default_phase_value": "nearest Decimal96 midpoint of the validated exact-Fraction phase/log interval",
+      "phase_cache": "LRU capacity 16 over exact rational inputs and finite integrator settings",
+      "lambda_interval_transport": "selected positive Lambda multiplies the phase interval before subtracting symbolic log(C)",
+      "phase_samples_role": "legacy diagnostic only via legacy_log_amplitude_diagnostic"
     },
     "validation": [
       "wide Lambda and symbolic log(C) agree with the actual-schedule scale-chain selection",
       "log realAmplitude at eta=0 equals -log(C) without exponentiating C",
       "first eta derivative satisfies a'=Lambda*realGradient*a in signed-log magnitude",
       "all positive radial rows vanish exactly",
-      "binary64 projection fails closed rather than silently underflowing a nonzero theorem amplitude"
+      "binary64 projection fails closed rather than silently underflowing a nonzero theorem amplitude",
+      "default log_amplitude returns a midpoint inside the selected exact-rational log interval",
+      "default phase and explicit log enclosure preserve the selected Lambda interval amplification"
     ],
-    "remaining_boundary": "bridge the signed-log/wide theorem amplitude and t=1/Lambda into the binary64 coefficientOperators/naturalRemainder backend without silent range loss; then evaluate naturalRemainder(x0), execute genuine Picard x1/fixed point phi/u, derive average/pressure, connect NaturalProfileAssembly, close support/moment/matching/cone conditions, and certify global all-index weighted AxisSpace membership/norms"
+    "remaining_boundary": "the chosen exact-rational phase interval and selected finite Lambda/C transport are conditional scalar-input certificates, not SchedulePressure or theorem-parameter certification; bridge the signed-log/wide theorem amplitude and t=1/Lambda into the coefficientOperators/naturalRemainder backend without silent range loss, then preserve the already-landed coefficientwise naturalRemainder(x0)/x1/x2 and formal Picard/profile-prefix boundaries while closing coefficient roundoff, global all-index weighted AxisSpace membership/norms, and the paper-exact profile"
   }
 }

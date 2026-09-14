@@ -2,6 +2,28 @@
 
 Continue the full reconstruction goal in GOAL_OBJECTIVE.md. Read AGENTS.md, README.md, RECONSTRUCTION_PLAN.md, references/provenance_manifest.json, and recent reports. Do not mark Stage 1 or the full goal complete.
 
+## Superseded latest status — 2026-09-14
+
+The battery checkpoint below is historical and is superseded by the current local
+merge work. The merge target is `origin/main` at `065b67e`; verify completion in
+the local git state and do not infer that any uncommitted merge was uploaded
+remotely.
+The default amplitude path now uses the validated exact-Fraction phase midpoint
+with tolerance `1/10^12`, a bounded exact-input cache of size `16`, explicit
+`Lambda` interval transport, and the named legacy 4001-point diagnostic. See
+`reports/stage1_default_phase_resume_integration.md` for the current boundary
+and measured fixture evidence. The combined default-path regression was interrupted
+after approximately `9` minutes of CPU-heavy exact-phase work without a pytest
+summary or failure traceback; it is an unaccepted performance blocker, not a pass
+or failure result. The earlier `14` focused phase/bridge/amplitude tests predate
+the default replacement and remain historical evidence only. Do not rerun them or
+the historical full suite in this batch.
+
+Antigravity is unavailable for this work and its GitHub heartbeat is paused; no
+future dependency on that exchange is assumed. The exact phase bridge remains a
+conditional chosen-scalar certificate, not global SchedulePressure, coefficient,
+weighted-`AxisSpace`, fixed-point, or paper-exact certification.
+
 ## Resume first
 This is an emergency checkpoint, not a release. Work was interrupted because the current laptop battery was low. The latest default-phase replacement is present in source but its new regression tests and final review were NOT completed before this checkpoint. Inspect current code before continuing. Preserve all changes; no force push.
 

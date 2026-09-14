@@ -130,23 +130,32 @@ returned `4 passed in 0.14 s`. This does not replace runtime phase quadrature or
 parameter selection, or global reconstruction. Fixed-order Cauchy bisection requires order growth to
 meet arbitrary tolerance; the related GitHub `hub281`/`task282` exchange remains unintegrated.
 
-`axis_phase_integral.py` now implements the linked exact-rational phase path. It expands the rational
-kernel on centered cells, requires the exact denominator gate `theta < 1/2`, and adaptively subdivides
-and increases Taylor order under finite caps, failing closed when a cap is reached. The actual
-`ActualScheduleAmplitudeLogState.log_amplitude_enclosure` bridge supplies exact rational
-`h,j,sigma,eta`, requests phase tolerance `absolute_log_tolerance/Fraction(Lambda)`, and applies the
-selected finite `Lambda` and symbolic `C` exponent without forming `C`. Focused acceptance returned
-`5 passed in 0.17 s` for `tests\test_axis_phase_integral.py` and `3 passed in 0.17 s` for
-`tests\test_axis_amplitude_phase_enclosure.py`; the prior amplitude compatibility target returned
-`6 passed in 0.16 s`. The default 4001-point trapezoid remains a numerical point estimate for
-`log_amplitude`. On the actual selected fixture at `eta=-1/50`, direct phase tolerance `10^-12`
-returned in `10.664 s` with `225` cells, maximum order `64`, estimate `0.05073499503328993`, and
-error `7.357907e-13`; the legacy 4001-point call took `0.002 s`, returned `1.521550417558555`, and
-fell outside the validated interval by about `+1.470815`. This is one fixture, not a general
-benchmark. Replacing or reworking the default phase path used by `log_amplitude` is the next blocker
-for crossing-root evaluations. The exact bridge remains conditional on the selected rational kernel
-and resource caps; it does not certify SchedulePressure, `C` selection, coefficient roundoff, global
-`AxisSpace`, or the full reconstruction.
+`axis_phase_integral.py` now implements the linked exact-rational default phase path. It expands the
+rational kernel on centered cells, requires the exact denominator gate `theta < 1/2`, and adaptively
+subdivides and increases Taylor order under finite caps, failing closed when a cap is reached. The
+actual `ActualScheduleAmplitudeLogState` defaults to phase tolerance `10^-12`; its
+`phase_enclosure` receives exact rational `h,j,sigma,eta` inputs and uses an exact-input cache of
+size `16`. `log_amplitude` returns the nearest Decimal96 midpoint of the validated log interval,
+and `default_log_amplitude_enclosure` exposes the interval after the selected positive `Lambda`
+amplification and symbolic `C` exponent transport. The explicit
+`log_amplitude_enclosure` path requests a log tolerance and passes
+`absolute_log_tolerance/Fraction(Lambda)` to the phase integrator. `phase_samples` and
+`legacy_log_amplitude_diagnostic` retain the former 4001-point trapezoid only as a named diagnostic.
+Focused acceptance returned `5 passed in 0.17 s` for
+`tests\test_axis_phase_integral.py`, `3 passed in 0.17 s` for
+`tests\test_axis_amplitude_phase_enclosure.py`, and `6 passed in 0.16 s` for the prior amplitude
+compatibility target. On the actual selected fixture at `eta=-1/50`, direct phase tolerance
+`10^-12` returned in `10.664 s` with `225` cells, maximum order `64`, estimate
+`0.05073499503328993`, and error `7.357907e-13`; the legacy 4001-point call took `0.002 s`,
+returned `1.521550417558555`, and fell outside the validated interval by about `+1.470815`. This is
+one fixture, not a general benchmark. The chosen rational phase interval and its selected scalar
+`Lambda` amplification are conditional; they do not certify SchedulePressure quadrature, theorem
+parameter selection, `C` selection, coefficient roundoff, global `AxisSpace`, or the full
+reconstruction. The combined new-default regression command was interrupted after approximately
+`9` minutes of CPU-heavy exact-phase work without a pytest summary or failure traceback, so the
+default replacement has no accepted production test result. The earlier `14` focused phase,
+bridge, and amplitude tests are pre-default historical evidence only. This leaves a performance
+and regression-evidence blocker before the default path can be accepted.
 
 **New constructed component:** `heat_exterior.py` implements Appendix A.6, Eqs. (A.32)–(A.38):
 H and its derivatives, exterior K(r,t), E_heat(X,eta), and centrifugal pressure normalized

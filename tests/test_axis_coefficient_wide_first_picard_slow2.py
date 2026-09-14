@@ -2,6 +2,8 @@ from decimal import Decimal, localcontext
 from fractions import Fraction
 import math
 from dataclasses import dataclass
+import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -857,6 +859,31 @@ def test_guards_reject_bad_indices_eta_and_x1(complete_state, x1) -> None:
         complete_state.jet(1, 0, 2.0)
     with pytest.raises(TypeError, match="x1 must be ActualScheduleWideFirstPicardState"):
         wide_first_picard_slow2_state(object())
+
+
+def test_provenance_manifest_keeps_complete_slow2_boundary_fail_closed() -> None:
+    root = Path(__file__).resolve().parents[1]
+    manifest = json.loads(
+        (
+            root
+            / "references"
+            / "provenance_manifest_addendum_axis_coefficient_wide_first_picard_slow2.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert manifest["full_reconstruction"] is False
+    assert manifest["paper_exact_velocity_available"] is False
+    layer = manifest["layer"]
+    assert layer["id"] == "stage-1-leading-profile"
+    assert layer["status"] == "formal-structure"
+    truth = layer["truth_boundary"]
+    assert truth["slow2_all_constituent_branches_materialized"] is True
+    assert truth["slow2_complete"] is True
+    assert truth["natural_remainder_x1_materialized"] is False
+    assert truth["picard_x2_materialized"] is False
+    assert truth["fixed_point_materialized"] is False
+    assert (root / layer["provenance"]).is_file()
+    for artifact in layer["artifacts"]:
+        assert (root / artifact).is_file()
 
     mismatched = wide_first_picard_slow2_state(x1)
     object.__setattr__(
