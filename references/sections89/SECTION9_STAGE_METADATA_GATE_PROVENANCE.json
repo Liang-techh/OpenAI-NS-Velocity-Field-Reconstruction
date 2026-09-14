@@ -1,0 +1,55 @@
+{
+  "artifact": "section9_stage_metadata_gate",
+  "status": "finite-stage-exact-premises-only",
+  "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+  "stacked_parent": {
+    "pull_request": 338,
+    "commit": "37dca61b7a7a8c395bfe627f95cb58f66d11244f"
+  },
+  "formal_source": {
+    "repository": "https://github.com/openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "file": "NavierStokes/ActualIterationLedger.lean",
+    "symbols": [
+      "NavierStokes.ActualIterationLedger.StageMetadata",
+      "NavierStokes.ActualIterationLedger.StageMetadata.gain_inequalities",
+      "NavierStokes.ActualIterationLedger.waveNative_formula",
+      "NavierStokes.ActualIterationLedger.wavePressureNative_formula",
+      "NavierStokes.ActualIterationLedger.meanNative_formula",
+      "NavierStokes.ActualIterationLedger.fixed_offset_inequalities"
+    ]
+  },
+  "machine_replay": {
+    "arithmetic": "fractions.Fraction",
+    "positive_increment_stage_required": true,
+    "source_revision_bound_metadata_required": true,
+    "materialized_stage_identity_cross_check": true,
+    "native_alpha_bounds": [
+      "wavePotential alpha >= waveNative(kappa,j)",
+      "meanStream alpha >= meanNative(kappa,j)",
+      "directAngular alpha >= meanNative(kappa,j)",
+      "wavePressure alpha >= wavePressureNative(kappa,j)",
+      "meanPressure alpha >= meanNative(kappa,j)"
+    ],
+    "shift_bounds": [
+      "wavePotential shift >= -h",
+      "wavePressure shift >= -2*A(h)"
+    ],
+    "derived_gain_rows": "all five common-gain inequalities are independently rechecked exactly",
+    "sampled_fitted_toy_metadata": "rejected",
+    "binary_float_and_Decimal_theorem_inputs": "rejected"
+  },
+  "truth_boundary": {
+    "finite_stage_metadata_premises_machine_checked": true,
+    "actual_paper_stage_metadata_export_bundled": false,
+    "actual_paper_stage_field_bundled": false,
+    "field_values_or_norms_evaluated": false,
+    "support_estimates_consumed": false,
+    "actual_oscillatory_wave_defect_consumed": false,
+    "infinite_correction_sequence_certified": false,
+    "eq_9_21_summed_field_certified": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_blocker": "Agent 3 still needs to emit a source-revision-bound actual positive-stage artifact carrying the exact WaveData/MeanData alpha and shift metadata together with the genuine Sections 6-8 stage fields. PR #320 remains formal LocalBase structure and the landed signed-mean-defect handoff still leaves finite_head_mean_debt_materialized=false, so this gate cannot yet be instantiated with paper stages.",
+  "downstream_contract": "Once Agent 3/Section 8 supplies a genuine materialized stage plus exact metadata, this gate checks the literal ActualIterationLedger.StageMetadata premises and the resulting common gain before StageEstimates/smooth-sum consumers. It does not infer support bounds, summability, Eq. (9.21), or paper-exact velocity."
+}
