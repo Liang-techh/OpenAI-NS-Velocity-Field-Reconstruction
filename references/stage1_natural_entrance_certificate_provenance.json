@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Downstream-only Stage-1 NaturalEntrance scalar-premise certificate. It binds the actual wide remainderBound/Lambda chain to the pinned AxisReference stabilityScale and a conservative downward-rounded admission radius for the exact AxisContraction K/(2*Lambda) fixed-point error premise, plus exact rational entrance/log-slope constants. It does not implement AxisCoefficientSpace, naturalRemainder, x2, a fixed point, or materialized phi/u/average/pressure, and it does not duplicate Agent 6 PR #323's genuine first-Picard natural-source backend work.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/stage1_natural_entrance_certificate.py",
+      "test": "tests/test_stage1_natural_entrance_certificate.py",
+      "provenance": "references/STAGE1_NATURAL_ENTRANCE_CERTIFICATE_PROVENANCE.md",
+      "paper_locations": [
+        "Theorem 4.6",
+        "NavierStokes/AxisReference.lean::stabilityScale",
+        "NavierStokes/AxisReference.lean::positive_of_uniformMixedError",
+        "NavierStokes/AxisReference.lean::log_slope_of_uniformMixedError",
+        "NavierStokes/AxisContraction.lean::exists_unique_natural_fixedPoint",
+        "NavierStokes/NaturalEntrance.lean::coefficient_phi_lower",
+        "NavierStokes/NaturalProfile.lean::profileErrorConstant"
+      ],
+      "landed_capability": "Fail-closed scalar gate for the NaturalEntrance positivity/log-slope theorem premises: pinned wide stabilityScale <= Lambda; a 96-digit downward-rounded safe admission radius no larger than the exact K/(2*Lambda) premise and cross-checked against the landed Picard upper product; exact entrance radius 41/10, phi lower constant 1/8, log-slope radius 4, chi threshold 99/100, and slope target 23/10. Float chi/error metadata cannot pass the exact gates.",
+      "remaining_boundary": "A genuine compatible AxisCoefficientSpace/naturalRemainder/x2/fixed-point backend and backend-owned norm-error witness are still required. The certificate does not materialize phi/u/average/pressure or assert positivity/log-slope for any runtime profile. NaturalProfileAssembly, analytic/formal chi>=99/100 region identification, inner-core/heat-exterior matching, support/moment/matching/cone closure, full reconstruction, and paper-exact velocity remain open."
+    }
+  ]
+}
