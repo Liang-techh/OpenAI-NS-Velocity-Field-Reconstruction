@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "065b67e9a3e8e22d697b49ccc67163db60a79783",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-6-7-prepared-localbase-theorem-binding",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/phase_prepared_local_base_binding.py",
+    "test": "tests/test_phase_prepared_local_base_binding.py",
+    "provenance": "references/PHASE_PREPARED_LOCAL_BASE_BINDING_PROVENANCE.md",
+    "local_inputs": [
+      "src/openai_ns_reconstruction/phase_large_band_local_base.py",
+      "src/openai_ns_reconstruction/phase_large_band_prepared_source.py",
+      "src/openai_ns_reconstruction/phase_large_band_physical_base.py",
+      "src/openai_ns_reconstruction/slow_base_field_binding.py"
+    ],
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "file": "NavierStokes/PrimaryGeometryAssembly.lean",
+      "prepared_base_field": "PrimaryGeometryAssembly.Prepared.base",
+      "local_base_bounds_decl": "PhaseEstimates.LocalBaseBounds",
+      "upstream_local_base_theorem": "BaseChartJets.Estimates.localBaseBounds"
+    },
+    "landed_capability": "Fail-closed composition from the sign-free slow-box/provider/physical-base identity to the pinned Prepared.base LocalBaseBounds application, reusing the identical embedded large-band LocalBase admission and scale.",
+    "truth_boundary": {
+      "actual_prepared_base_application_machine_replayed": false,
+      "actual_physical_base_values_materialized": false,
+      "uniform_eq_7_9_to_7_11_verified": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "treating Prepared.base theorem identity linkage as evaluated base-field values",
+      "injecting an independent M/scale/LocalBase witness from a different box",
+      "claiming Eqs. (7.9)-(7.11) from identity and scalar-scale linkage alone",
+      "constructing or tuning a surrogate background/profile/amplitude/wave"
+    ],
+    "upstream_blockers": [
+      "machine-linked replay/export of the active Prepared.base applications",
+      "materialized/certified actual base derivative jets required by the phase/frame formulas",
+      "remaining vector/frame/damping theorem applications for uniform Eqs. (7.9)-(7.11)",
+      "analytic localized derivative jets/support/glue required by a genuine supported curl wave"
+    ],
+    "non_overlap": {
+      "sections_8_9_mean_corrections_residual_iteration": "reserved for Agent 8 / parallel work; untouched",
+      "current_main_pr_319": "merged Stage 2 hierarchy-owned third-eta lower-source work is preserved without modification",
+      "agent8_pr_316": "merged Section 9 actual mixed-residual all-order joint-limits bridge is preserved without modification",
+      "agent8_pr_309": "merged exact Section 9 residual-improvement arithmetic is preserved without modification",
+      "agent8_pr_313": "merged exact Section 8 five-row algebra/debt-normalization certificate is preserved without modification",
+      "agent8_pr_305": "merged exact Section 8 compact-support geometry is preserved without modification",
+      "agent8_pr_298": "merged Section 9 finite-prefix field assembly is preserved without modification",
+      "current_main_pr_300": "Stage 1 actual-schedule angular reference eta jets are preserved without modification",
+      "current_main_pr_301": "Stage 2 hierarchy-owned third-eta Omega/X work is preserved without modification",
+      "current_main_pr_293": "Stage 1 complete first-Picard slow2 composition is preserved without modification"
+    },
+    "prior_green_ci": {
+      "head": "3702f5814c45545a8fae95eee703e493a55e40b4",
+      "run_number": 2311,
+      "conclusion": "success",
+      "scope": "identical source/test payload on the preceding main lineage; fresh latest-main replay CI still required"
+    }
+  }
+}
