@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 315,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AssembledSlowBase.lean",
+      "NavierStokes/SlowBorelBase.lean",
+      "NavierStokes/DiagonalScale.lean"
+    ],
+    "theorems": [
+      "NavierStokes.AssembledSlowBase.extendedCoefficient_support",
+      "NavierStokes.AssembledSlowBase.extendedCoefficient_compactSupport",
+      "NavierStokes.SlowBorelBase.exists_template_jet_bound",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_target_driven_support_prefix.py"
+  ],
+  "tests": [
+    "tests/test_background_target_driven_support_prefix.py"
+  ],
+  "provenance": "references/TARGET_DRIVEN_HIERARCHY_SUPPORT_PROVENANCE.md",
+  "landed_capability": "For one exact target-selected finite hierarchy prefix, require hierarchy-owned exact common-box support evidence for every positive coefficient order and bind each support row to the same own-order coefficient artifact used by every C[j,m] derivative row. Support geometry is pinned to [-1,B^2/2] x [-outer,outer] and cannot be supplied as binary floats or an unrelated caller table.",
+  "no_caller_supplied_support_prefix": true,
+  "upstream_requirement": "Agent 2 must eventually expose the actual assembled positive-order coefficient objects and their common-support provenance for every requested order under the same hierarchy/source/coefficient-state and own-order artifact used by analytic C[j,m] rows and exact retained recurrence identities. The current finite derivative frontier does not satisfy this arbitrary-order contract.",
+  "truth_boundary": {
+    "finite_target_prefix_only": true,
+    "common_support_checked_within_selected_prefix": true,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  }
+}
