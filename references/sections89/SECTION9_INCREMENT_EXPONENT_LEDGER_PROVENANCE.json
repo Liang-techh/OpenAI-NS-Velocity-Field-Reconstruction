@@ -1,0 +1,50 @@
+{
+  "artifact": "section9_increment_exponent_ledger",
+  "status": "finite-exact-arithmetic-only",
+  "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+  "base_main": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "formal_source": {
+    "repository": "https://github.com/openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "files": [
+      "NavierStokes/ActualIterationLedger.lean",
+      "NavierStokes/CoordinateAlgebra.lean"
+    ],
+    "symbols": [
+      "NavierStokes.ActualIterationLedger.waveNative_formula",
+      "NavierStokes.ActualIterationLedger.wavePressureNative_formula",
+      "NavierStokes.ActualIterationLedger.meanNative_formula",
+      "NavierStokes.ActualIterationLedger.radialNative_formula",
+      "NavierStokes.ActualIterationLedger.fixed_offset_inequalities",
+      "NavierStokes.ActualIterationLedger.gain_succ",
+      "NavierStokes.CoordinateAlgebra.A"
+    ]
+  },
+  "machine_replay": {
+    "arithmetic": "fractions.Fraction",
+    "binary_float_and_Decimal_theorem_inputs": "rejected",
+    "paper_h_regime": "0 < h < 1/2",
+    "kappa": "1/100000",
+    "native_increment_successor_gain": "1/10",
+    "common_physical_gain": "h*j/10",
+    "common_physical_gain_successor_gain": "h/10",
+    "fixed_component_offsets": {
+      "wavePotential": "h",
+      "meanStream": "0",
+      "directAngular": "0",
+      "wavePressure": "2*(1/2+h)",
+      "meanPressure": "0"
+    },
+    "common_gain_lower_bound": "exactly checked for all five pinned increment component rows"
+  },
+  "truth_boundary": {
+    "actual_stage_field_consumed": false,
+    "support_estimates_consumed": false,
+    "actual_oscillatory_wave_defect_consumed": false,
+    "infinite_correction_sequence_certified": false,
+    "eq_9_21_summed_field_certified": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_blocker": "Current Agent 3 output remains non-materialized at the Sections 6-7/mean-defect boundary: PR #320 is formal LocalBase binding only, while the landed actual_signed_mean_defect admission explicitly leaves finite_head_mean_debt_materialized=false. A source-revision-bound actual oscillatory wave/defect/stage producer is still required before Section 8 repair and these Section 9 increment exponents can be attached to genuine stage fields.",
+  "downstream_contract": "A later genuine StageEstimates consumer can use the exact common gain h*j/10 and fixed component offsets as the paper-selected per-stage scale ledger. The present artifact does not infer summability or Eq. (9.21) from exponent arithmetic alone."
+}
