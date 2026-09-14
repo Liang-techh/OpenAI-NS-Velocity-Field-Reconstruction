@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 318,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/AssembledSlowBase.lean",
+      "NavierStokes/SlowBorelBase.lean",
+      "NavierStokes/SlowExpansionResidual.lean",
+      "NavierStokes/DiagonalScale.lean"
+    ],
+    "theorems": [
+      "NavierStokes.AssembledSlowBase.extendedCoefficient_support",
+      "NavierStokes.AssembledSlowBase.extendedCoefficient_compactSupport",
+      "NavierStokes.SlowBorelBase.exists_template_jet_bound",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_target_driven_dependency_chain.py"
+  ],
+  "tests": [
+    "tests/test_background_target_driven_dependency_chain.py"
+  ],
+  "provenance": "references/TARGET_DRIVEN_HIERARCHY_DEPENDENCY_CHAIN_PROVENANCE.md",
+  "landed_capability": "For one exact target-selected finite hierarchy prefix, require one literal own-order coefficient artifact to be shared simultaneously by every C[j,m] derivative-bound row, the common-support witness, and the exact retained recurrence identity at each positive order.",
+  "no_caller_supplied_bound_support_or_recurrence_tables": true,
+  "exact_recurrence_zero_required": true,
+  "upstream_requirement": "Agent 2 must eventually expose the actual assembled positive-order coefficient object for every requested order such that analytic C[j,m] bounds, common compact-support provenance, and the exact retained recurrence decomposition all name the same own-order artifact under one hierarchy/source/coefficient-state. PRs #319/#322 remain finite derivative-chain increments and do not yet satisfy this arbitrary-order contract.",
+  "truth_boundary": {
+    "finite_target_prefix_only": true,
+    "one_owned_artifact_per_positive_order_within_prefix": true,
+    "retained_recurrences_exact_within_prefix": true,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  }
+}
