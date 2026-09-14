@@ -75,6 +75,38 @@ def test_natural_profile_assembly_matches_lean_rescaling_formulas():
     assert leading.paper_exact is False
     assert leading.E(X, eta) == pytest.approx(a.E(X, eta))
     assert leading.U(X, eta) == pytest.approx(a.U(X, eta))
+    assert leading.average_U is not None
+    assert leading.radial_average_U(X, eta, n=2) == pytest.approx(a.radial_average(X, eta))
+
+
+def test_natural_profile_handoff_preserves_scaled_average_without_quadrature():
+    p = NaturalAxisParameters(
+        h=1.0e-4,
+        j=2.0e-4,
+        sigma=0.03,
+        Lambda=2.0,
+        C=3.0,
+        phase_samples=101,
+    )
+
+    def forbidden_u(Y: float, eta: float) -> float:
+        raise AssertionError("exact fixed-point average must not resample U")
+
+    a = NaturalProfileAssembly(
+        p,
+        phi=lambda Y, eta: 1.0,
+        u=forbidden_u,
+        du_deta=lambda Y, eta: 0.0,
+        average=lambda Y, eta: 7.0 + Y - eta,
+        pressure=lambda Y, eta: 0.0,
+        axis_pressure=lambda eta: 0.0,
+    )
+    leading = a.to_leading_profile()
+    X = 0.3
+    eta = 0.2
+
+    assert leading.average_U is not None
+    assert leading.radial_average_U(X, eta, n=2) == pytest.approx(a.radial_average(X, eta))
 
 
 def test_parameter_guard_matches_small_parameter_range():
