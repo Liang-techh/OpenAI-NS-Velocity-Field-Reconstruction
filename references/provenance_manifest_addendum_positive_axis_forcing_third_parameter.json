@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "065b67e9a3e8e22d697b49ccc67163db60a79783",
+  "depends_on_prs": [],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 latest-main replay after merged PR #319. Composes the landed hierarchy-owned actualLowerSource through eta^3 into the displayed Eq. (5.7) PositiveAxis forcing f_n through eta^3 with analytic eta/ell product derivatives.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_forcing_third_parameter.py",
+      "test": "tests/test_background_repaired_history_source_third_parameter.py",
+      "provenance": "references/HIERARCHY_OWNED_POSITIVE_AXIS_FORCING_THIRD_PARAMETER_PROVENANCE.md",
+      "paper_locations": [
+        "Lemma 5.1",
+        "Lemma 5.2",
+        "Eq. (5.7)",
+        "PositiveAxisSystem forcing"
+      ],
+      "landed_capability": "For one positive solve order, a Section5LowerHistorySixthMixedHierarchy supplies the exact displayed PositiveAxis forcing vector f_n from value through third eta derivative. Source rows and normalization C are hierarchy-owned; the value row delegates to positive_axis_forcing and higher rows analytically differentiate only eta/ell and the linear pressure-source map.",
+      "truth_boundary": "This does not materialize W_n^(0), W_n^(1), a Picard fixed point, a repaired positive-order coefficient, an all-order hierarchy, recursive-cutoff convergence, Proposition 5.3, full reconstruction, or paper-exact velocity."
+    }
+  ],
+  "forbidden_inferences": [
+    "Analytic regression fixtures are not paper coefficient data.",
+    "Centered finite differences are test-only oracles and are not production differentiation or proof evidence.",
+    "A hierarchy-owned third-eta forcing jet does not establish a converged PositiveAxisSystem/Picard coefficient.",
+    "No finite/stagewise Agent-7 cutoff or residual certificate is promoted to an all-order theorem by this increment.",
+    "Green CI does not promote Stage 2 formal-structure infrastructure to paper-exact velocity."
+  ]
+}
