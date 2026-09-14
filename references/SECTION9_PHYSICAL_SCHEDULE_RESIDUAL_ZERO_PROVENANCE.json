@@ -1,0 +1,58 @@
+{
+  "artifact": "section9_physical_schedule_residual_zero",
+  "status": "formal-structure",
+  "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "formal_source": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "file": "NavierStokes/MixedDiagonalResidual.lean",
+    "theorem": "NavierStokes.MixedDiagonalResidual.exists_physical_schedule_residual_zero"
+  },
+  "contract": {
+    "purpose": "Bind one actual Section 9 A/B/P source and its genuine raw stage estimates to the pinned theorem-selected common physical schedule and the resulting all-order VanishingJointJets conclusion for the mixed residual.",
+    "source_identity": "one source_id/source_revision owns A, B, P, raw A/B/P bounds, universal background/residual rate families, the selected schedule, physical scale, and mixed residual",
+    "exact_scalars": "h and qbig are exact Fraction metadata; 0 < h < 1/2; endpoint is exactly T=1",
+    "universal_inputs": [
+      "all natural stages for the A/B/P field families and raw stage bounds",
+      "all natural J,m for the uncut background JetRate hypotheses",
+      "all natural J,m for the uncut Navier-Stokes residual JetRate hypotheses"
+    ],
+    "theorem_outputs": [
+      "one common positive schedule a",
+      "2*a(j) <= a(j+1)",
+      "StrictMono a",
+      "a(j) -> infinity",
+      "1/a(j) < qbig",
+      "ThreeCutBounds for A/B/P on the same schedule",
+      "ThreeSmoothSums for A/B/P on the same schedule",
+      "VanishingJointJets of the selected mixed physical residual"
+    ]
+  },
+  "rejects": [
+    "finite stage prefixes",
+    "finite derivative ladders",
+    "sampled, fitted, or numerical residual evidence",
+    "binary floating-point values used as exact h/qbig theorem metadata",
+    "independently selected schedules for A, B, and P",
+    "cross-wired source, field, raw-bound, or residual identities",
+    "formal repository, commit, source-file, or theorem drift"
+  ],
+  "verification": {
+    "isolated_focused_pytest": "6 passed",
+    "full_repository_pytest": "pending GitHub Actions",
+    "cli_demo_audit": "pending GitHub Actions",
+    "lean_replay": false
+  },
+  "truth_boundary": {
+    "actual_section9_sequence_verified": false,
+    "section9_all_order_endpoint_limits_verified": false,
+    "residual_artifact_ready": false,
+    "forcing_artifact_ready": false,
+    "endpoint_residual_closure_verified": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "upstream_contract": "The eventual actual Section 9 provider must expose the genuine all-stage A/B/P smooth fields and RawStageBounds plus universal J,m background and uncut-residual JetRate hypotheses under one source revision. The currently landed finite-prefix assembly and finite residual-improvement arithmetic do not satisfy this universal contract.",
+  "downstream_contract": "A genuine export of this theorem supplies the common selected physical schedule and VanishingJointJets needed upstream of the mixed-residual endpoint chain. It still does not supply actual AwayExtensions, the official 3/4 <= t < 1 analytic majorants, support-exterior all-order residual-jet vanishing, an infinite locally-finite Borel/right extension, a materialized smooth compact force, energy closure, or the origin blow-up premise."
+}
