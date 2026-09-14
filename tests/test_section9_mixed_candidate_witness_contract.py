@@ -5,6 +5,10 @@ from fractions import Fraction
 
 import pytest
 
+from openai_ns_reconstruction.section9_actual_stage_estimates import (
+    Section9ActualStageEstimatesAdmission,
+    Section9ActualStageEstimatesWitness,
+)
 from openai_ns_reconstruction.section9_mixed_candidate_witness_contract import (
     PINNED_FORMAL_COMMIT,
     MixedCandidateWitnessFormalExport,
@@ -39,9 +43,47 @@ def _valid_export() -> MixedCandidateWitnessFormalExport:
     )
 
 
-def _admit(export: MixedCandidateWitnessFormalExport):
+def _valid_stage_estimates_admission() -> Section9ActualStageEstimatesAdmission:
+    witness = Section9ActualStageEstimatesWitness(
+        domain_id="actual-domain",
+        forcing_id="actual-forcing-ledger",
+        q_id="actual-q",
+        run_data_id="actual-run-data",
+        physical_data_id="actual-physical-data",
+        positive_bump_id="actual-positive-bump",
+        finite_velocity_family_id="actual-finite-velocity",
+        finite_pressure_family_id="actual-finite-pressure",
+        finite_forcing_family_id="actual-finite-forcing",
+        mixed_physical_data_id="actual-mixed-physical-data",
+        stage_estimates_id="actual-stage-estimates",
+        application_id="actual-stage-estimates-application",
+        producer_kind="lean-formal-export",
+        provenance="pinned ActualStageEstimates theorem export",
+        q_open_unit_interval_certified=True,
+        input_normalized_certified=True,
+        output_strip_controlled_certified=True,
+        output_mean_balanced_certified=True,
+        stress_controlled_certified=True,
+        div_osc_controlled_certified=True,
+        velocity_increments_controlled_certified=True,
+        pressure_increments_controlled_certified=True,
+        forcing_increments_controlled_certified=True,
+        forcing_increment_margin_certified=True,
+        ledger_velocity_identification_certified=True,
+        ledger_pressure_identification_certified=True,
+        ledger_forcing_identification_certified=True,
+        theorem_application_certified=True,
+    )
+    return Section9ActualStageEstimatesAdmission(witness)
+
+
+def _admit(
+    export: MixedCandidateWitnessFormalExport,
+    stage_estimates_admission: Section9ActualStageEstimatesAdmission | None = None,
+):
     return admit_mixed_candidate_witness_export(
         export,
+        stage_estimates_admission or _valid_stage_estimates_admission(),
         expected_source_id="actual-section9-mixed-candidate",
         expected_source_revision="rev-actual-001",
         expected_field_bundle_id="A-B-P-actual-bundle",
@@ -54,6 +96,7 @@ def _admit(export: MixedCandidateWitnessFormalExport):
 def test_accepts_only_pinned_all_order_formal_witness_chain() -> None:
     certificate = _admit(_valid_export())
     assert certificate.formal_witness_chain_ready
+    assert certificate.stage_estimates_identity_bound
     assert certificate.status == "formal-structure"
     assert certificate.export.formal_commit == PINNED_FORMAL_COMMIT
     assert certificate.export.endpoint == Fraction(1, 1)
@@ -87,6 +130,7 @@ def test_rejects_cross_wired_actual_stage_family() -> None:
     with pytest.raises(ValueError, match="stage-family identity mismatch"):
         admit_mixed_candidate_witness_export(
             export,
+            _valid_stage_estimates_admission(),
             expected_source_id="actual-section9-mixed-candidate",
             expected_source_revision="rev-actual-001",
             expected_field_bundle_id="A-B-P-actual-bundle",
@@ -99,3 +143,26 @@ def test_rejects_cross_wired_actual_stage_family() -> None:
 def test_rejects_manufactured_residual_flag() -> None:
     with pytest.raises(ValueError, match="manufactured residual"):
         replace(_valid_export(), manufactured_residual=True)
+
+
+def test_rejects_cross_wired_stage_estimates_identity() -> None:
+    admission = _valid_stage_estimates_admission()
+    mismatched = Section9ActualStageEstimatesAdmission(
+        replace(admission.witness, stage_estimates_id="different-stage-estimates")
+    )
+    with pytest.raises(ValueError, match="StageEstimates identity mismatch"):
+        _admit(_valid_export(), mismatched)
+
+
+def test_rejects_non_admission_stage_estimates_evidence() -> None:
+    with pytest.raises(TypeError, match="Section9ActualStageEstimatesAdmission"):
+        admit_mixed_candidate_witness_export(
+            _valid_export(),
+            object(),  # type: ignore[arg-type]
+            expected_source_id="actual-section9-mixed-candidate",
+            expected_source_revision="rev-actual-001",
+            expected_field_bundle_id="A-B-P-actual-bundle",
+            expected_potential_stage_family_id="A-stages",
+            expected_direct_stage_family_id="B-stages",
+            expected_pressure_stage_family_id="P-stages",
+        )
