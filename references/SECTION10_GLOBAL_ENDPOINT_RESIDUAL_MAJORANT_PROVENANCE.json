@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 4,
+  "observed_main_commit": "065b67e9a3e8e22d697b49ccc67163db60a79783",
+  "stacked_on": {
+    "pull_request": 360,
+    "head_commit": "f2f7822c4df9c78ec645ed88908b37ad76fefaf4",
+    "artifact": "src/openai_ns_reconstruction/section10_exterior_residual_zero_germ.py"
+  },
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-10-global-endpoint-residual-majorant",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section10_global_endpoint_residual_majorant.py",
+    "test": "tests/test_section10_global_endpoint_residual_majorant.py",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/LocalPaperTheorem.lean",
+        "NavierStokes/LocalPaperDomain.lean",
+        "NavierStokes/PhysicalWaveSum.lean"
+      ],
+      "symbols": [
+        "NavierStokes.LocalPaper.Properties.residual_flatness",
+        "NavierStokes.LocalPaper.Properties.edges_ordered",
+        "NavierStokes.LocalPaperDomain.qstar_pos",
+        "NavierStokes.PhysicalWaveSum.physicalQ_pos",
+        "NavierStokes.LocalPaperDomain.outerEdge",
+        "NavierStokes.LocalPaperDomain.exterior_conditions"
+      ],
+      "inherited_exterior_chain": [
+        "NavierStokes.LocalPaper.selected_exterior_residual_zero",
+        "NavierStokes.LocalPaperDomain.exterior_conditions_eventually",
+        "NavierStokes.SolenoidalDiagonal.iteratedFDeriv_eventuallyEq",
+        "iteratedFDeriv_fun_zero"
+      ]
+    },
+    "formal_implication": "For every natural derivative order m and every real r >= 0, LocalPaper.Properties.edges_ordered gives 0<Xa<Xext and hence 0<=Xext, so LocalPaper.Properties.residual_flatness may be instantiated at X=Xext to obtain C>=0 and delta_inner>0 on radius<=Xext. On Xext<=radius, the inherited exterior zero-germ certificate gives every full-spacetime residual jet exactly zero. LocalPaperDomain.qstar_pos gives qstar>0, so delta=min(delta_inner,qstar)>0. PhysicalWaveSum.physicalQ_pos gives q(w)>0 on the preterminal domain, hence C*q(w)^r>=0 for C>=0 and r>=0; the exterior zero jets therefore satisfy the same inequality. Thus for all preterminal w with q(w)<delta, regardless of spatial position, ||D^m R(w)|| <= C*q(w)^r. The existential C and delta may depend on m and r; there is no finite derivative or decay frontier.",
+    "landed_capability": [
+      "universal m in N quantifier retained",
+      "universal real r>=0 decay quantifier retained",
+      "Xext positivity derived from the exact LocalPaper.Properties.edges_ordered field before using it as the residual_flatness radius",
+      "inner residual flatness instantiated at the exact LocalPaperDomain.outerEdge split",
+      "outer region discharged by the same-residual all-order exterior zero-germ chain",
+      "physical q positivity recorded so the zero exterior jets satisfy the common nonnegative C*q^r majorant",
+      "positive global small-scale threshold obtained by min(delta_inner,qstar)",
+      "global-in-space residual majorant on the sufficiently small physical-q sublevel",
+      "same selected schedule/local velocity/local pressure/residual identities enforced across the parent proof chain"
+    ],
+    "important_scope_boundary": [
+      "this is a theorem-shaped formal admission, not a replay of Lean in Python",
+      "the existential constants C and delta are not materialized numerically",
+      "the actual paper fields and residual are not runtime callables/artifacts here",
+      "the result closes the singular small-q corner but does not by itself verify one analytic majorant over the entire official 3/4<=t<1 plateau",
+      "the positive-q remainder of the late plateau still requires the away-extension/compact-strip side of the endpoint cover to be bound to the same actual residual",
+      "this does not construct or independently replay the Taylor-Borel force through t=1",
+      "formal residual majorants are not runtime compact-support, energy, divergence-free, or blow-up verification"
+    ],
+    "forbidden_promotions": [
+      "finite max derivative order",
+      "finite max decay order",
+      "sampled or fitted residual bounds",
+      "manufactured residuals",
+      "f=R followed by R-f=0 as independent verification",
+      "claiming the small-q theorem-shaped majorant is already the whole official late plateau",
+      "claiming formal existential constants or fields are runtime artifacts"
+    ],
+    "truth_boundary": {
+      "actual_fields_materialized": false,
+      "actual_majorant_constants_materialized": false,
+      "official_full_late_plateau_majorant_verified": false,
+      "actual_section9_sequence_verified": false,
+      "section9_all_order_endpoint_limits_verified": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "compact_support_runtime_verified": false,
+      "divergence_free_closure_verified": false,
+      "finite_energy_closure_verified": false,
+      "blow_up_closure_verified": false,
+      "paper_exact_velocity_available": false,
+      "full_reconstruction": false
+    }
+  }
+}
