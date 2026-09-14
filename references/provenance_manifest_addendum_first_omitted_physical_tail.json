@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 342,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/SlowBorelBase.lean",
+      "NavierStokes/SlowExpansionResidual.lean"
+    ],
+    "theorems": [
+      "NavierStokes.SlowBorelBase.exists_stage_blown_power_bound",
+      "NavierStokes.SlowBorelBase.ordinary_tail_bound",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_first_omitted_physical_tail.py"
+  ],
+  "tests": [
+    "tests/test_background_first_omitted_physical_tail.py"
+  ],
+  "provenance": "references/FIRST_OMITTED_PHYSICAL_TAIL_PROVENANCE.md",
+  "landed_capability": "Bind one provider-owned finite retained-recurrence prefix to its first omitted slow order J+1 and replay exactly the full-stage, diagonal-tail, ordinary-jet, and physical-jet q-power losses on the same recursive schedule and uncut window.",
+  "no_caller_supplied_first_omitted_exponent": true,
+  "no_caller_supplied_coefficient_table": true,
+  "no_numerical_near_zero_cancellation": true,
+  "truth_boundary": {
+    "retained_recurrences_exact": true,
+    "first_omitted_order_exposed": true,
+    "finite_first_omitted_physical_power_ledger_verified": true,
+    "first_omitted_coefficient_majorant_verified": false,
+    "first_omitted_recurrence_cancelled": false,
+    "physical_chart_finite_bound_verified": false,
+    "actual_pde_residual_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must eventually expose a total hierarchy-owned assembled coefficient provider which, for every order demanded by arbitrary physical target requests, returns theorem-backed C[j,m] majorants, common compact support, and exact retained-recurrence evidence tied to the same actual coefficient object and coefficient state."
+}
