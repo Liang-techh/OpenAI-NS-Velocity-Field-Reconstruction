@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1bc98e6ad4be59893db828d11b9ff0f0217ac3d8",
+  "issue": 4,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-10-paper-localization-spine",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section10_paper_localization_spine.py",
+    "test": "tests/test_section10_paper_localization_spine.py",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "file": "NavierStokes/PaperLocalization.lean",
+      "theorem": "NavierStokes.PaperLocalization.local_theorem_with_compact_candidate",
+      "supporting_symbols": [
+        "NavierStokes.LocalResidualFlatness.selected_schedule",
+        "NavierStokes.LocalPaper.properties_of_schedule",
+        "NavierStokes.LocalScheduleWitness.selected_compact_candidate",
+        "NavierStokes.LocalPaper.Properties",
+        "NavierStokesR3.ProblemStatement.CandidateProperties",
+        "NavierStokes.SpatialLocalization.plateau"
+      ]
+    },
+    "landed_capability": "Fail-closed admission for the pinned closed paper-localization theorem. One actual selected diagonal schedule is used simultaneously for the local paper fields and the compact whole-space candidate. The theorem packages LocalPaper.Properties, the unit-viscosity R3 CandidateProperties, nonexistence of a global smooth finite-energy solution for the same force, the initial rest interval, and exact equality of compact and local velocity/pressure on an open neighborhood of the origin for every official late time 3/4 <= t < 1.",
+    "formal_same_schedule_outputs": [
+      "local potential/direct/velocity/pressure come from the selected schedule",
+      "LocalPaper.Properties for those local fields",
+      "all-order local residual flatness in every natural derivative order and every nonnegative decay order",
+      "away-from-origin one-sided smooth extensions for local potential/direct/pressure",
+      "literal local exterior residual zero",
+      "unit-viscosity R3 CandidateProperties for compact velocity/pressure/force/support",
+      "globally smooth compact positive-time force",
+      "common compact spatial support for pre-singular velocity and pressure",
+      "divergence-free compact velocity",
+      "exact forced Navier-Stokes equation on 0 < t < 1",
+      "one UniformFiniteEnergy bound on 0 <= t < 1",
+      "SpeedUnboundedAtOne",
+      "no GlobalFiniteEnergySolution for the same force",
+      "zero velocity and pressure for |t| <= 3/8",
+      "an open neighborhood U containing the origin",
+      "compact/local velocity and pressure equality for all t in [3/4,1) and x in U"
+    ],
+    "important_scope_boundary": [
+      "this Python repository does not replay the Lean proof",
+      "the existential formal fields are not materialized runtime arrays/callables here",
+      "the theorem does not by itself provide a runtime residual artifact or runtime force artifact",
+      "official late-plateau field equality is not the same as a uniform analytic majorant across the whole plateau",
+      "the packaged local exterior residual-zero clause is not promoted here to an independently replayed all-order exterior residual-jet certificate",
+      "formal CandidateProperties are not runtime verification of compact support, divergence-free closure, energy, or blow-up",
+      "the merged Section 9 joint-limit bridge still requires actual exported identities/artifacts before runtime truth may advance"
+    ],
+    "forbidden_promotions": [
+      "replacing the exact PaperLocalization theorem by a generic cutoff/localization",
+      "replacing 3/4 and 1 by floating-point aliases",
+      "replacing universal derivative/decay quantifiers by a finite maximum",
+      "using sampled or fitted smoothness/residual evidence",
+      "using a manufactured f=R residual closure",
+      "claiming formal existential fields are materialized paper fields",
+      "claiming formal whole-space CandidateProperties alone complete independent reconstruction"
+    ],
+    "verification": {
+      "isolated_focused_test": "6 passed",
+      "isolated_syntax_compile": true,
+      "full_repository_suite": "pending GitHub Actions on exact PR head",
+      "cli_audit": "pending GitHub Actions on exact PR head"
+    },
+    "truth_boundary": {
+      "theorem_machine_replayed": false,
+      "actual_fields_materialized": false,
+      "actual_section9_sequence_verified": false,
+      "section9_all_order_endpoint_limits_verified": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "compact_support_runtime_verified": false,
+      "divergence_free_closure_verified": false,
+      "finite_energy_closure_verified": false,
+      "blow_up_closure_verified": false,
+      "paper_exact_velocity_available": false,
+      "full_reconstruction": false
+    }
+  }
+}
