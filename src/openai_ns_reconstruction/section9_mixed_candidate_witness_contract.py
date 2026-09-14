@@ -1,7 +1,6 @@
 """Fail-closed bridge to the pinned all-order mixed candidate witness theorem.
 
-This module records a narrower upstream contract than the generic Section 10
-endpoint interfaces.  The pinned OpenAI formalization already contains
+The pinned OpenAI formalization already contains
 ``MixedCandidateWitness.exists_candidate_witness_of_finite_stages``.  Given the
 actual mixed stage families, their genuine ``StageEstimates`` and shrinking
 support / one-sided-extension hypotheses, that theorem selects one common
@@ -10,15 +9,19 @@ physical schedule and returns the three ``AwayExtensions``, a smooth forcing,
 and the endpoint force-jet identity.
 
 Python does *not* replay Lean and this file does not manufacture the missing
-actual stage data.  It therefore admits only a pinned ``lean-formal-export``
-for one exact source/revision and keeps every runtime reconstruction truth flag
-false.  Finite endpoint ladders, sampled smoothness, ``f = R`` tautologies, or
-formal exports for a different field bundle cannot satisfy this interface.
+actual stage data.  The contract therefore admits only a pinned
+``lean-formal-export`` for one exact source/revision.  It also requires the
+exported ``StageEstimates`` identity to agree with the repository's landed
+``Section9ActualStageEstimatesAdmission`` rather than accepting an unrelated
+opaque string plus a boolean.  That admission is itself formal-structure only;
+it does not materialize paper fields or promote runtime truth flags.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from fractions import Fraction
+
+from .section9_actual_stage_estimates import Section9ActualStageEstimatesAdmission
 
 
 PINNED_FORMAL_REPOSITORY = "openai/NavierStokesAndEuler"
@@ -46,13 +49,7 @@ def _true(value: object, name: str) -> bool:
 
 @dataclass(frozen=True)
 class MixedCandidateWitnessFormalExport:
-    """Pinned Lean-export witness for the actual mixed Section 9 field bundle.
-
-    Every ``*_certified`` field records an explicit theorem input/output in the
-    exported proof object.  None is inferred from numerical evaluation here.
-    ``max_derivative_order`` must remain ``None``: the force-decay and endpoint
-    jet conclusions of the Lean theorem quantify over every natural order.
-    """
+    """Pinned Lean-export witness for the actual mixed Section 9 field bundle."""
 
     source_id: str
     source_revision: str
@@ -157,6 +154,7 @@ class MixedCandidateWitnessContractCertificate:
     """Accepted formal handoff while runtime truth remains fail-closed."""
 
     export: MixedCandidateWitnessFormalExport
+    stage_estimates_admission: Section9ActualStageEstimatesAdmission
     expected_source_key: tuple[str, str]
     expected_field_bundle_id: str
     expected_stage_family_key: tuple[str, str, str]
@@ -173,6 +171,17 @@ class MixedCandidateWitnessContractCertificate:
     full_reconstruction: bool = False
 
     @property
+    def stage_estimates_identity_bound(self) -> bool:
+        return (
+            self.stage_estimates_admission.witness.stage_estimates_id
+            == self.export.stage_estimates_id
+            and self.stage_estimates_admission.witness.formal_commit == PINNED_FORMAL_COMMIT
+            and self.stage_estimates_admission.literal_finite_stage_estimates_admitted
+            and self.stage_estimates_admission.canonical_ledger_families_admitted
+            and self.stage_estimates_admission.status == "formal-structure"
+        )
+
+    @property
     def formal_witness_chain_ready(self) -> bool:
         return (
             self.export.source_key == self.expected_source_key
@@ -180,6 +189,7 @@ class MixedCandidateWitnessContractCertificate:
             and self.export.stage_family_key == self.expected_stage_family_key
             and self.export.theorem_symbol == PINNED_THEOREM
             and self.export.max_derivative_order is None
+            and self.stage_estimates_identity_bound
             and not self.actual_section9_sequence_verified
             and not self.section9_all_order_endpoint_limits_verified
             and not self.residual_artifact_ready
@@ -195,6 +205,7 @@ class MixedCandidateWitnessContractCertificate:
 
 def admit_mixed_candidate_witness_export(
     export: MixedCandidateWitnessFormalExport,
+    stage_estimates_admission: Section9ActualStageEstimatesAdmission,
     *,
     expected_source_id: str,
     expected_source_revision: str,
@@ -203,10 +214,24 @@ def admit_mixed_candidate_witness_export(
     expected_direct_stage_family_id: str,
     expected_pressure_stage_family_id: str,
 ) -> MixedCandidateWitnessContractCertificate:
-    """Admit a pinned theorem export only for the already-selected actual data."""
+    """Admit a pinned theorem export only for the already-selected actual data.
+
+    The ``StageEstimates`` object is no longer trusted from an opaque ID alone:
+    its identity must equal the object carried by the landed Section 9 formal
+    admission.  Both remain theorem-facing metadata until actual stage data are
+    materialized upstream.
+    """
 
     if not isinstance(export, MixedCandidateWitnessFormalExport):
         raise TypeError("export must be a MixedCandidateWitnessFormalExport")
+    if not isinstance(stage_estimates_admission, Section9ActualStageEstimatesAdmission):
+        raise TypeError(
+            "stage_estimates_admission must be a Section9ActualStageEstimatesAdmission"
+        )
+    if stage_estimates_admission.witness.stage_estimates_id != export.stage_estimates_id:
+        raise ValueError("mixed candidate StageEstimates identity mismatch")
+    if stage_estimates_admission.witness.formal_commit != PINNED_FORMAL_COMMIT:
+        raise ValueError("mixed candidate StageEstimates formal commit mismatch")
 
     expected_source_key = (
         _text(expected_source_id, "expected_source_id"),
@@ -228,6 +253,7 @@ def admit_mixed_candidate_witness_export(
 
     certificate = MixedCandidateWitnessContractCertificate(
         export=export,
+        stage_estimates_admission=stage_estimates_admission,
         expected_source_key=expected_source_key,
         expected_field_bundle_id=expected_bundle,
         expected_stage_family_key=expected_stage_key,
