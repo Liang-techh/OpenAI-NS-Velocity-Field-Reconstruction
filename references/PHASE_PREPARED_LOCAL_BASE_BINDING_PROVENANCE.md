@@ -3,9 +3,9 @@
 ## Baseline
 
 - Repository: `Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction`
-- Base `main`: `13f9c53bbe1a68ddd3fdaf1805e7f8b6bbd38b5d`
+- Base `main`: `3cc438f29524acb068e40bf3a99a8293c9222628`
 - Scope: Issue #3, Sections 6–7 only. Sections 8–9 mean corrections/residual iteration remain Agent 8 scope and are not modified here.
-- Current-main reconciliation: current main includes Agent 8 PR #313 exact Section 8 five-row algebra/debt-normalization certificate and PR #305 exact Section 8 compact-support geometry, plus the previously landed Stage 1/2 work. None overlaps this four-file Sections 6–7 increment.
+- Current-main reconciliation: current main now also includes Agent 8 PR #309 exact Section 9 residual-improvement arithmetic, in addition to PR #313 exact Section 8 five-row algebra/debt-normalization and PR #305 exact Section 8 compact-support geometry. The delta from the previous base `13f9c53bbe1a68ddd3fdaf1805e7f8b6bbd38b5d` to current main consists only of the three PR #309 Section 9 files and has no overlap with this four-file Sections 6–7 increment.
 
 ## Pinned formal source
 
@@ -38,4 +38,4 @@ A successful bridge does **not** manufacture a numerical background, a tangentia
 
 `tests/test_phase_prepared_local_base_binding.py` covers coherent composition, cross-wired box/source/Prepared identities, non-theorem evidence, missing certificate flags, formal-symbol tampering, malformed asymptotic box keys, and wrong composition types.
 
-The identical source/test payload completed GitHub Actions run #2223 successfully at head `8893e693263bc3d1c82531efd485740afa2ec0ae` on a preceding main lineage. This replay is merged forward onto current main `13f9c53bbe1a68ddd3fdaf1805e7f8b6bbd38b5d`; fresh Actions on the exact resulting head are authoritative before merge.
+The identical source/test payload completed GitHub Actions run #2223 successfully at head `8893e693263bc3d1c82531efd485740afa2ec0ae` on a preceding main lineage. The previous exact-head run #2290 was queued before current main advanced via Agent 8 PR #309 and is no longer sufficient as a current-main merge gate. This replay is merge-forwarded onto current main `3cc438f29524acb068e40bf3a99a8293c9222628`; fresh Actions on the exact resulting head are authoritative before merge.
