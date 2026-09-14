@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "c5d7734ce1b659d309ebe417bc88f60fc3af258e",
+  "issue": 4,
+  "pull_request": 287,
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "section-9-all-order-endpoint-residual-contract",
+    "status": "formal-structure",
+    "artifact": "src/openai_ns_reconstruction/section9_all_order_endpoint_contract.py",
+    "test": "tests/test_section9_all_order_endpoint_contract.py",
+    "paper_scope": {
+      "endpoint": "1",
+      "official_late_plateau": "3/4 <= t < 1"
+    },
+    "landed_capability": "Fail-closed theorem-facing admission boundary for one fixed actual Section 9 residual source/revision and identity. Admission requires universal natural-order derivative bounds, locally-uniform endpoint limits at every order, an analytic all-order majorant template, all-order endpoint normal-trace matching, strict support-exterior zero-neighborhood vanishing for every residual jet, closed-past zeroBefore compatibility, the official late plateau, and an infinite locally-finite Borel-family theorem hypothesis.",
+    "forbidden_promotions": [
+      "treating a finite endpoint ladder or max_order query as all-order evidence",
+      "using sampled, fitted, numerical, or generic-window evidence for endpoint smoothness",
+      "replacing exact rational T=1 or 3/4 by floating-point aliases",
+      "splicing a theorem for a different residual source, revision, or residual identity",
+      "treating the contract booleans as proof that the actual Section 9 residual satisfies them",
+      "defining f=R and then citing R-f=0 as independent force closure"
+    ],
+    "upstream_contract": [
+      "materialize the actual closed-past Section 9 residual on the selected source/revision",
+      "prove closed-past spacetime derivative bounds and locally-uniform endpoint limits for every natural order on the official 3/4<=t<1 plateau",
+      "supply a genuine analytic all-order majorant theorem rather than finitely queried constants",
+      "prove all-order normal-trace match and strict exterior zero-neighborhood vanishing for the actual residual jets",
+      "prove the infinite locally-finite Borel-family hypotheses for those actual endpoint jets"
+    ],
+    "truth_boundary": {
+      "actual_section9_sequence_verified": false,
+      "section9_all_order_endpoint_limits_verified": false,
+      "residual_artifact_ready": false,
+      "forcing_artifact_ready": false,
+      "endpoint_residual_closure_verified": false,
+      "paper_exact_velocity_available": false,
+      "full_reconstruction": false
+    }
+  }
+}

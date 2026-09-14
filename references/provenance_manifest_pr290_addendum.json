@@ -2,13 +2,13 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "1d812ff01d4575551f804c3599d6efa8985c7d2f",
+  "base_main_commit": "51e7b91bf5bdd9dfd52ecc74f3e1b8cb61def464",
   "integrated_prs": [
     290
   ],
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
-  "scope_note": "Stage-2 Section 5 convergence-lane increments. Adds a fail-closed dependency-tracked finite-prefix C[j,m] certificate before the landed SlowBorel/DiagonalScale recursive cutoff scheduler, plus an exact no-tolerance retained-recurrence cancellation gate before the first-omitted-order tail majorant may be interpreted as a full finite-residual bound.",
+  "scope_note": "Stage-2 Section 5 convergence-lane increments merge-forwarded after Agent 2 PR #301. Adds a fail-closed dependency-tracked finite-prefix C[j,m] certificate before the landed SlowBorel/DiagonalScale recursive cutoff scheduler, plus an exact no-tolerance retained-recurrence cancellation gate before the first-omitted-order tail majorant may be interpreted as a full finite-residual bound. No Agent-2 hierarchy jet or recurrence implementation is duplicated.",
   "layers": [
     {
       "id": "stage-2-all-order-background",
@@ -23,7 +23,7 @@
         "Proposition 5.3"
       ],
       "landed_capability": "Requires every finite-prefix normalized-template bound C[j,m] to carry one hierarchy identity, one source revision, and an explicit nonfuture coefficient dependency chain containing order j; requires the exact triangular index set 1<=j<=J, 0<=m<=j+2; then feeds exactly those certified rows into the existing recursive SlowBorel cutoff scheduler. Missing, duplicate, malformed, wrong-index, cross-hierarchy, cross-revision, future-dependent, or own-order-unbound entries fail closed.",
-      "remaining_boundary": "No uniform paper-derived C[j,m] bounds are derived by this increment. A genuine analytic hierarchy-bound provider remains required before the finite prefix can be populated by actual paper hierarchy data."
+      "remaining_boundary": "No uniform paper-derived C[j,m] bounds are derived by this increment. A genuine analytic hierarchy-bound provider with one all-order envelope satisfying the pinned DiagonalGrowth quantifiers remains required before finite prefixes can be promoted to arbitrary order."
     },
     {
       "id": "stage-2-retained-recurrence-cancellation",
@@ -38,7 +38,7 @@
         "Proposition 5.3"
       ],
       "landed_capability": "Requires every retained order n=0..N to carry one exact formal recurrence identity L_n + sum_{i+j=n} K_ij - previous(A)_n = 0. Formal coefficients are exact Fraction/integer values only; floats and tiny numerical residuals cannot pass. Identities are bound to one hierarchy/source revision/coefficient-state and nonfuture dependency chain. Only a contiguous exact-zero prefix unlocks the existing first-omitted-slow-order tail majorant as a conditional full finite-residual bound.",
-      "remaining_boundary": "The current layer is an exact finite-prefix algebra/provenance gate, not an actual arbitrary-order hierarchy proof. Agent 2 must still supply genuine hierarchy-owned recurrence rows, while Agent 7 must bind those rows and genuine hierarchy-derived C[j,m] bounds to the recursive schedule and close the infinite all-jets-flat/super-algebraic Proposition 5.3 argument."
+      "remaining_boundary": "The current layer is an exact finite-prefix algebra/provenance gate, not an actual arbitrary-order hierarchy proof. Agent 2 must still supply genuine hierarchy-owned recurrence rows for every requested order; Agent 7 must bind those rows and genuine hierarchy-derived C[j,m] bounds to one uniform extension theorem before all-jets-flat/super-algebraic closure can be claimed."
     }
   ]
 }
