@@ -123,7 +123,7 @@ def test_finite_canonical_ladder_uses_one_literal_recursive_schedule_family() ->
     assert cert.levels[0].first_omitted.jet_powers[1].physical_tail_power == 1
     assert cert.levels[1].first_omitted.jet_powers[2].physical_tail_power == 2
 
-    for previous, later in zip(cert.levels, cert.levels[1:], strict=True):
+    for previous, later in zip(cert.levels[:-1], cert.levels[1:], strict=True):
         schedule0 = previous.first_omitted.uncut.schedule
         schedule1 = later.first_omitted.uncut.schedule
         assert schedule1.local_scales[: len(schedule0.local_scales)] == schedule0.local_scales
