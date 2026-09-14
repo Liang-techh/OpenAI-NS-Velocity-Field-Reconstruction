@@ -1,0 +1,45 @@
+{
+  "artifact": "section9_residual_rate_target",
+  "status": "finite-exact-target-selection-only",
+  "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+  "base_main": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "formal_source": {
+    "repository": "https://github.com/openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "files": [
+      "NavierStokes/ActualIterationLedger.lean",
+      "NavierStokes/PhysicalGraphBounds.lean",
+      "NavierStokes/CoordinateAlgebra.lean"
+    ],
+    "symbols": [
+      "NavierStokes.ActualIterationLedger.residualLoss",
+      "NavierStokes.ActualIterationLedger.residualRate",
+      "NavierStokes.ActualIterationLedger.residualRate_tendsto_atTop",
+      "NavierStokes.ActualIterationLedger.eventually_residualRate_ge",
+      "NavierStokes.PhysicalGraphBounds.graphLoss",
+      "NavierStokes.CoordinateAlgebra.A"
+    ]
+  },
+  "machine_replay": {
+    "arithmetic": "fractions.Fraction",
+    "binary_float_inputs": "rejected",
+    "graph_loss": "m*(m+2)",
+    "coordinate_A": "1/2+h",
+    "residual_loss": "graphLoss(m)+1+(2*A(h)+1/2)+beta*m",
+    "residual_rate": "h*(J/10+7/10)-residualLoss(h,beta,m)",
+    "selector": "smallest J>=0 with residualRate(h,beta,J,m)>=target",
+    "minimality": "selected J passes target and J-1 fails whenever J>0",
+    "successor_increment": "h/10"
+  },
+  "truth_boundary": {
+    "fixed_derivative_target_arithmetic_machine_checked": true,
+    "actual_stage_field_consumed": false,
+    "actual_residual_evaluated": false,
+    "actual_oscillatory_wave_defect_consumed": false,
+    "infinite_correction_sequence_certified": false,
+    "eq_9_21_summed_field_certified": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_blocker": "Agent 3 still lacks a source-revision-bound machine-materialized oscillatory wave/defect/stage producer. The exact target selector therefore cannot yet be paired with actual stage residual values.",
+  "downstream_contract": "For any fixed derivative order and exact rational target, this artifact constructs the minimal finite prefix index required by the pinned residual-rate ledger. Once actual Section 8/9 stage residual certificates exist, they can be checked at this selected index without weakening theorem inequalities or inferring Eq. (9.21) convergence from finite data."
+}
