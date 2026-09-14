@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 358,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/DiagonalScale.lean",
+      "NavierStokes/SlowBorelBase.lean"
+    ],
+    "theorems": [
+      "NavierStokes.DiagonalScale.doublingEnvelope",
+      "NavierStokes.DiagonalScale.exists_diagonal_scales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.SlowBorelBase.physical_composition_bound",
+      "NavierStokes.SlowBorelBase.exists_physical_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_physical_tail_target_box.py"
+  ],
+  "tests": [
+    "tests/test_background_physical_tail_target_box.py"
+  ],
+  "provenance": "references/PHYSICAL_TAIL_TARGET_BOX_PROVENANCE.md",
+  "landed_capability": "For any materialized finite cofinal ladder frontier K, certify the complete finite target rectangle 0<=m<=M and 1<=N<=P whenever K>=max(M,P,1), using one literal canonical frontier certificate and its exact derivative-row m!*2^-J*D^m physical-tail ledger for every cell. Requests beyond the finite ladder fail closed.",
+  "no_caller_supplied_coefficient_table": true,
+  "no_caller_supplied_support_table": true,
+  "no_caller_supplied_recurrence_table": true,
+  "no_caller_supplied_cutoff_schedule": true,
+  "no_caller_supplied_physical_chart_constant": true,
+  "truth_boundary": {
+    "finite_all_jet_integer_power_box_verified": true,
+    "one_common_frontier_prefix_verified": true,
+    "finite_target_box_only": true,
+    "provider_totality_verified": false,
+    "numeric_physical_chart_constant_materialized": false,
+    "lean_build_verified": false,
+    "actual_pde_residual_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  },
+  "upstream_requirement": "Agent 2 must expose a total stable assembled/repaired positive-order coefficient provider that theorem-owns actual coefficient objects, C[j,m] majorants, common support, exact retained recurrence evidence, and the analytic inputs replacing PR #353's conditional C_n/radial-extent/rho/rho_prime hypotheses at every requested order; increasing the finite target-box frontier must preserve every previously emitted object/evidence row."
+}
