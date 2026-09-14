@@ -4,16 +4,16 @@ The pinned all-order argument quantifies over every finite physical derivative
 order and every requested decay power.  The preceding prefix-coherence layer
 checks only one weaker/stronger request pair.  This module takes the next
 quantifier step without pretending that a finite hierarchy is infinite: it
-uses the canonical exact target family
+uses the canonical exact positive-target family
 
-    level k  :=  derivatives 0..k, physical q-power at least k,
+    level k >= 1 := derivatives 0..k, physical q-power at least k,
 
 builds the first finitely many levels from one hierarchy provider, and requires
 every adjacent level to extend the same coefficient evidence and the same
 recursive SlowBorel/DiagonalScale schedule literally.
 
 The family is cofinal for exact rational targets: a request (M,P) is dominated
-by k = max(M, ceil(P), 0).  A finite ladder can discharge only requests whose
+by k = max(M, ceil(P), 1).  A finite ladder can discharge only requests whose
 canonical level is already materialized.  Requests beyond that frontier fail
 closed; no provider totality, infinite schedule, actual PDE residual, all-jets
 flatness, or super-algebraic convergence is inferred from the finite ladder.
@@ -45,6 +45,13 @@ def _nonnegative_int(value: int, name: str) -> int:
     return int(value)
 
 
+def _positive_int(value: int, name: str) -> int:
+    result = _nonnegative_int(value, name)
+    if result == 0:
+        raise ValueError(f"{name} must be positive")
+    return result
+
+
 def _exact_fraction(value: Fraction | int, name: str) -> Fraction:
     if isinstance(value, bool):
         raise TypeError(f"{name} must be an exact integer/Fraction")
@@ -64,21 +71,23 @@ def canonical_level_for_physical_target(
     max_derivative_order: int,
     target_physical_power: Fraction | int,
 ) -> int:
-    """Return the least canonical level dominating one exact finite target.
+    """Return the least positive canonical level dominating one exact target.
 
-    Canonical level ``k`` asks for all physical derivatives through ``k`` and
-    power ``k``.  Therefore ``k=max(M,ceil(P),0)`` is exactly the least level
-    dominating ``(M,P)``.
+    Canonical level ``k>=1`` asks for all physical derivatives through ``k``
+    and positive power ``k``.  Therefore ``k=max(M,ceil(P),1)`` is exactly the
+    least level in this family dominating ``(M,P)``.  Using a positive level is
+    deliberate: the landed executable physical-tail theorem correctly rejects
+    nonpositive target powers.
     """
 
     M = _nonnegative_int(max_derivative_order, "max_derivative_order")
     P = _exact_fraction(target_physical_power, "target_physical_power")
-    return max(M, _ceil_fraction(P), 0)
+    return max(M, _ceil_fraction(P), 1)
 
 
 @dataclass(frozen=True)
 class FiniteCofinalPhysicalTailLadderCertificate:
-    """A finite prefix of the canonical cofinal physical-target family."""
+    """A finite prefix of the canonical positive cofinal physical-target family."""
 
     levels: tuple[FinitePhysicalTailPrefactorCertificate, ...]
     max_level: int
@@ -89,9 +98,9 @@ class FiniteCofinalPhysicalTailLadderCertificate:
     physical_tail_theorem: str = PINNED_PHYSICAL_TAIL
 
     def __post_init__(self) -> None:
-        K = _nonnegative_int(self.max_level, "max_level")
-        if len(self.levels) != K + 1:
-            raise ValueError("finite canonical ladder must contain exactly levels 0..max_level")
+        K = _positive_int(self.max_level, "max_level")
+        if len(self.levels) != K:
+            raise ValueError("finite canonical ladder must contain exactly levels 1..max_level")
         if self.formal_revision != PINNED_FORMAL_REVISION:
             raise ValueError("formal_revision does not match the pinned source")
         if self.scale_theorem != PINNED_SCALE_THEOREM:
@@ -108,7 +117,7 @@ class FiniteCofinalPhysicalTailLadderCertificate:
         common_initial_lower_bound: int | None = None
         common_h: Fraction | None = None
 
-        for k, certificate in enumerate(self.levels):
+        for k, certificate in enumerate(self.levels, start=1):
             if not isinstance(certificate, FinitePhysicalTailPrefactorCertificate):
                 raise TypeError("every ladder level must be a FinitePhysicalTailPrefactorCertificate")
 
@@ -135,8 +144,6 @@ class FiniteCofinalPhysicalTailLadderCertificate:
             elif schedule.initial_lower_bound != common_initial_lower_bound:
                 raise ValueError("finite canonical ladder changed the initial scale lower bound")
 
-            # Every physical derivative row at canonical level k must meet the
-            # common target k exactly as required by the finite target theorem.
             if len(certificate.first_omitted.jet_powers) != k + 1:
                 raise RuntimeError("canonical level lost a requested physical derivative row")
             for m, row in enumerate(certificate.first_omitted.jet_powers):
@@ -177,7 +184,7 @@ class FiniteCofinalPhysicalTailLadderCertificate:
                 "requested physical target lies beyond the materialized finite canonical ladder"
             )
 
-        certificate = self.levels[k]
+        certificate = self.levels[k - 1]
         rows = certificate.first_omitted.jet_powers
         if len(rows) <= M:
             raise RuntimeError("selected canonical level does not contain the requested derivative budget")
@@ -188,7 +195,7 @@ class FiniteCofinalPhysicalTailLadderCertificate:
 
     @property
     def canonical_target_cofinality_arithmetic_verified(self) -> bool:
-        """The exact selector k=max(M,ceil(P),0) dominates every rational target."""
+        """The exact selector k=max(M,ceil(P),1) dominates every rational target."""
         return True
 
     @property
@@ -236,7 +243,7 @@ def certify_finite_cofinal_physical_tail_ladder(
     minimum_order: int = 0,
     initial_lower_bound: int = 0,
 ) -> FiniteCofinalPhysicalTailLadderCertificate:
-    """Materialize levels ``0..max_level`` from one provider and one schedule family.
+    """Materialize levels ``1..max_level`` from one provider and one schedule family.
 
     Each level is constructed once.  Adjacent levels are then checked with the
     existing strict prefix-coherence certificate, so a stateful provider that
@@ -244,9 +251,9 @@ def certify_finite_cofinal_physical_tail_ladder(
     a later request fails closed.
     """
 
-    K = _nonnegative_int(max_level, "max_level")
+    K = _positive_int(max_level, "max_level")
     levels: list[FinitePhysicalTailPrefactorCertificate] = []
-    for k in range(K + 1):
+    for k in range(1, K + 1):
         certificate = certify_finite_physical_tail_prefactor(
             h,
             max_derivative_order=k,

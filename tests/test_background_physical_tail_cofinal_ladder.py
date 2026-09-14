@@ -100,11 +100,11 @@ class _Provider:
         )
 
 
-def test_canonical_level_is_exact_least_integer_dominating_target() -> None:
-    assert canonical_level_for_physical_target(0, Fraction(0, 1)) == 0
+def test_canonical_level_is_exact_least_positive_level_dominating_target() -> None:
+    assert canonical_level_for_physical_target(0, Fraction(0, 1)) == 1
     assert canonical_level_for_physical_target(1, Fraction(9, 8)) == 2
     assert canonical_level_for_physical_target(4, Fraction(3, 2)) == 4
-    assert canonical_level_for_physical_target(0, Fraction(-9, 8)) == 0
+    assert canonical_level_for_physical_target(0, Fraction(-9, 8)) == 1
 
     with pytest.raises(TypeError, match="exact integer/Fraction"):
         canonical_level_for_physical_target(1, 1.25)  # type: ignore[arg-type]
@@ -119,10 +119,9 @@ def test_finite_canonical_ladder_uses_one_literal_recursive_schedule_family() ->
         initial_lower_bound=3,
     )
 
-    assert cert.truncation_orders == (4, 11, 23)
-    assert cert.levels[0].first_omitted.jet_powers[0].physical_tail_power >= 0
-    assert cert.levels[1].first_omitted.jet_powers[1].physical_tail_power == 1
-    assert cert.levels[2].first_omitted.jet_powers[2].physical_tail_power == 2
+    assert cert.truncation_orders == (11, 23)
+    assert cert.levels[0].first_omitted.jet_powers[1].physical_tail_power == 1
+    assert cert.levels[1].first_omitted.jet_powers[2].physical_tail_power == 2
 
     for previous, later in zip(cert.levels, cert.levels[1:], strict=True):
         schedule0 = previous.first_omitted.uncut.schedule
@@ -142,7 +141,7 @@ def test_materialized_level_dominates_an_arbitrary_exact_target_within_frontier(
     )
 
     selected = cert.certificate_for_target(1, Fraction(9, 8))
-    assert selected is cert.levels[2]
+    assert selected is cert.levels[1]
     assert cert.required_level(1, Fraction(9, 8)) == 2
     assert all(
         row.physical_tail_power >= Fraction(9, 8)
@@ -162,6 +161,15 @@ def test_target_beyond_materialized_ladder_fails_closed() -> None:
     with pytest.raises(ValueError, match="beyond the materialized finite canonical ladder"):
         cert.certificate_for_target(1, Fraction(9, 8))
 
+    with pytest.raises(ValueError, match="max_level must be positive"):
+        certify_finite_cofinal_physical_tail_ladder(
+            0.25,
+            max_level=0,
+            provider=_Provider(),
+            minimum_order=4,
+            initial_lower_bound=3,
+        )
+
 
 class _LateDriftingProvider(_Provider):
     def __init__(self) -> None:
@@ -173,8 +181,8 @@ class _LateDriftingProvider(_Provider):
         key = (order, derivative_order)
         self._calls[key] = self._calls.get(key, 0) + 1
         base = super().certified_exact_jet_majorant(order, derivative_order)
-        # Level 0 and level 1 see the same row.  The drift appears only when
-        # the deeper level 2 request re-asks for the retained prefix.
+        # Levels 1 and 2 see the same row.  The drift appears only when the
+        # deeper level 3 request re-asks for the retained prefix.
         if key == (1, 0) and self._calls[key] >= 3:
             return ExactHierarchyJetMajorant(
                 order=base.order,
@@ -192,7 +200,7 @@ def test_late_provider_drift_is_rejected_at_the_first_incoherent_level() -> None
     with pytest.raises(ValueError, match=r"shared exact C\[j,m\] majorants changed"):
         certify_finite_cofinal_physical_tail_ladder(
             0.25,
-            max_level=2,
+            max_level=3,
             provider=_LateDriftingProvider(),
             minimum_order=4,
             initial_lower_bound=3,

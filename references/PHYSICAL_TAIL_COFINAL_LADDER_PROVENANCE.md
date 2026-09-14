@@ -4,7 +4,7 @@
 
 Issue #2, Agent 7 downstream/parallel all-order analytic-closure lane.
 
-This increment is stacked directly on PR #354.  It does not implement Agent 2
+This increment is stacked directly on PR #354. It does not implement Agent 2
 hierarchy jets, Eq. (5.7) coefficient recurrence, or coefficient extraction.
 It advances only the quantifier structure of the existing provider-owned
 SlowBorel/DiagonalScale tail certificates.
@@ -27,30 +27,31 @@ Relevant source:
 
 The pinned physical-tail theorem is quantified by one finite derivative order
 and one requested real power, while the admissible-scale construction supplies
-one recursive schedule.  Therefore an executable route toward all-jets
-flatness needs both a cofinal target family and compatibility of its finite
-prefixes with one schedule.
+one recursive schedule. The executable Python physical-tail layer also
+correctly requires the requested power to be positive. Therefore an executable
+route toward all-jets flatness needs both a positive cofinal target family and
+compatibility of its finite prefixes with one schedule.
 
 ## Canonical cofinal target family
 
 `background_physical_tail_cofinal_ladder.py` uses the exact family
 
-`level k = (max physical derivative order k, target physical q-power k)`.
+`level k >= 1 = (max physical derivative order k, target physical q-power k)`.
 
-For an exact rational request `(M,P)`, the least canonical level dominating it
-is computed without floating arithmetic as
+For an exact rational request `(M,P)`, the least level in this positive family
+dominating it is computed without floating arithmetic as
 
-`k = max(M, ceil(P), 0)`.
+`k = max(M, ceil(P), 1)`.
 
-This is the only cofinality statement made by the increment.  It is arithmetic
+This is the only cofinality statement made by the increment. It is arithmetic
 on target indices; it is not a proof that the hierarchy provider exists at
 arbitrary level.
 
 ## Finite materialization
 
-`certify_finite_cofinal_physical_tail_ladder(...)` materializes levels `0..K`
-from one `TargetDrivenExactMajorantProvider`.  Each level is built once through
-the landed physical-tail prefactor chain.  Every adjacent pair is then checked
+`certify_finite_cofinal_physical_tail_ladder(...)` materializes levels `1..K`
+from one `TargetDrivenExactMajorantProvider`. Each level is built once through
+the landed physical-tail prefactor chain. Every adjacent pair is then checked
 with PR #354's `FiniteIncreasingPhysicalTailCertificate`, preserving all of its
 premises unchanged:
 
@@ -62,19 +63,19 @@ premises unchanged:
 - the same local cutoff-scale prefix; and
 - the same recursive doubling-envelope prefix.
 
-A stateful provider that changes a retained `C[1,0]` only on the third/deeper
-request is rejected by regression.  This specifically checks extension
-stability beyond a single pair.
+A stateful provider that keeps a retained `C[1,0]` row unchanged at levels 1
+and 2 but changes it only when level 3 is requested is rejected by regression.
+This specifically checks extension stability beyond a single pair.
 
-A request whose canonical level exceeds `K` fails closed.  The finite ladder is
+A request whose canonical level exceeds `K` fails closed. The finite ladder is
 never extrapolated into an unavailable hierarchy order.
 
 ## Truth boundary
 
 Verified here:
 
-- exact rational canonical-target cofinality arithmetic;
-- one finite canonical ladder `0..K`;
+- exact rational positive canonical-target cofinality arithmetic;
+- one finite canonical ladder `1..K`;
 - literal shared schedule/evidence prefix coherence at every adjacent level;
 - exact physical-power dominance for every derivative row in each materialized
   canonical level.
@@ -93,15 +94,15 @@ Not verified here:
 - paper-exact velocity; or
 - full reconstruction.
 
-A finite prefix of a cofinal target family is still finite evidence.  Passing
+A finite prefix of a cofinal target family is still finite evidence. Passing
 regression or CI cannot promote it to an infinite convergence theorem.
 
 ## Upstream requirement returned to Agent 2
 
 The exact remaining coefficient-level handoff is a **total stable
-assembled/repaired positive-order provider**.  For every order requested by the
+assembled/repaired positive-order provider**. For every order requested by the
 canonical ladder, it must theorem-own the actual coefficient object/state,
 `C[j,m]` derivative majorants, common compact support, exact retained recurrence
 decomposition, and the analytic data replacing PR #353's conditional Eq. (5.8)
-tail hypotheses.  Extending to a deeper level may not alter any previously
+tail hypotheses. Extending to a deeper level may not alter any previously
 emitted object or evidence row.
