@@ -21,7 +21,7 @@ The pinned jet sums at radial radius five reduce the stability threshold to
 quantity in 96-digit upward-rounded ``Decimal`` arithmetic.
 
 This module therefore certifies only those *scalar premises* and exact theorem
-constants.  It does not materialize ``AxisCoefficientSpace`` data, infer a
+constants. It does not materialize ``AxisCoefficientSpace`` data, infer a
 fixed point from tests, sample/fill coefficients, or claim the entrance
 inequalities themselves before a genuine backend supplies the coefficient
 state and its norm-error witness.
@@ -30,7 +30,7 @@ state and its norm-error witness.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import Decimal, ROUND_FLOOR, localcontext
 from fractions import Fraction
 
 from .axis_fixed_point_picard import NaturalPicardContractionCertificate
@@ -50,6 +50,7 @@ LOG_SLOPE_SCALED_RADIUS = Fraction(4, 1)
 CHI_LOG_SLOPE_MIN = Fraction(99, 100)
 CHI_UPPER = Fraction(1, 1)
 LOG_SLOPE_STRICT_LOWER = Fraction(23, 10)
+_DECIMAL_PRECISION = 96
 
 
 def _finite_nonnegative_decimal(value: Decimal, name: str) -> Decimal:
@@ -70,20 +71,41 @@ def _exact_fraction(value: Fraction, name: str) -> Fraction:
     return value
 
 
+def _fixed_point_radius_down(bound: Decimal, Lambda: Decimal) -> Decimal:
+    """Safe lower Decimal for the exact theorem radius ``bound/(2*Lambda)``.
+
+    A backend supplies an *upper* bound for ``||x-referencePair||``. Admission
+    therefore needs a lower approximation to the theorem's allowed radius,
+    never the Picard certificate's upward-rounded product. The denominator is
+    formed at double precision before the final division is rounded toward
+    ``-infinity`` (the ratio is nonnegative).
+    """
+
+    bound = _finite_nonnegative_decimal(bound, "bound")
+    Lambda = _finite_positive_decimal(Lambda, "Lambda")
+    with localcontext() as ctx:
+        ctx.prec = 2 * _DECIMAL_PRECISION
+        denominator = Decimal(2) * Lambda
+    with localcontext() as ctx:
+        ctx.prec = _DECIMAL_PRECISION
+        ctx.rounding = ROUND_FLOOR
+        return +(bound / denominator)
+
+
 @dataclass(frozen=True)
 class NaturalEntranceScaleCertificate:
     """Exact scalar gate used before any profile-level entrance claim.
 
-    ``fixed_point_error_radius_upper`` is the same upward-rounded quantity
-    ``remainderBound/(2*Lambda)`` exposed by the landed Picard certificate.
-    The certificate intentionally stores no coefficient values or profile
-    samples.
+    ``fixed_point_error_radius_safe`` is a downward-rounded lower bound for the
+    exact theorem radius ``K/(2*Lambda)``. Requiring a backend error upper bound
+    to fit this value is conservative and cannot admit a state merely because
+    an upward-rounded Decimal crossed the theorem threshold.
     """
 
     remainder_bound_upper: Decimal
     stability_threshold: Decimal
     Lambda: Decimal
-    fixed_point_error_radius_upper: Decimal
+    fixed_point_error_radius_safe: Decimal
 
     def __post_init__(self) -> None:
         bound = _finite_nonnegative_decimal(
@@ -94,7 +116,7 @@ class NaturalEntranceScaleCertificate:
         )
         Lambda = _finite_positive_decimal(self.Lambda, "Lambda")
         radius = _finite_nonnegative_decimal(
-            self.fixed_point_error_radius_upper, "fixed_point_error_radius_upper"
+            self.fixed_point_error_radius_safe, "fixed_point_error_radius_safe"
         )
 
         pinned = stability_scale_wide(bound)
@@ -103,9 +125,13 @@ class NaturalEntranceScaleCertificate:
         if Lambda < stability:
             raise ValueError("Lambda does not dominate the pinned stability threshold")
 
-        # Reuse the landed Picard arithmetic to pin the theorem's
-        # K/(2*Lambda) radius while keeping this constructor independent of the
-        # naturalRemainder/coefficient-space backend.
+        expected_safe = _fixed_point_radius_down(bound, Lambda)
+        if radius != expected_safe:
+            raise ValueError("fixed-point safe radius is not the pinned K/(2*Lambda) gate")
+
+        # Cross-check directionality against the landed upward-rounded Picard
+        # arithmetic. The safe admission radius must never exceed that upper
+        # product; equality is allowed when the quotient is exactly representable.
         scalar_scale = WideNaturalScaleSelection(
             remainder_bound=bound,
             remainder_lipschitz=Decimal(0),
@@ -115,11 +141,11 @@ class NaturalEntranceScaleCertificate:
             Lambda=Lambda,
             C=SymbolicExponentialThreshold(Decimal(0)),
         )
-        expected = NaturalPicardContractionCertificate.from_scale(
+        picard_upper = NaturalPicardContractionCertificate.from_scale(
             scalar_scale
         ).one_step_radius_upper
-        if radius != expected:
-            raise ValueError("fixed-point error radius is not the pinned K/(2*Lambda) bound")
+        if radius > picard_upper:
+            raise RuntimeError("safe entrance radius exceeds the Picard upper product")
 
     @classmethod
     def from_scale(
@@ -143,11 +169,15 @@ class NaturalEntranceScaleCertificate:
         if picard.Lambda != scale.Lambda:
             raise RuntimeError("Picard/entrance Lambda identity mismatch")
 
+        safe_radius = _fixed_point_radius_down(scale.remainder_bound, scale.Lambda)
+        if safe_radius > picard.one_step_radius_upper:
+            raise RuntimeError("safe entrance radius exceeds actual Picard upper product")
+
         return cls(
             remainder_bound_upper=scale.remainder_bound,
             stability_threshold=scale.stability,
             Lambda=scale.Lambda,
-            fixed_point_error_radius_upper=picard.one_step_radius_upper,
+            fixed_point_error_radius_safe=safe_radius,
         )
 
     def require_backend_norm_error(self, error_upper: Decimal) -> None:
@@ -159,8 +189,8 @@ class NaturalEntranceScaleCertificate:
         """
 
         error = _finite_nonnegative_decimal(error_upper, "error_upper")
-        if error > self.fixed_point_error_radius_upper:
-            raise ValueError("backend norm error exceeds K/(2*Lambda)")
+        if error > self.fixed_point_error_radius_safe:
+            raise ValueError("backend norm error exceeds safe K/(2*Lambda) radius")
 
     def require_log_slope_chi_bounds(
         self,
@@ -171,7 +201,7 @@ class NaturalEntranceScaleCertificate:
         """Check only the exact chi interval needed by the log-slope theorem.
 
         The caller must provide analytically/formally certified exact bounds at
-        the parameter point.  Float/Decimal approximations are rejected so a
+        the parameter point. Float/Decimal approximations are rejected so a
         sampled ``0.99`` cannot masquerade as the theorem hypothesis.
         """
 
