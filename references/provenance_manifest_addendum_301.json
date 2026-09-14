@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "1ea24db9524d34a191ebf07d3e22a7b5a1ecdd6f",
+  "integrated_prs": [],
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Stage-2 Section 5 derivative-chain increment. Adds exact analytic third-eta Eq. (5.6) Omega/X and a hierarchy-owned bridge consuming repaired sixth-mixed U through analytically derived fifth-mixed beta=V/X.",
+  "layers": [
+    {
+      "id": "stage-2-all-order-background",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/background_repaired_history_omega_third_parameter.py",
+      "test": "tests/test_background_omega_third_parameter_jet.py",
+      "provenance": "references/OMEGA_THIRD_PARAMETER_JET_PROVENANCE.md",
+      "paper_locations": ["Eq. (5.2)", "Eq. (5.6)", "Eqs. (5.3)-(5.7)", "Lemma 5.2"],
+      "landed_capability": "The strong lower-history hierarchy now derives value through third eta derivative of Omega_k/X from its owned repaired sixth-mixed U/fifth-mixed beta history, with lower rows delegated to the existing second-eta implementation.",
+      "truth_boundary": "Genuine order-zero strong data and unrepaired base jets remain upstream. No complete third-eta actualLowerSource, hierarchy-owned third-eta f_n, higher Picard closure, uniform bounds, recursive cutoff convergence, all-order residual claim, full reconstruction, or paper-exact velocity is asserted."
+    }
+  ]
+}
