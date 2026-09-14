@@ -250,7 +250,7 @@ def test_support_witness_rejects_nonpaper_box_or_theorem() -> None:
         dependencies=(HierarchySupportDependency(1, "coefficient-1", "provider-1"),),
     )
 
-    with pytest.raises(ValueError, match="B\^2/2"):
+    with pytest.raises(ValueError, match=r"B\^2/2"):
         HierarchyCoefficientSupport(**{**base, "radial_upper": Fraction(9, 1)})
     with pytest.raises(ValueError, match="pinned extendedCoefficient_support"):
         HierarchyCoefficientSupport(**{**base, "support_theorem": "generic.support"})
