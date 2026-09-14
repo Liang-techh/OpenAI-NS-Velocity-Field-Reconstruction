@@ -6,8 +6,12 @@ import pytest
 from openai_ns_reconstruction.background_moment_repair_phi_fifth_mixed_jets import (
     ProfileFifthMixedJet,
 )
+from openai_ns_reconstruction.background_positive_axis import positive_axis_forcing
 from openai_ns_reconstruction.background_regular_flux_fifth_mixed_jets import (
     AxialSixthMixedJet,
+)
+from openai_ns_reconstruction.background_repaired_history_forcing_third_parameter import (
+    hierarchy_owned_positive_axis_forcing_third_parameter_jet,
 )
 from openai_ns_reconstruction.background_repaired_history_sixth_mixed import (
     Section5LowerHistorySixthMixedHierarchy,
@@ -196,3 +200,54 @@ def test_third_eta_lower_source_is_regular_on_axis():
 def test_third_eta_lower_source_fails_closed_on_wrong_hierarchy_type():
     with pytest.raises(TypeError, match="Section5LowerHistorySixthMixedHierarchy"):
         hierarchy_owned_lower_source_third_parameter_jet(object(), 1, 0.0, 0.0)
+
+
+def test_hierarchy_owned_positive_axis_forcing_value_delegates_exactly():
+    hierarchy = _hierarchy()
+    xi = 0.81
+    eta = 0.16
+    actual = hierarchy_owned_positive_axis_forcing_third_parameter_jet(
+        hierarchy, 2, xi, eta
+    )
+    source = hierarchy_owned_lower_source_third_parameter_jet(
+        hierarchy, 2, xi * xi, eta
+    )
+    expected = positive_axis_forcing(H, C, xi, eta, source.value)
+    np.testing.assert_array_equal(actual.value, expected)
+
+
+def test_hierarchy_owned_positive_axis_forcing_third_eta_matches_second_row_derivative():
+    hierarchy = _hierarchy()
+    xi = 0.77
+    eta = -0.18
+    eps = 2.0e-5
+    actual = hierarchy_owned_positive_axis_forcing_third_parameter_jet(
+        hierarchy, 2, xi, eta
+    )
+    plus = hierarchy_owned_positive_axis_forcing_third_parameter_jet(
+        hierarchy, 2, xi, eta + eps
+    ).parameter2
+    minus = hierarchy_owned_positive_axis_forcing_third_parameter_jet(
+        hierarchy, 2, xi, eta - eps
+    ).parameter2
+    oracle = (plus - minus) / (2.0 * eps)
+    np.testing.assert_allclose(actual.parameter3, oracle, rtol=7.0e-5, atol=7.0e-7)
+
+
+def test_hierarchy_owned_positive_axis_forcing_is_regular_on_axis():
+    hierarchy = _hierarchy()
+    actual = hierarchy_owned_positive_axis_forcing_third_parameter_jet(
+        hierarchy, 1, 0.0, 0.17
+    )
+    assert np.isfinite(actual.value).all()
+    assert np.isfinite(actual.parameter).all()
+    assert np.isfinite(actual.parameter2).all()
+    assert np.isfinite(actual.parameter3).all()
+    assert actual.parameter3[3] == 0.0
+
+
+def test_hierarchy_owned_positive_axis_forcing_fails_closed_on_wrong_hierarchy():
+    with pytest.raises(TypeError, match="Section5LowerHistorySixthMixedHierarchy"):
+        hierarchy_owned_positive_axis_forcing_third_parameter_jet(
+            object(), 1, 0.0, 0.0
+        )
