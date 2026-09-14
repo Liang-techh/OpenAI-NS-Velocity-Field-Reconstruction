@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 327,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "module": "NavierStokes/SlowBorelBase.lean",
+    "theorems": [
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.SlowBorelBase.ordinary_tail_bound",
+      "NavierStokes.SlowBorelBase.cutPrefix_eventually_uncut",
+      "NavierStokes.SlowBorelBase.exists_ordinary_uncut_tail"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_joint_jet_target_prefix.py"
+  ],
+  "tests": [
+    "tests/test_background_joint_jet_target_prefix.py"
+  ],
+  "provenance": "references/JOINT_JET_TARGET_PREFIX_PROVENANCE.md",
+  "landed_capability": "For one finite derivative budget M and exact positive target power P, select one hierarchy-owned exact-majorant recursive prefix J shared by every ordinary derivative m<=M, with exact h(J+1)-m>=P arithmetic.",
+  "no_per_derivative_independent_schedule": true,
+  "no_partial_frontier_success": true,
+  "no_caller_supplied_C_rows": true,
+  "upstream_requirement": "Agent 2 must eventually supply actual assembled positive-order coefficient objects, theorem-backed derivative majorants, common support, and exact recurrence evidence for every order requested by J(M,P) under one coefficient state; finite third-eta/Picard frontiers are insufficient.",
+  "truth_boundary": {
+    "joint_finite_jet_target_arithmetic_verified": true,
+    "one_common_recursive_schedule_for_requested_jets": true,
+    "finite_joint_jet_prefix_only": true,
+    "uncut_tail_germ_verified": false,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  }
+}
