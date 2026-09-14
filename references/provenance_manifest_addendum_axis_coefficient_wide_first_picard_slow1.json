@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "observed_main_commit": "065b67e9a3e8e22d697b49ccc67163db60a79783",
+  "stacked_on_pr": 357,
+  "stacked_on_commit": "f070402da90a454d12f944b62dcb10a4b919b345",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow1.py",
+      "tests/test_axis_coefficient_wide_first_picard_slow1.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_SLOW1_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.averageCoefficient",
+        "NavierStokes.AxisContraction.angularSlowCoefficient",
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.average",
+        "NavierStokes.AxisOperators.product",
+        "NavierStokes.AxisOperators.inverseMixed",
+        "NavierStokes.AxisOperators.inverseDotProduct",
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.AxisWeightEstimates.radialDivisor"
+      ]
+    },
+    "capability": "Materializes genuine slow1(x1) from one ActualScheduleWideFirstPicardState using pinned bu=average(u1), averageCoefficient=(2*D)*eta, angularSlowCoefficient=(2*h)*eta, j2/param2/dot2/mixed2 semantics, preserving ordinary Lambda^0..Lambda^-4 and pressure-linear a^2*Lambda^-1..-3 families.",
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "natural_source_x1_materialized": true,
+      "natural_pressure_x1_materialized": true,
+      "slow2_x1_complete": true,
+      "quad1_x1_materialized": true,
+      "lin1_x1_materialized": true,
+      "slow1_x1_materialized": true,
+      "lin2_x1_materialized": true,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "global_axis_norm_certified": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted x1/bu1/u1/phi1/Lambda/AxisData/coefficient data",
+      "default-zero treatment of missing coefficient rows",
+      "binary64 collapse of inverse-Lambda or pressure amplitude families before pinned operations",
+      "dropping pressure-derived a^2/Lambda terms from u1 or average(u1)",
+      "numerical near-zero substituted for average/product/j2/param2/dot2/mixed2 identities",
+      "naturalRemainder(x1), x2, fixed-point, global AxisCoefficientSpace, or paper-exact claims from slow1(x1) alone"
+    ],
+    "remaining_boundary": "All constituent families needed for the first-Picard slow2/quad1/lin1/slow1/lin2 branches are now materialized on the same genuine x1. The next shortest backend increment is typed angular/axial recombination into complete naturalRemainder(x1), including already-landed source(x1), pressure(x1), slow2(x1), quad1(x1), lin1(x1), slow1(x1), and lin2(x1). Only after that may the outer map produce x2; contraction closure, global AxisCoefficientSpace membership, final fixed-point phi/u, derived average/pressure fields, NaturalProfileAssembly, and paper-exact velocity remain unresolved."
+  }
+}
