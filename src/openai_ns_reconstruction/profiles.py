@@ -50,10 +50,10 @@ class LeadingProfile:
                  X: float, eta: float, n: int) -> float:
         X, eta = self._point(X, eta)
         nodes, weights = unit_rule(n)
-        if X == 0:
-            return _finite(fn(0.0, eta), "axis profile value")
         if exact is not None:
             return _finite(exact(X, eta), "radial average")
+        if X == 0:
+            return _finite(fn(0.0, eta), "axis profile value")
         values = np.array([fn(float(X * node), eta) for node in nodes], dtype=float)
         if values.shape != nodes.shape or not np.all(np.isfinite(values)):
             raise ValueError("profile must return finite scalars")
