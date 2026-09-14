@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "issue": 2,
+  "lane": "agent7-all-order-analytic-closure",
+  "parent_pr": 312,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/SlowBorelBase.lean",
+      "NavierStokes/DiagonalScale.lean",
+      "NavierStokes/SlowExpansionResidual.lean"
+    ],
+    "theorems": [
+      "NavierStokes.SlowBorelBase.exists_template_jet_bound",
+      "NavierStokes.SlowBorelBase.exists_admissibleScales",
+      "NavierStokes.SlowBorelBase.ordinary_tail_bound",
+      "NavierStokes.DiagonalScale.exists_diagonal_scales",
+      "NavierStokes.DiagonalScale.exists_uniform_tail_order"
+    ]
+  },
+  "artifacts": [
+    "src/openai_ns_reconstruction/background_target_driven_hierarchy_prefix.py"
+  ],
+  "tests": [
+    "tests/test_background_target_driven_hierarchy_prefix.py"
+  ],
+  "provenance": "references/TARGET_DRIVEN_HIERARCHY_PREFIX_PROVENANCE.md",
+  "landed_capability": "For one exact ordinary-jet derivative order and requested q-power, select the pinned minimal truncation order, query the required triangular C[j,m] bounds and exact retained recurrence identities only from one hierarchy-owned provider, and construct the recursive SlowBorel cutoff plus exact cancellation prefix. A finite hierarchy frontier fails closed at the first missing owned artifact.",
+  "no_caller_supplied_prefix": true,
+  "upstream_requirement": "Agent 2 must expose the real hierarchy through this provider contract for every requested order, with hierarchy-owned derivative/support bounds and exact retained recurrence identities under one source revision and coefficient state. The current finite derivative frontier cannot discharge that universal quantifier.",
+  "truth_boundary": {
+    "finite_target_prefix_only": true,
+    "all_order_hierarchy_verified": false,
+    "infinite_diagonal_schedule_verified": false,
+    "pde_residual_tail_verified": false,
+    "all_jets_flat": false,
+    "super_algebraic": false,
+    "paper_exact": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false
+  }
+}
