@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "3cc438f29524acb068e40bf3a99a8293c9222628",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "scope_note": "Downstream-only Stage-1 bridge from the actual SchedulePressure analytic low-|Z| H^2 margin and pinned sigma=sqrt(m)/20 choice to the exact rational chi lower bound 400/401 > 99/100. No sampled/fitted margin, float threshold, caller sigma/delta, coefficient backend, naturalRemainder, x2, fixed point, or profile field is introduced.",
+  "layers": [
+    {
+      "id": "stage-1-leading-profile",
+      "status": "formal-structure",
+      "artifact": "src/openai_ns_reconstruction/stage1_actual_chi_cutoff.py",
+      "test": "tests/test_stage1_actual_chi_cutoff.py",
+      "provenance": "references/STAGE1_ACTUAL_CHI_CUTOFF_PROVENANCE.md",
+      "paper_locations": [
+        "Theorem 4.6",
+        "NavierStokes/NaturalAxisRange.lean::low_Z_has_H_margin",
+        "NavierStokes/NaturalAxisRange.lean::exists_sigma",
+        "NavierStokes/NaturalAxisRange.lean::exists_cutoff_parameters"
+      ],
+      "landed_capability": "Fail-closed exact-rational chi-threshold certificate for the actual schedule low-|Z| region: the existing analytic margin and pinned sigma=sqrt(m)/20 imply chi >= 400/401 > 99/100, with exact slack 301/40100. Downstream evidence must be Fraction-valued and cannot exceed the certified lower bound.",
+      "remaining_boundary": "Complete genuine AxisCoefficientSpace/naturalRemainder/x2/fixed-point materialization and backend norm witness remain upstream. phi/u/average/pressure, NaturalProfileAssembly, inner-core/heat-exterior matching, support/moment/matching/cone closure, full reconstruction, and paper-exact velocity remain open."
+    }
+  ]
+}
