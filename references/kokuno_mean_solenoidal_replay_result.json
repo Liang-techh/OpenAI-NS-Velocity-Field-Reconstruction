@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "increment": "KOKUNO7-MEAN-SOLENOIDAL-REPLAY-002",
+  "status": "formula-level-replay",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-mean_corrections",
+    "archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+    "component_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+    "checker_path": "proof_sources/mean_corrections/verify_exact.py",
+    "checker_sha256_recorded": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+    "recorded_result_path": "proof_sources/mean_corrections/exact_checks.json",
+    "recorded_result_sha256": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f",
+    "bundle_sha256_recorded": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5"
+  },
+  "local_replay": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "fixture": {
+      "R": "3/2",
+      "epsilon": "1/100",
+      "Psi": "7/5",
+      "D_r_Psi": "-11/7",
+      "d_Z_Psi": "13/17",
+      "D_r_d_Z_Psi": "-19/23"
+    },
+    "actual": {
+      "Delta_beta": "-13/1700",
+      "Delta_gamma": "-67/105",
+      "D_r_Delta_beta": "19/2300",
+      "d_Z_Delta_gamma": "-371/1173",
+      "cylindrical_divergence": "0",
+      "flipped_beta_sign_divergence": "-371/58650"
+    },
+    "tests": "5 passed in 0.06s",
+    "py_compile_exit": 0
+  },
+  "truth_boundary": {
+    "source_checker_executed": false,
+    "actual_compact_correction_field_materialized": false,
+    "actual_wave_defect_consumed": false,
+    "all_stage_convergence_certified": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "acceptance": "pending"
+  }
+}
