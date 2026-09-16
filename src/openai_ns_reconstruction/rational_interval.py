@@ -134,26 +134,14 @@ def map_monotone(
 def outward_round_dyadic(
     interval: RationalInterval,
     step: Fraction,
-    *,
-    lower_bound: Fraction | None = None,
-    upper_bound: Fraction | None = None,
 ) -> RationalInterval:
-    """Round both endpoints outward to ``step`` and optionally intersect bounds."""
+    """Round both endpoints outward to an exact positive dyadic grid step."""
 
     step = positive_fraction(step, "step")
-    lower = floor_grid(interval.lower, step)
-    upper = ceil_grid(interval.upper, step)
-    if lower_bound is not None:
-        if not isinstance(lower_bound, Fraction):
-            raise TypeError("lower_bound must be a Fraction")
-        lower = max(lower_bound, lower)
-    if upper_bound is not None:
-        if not isinstance(upper_bound, Fraction):
-            raise TypeError("upper_bound must be a Fraction")
-        upper = min(upper_bound, upper)
-    if lower > upper:
-        raise ArithmeticError("rounded interval became unordered after bounds")
-    return RationalInterval(lower, upper)
+    return RationalInterval(
+        floor_grid(interval.lower, step),
+        ceil_grid(interval.upper, step),
+    )
 
 
 __all__ = [
