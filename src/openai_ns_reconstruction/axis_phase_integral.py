@@ -56,6 +56,56 @@ def _positive_integer(value: int, name: str) -> int:
     return value
 
 
+def _validate_accumulation(value: str) -> str:
+    if value not in ("exact", "dyadic"):
+        raise ValueError("accumulation must be exactly 'exact' or 'dyadic'")
+    return value
+
+
+def _largest_dyadic_at_most(value: Fraction) -> Fraction:
+    """Return the largest positive power of two no greater than ``value``."""
+
+    if value <= 0:
+        raise ValueError("dyadic step bound must be positive")
+    exponent = value.numerator.bit_length() - value.denominator.bit_length()
+    if exponent >= 0:
+        step = Fraction(1 << exponent)
+    else:
+        step = Fraction(1, 1 << (-exponent))
+    while step > value:
+        step /= 2
+    while step * 2 <= value:
+        step *= 2
+    return step
+
+
+def _floor_fraction(value: Fraction) -> int:
+    return value.numerator // value.denominator
+
+
+def _ceil_fraction(value: Fraction) -> int:
+    return -((-value.numerator) // value.denominator)
+
+
+def _dyadic_cell_enclosure(
+    result: "PhaseCellResult",
+    budget: Fraction,
+) -> tuple[Fraction, Fraction]:
+    """Round one cell enclosure outward and return its dyadic midpoint/radius."""
+
+    step = _largest_dyadic_at_most(budget / 4)
+    lower = result.integral_estimate - result.error_bound
+    upper = result.integral_estimate + result.error_bound
+    lower_units = _floor_fraction(lower / step)
+    upper_units = _ceil_fraction(upper / step)
+    rounded_lower = step * lower_units
+    rounded_upper = step * upper_units
+    return (
+        (rounded_lower + rounded_upper) / 2,
+        (rounded_upper - rounded_lower) / 2,
+    )
+
+
 def _window_endpoint(value: Fraction, name: str) -> Fraction:
     value = _fraction(value, name)
     if not _WINDOW_LEFT <= value <= _WINDOW_RIGHT:
@@ -320,6 +370,7 @@ def validated_phase_integral(
     max_order: int = 4096,
     max_cells: int = 4096,
     max_depth: int = 128,
+    accumulation: str = "exact",
 ) -> PhaseIntegralResult:
     """Integrate the validated rational phase kernel from zero to ``eta``.
 
@@ -331,6 +382,13 @@ def validated_phase_integral(
     rejected parent whose split produced accepted children.  Order retries on
     the same geometry do not consume another cell count.  Any cap or failed
     order gate raises :class:`PhaseIntegrationLimit`.
+
+    ``accumulation="exact"`` retains the exact Taylor midpoint and Cauchy
+    radius sums.  ``accumulation="dyadic"`` first requires each cell Cauchy
+    error to be at most half its budget, then rounds that cell's exact
+    enclosure outward to a power-of-two grid with step at most one quarter of
+    the budget.  The returned midpoint and radius therefore remain an exact
+    rational enclosure while their accumulated denominators stay dyadic.
     """
 
     h = _fraction(h, "h")
@@ -348,6 +406,7 @@ def validated_phase_integral(
     max_depth = _positive_integer(max_depth, "max_depth")
     if initial_order > max_order:
         raise PhaseIntegrationLimit("initial_order exceeds max_order")
+    accumulation = _validate_accumulation(accumulation)
 
     if eta == 0:
         return PhaseIntegralResult(
@@ -397,9 +456,10 @@ def validated_phase_integral(
             continue
 
         budget = absolute_tolerance * (cell_right - cell_left) / total_length
+        order_budget = budget if accumulation == "exact" else budget / 2
         target_order = _order_for_budget(
             result.error_bound,
-            budget,
+            order_budget,
             initial_order,
             max_order,
         )
@@ -412,8 +472,13 @@ def validated_phase_integral(
                 cell_right,
                 target_order,
             )
-        estimate += result.integral_estimate
-        error_bound += result.error_bound
+        if accumulation == "exact":
+            estimate += result.integral_estimate
+            error_bound += result.error_bound
+        else:
+            midpoint, radius = _dyadic_cell_enclosure(result, budget)
+            estimate += midpoint
+            error_bound += radius
         max_order_used = max(max_order_used, result.order)
         accepted_cells += 1
 

@@ -12,9 +12,11 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from decimal import Decimal, localcontext
+from fractions import Fraction
 import math
 from types import MappingProxyType
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_mixed_scale import (
     Channel,
@@ -118,11 +120,24 @@ def _signed_log_terms(
     *,
     amplitude_log: Decimal,
     Lambda: Decimal,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> Mapping[Channel, SignedLogCoefficientJet]:
     _finite_decimal(amplitude_log, "amplitude_log")
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None and not isinstance(
+        amplitude_log_source,
+        AmplitudeLogSource,
+    ):
+        raise TypeError("amplitude_log_source must be AmplitudeLogSource or None")
+    if amplitude_log_source is not None:
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError(
+                "amplitude_log_source midpoint must match amplitude_log"
+            )
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("amplitude_log_source Lambda must match Lambda")
     values: dict[Channel, SignedLogCoefficientJet] = {}
     with localcontext() as ctx:
         ctx.prec = _DECIMAL_PRECISION
@@ -132,19 +147,28 @@ def _signed_log_terms(
             # Keep the finite Decimal amplitude log intact when multiplying by
             # a channel power. The factor log remains at normal local
             # precision; the two components stay separate in the result.
-            scale_precision = max(
-                _DECIMAL_PRECISION,
-                len(amplitude_log.as_tuple().digits) + len(str(q)),
+            if q == 0:
+                log_scale = Decimal(0)
+            else:
+                scale_precision = max(
+                    _DECIMAL_PRECISION,
+                    len(amplitude_log.as_tuple().digits) + len(str(q)),
+                )
+                with localcontext() as scale_ctx:
+                    scale_ctx.prec = scale_precision
+                    log_scale = +(Decimal(q) * amplitude_log)
+            amplitude_log_scale = (
+                None
+                if amplitude_log_source is None
+                else amplitude_log_source.power(q, log_scale)
             )
-            with localcontext() as scale_ctx:
-                scale_ctx.prec = scale_precision
-                log_scale = +(Decimal(q) * amplitude_log)
             values[(q, p)] = SignedLogCoefficientJet(
                 sign=1 if numerator > 0 else -1,
                 log_scale=log_scale,
                 log_factor=+(
                     abs(numerator).ln() - Decimal(p) * Lambda.ln()
                 ),
+                amplitude_log_scale=amplitude_log_scale,
             )
     return MappingProxyType(values)
 
@@ -164,6 +188,7 @@ class FormalAxisProfilePrefix:
     eta_order: int
     Y: Decimal
     eta: float
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         for name in ("angular", "axial", "axial_average", "pressure"):
@@ -177,7 +202,25 @@ class FormalAxisProfilePrefix:
         _index(self.radial_order, "radial_order")
         _index(self.eta_order, "eta_order")
         _decimal_y(self.Y)
-        _eta_in_window(self.eta)
+        eta = _eta_in_window(self.eta)
+        source = self.amplitude_log_source
+        if source is not None:
+            if not isinstance(source, AmplitudeLogSource):
+                raise TypeError(
+                    "amplitude_log_source must be AmplitudeLogSource or None"
+                )
+            if source.midpoint != self.amplitude_log:
+                raise ValueError(
+                    "amplitude_log_source midpoint must match amplitude_log"
+                )
+            if source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "amplitude_log_source Lambda must match Lambda"
+                )
+            if source.eta != Fraction.from_float(eta):
+                raise ValueError(
+                    "amplitude_log_source eta must match the profile eta"
+                )
 
     @property
     def paper_exact(self) -> bool:
@@ -202,6 +245,7 @@ class FormalAxisProfilePrefix:
             self.angular,
             amplitude_log=self.amplitude_log,
             Lambda=self.Lambda,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
     def axial_terms_log(self) -> Mapping[Channel, SignedLogCoefficientJet]:
@@ -211,6 +255,7 @@ class FormalAxisProfilePrefix:
             self.axial,
             amplitude_log=self.amplitude_log,
             Lambda=self.Lambda,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
     def axial_average_terms_log(self) -> Mapping[Channel, SignedLogCoefficientJet]:
@@ -220,6 +265,7 @@ class FormalAxisProfilePrefix:
             self.axial_average,
             amplitude_log=self.amplitude_log,
             Lambda=self.Lambda,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
     def pressure_terms_log(self) -> Mapping[Channel, SignedLogCoefficientJet]:
@@ -229,7 +275,33 @@ class FormalAxisProfilePrefix:
             self.pressure,
             amplitude_log=self.amplitude_log,
             Lambda=self.Lambda,
+            amplitude_log_source=self.amplitude_log_source,
         )
+
+
+def _actual_amplitude_log_source(
+    solver: FormalAxisCoefficientSolverState,
+    eta: float,
+) -> AmplitudeLogSource:
+    """Return the source bound to the actual x1 amplitude, fail-closed."""
+
+    try:
+        amplitude = solver.x1.remainder.axial.wide_pressure.amplitude
+    except AttributeError as error:
+        raise ValueError(
+            "actual solver is missing its bound amplitude log source"
+        ) from error
+    source_factory = getattr(amplitude, "log_amplitude_source", None)
+    if not callable(source_factory):
+        raise ValueError(
+            "actual amplitude does not expose log_amplitude_source"
+        )
+    source = source_factory(eta)
+    if not isinstance(source, AmplitudeLogSource):
+        raise TypeError("actual amplitude log source has the wrong type")
+    if source.eta != Fraction.from_float(eta):
+        raise ValueError("actual amplitude log source eta mismatch")
+    return source
 
 
 def formal_axis_profile_prefix(
@@ -249,6 +321,7 @@ def formal_axis_profile_prefix(
     eta_order = _index(eta_order, "eta_order")
     Y = _decimal_y(Y)
     eta = _eta_in_window(eta)
+    amplitude_log_source = _actual_amplitude_log_source(solver, eta)
     rows = solver.profile_jet_prefix(max_n, eta_order, eta)
     angular_rows = tuple(pair[0] for pair in rows)
     axial_rows = tuple(pair[1] for pair in rows)
@@ -280,12 +353,13 @@ def formal_axis_profile_prefix(
         axial_average=axial_average,
         pressure=pressure,
         Lambda=solver.Lambda,
-        amplitude_log=solver.amplitude_log(eta),
+        amplitude_log=amplitude_log_source.midpoint,
         max_n=max_n,
         radial_order=radial_order,
         eta_order=eta_order,
         Y=Y,
         eta=eta,
+        amplitude_log_source=amplitude_log_source,
     )
 
 

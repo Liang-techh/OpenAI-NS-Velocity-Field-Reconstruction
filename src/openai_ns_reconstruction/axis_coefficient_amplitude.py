@@ -43,6 +43,7 @@ from .axis_coefficient_reference_state import (
     actual_schedule_reference_axis_state,
 )
 from .axis_coefficient_rational_data import RationalAxisCoefficientData
+from .axis_amplitude_log_scale import AmplitudeLogSource, AmplitudePowerLogScale
 from .axis_phase_integral import PhaseIntegralResult, validated_phase_integral
 from .axis_phase_log_enclosure import RationalLogAmplitudeEnclosure
 from .natural_axis import real_phase
@@ -118,6 +119,7 @@ def _cached_phase_integral(
         max_order=max_order,
         max_cells=max_cells,
         max_depth=max_depth,
+        accumulation="dyadic",
     )
 
 
@@ -130,23 +132,41 @@ class SignedLogCoefficientJet:
     on the current theorem scale: ``log_scale`` is about 10^784 in magnitude,
     while a derivative correction can be only about 10^3.  A fixed-precision
     Decimal sum would erase that correction even though both inputs are known.
+
+    Optional ``amplitude_log_scale`` metadata encloses only the common phase
+    and log scale supplied by the source and returned power.  It does not
+    enclose the derivative factor or the full coefficient arithmetic.
     """
 
     sign: int
     log_scale: Decimal | None
     log_factor: Decimal | None
+    amplitude_log_scale: AmplitudePowerLogScale | None = None
 
     def __post_init__(self) -> None:
         if self.sign not in (-1, 0, 1):
             raise ValueError("sign must be -1, 0, or 1")
         if self.sign == 0:
-            if self.log_scale is not None or self.log_factor is not None:
+            if (
+                self.log_scale is not None
+                or self.log_factor is not None
+                or self.amplitude_log_scale is not None
+            ):
                 raise ValueError("zero jet must not carry logarithmic components")
             return
         if self.log_scale is None or self.log_factor is None:
             raise ValueError("nonzero jet requires both logarithmic components")
         _finite_decimal(self.log_scale, "log_scale")
         _finite_decimal(self.log_factor, "log_factor")
+        if self.amplitude_log_scale is not None:
+            if not isinstance(self.amplitude_log_scale, AmplitudePowerLogScale):
+                raise TypeError(
+                    "amplitude_log_scale must be AmplitudePowerLogScale"
+                )
+            if self.amplitude_log_scale.returned_log_scale != self.log_scale:
+                raise ValueError(
+                    "amplitude_log_scale returned_log_scale must match log_scale"
+                )
 
     @classmethod
     def zero(cls) -> "SignedLogCoefficientJet":
@@ -256,6 +276,27 @@ class ActualScheduleAmplitudeLogState:
 
         return self.default_log_amplitude_enclosure(eta).midpoint_decimal()
 
+    def log_amplitude_source(self, eta: float) -> AmplitudeLogSource:
+        """Return the exact phase/log-scale source for one normalized eta."""
+
+        eta = float(eta)
+        if not math.isfinite(eta):
+            raise ValueError("eta must be finite")
+        eta_fraction = Fraction.from_float(eta)
+        enclosure = self.default_log_amplitude_enclosure(eta)
+        if eta == 0.0:
+            midpoint = self.C_exponent.copy_negate()
+        else:
+            midpoint = enclosure.midpoint_decimal()
+        return AmplitudeLogSource(
+            h=self.rational_data.h,
+            j=self.rational_data.j,
+            sigma=self.rational_data.sigma,
+            eta=eta_fraction,
+            enclosure=enclosure,
+            midpoint=midpoint,
+        )
+
     def phase_enclosure(self, eta: float) -> PhaseIntegralResult:
         """Return the cached default exact-rational phase integral interval."""
 
@@ -351,6 +392,7 @@ class ActualScheduleAmplitudeLogState:
             max_order=max_order,
             max_cells=max_cells,
             max_depth=max_depth,
+            accumulation="dyadic",
         )
         return RationalLogAmplitudeEnclosure(
             result.lower,
@@ -385,13 +427,16 @@ class ActualScheduleAmplitudeLogState:
         if factor == 0:
             return SignedLogCoefficientJet.zero()
 
+        source = self.log_amplitude_source(float(eta))
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
             log_factor = +abs(factor).ln()
+            log_scale = source.midpoint
         return SignedLogCoefficientJet(
             sign=1 if factor > 0 else -1,
-            log_scale=self.log_amplitude(float(eta)),
+            log_scale=log_scale,
             log_factor=log_factor,
+            amplitude_log_scale=source.power(1, log_scale),
         )
 
     def binary64_state(self) -> AxisCoefficientJetState:

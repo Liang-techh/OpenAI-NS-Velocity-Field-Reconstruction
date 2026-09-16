@@ -16,6 +16,7 @@ from fractions import Fraction
 import math
 from types import MappingProxyType
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_formal_solver import FormalAxisCoefficientSolverState
 from .axis_coefficient_mixed_scale import Channel, MixedScaleCoefficient
@@ -182,6 +183,7 @@ class WideNaturalProfilePrefix:
     Lambda: Decimal
     amplitude_log: Decimal
     _solver: FormalAxisCoefficientSolverState = field(repr=False, compare=False)
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         X = _finite_decimal(self.X, "X")
@@ -198,6 +200,24 @@ class WideNaturalProfilePrefix:
             raise ValueError("max_n must be a nonnegative integer")
         _physical_eta(self.eta)
         _transport_geometry(self._solver, self.eta)
+        source = self.amplitude_log_source
+        if source is not None:
+            if not isinstance(source, AmplitudeLogSource):
+                raise TypeError(
+                    "amplitude_log_source must be AmplitudeLogSource or None"
+                )
+            if source.midpoint != self.amplitude_log:
+                raise ValueError(
+                    "amplitude_log_source midpoint must match amplitude_log"
+                )
+            if source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "amplitude_log_source Lambda must match Lambda"
+                )
+            if source.eta != Fraction.from_float(_physical_eta(self.eta)):
+                raise ValueError(
+                    "amplitude_log_source eta must match the profile eta"
+                )
         for name in (
             "F",
             "E",
@@ -340,13 +360,21 @@ class WideNaturalProfilePrefix:
         for (q, p), numerator in coefficient.items():
             if numerator == 0:
                 continue
-            scale_precision = max(
-                _DECIMAL_PRECISION,
-                len(self.amplitude_log.as_tuple().digits) + len(str(q)) + 2,
+            if q == 0:
+                log_scale = Decimal(0)
+            else:
+                scale_precision = max(
+                    _DECIMAL_PRECISION,
+                    len(self.amplitude_log.as_tuple().digits) + len(str(q)) + 2,
+                )
+                with localcontext() as context:
+                    context.prec = scale_precision
+                    log_scale = +(Decimal(q) * self.amplitude_log)
+            amplitude_log_scale = (
+                None
+                if self.amplitude_log_source is None
+                else self.amplitude_log_source.power(q, log_scale)
             )
-            with localcontext() as context:
-                context.prec = scale_precision
-                log_scale = +(Decimal(q) * self.amplitude_log)
             with localcontext() as context:
                 context.prec = _DECIMAL_PRECISION
                 log_factor = +(
@@ -356,6 +384,7 @@ class WideNaturalProfilePrefix:
                 sign=1 if numerator > 0 else -1,
                 log_scale=log_scale,
                 log_factor=log_factor,
+                amplitude_log_scale=amplitude_log_scale,
             )
         return MappingProxyType(result)
 
@@ -399,6 +428,13 @@ def wide_natural_profile_prefix(
         eta,
         eta_order=1,
     )
+    amplitude_log_source = profile.amplitude_log_source
+    eta_amplitude_log_source = eta_profile.amplitude_log_source
+    if amplitude_log_source is None or eta_amplitude_log_source is None:
+        raise ValueError(
+            "actual wide profile requires a bound amplitude log source"
+        )
+    amplitude_log_source.assert_compatible(eta_amplitude_log_source)
 
     # The angular coefficient is the value jet only.  Multiplication by the
     # physical amplitude is represented by the odd q=1 channel shift.
@@ -458,6 +494,7 @@ def wide_natural_profile_prefix(
         Lambda=Lambda,
         amplitude_log=profile.amplitude_log,
         _solver=solver,
+        amplitude_log_source=amplitude_log_source,
     )
 
 

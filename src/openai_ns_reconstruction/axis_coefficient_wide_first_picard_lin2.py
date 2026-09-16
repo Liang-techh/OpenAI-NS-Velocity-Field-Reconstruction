@@ -31,6 +31,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal, localcontext
 import math
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_data import (
     ActualScheduleAxisCoefficientData,
@@ -78,6 +79,7 @@ def _signed_log_term(
     *,
     amplitude_log: Decimal,
     Lambda: Decimal,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
     """Encode ``a^2 * numerator / Lambda`` without narrowing its magnitude."""
 
@@ -86,6 +88,13 @@ def _signed_log_term(
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
     if numerator == 0:
         return SignedLogCoefficientJet.zero()
 
@@ -97,6 +106,11 @@ def _signed_log_term(
         sign=1 if numerator > 0 else -1,
         log_scale=log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=(
+            None
+            if amplitude_log_source is None
+            else amplitude_log_source.power(2, log_scale)
+        ),
     )
 
 
@@ -120,12 +134,26 @@ class MixedScaleFirstPicardLin2CoefficientJet:
     pressure_linear_inverse_lambda_numerator: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         for name, value in self.__dict__.items():
+            if name == "amplitude_log_source":
+                continue
             _finite_decimal(value, name)
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError(
+                    "amplitude_log_source midpoint must match amplitude_log"
+                )
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     def ordinary_correction_terms_decimal(self) -> tuple[Decimal, Decimal]:
         """Return the separate ``Lambda^-1`` and ``Lambda^-2`` terms."""
@@ -149,6 +177,7 @@ class MixedScaleFirstPicardLin2CoefficientJet:
             self.pressure_linear_inverse_lambda_numerator,
             amplitude_log=self.amplitude_log,
             Lambda=self.Lambda,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
     def pressure_linear_terms_log(self) -> tuple[SignedLogCoefficientJet]:
@@ -377,9 +406,8 @@ class ActualScheduleWideFirstPicardLin2State:
         n = _index(n, "n")
         m = _index(m, "m")
         eta = _eta_in_window(eta)
-        amplitude_log = _finite_decimal(
-            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude(eta),
-            "actual amplitude log",
+        amplitude_log_source = (
+            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude_source(eta)
         )
         return MixedScaleFirstPicardLin2CoefficientJet(
             ordinary_reference=self._linear_action("reference", n, m, eta),
@@ -402,7 +430,8 @@ class ActualScheduleWideFirstPicardLin2State:
                 eta,
             ),
             Lambda=self.Lambda,
-            amplitude_log=amplitude_log,
+            amplitude_log=amplitude_log_source.midpoint,
+            amplitude_log_source=amplitude_log_source,
         )
 
 

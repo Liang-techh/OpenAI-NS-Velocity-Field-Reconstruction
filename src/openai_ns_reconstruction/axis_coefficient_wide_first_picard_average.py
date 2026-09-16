@@ -63,6 +63,7 @@ def _average_signed_log(
         sign=value.sign,
         log_scale=value.log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=value.amplitude_log_scale,
     )
 
 

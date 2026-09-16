@@ -141,21 +141,48 @@ amplification and symbolic `C` exponent transport. The explicit
 `log_amplitude_enclosure` path requests a log tolerance and passes
 `absolute_log_tolerance/Fraction(Lambda)` to the phase integrator. `phase_samples` and
 `legacy_log_amplitude_diagnostic` retain the former 4001-point trapezoid only as a named diagnostic.
-Focused acceptance returned `5 passed in 0.17 s` for
+The historical pre-default commands returned `5 passed in 0.17 s` for
 `tests\test_axis_phase_integral.py`, `3 passed in 0.17 s` for
 `tests\test_axis_amplitude_phase_enclosure.py`, and `6 passed in 0.16 s` for the prior amplitude
-compatibility target. On the actual selected fixture at `eta=-1/50`, direct phase tolerance
-`10^-12` returned in `10.664 s` with `225` cells, maximum order `64`, estimate
-`0.05073499503328993`, and error `7.357907e-13`; the legacy 4001-point call took `0.002 s`,
-returned `1.521550417558555`, and fell outside the validated interval by about `+1.470815`. This is
-one fixture, not a general benchmark. The chosen rational phase interval and its selected scalar
-`Lambda` amplification are conditional; they do not certify SchedulePressure quadrature, theorem
-parameter selection, `C` selection, coefficient roundoff, global `AxisSpace`, or the full
-reconstruction. The combined new-default regression command was interrupted after approximately
-`9` minutes of CPU-heavy exact-phase work without a pytest summary or failure traceback, so the
-default replacement has no accepted production test result. The earlier `14` focused phase,
-bridge, and amplitude tests are pre-default historical evidence only. This leaves a performance
-and regression-evidence blocker before the default path can be accepted.
+compatibility target. The completed bounded command
+`python -m pytest -q tests\test_axis_phase_integral.py -W error` returned `7 passed in 0.20 s`.
+The combined default regression
+`python -m pytest -q tests\test_axis_amplitude_validated_default.py tests\test_axis_coefficient_amplitude.py tests\test_axis_phase_log_enclosure.py -W error`
+returned `13 passed in 43.71 s` under the hard `120 s` cap. On the actual selected fixture at
+`eta=-1/50`, the prior direct phase measurement at tolerance `10^-12` returned in `10.664 s` with
+`225` cells, maximum order `64`, estimate `0.05073499503328993`, and error `7.357907e-13`.
+The current default validated binary64-input diagnostic hit its `45 s` cap before completing, so no
+precise runtime is claimed. These are selected-fixture observations, not a general benchmark. The
+chosen rational phase interval and its selected scalar `Lambda` amplification remain
+conditional; they do not certify SchedulePressure quadrature, theorem parameter selection, `C`
+selection, coefficient roundoff, global `AxisSpace`, or the full reconstruction. A prior combined
+default attempt was interrupted after approximately `9` minutes without a pytest summary and remains
+historical; the bounded command above resolves the default-regression performance blocker. Full-suite,
+demo, and strict-audit acceptance remain separate. The metadata chain now reaches the assigned
+remainder, second-Picard, formal-solver, and wide-profile surfaces. The next Stage 1 boundary is
+validated Bell-factor/logarithm enclosures, general coefficient arithmetic, SchedulePressure and
+parameter proofs, and compatible global `AxisSpace` certification.
+
+The amplitude log-scale metadata evidence now totals `35` distinct tests from the prior
+`24` foundation/integration/mixed/aggregate tests, `5` nonlinear metadata tests in `0.80 s`,
+`3` remainder/second-Picard tests in `0.38 s`, and `3` formal/wide-profile tests in `0.22 s`.
+The chain reaches all assigned remainder, second-Picard, formal, and wide-profile metadata
+surfaces, with shared actual-source and cross-branch identity checks. A separate batch of the
+existing default test file returned `4 passed in 20.19 s` and included one new nonzero-eta
+(`eta=-0.02`) metadata test, bringing the new metadata total to `36` distinct tests. These
+focused results do not certify exact Bell-factor/logarithm enclosures, general coefficient
+arithmetic, SchedulePressure or parameter selection, global weighted-space bounds, or the
+paper-exact reconstruction.
+
+## Current local checkpoint — 2026-09-14
+
+The full suite immediately preceding the metadata chain returned `1936 passed, 1 failed` in
+`1723.45 s`; the sole fixture-argument issue was fixed and its affected test subsequently
+passed in `0.20 s`. The full suite has not been rerun after that fix, so current full acceptance
+remains pending. The demo exited `0` with all checks; the direct strict-audit module exited `2`
+as expected and this was confirmed in its log, while an earlier console-wrapper exit `1` is
+historical. All relevant source compilation and review checks passed. The local checkpoint is
+being saved without an external push.
 
 **New constructed component:** `heat_exterior.py` implements Appendix A.6, Eqs. (A.32)–(A.38):
 H and its derivatives, exterior K(r,t), E_heat(X,eta), and centrifugal pressure normalized

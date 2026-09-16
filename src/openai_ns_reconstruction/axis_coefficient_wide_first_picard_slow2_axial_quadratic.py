@@ -31,6 +31,7 @@ from dataclasses import dataclass
 from decimal import Decimal, localcontext
 import math
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_data import actual_schedule_axis_coefficient_data
 from .axis_coefficient_reference_state import WINDOW_LEFT, WINDOW_RIGHT
@@ -70,12 +71,20 @@ def _signed_log_term(
     amplitude_power: int,
     Lambda: Decimal,
     inverse_lambda_power: int,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
     _finite_decimal(numerator, "numerator")
     _finite_decimal(amplitude_log, "amplitude_log")
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
     if amplitude_power <= 0 or inverse_lambda_power < 0:
         raise ValueError("invalid signed-log scale powers")
     if numerator == 0:
@@ -92,6 +101,11 @@ def _signed_log_term(
         sign=1 if numerator > 0 else -1,
         log_scale=log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=(
+            None
+            if amplitude_log_source is None
+            else amplitude_log_source.power(amplitude_power, log_scale)
+        ),
     )
 
 
@@ -110,12 +124,24 @@ class MixedScaleFirstPicardSlow2AxialQuadraticCoefficientJet:
     pressure_square_inverse_lambda_squared_numerator: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         for name, value in self.__dict__.items():
+            if name == "amplitude_log_source":
+                continue
             _finite_decimal(value, name)
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     def ordinary_correction_terms_decimal(
         self,
@@ -141,6 +167,7 @@ class MixedScaleFirstPicardSlow2AxialQuadraticCoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
+                amplitude_log_source=self.amplitude_log_source,
             )
             for power, numerator in enumerate(
                 (
@@ -159,6 +186,7 @@ class MixedScaleFirstPicardSlow2AxialQuadraticCoefficientJet:
             amplitude_power=4,
             Lambda=self.Lambda,
             inverse_lambda_power=2,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
 
@@ -226,11 +254,13 @@ class ActualScheduleWideFirstPicardSlow2AxialQuadraticState:
     @staticmethod
     def _zero_like(
         source: MixedScaleFirstPicardAxialSquareCoefficientJet,
+        amplitude_log_source: AmplitudeLogSource | None = None,
     ) -> MixedScaleFirstPicardSlow2AxialQuadraticCoefficientJet:
         return MixedScaleFirstPicardSlow2AxialQuadraticCoefficientJet(
             **{name: Decimal(0) for name in _FIELDS},
             Lambda=source.Lambda,
             amplitude_log=source.amplitude_log,
+            amplitude_log_source=amplitude_log_source,
         )
 
     def jet(
@@ -245,11 +275,17 @@ class ActualScheduleWideFirstPicardSlow2AxialQuadraticState:
         m = _index(m, "m")
         eta = _eta_in_window(eta)
         square_state = wide_first_picard_axial_square_state(self.x1)
+        amplitude_log_source = (
+            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude_source(eta)
+        )
 
         # Route row-zero through the real square state so all upstream
         # theorem-data/coordinate guards are still exercised.
         if n == 0:
-            return self._zero_like(square_state.jet(0, m, eta))
+            return self._zero_like(
+                square_state.jet(0, m, eta),
+                amplitude_log_source=amplitude_log_source,
+            )
 
         current = square_state.jet(n - 1, m, eta)
         previous = square_state.jet(n - 1, m - 1, eta) if m > 0 else None
@@ -271,7 +307,8 @@ class ActualScheduleWideFirstPicardSlow2AxialQuadraticState:
         return MixedScaleFirstPicardSlow2AxialQuadraticCoefficientJet(
             **transformed,
             Lambda=current.Lambda,
-            amplitude_log=current.amplitude_log,
+            amplitude_log=amplitude_log_source.midpoint,
+            amplitude_log_source=amplitude_log_source,
         )
 
 

@@ -236,14 +236,16 @@ class ActualScheduleReferenceWidePressureLogState:
         if factor == 0:
             return SignedLogCoefficientJet.zero()
 
+        source = self.amplitude.log_amplitude_source(eta)
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
-            log_scale = +(Decimal(2) * self.amplitude.log_amplitude(eta))
+            log_scale = +(Decimal(2) * source.midpoint)
             log_factor = +abs(factor).ln()
         return SignedLogCoefficientJet(
             sign=1 if factor > 0 else -1,
             log_scale=log_scale,
             log_factor=log_factor,
+            amplitude_log_scale=source.power(2, log_scale),
         )
 
     def binary64_state(self) -> AxisCoefficientJetState:

@@ -34,6 +34,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal, localcontext
 import math
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_reference_state import WINDOW_LEFT, WINDOW_RIGHT
 from .axis_coefficient_wide_first_picard import ActualScheduleWideFirstPicardState
@@ -95,6 +96,7 @@ def _signed_log_term(
     amplitude_power: int,
     Lambda: Decimal,
     inverse_lambda_power: int,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
     """Encode one normalized numerator in the companion signed-log format."""
 
@@ -103,6 +105,13 @@ def _signed_log_term(
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
     if amplitude_power <= 0 or inverse_lambda_power < 0:
         raise ValueError("invalid signed-log scale powers")
     if numerator == 0:
@@ -118,6 +127,11 @@ def _signed_log_term(
         sign=1 if numerator > 0 else -1,
         log_scale=log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=(
+            None
+            if amplitude_log_source is None
+            else amplitude_log_source.power(amplitude_power, log_scale)
+        ),
     )
 
 
@@ -136,12 +150,24 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
     pressure_square_inverse_lambda_squared_numerator: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         for name, value in self.__dict__.items():
+            if name == "amplitude_log_source":
+                continue
             _finite_decimal(value, name)
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     def ordinary_correction_terms_decimal(
         self,
@@ -171,6 +197,7 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
+                amplitude_log_source=self.amplitude_log_source,
             )
             for power, numerator in enumerate(
                 (
@@ -191,6 +218,7 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
             amplitude_power=4,
             Lambda=self.Lambda,
             inverse_lambda_power=2,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
 
@@ -375,10 +403,14 @@ class ActualScheduleWideFirstPicardSlow2State:
                 self.param.jet(n, m, eta),
             ),
         )
-        amplitude_log = _finite_decimal(
-            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude(eta),
-            "actual amplitude log",
+        canonical_source = getattr(branch_jets[0][1], "amplitude_log_source", None)
+        if not isinstance(canonical_source, AmplitudeLogSource):
+            raise ValueError("slow2 branch jet missing amplitude log source metadata")
+        actual_source = (
+            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude_source(eta)
         )
+        canonical_source.assert_compatible(actual_source)
+        amplitude_log = _finite_decimal(canonical_source.midpoint, "actual amplitude log")
         for branch_name, branch_jet in branch_jets:
             self._validate_jet_metadata(
                 branch_jet,
@@ -386,6 +418,12 @@ class ActualScheduleWideFirstPicardSlow2State:
                 Lambda=self.Lambda,
                 amplitude_log=amplitude_log,
             )
+            branch_source = getattr(branch_jet, "amplitude_log_source", None)
+            if not isinstance(branch_source, AmplitudeLogSource):
+                raise ValueError(
+                    f"{branch_name} jet missing amplitude log source metadata"
+                )
+            canonical_source.assert_compatible(branch_source)
 
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
@@ -398,6 +436,7 @@ class ActualScheduleWideFirstPicardSlow2State:
             **sums,
             Lambda=self.Lambda,
             amplitude_log=amplitude_log,
+            amplitude_log_source=canonical_source,
         )
 
 

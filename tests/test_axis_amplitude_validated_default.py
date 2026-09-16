@@ -26,6 +26,11 @@ def _schedule_data() -> TailData:
     )
 
 
+def _is_power_of_two_denominator(value: Fraction) -> bool:
+    denominator = value.denominator
+    return denominator > 0 and denominator & (denominator - 1) == 0
+
+
 @pytest.fixture(scope="module")
 def crossing():
     amplitude = actual_schedule_amplitude_log_state(_schedule_data(), 0.05)
@@ -40,6 +45,10 @@ def test_default_phase_crossing_is_enclosed_and_beats_legacy_diagnostic(crossing
     amplitude, _, phase, _, legacy_log = crossing
     assert amplitude.phase_absolute_tolerance == Fraction(1, 10**12)
     assert phase.error_bound <= amplitude.phase_absolute_tolerance
+    assert all(
+        _is_power_of_two_denominator(value)
+        for value in (phase.integral_estimate, phase.error_bound, phase.lower, phase.upper)
+    )
     assert float(phase.integral_estimate) == pytest.approx(
         0.05073499503328993,
         rel=0,
@@ -105,3 +114,24 @@ def test_default_phase_tolerance_and_hostile_decimal_context(crossing) -> None:
         assert amplitude.default_log_amplitude_enclosure(eta) == baseline_interval
         assert amplitude.log_amplitude(eta) == baseline_point
 
+
+def test_nonzero_eta_jet_binds_validated_source_and_power_width(crossing) -> None:
+    amplitude, eta, _, enclosure, _ = crossing
+    jet = amplitude.jet_log(0, 0, eta)
+    metadata = jet.amplitude_log_scale
+
+    assert metadata is not None
+    source = metadata.source
+    assert metadata.q == 1
+    assert source.eta == Fraction.from_float(eta)
+    assert source.enclosure == enclosure
+    assert source.enclosure.width > 0
+    assert metadata.returned_log_scale == jet.log_scale
+    assert metadata.delta_lower == source.enclosure.lower - Fraction(jet.log_scale)
+    assert metadata.delta_upper == source.enclosure.upper - Fraction(jet.log_scale)
+
+    with localcontext() as context:
+        context.prec = 96
+        returned_double_scale = +(Decimal(2) * jet.log_scale)
+    doubled = source.power(2, returned_double_scale)
+    assert doubled.delta_upper - doubled.delta_lower == 2 * source.enclosure.width

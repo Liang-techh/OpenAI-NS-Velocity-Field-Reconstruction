@@ -2,22 +2,29 @@
 
 Continue the full reconstruction goal in GOAL_OBJECTIVE.md. Read AGENTS.md, README.md, RECONSTRUCTION_PLAN.md, references/provenance_manifest.json, and recent reports. Do not mark Stage 1 or the full goal complete.
 
-## Superseded latest status — 2026-09-14
+## Current local status — 2026-09-14
 
-The battery checkpoint below is historical and is superseded by the current local
-merge work. The merge target is `origin/main` at `065b67e`; verify completion in
-the local git state and do not infer that any uncommitted merge was uploaded
-remotely.
-The default amplitude path now uses the validated exact-Fraction phase midpoint
-with tolerance `1/10^12`, a bounded exact-input cache of size `16`, explicit
-`Lambda` interval transport, and the named legacy 4001-point diagnostic. See
-`reports/stage1_default_phase_resume_integration.md` for the current boundary
-and measured fixture evidence. The combined default-path regression was interrupted
-after approximately `9` minutes of CPU-heavy exact-phase work without a pytest
-summary or failure traceback; it is an unaccepted performance blocker, not a pass
-or failure result. The earlier `14` focused phase/bridge/amplitude tests predate
-the default replacement and remain historical evidence only. Do not rerun them or
-the historical full suite in this batch.
+The battery checkpoint below is historical. The local merge includes `origin/main` at
+`065b67e`; no remote push is claimed. The default amplitude path uses the validated exact-
+Fraction phase midpoint with tolerance `1/10^12`, bounded exact-input cache size `16`, explicit
+`Lambda` interval transport, and the named legacy 4001-point diagnostic. The completed bounded
+phase command returned `7 passed in 0.20 s`, and the combined default regression returned
+`13 passed in 43.71 s` under the hard `120 s` cap.
+
+The metadata chain now reaches all assigned remainder, second-Picard, formal-solver, and
+wide-profile surfaces. Focused evidence totals `35` distinct metadata tests: the prior `24`,
+plus `5` nonlinear in `0.80 s`, `3` remainder/second-Picard in `0.38 s`, and `3` formal/wide
+profile in `0.22 s`. The separate existing-default-file batch returned `4 passed in 20.19 s`
+and included one new nonzero-eta (`eta=-0.02`) metadata test, bringing the new metadata total
+to `36` distinct tests.
+
+The full suite immediately preceding this metadata work returned `1936 passed, 1 failed` in
+`1723.45 s`; the sole fixture-argument issue was fixed and its affected test subsequently
+passed in `0.20 s`. The full suite has not been rerun after that fix, so current full acceptance
+remains pending. The demo exited `0` with all checks. The direct strict-audit module exited `2`
+as expected and this was confirmed in its log; an earlier console-wrapper exit `1` is historical.
+The next Stage 1 boundary is exact Bell-factor/logarithm enclosures, general coefficient
+arithmetic, SchedulePressure and parameter proofs, and global weighted-space certification.
 
 Antigravity is unavailable for this work and its GitHub heartbeat is paused; no
 future dependency on that exchange is assumed. The exact phase bridge remains a

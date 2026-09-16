@@ -861,7 +861,7 @@ def test_guards_reject_bad_indices_eta_and_x1(complete_state, x1) -> None:
         wide_first_picard_slow2_state(object())
 
 
-def test_provenance_manifest_keeps_complete_slow2_boundary_fail_closed() -> None:
+def test_provenance_manifest_keeps_complete_slow2_boundary_fail_closed(x1) -> None:
     root = Path(__file__).resolve().parents[1]
     manifest = json.loads(
         (

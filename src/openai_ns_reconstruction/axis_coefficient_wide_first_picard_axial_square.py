@@ -39,6 +39,7 @@ from dataclasses import dataclass
 from decimal import Decimal, localcontext
 import math
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_reference_state import WINDOW_LEFT, WINDOW_RIGHT
 from .axis_coefficient_wide_first_picard import ActualScheduleWideFirstPicardState
@@ -75,6 +76,7 @@ def _signed_log_term(
     amplitude_power: int,
     Lambda: Decimal,
     inverse_lambda_power: int,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
     """Encode ``a^amplitude_power * numerator / Lambda^inverse_lambda_power``.
 
@@ -89,6 +91,13 @@ def _signed_log_term(
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
     if amplitude_power <= 0 or inverse_lambda_power < 0:
         raise ValueError("invalid signed-log scale powers")
     if numerator == 0:
@@ -105,6 +114,11 @@ def _signed_log_term(
         sign=1 if numerator > 0 else -1,
         log_scale=log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=(
+            None
+            if amplitude_log_source is None
+            else amplitude_log_source.power(amplitude_power, log_scale)
+        ),
     )
 
 
@@ -133,6 +147,7 @@ class MixedScaleFirstPicardAxialSquareCoefficientJet:
     pressure_square_inverse_lambda_squared_numerator: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         for name, value in (
@@ -172,6 +187,17 @@ class MixedScaleFirstPicardAxialSquareCoefficientJet:
             _finite_decimal(value, name)
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError(
+                    "amplitude_log_source midpoint must match amplitude_log"
+                )
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     def ordinary_correction_terms_decimal(
         self,
@@ -201,6 +227,7 @@ class MixedScaleFirstPicardAxialSquareCoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=1,
+                amplitude_log_source=self.amplitude_log_source,
             ),
             _signed_log_term(
                 self.pressure_linear_inverse_lambda_squared_numerator,
@@ -208,6 +235,7 @@ class MixedScaleFirstPicardAxialSquareCoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=2,
+                amplitude_log_source=self.amplitude_log_source,
             ),
             _signed_log_term(
                 self.pressure_linear_inverse_lambda_cubed_numerator,
@@ -215,6 +243,7 @@ class MixedScaleFirstPicardAxialSquareCoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=3,
+                amplitude_log_source=self.amplitude_log_source,
             ),
         )
 
@@ -227,6 +256,7 @@ class MixedScaleFirstPicardAxialSquareCoefficientJet:
             amplitude_power=4,
             Lambda=self.Lambda,
             inverse_lambda_power=2,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
 
@@ -363,8 +393,8 @@ class ActualScheduleWideFirstPicardAxialSquareState:
             pressure_linear = [+value for value in pressure_linear]
             pressure_square_power2 = +pressure_square_power2
 
-        amplitude_log = (
-            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude(eta)
+        amplitude_log_source = (
+            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude_source(eta)
         )
         return MixedScaleFirstPicardAxialSquareCoefficientJet(
             ordinary_reference=ordinary[0],
@@ -377,7 +407,8 @@ class ActualScheduleWideFirstPicardAxialSquareState:
             pressure_linear_inverse_lambda_cubed_numerator=pressure_linear[3],
             pressure_square_inverse_lambda_squared_numerator=pressure_square_power2,
             Lambda=self.Lambda,
-            amplitude_log=amplitude_log,
+            amplitude_log=amplitude_log_source.midpoint,
+            amplitude_log_source=amplitude_log_source,
         )
 
 

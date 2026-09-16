@@ -40,6 +40,7 @@ from functools import lru_cache
 import math
 from typing import Callable
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_data import (
     ActualScheduleAxisCoefficientData,
@@ -396,12 +397,20 @@ def _signed_log_term(
     amplitude_log: Decimal,
     Lambda: Decimal,
     inverse_lambda_power: int,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
     _finite_decimal(numerator, "pressure-linear numerator")
     _finite_decimal(amplitude_log, "amplitude_log")
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
     if inverse_lambda_power < 1:
         raise ValueError("pressure-linear inverse-Lambda power must be positive")
     if numerator == 0:
@@ -416,6 +425,11 @@ def _signed_log_term(
         sign=1 if numerator > 0 else -1,
         log_scale=log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=(
+            None
+            if amplitude_log_source is None
+            else amplitude_log_source.power(2, log_scale)
+        ),
     )
 
 
@@ -427,6 +441,7 @@ class MixedScaleFirstPicardAngularNonlinearCoefficientJet:
     pressure_linear: tuple[Decimal, ...]
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         _ChannelVector(self.ordinary, self.pressure_linear)
@@ -434,6 +449,17 @@ class MixedScaleFirstPicardAngularNonlinearCoefficientJet:
         _finite_decimal(self.amplitude_log, "amplitude_log")
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError(
+                    "amplitude_log_source midpoint must match amplitude_log"
+                )
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     def ordinary_correction_terms_decimal(self) -> tuple[Decimal, Decimal, Decimal, Decimal]:
         """Return ordinary ``Lambda^-1`` through ``Lambda^-4`` terms."""
@@ -479,6 +505,7 @@ class MixedScaleFirstPicardAngularNonlinearCoefficientJet:
                 amplitude_log=self.amplitude_log,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
+                amplitude_log_source=self.amplitude_log_source,
             )
             for power, numerator in enumerate(self.pressure_linear, start=1)
         )
@@ -506,7 +533,10 @@ class ActualScheduleWideFirstPicardAngularNonlinearState:
         _finite_decimal(self.x1.Lambda, "x1 Lambda")
         if self.x1.Lambda <= 0:
             raise ValueError("x1 Lambda must be positive")
-        _finite_decimal(amplitude.log_amplitude(0.0), "actual amplitude log at eta=0")
+        _finite_decimal(
+            amplitude.log_amplitude_source(0.0).midpoint,
+            "actual amplitude log at eta=0",
+        )
         data = actual_schedule_axis_coefficient_data(self.x1.reference)
         if data.epsilon != self.x1.epsilon:
             raise ValueError("AxisData epsilon must match the first Picard state")
@@ -529,9 +559,10 @@ class ActualScheduleWideFirstPicardAngularNonlinearState:
         if amplitude.epsilon != self.x1.epsilon:
             raise ValueError("amplitude epsilon must match the first Picard state")
 
-    def _actual_amplitude_log(self, eta: float) -> Decimal:
-        amplitude_log = self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude(eta)
-        return _finite_decimal(amplitude_log, "actual amplitude log")
+    def _actual_amplitude_log_source(self, eta: float) -> AmplitudeLogSource:
+        return self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude_source(
+            eta
+        )
 
     def _validate_jet_pair_identity(
         self,
@@ -543,7 +574,11 @@ class ActualScheduleWideFirstPicardAngularNonlinearState:
             raise ValueError("phi1 Lambda mismatch")
         if axial.Lambda != self.Lambda:
             raise ValueError("u1 Lambda mismatch")
-        amplitude_log = self._actual_amplitude_log(eta)
+        amplitude_log_source = self._actual_amplitude_log_source(eta)
+        amplitude_log = _finite_decimal(
+            amplitude_log_source.midpoint,
+            "actual amplitude log",
+        )
         pressure = axial.pressure_over_two_lambda
         if not isinstance(pressure, SignedLogCoefficientJet):
             raise TypeError("u1 pressure channel must be a SignedLogCoefficientJet")
@@ -554,6 +589,10 @@ class ActualScheduleWideFirstPicardAngularNonlinearState:
                 expected_log_scale = +(_TWO * amplitude_log)
             if pressure.log_scale != expected_log_scale:
                 raise ValueError("u1 pressure amplitude log mismatch")
+            source = pressure.amplitude_log_scale
+            if source is None or source.q != 2:
+                raise ValueError("u1 pressure amplitude source metadata is missing")
+            source.source.assert_compatible(amplitude_log_source)
         return amplitude_log
 
     @property
@@ -656,12 +695,13 @@ class ActualScheduleWideFirstPicardAngularNonlinearState:
         vector: _ChannelVector,
         eta: float,
     ) -> MixedScaleFirstPicardAngularNonlinearCoefficientJet:
-        amplitude_log = self._actual_amplitude_log(eta)
+        amplitude_log_source = self._actual_amplitude_log_source(eta)
         return MixedScaleFirstPicardAngularNonlinearCoefficientJet(
             ordinary=vector.ordinary,
             pressure_linear=vector.pressure_linear,
             Lambda=self.Lambda,
-            amplitude_log=amplitude_log,
+            amplitude_log=amplitude_log_source.midpoint,
+            amplitude_log_source=amplitude_log_source,
         )
 
     def quad1_jet(

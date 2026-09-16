@@ -109,15 +109,80 @@ create a real pole.  The proof assumes exact rational inputs and exact gate
 comparisons; interval parameter inputs require an interval version of the same
 inequalities.
 
+## Dyadic outward accumulation contract
+
+The exact cell theorem above can be accumulated without constructing a large
+LCM across all cell denominators.  For a positive-oriented cell, let
+
+```text
+b = tau * cell_length / total_length
+```
+
+be its exact rational budget, and accept the cell only after the exact local
+Cauchy error satisfies `E <= b/2`.  Choose an exact dyadic quantum
+`d = 2^q <= b/4`; `q` may be positive for a large budget or negative for a
+small one.  Round the exact cell interval outward to
+
+```text
+lo = floor((I-E)/d) * d,
+hi = ceil((I+E)/d) * d.
+```
+
+The true cell integral remains in `[lo,hi]`.  Since the exact interval radius
+is `E`, its rounded radius obeys
+
+```text
+(hi-lo)/2 <= E+d <= b/2+b/4 = 3*b/4.
+```
+
+Summing cell intervals therefore gives total radius at most
+`3/4 * sum(b) <= 3*tau/4`, while every accumulated endpoint is dyadic.  Sums
+of dyadics have a common power-of-two denominator, so the accumulator avoids
+the large general-rational LCM.  This is a rounding enclosure, not a claim
+that the rounded midpoint is the exact Taylor sum; all local `I` and `E`
+calculations remain exact/certified before projection.
+
+The implementation keeps the public exact-Fraction accumulation mode for
+compatibility and selects this dyadic outward mode for the default amplitude
+path.  This does not weaken the requested tolerance or change any
+`h,j,sigma,eta` input.  A
+cell that fails the denominator gate, `E <= b/2`, or any finite order/cell/depth
+cap fails closed before rounding.  For negative `eta`, accumulate sorted
+positive cells and negate the final interval as `[-upper,-lower]`; `eta=0`
+returns `[0,0]`.  Exact integer floor/ceiling handles negative `I` and dyadic
+quanta outside binary64 range.
+
+## Bounded performance evidence
+
+A bounded diagnostic at the selected `eta=-1/50` completed the exact rational
+phase path in `10.850 s`, with `225` accepted cells and maximum order `64`.
+The affine log-interval transport took `0.558 s`.  The Decimal midpoint path
+measured `11.307 s`, with stack evidence in Decimal/Fraction conversion.  The
+current default validated binary64-input diagnostic began at `23.019 s` and hit
+the `45 s` bound before completing; no precise runtime is claimed.
+
+The completed slow2 validation recorded
+`python -m pytest -q tests/test_axis_phase_integral.py -W error` as `7 passed
+in 0.20 s`.  The combined command
+`python -m pytest -q tests/test_axis_amplitude_validated_default.py
+tests/test_axis_coefficient_amplitude.py tests/test_axis_phase_log_enclosure.py
+-W error` returned `13 passed in 43.71 s` under the hard `120 s` cap.  This
+resolves the default-regression performance blocker for that bounded command.
+The earlier approximately `9` minute interruption remains historical and had
+no pytest summary; no full-suite or paper-exact claim follows.
+
 ## Boundary
 
 This validates only the chosen rational kernel integral.  It does not enclose
 the theorem-selected real `h,j,sigma` if they are merely binary64 approximations,
 the wide `Lambda`, `C` or `log(C)` offset, the SchedulePressure datum, amplitude
 magnitude, accumulated coefficient arithmetic, global `AxisSpace` norms, or
-the final reconstruction.  The current fixed 4001-point phase trapezoid remains
-a numerical point estimate for `log_amplitude`; `log_amplitude_enclosure` now
-implements and links this exact cell theorem using the selected finite `Lambda`
-and symbolic `C` exponent.  That affine bridge is conditional on those selected
+the final reconstruction.  The exact-Fraction public integral mode remains a
+compatibility path; the default amplitude mode is intended to use the dyadic
+outward accumulator once its implementation baseline lands.  The selected
+finite `Lambda` and symbolic `C` affine bridge remains conditional on those
 scalar representations and does not itself certify their theorem-side
-parameter selection.
+parameter selection.  The next Stage 1 boundary is propagating the phase
+interval uncertainty through the genuine wide natural-remainder/profile chain
+and independently bounding coefficient arithmetic errors; global weighted
+`AxisSpace` certification remains downstream.

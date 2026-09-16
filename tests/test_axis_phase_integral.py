@@ -20,6 +20,11 @@ from openai_ns_reconstruction.axis_phase_integral import (
 F = Fraction
 
 
+def _is_power_of_two_denominator(value: Fraction) -> bool:
+    denominator = value.denominator
+    return denominator > 0 and denominator & (denominator - 1) == 0
+
+
 def _poly_add(left: dict[int, F], right: dict[int, F]) -> dict[int, F]:
     result = dict(left)
     for degree, value in right.items():
@@ -148,7 +153,56 @@ def test_adaptive_subdivision_and_geometry_caps_fail_closed() -> None:
         validated_phase_integral(**kwargs, max_cells=4096, max_depth=1)
 
 
-def test_independent_global_geometric_oracle_overlaps_validated_interval() -> None:
+def test_dyadic_mode_validation_orientation_and_multi_cell_accumulation() -> None:
+    base = dict(
+        h=F(0),
+        j=F(0),
+        sigma=F(1),
+        eta=F(1, 2),
+        absolute_tolerance=F(1, 10**10),
+        initial_order=16,
+        max_order=128,
+        max_cells=4096,
+        max_depth=128,
+    )
+    with pytest.raises(ValueError, match="accumulation"):
+        validated_phase_integral(**base, accumulation="binary")
+    with pytest.raises(ValueError, match="accumulation"):
+        validated_phase_integral(
+            **{**base, "eta": F(0)}, accumulation="binary"
+        )
+
+    zero = validated_phase_integral(
+        **{**base, "eta": F(0)}, accumulation="dyadic"
+    )
+    assert zero.integral_estimate == zero.lower == zero.upper == 0
+    assert zero.error_bound == zero.cell_count == 0
+
+    positive = validated_phase_integral(**base, accumulation="dyadic")
+    negative = validated_phase_integral(
+        **{**base, "eta": F(-1, 2)}, accumulation="dyadic"
+    )
+    assert positive.cell_count > 1
+    assert positive.integral_estimate != 0
+    assert positive.error_bound <= base["absolute_tolerance"]
+    assert negative.integral_estimate == positive.integral_estimate
+    assert negative.lower == positive.lower
+    assert negative.upper == positive.upper
+    assert all(
+        _is_power_of_two_denominator(value)
+        for value in (
+            positive.integral_estimate,
+            positive.error_bound,
+            positive.lower,
+            positive.upper,
+        )
+    )
+
+
+@pytest.mark.parametrize("accumulation", ("exact", "dyadic"))
+def test_independent_global_geometric_oracle_overlaps_validated_interval(
+    accumulation,
+) -> None:
     # Synthetic exact-rational kernel: H(x) = 9*x/2 - 4*x^3, L(x) = 1,
     # sigma = 10.  Expand 1/(sigma^2 + H^2) globally in H^2/sigma^2;
     # this is independent of the cell-center Taylor recurrence.
@@ -183,6 +237,7 @@ def test_independent_global_geometric_oracle_overlaps_validated_interval() -> No
         absolute_tolerance=tolerance,
         initial_order=16,
         max_order=512,
+        accumulation=accumulation,
     )
     assert result.lower <= oracle_upper
     assert oracle_lower <= result.upper

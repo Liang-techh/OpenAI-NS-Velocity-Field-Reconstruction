@@ -26,6 +26,7 @@ from decimal import Decimal, localcontext
 import math
 from typing import Callable, Literal
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_data import (
     ActualScheduleAxisCoefficientData,
@@ -97,6 +98,7 @@ def _signed_log_term(
     amplitude_power: int,
     Lambda: Decimal,
     inverse_lambda_power: int,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
     """Encode one normalized pressure channel without forming its magnitude."""
 
@@ -107,16 +109,29 @@ def _signed_log_term(
         raise ValueError("invalid signed-log scale powers")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
     if numerator == 0:
         return SignedLogCoefficientJet.zero()
     with localcontext() as ctx:
         ctx.prec = _DECIMAL_PRECISION
+        log_scale = +(Decimal(amplitude_power) * amplitude_log)
         return SignedLogCoefficientJet(
             sign=1 if numerator > 0 else -1,
-            log_scale=+(Decimal(amplitude_power) * amplitude_log),
+            log_scale=log_scale,
             log_factor=+(
                 abs(numerator).ln()
                 - Decimal(inverse_lambda_power) * Lambda.ln()
+            ),
+            amplitude_log_scale=(
+                None
+                if amplitude_log_source is None
+                else amplitude_log_source.power(amplitude_power, log_scale)
             ),
         )
 
@@ -208,6 +223,7 @@ class MixedScaleFirstPicardNaturalRemainderCoefficientJet:
     pressure_square_inverse_lambda_cubed: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         _RemainderVector(
@@ -219,6 +235,15 @@ class MixedScaleFirstPicardNaturalRemainderCoefficientJet:
         _finite_decimal(self.amplitude_log, "amplitude_log")
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     @property
     def ordinary_reference(self) -> Decimal:
@@ -270,6 +295,7 @@ class MixedScaleFirstPicardNaturalRemainderCoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
+                amplitude_log_source=self.amplitude_log_source,
             )
             for power, numerator in enumerate(self.pressure_linear)
         )
@@ -283,6 +309,7 @@ class MixedScaleFirstPicardNaturalRemainderCoefficientJet:
             amplitude_power=4,
             Lambda=self.Lambda,
             inverse_lambda_power=3,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
 
@@ -301,6 +328,7 @@ class SecondPicardCoefficientJet:
     pressure_square_inverse_lambda_fourth: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.ordinary, tuple) or len(self.ordinary) != 7:
@@ -319,6 +347,15 @@ class SecondPicardCoefficientJet:
         _finite_decimal(self.amplitude_log, "amplitude_log")
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
     def ordinary_terms_decimal(self) -> tuple[Decimal, ...]:
         """Return all seven ordinary terms at local 96-digit precision."""
@@ -342,6 +379,7 @@ class SecondPicardCoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
+                amplitude_log_source=self.amplitude_log_source,
             )
             for power, numerator in enumerate(self.pressure_linear)
         )
@@ -353,6 +391,7 @@ class SecondPicardCoefficientJet:
             amplitude_power=4,
             Lambda=self.Lambda,
             inverse_lambda_power=4,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
 
@@ -469,11 +508,11 @@ class ActualScheduleWideFirstPicardRemainderState:
     def amplitude(self):
         return self.x1.remainder.axial.wide_pressure.amplitude
 
+    def amplitude_log_source(self, eta: float) -> AmplitudeLogSource:
+        return self.amplitude.log_amplitude_source(_eta_in_window(eta))
+
     def amplitude_log(self, eta: float) -> Decimal:
-        return _finite_decimal(
-            self.amplitude.log_amplitude(_eta_in_window(eta)),
-            "actual amplitude log",
-        )
+        return _finite_decimal(self.amplitude_log_source(eta).midpoint, "actual amplitude log")
 
     @staticmethod
     def _validate_metadata(
@@ -482,6 +521,7 @@ class ActualScheduleWideFirstPicardRemainderState:
         name: str,
         Lambda: Decimal,
         amplitude_log: Decimal,
+        amplitude_log_source: AmplitudeLogSource,
     ) -> None:
         jet_Lambda = _finite_decimal(getattr(value, "Lambda", None), f"{name}.Lambda")
         if jet_Lambda != Lambda:
@@ -492,6 +532,10 @@ class ActualScheduleWideFirstPicardRemainderState:
         )
         if jet_amplitude_log != amplitude_log:
             raise ValueError(f"{name} amplitude log mismatch")
+        source = getattr(value, "amplitude_log_source", None)
+        if not isinstance(source, AmplitudeLogSource):
+            raise ValueError(f"{name} amplitude log source metadata is missing")
+        amplitude_log_source.assert_compatible(source)
 
     def _inverse_l_jet(self, m: int, eta: float) -> Decimal:
         value = _decimal_from_float(
@@ -530,11 +574,17 @@ class ActualScheduleWideFirstPicardRemainderState:
                 pressure_square_inverse_lambda_cubed=+pressure_square,
             )
 
-    def _raw_angular_source(self, n: int, m: int, eta: float) -> _RemainderVector:
+    def _raw_angular_source(
+        self,
+        n: int,
+        m: int,
+        eta: float,
+        amplitude_log_source: AmplitudeLogSource,
+    ) -> _RemainderVector:
         lin = self.lin1.jet(n, m, eta)
         quad = self.angular_nonlinear.quad1_jet(n, m, eta)
         slow = self.angular_nonlinear.slow1_jet(n, m, eta)
-        amplitude_log = self.amplitude_log(eta)
+        amplitude_log = amplitude_log_source.midpoint
         if _finite_decimal(lin.Lambda, "lin1.Lambda") != self.Lambda:
             raise ValueError("lin1 Lambda mismatch")
         self._validate_metadata(
@@ -542,12 +592,14 @@ class ActualScheduleWideFirstPicardRemainderState:
             name="quad1",
             Lambda=self.Lambda,
             amplitude_log=amplitude_log,
+            amplitude_log_source=amplitude_log_source,
         )
         self._validate_metadata(
             slow,
             name="slow1",
             Lambda=self.Lambda,
             amplitude_log=amplitude_log,
+            amplitude_log_source=amplitude_log_source,
         )
 
         ordinary = [Decimal(0)] * _ORDINARY_WIDTH
@@ -575,22 +627,30 @@ class ActualScheduleWideFirstPicardRemainderState:
             )
         return value
 
-    def _raw_axial_source(self, n: int, m: int, eta: float) -> _RemainderVector:
+    def _raw_axial_source(
+        self,
+        n: int,
+        m: int,
+        eta: float,
+        amplitude_log_source: AmplitudeLogSource,
+    ) -> _RemainderVector:
         lin = self.lin2.jet(n, m, eta)
         slow = self.slow2.jet(n, m, eta)
         pressure = self.pressure.normalized_pressure_factors(n, m, eta)
-        amplitude_log = self.amplitude_log(eta)
+        amplitude_log = amplitude_log_source.midpoint
         self._validate_metadata(
             lin,
             name="lin2",
             Lambda=self.Lambda,
             amplitude_log=amplitude_log,
+            amplitude_log_source=amplitude_log_source,
         )
         self._validate_metadata(
             slow,
             name="slow2",
             Lambda=self.Lambda,
             amplitude_log=amplitude_log,
+            amplitude_log_source=amplitude_log_source,
         )
         if not isinstance(pressure, tuple) or len(pressure) != 5:
             raise ValueError("pressure normalized factors must have five channels")
@@ -653,6 +713,7 @@ class ActualScheduleWideFirstPicardRemainderState:
         n: int,
         m: int,
         eta: float,
+        amplitude_log_source: AmplitudeLogSource,
         cache: dict[tuple[str, int, int], _RemainderVector],
         raw_cache: dict[tuple[str, int, int], _RemainderVector],
     ) -> _RemainderVector:
@@ -661,7 +722,14 @@ class ActualScheduleWideFirstPicardRemainderState:
             # The raw formulas are supplied at one coefficient coordinate;
             # inverseL is the common outer fixed field multiplication.
             def raw_provider(i: int, k: int) -> _RemainderVector:
-                return self._raw_cached(side, i, k, eta, raw_cache)
+                return self._raw_cached(
+                    side,
+                    i,
+                    k,
+                    eta,
+                    amplitude_log_source,
+                    raw_cache,
+                )
 
             cache[key] = self._multiply_inverse_l(raw_provider, n, m, eta)
         return cache[key]
@@ -672,14 +740,15 @@ class ActualScheduleWideFirstPicardRemainderState:
         n: int,
         m: int,
         eta: float,
+        amplitude_log_source: AmplitudeLogSource,
         raw_cache: dict[tuple[str, int, int], _RemainderVector],
     ) -> _RemainderVector:
         key = (side, n, m)
         if key not in raw_cache:
             raw_cache[key] = (
-                self._raw_angular_source(n, m, eta)
+                self._raw_angular_source(n, m, eta, amplitude_log_source)
                 if side == "angular"
-                else self._raw_axial_source(n, m, eta)
+                else self._raw_axial_source(n, m, eta, amplitude_log_source)
             )
         return raw_cache[key]
 
@@ -689,6 +758,7 @@ class ActualScheduleWideFirstPicardRemainderState:
         n: int,
         m: int,
         eta: float,
+        amplitude_log_source: AmplitudeLogSource,
         source_cache: dict[tuple[str, int, int], _RemainderVector],
         raw_cache: dict[tuple[str, int, int], _RemainderVector],
         resolve_cache: dict[tuple[str, int, int], _RemainderVector],
@@ -697,7 +767,15 @@ class ActualScheduleWideFirstPicardRemainderState:
         key = (side, n, m)
         if key in resolve_cache:
             return resolve_cache[key]
-        source = self._source(side, n, m, eta, source_cache, raw_cache)
+        source = self._source(
+            side,
+            n,
+            m,
+            eta,
+            amplitude_log_source,
+            source_cache,
+            raw_cache,
+        )
         if n == 0:
             resolve_cache[key] = source
             return source
@@ -717,6 +795,7 @@ class ActualScheduleWideFirstPicardRemainderState:
                     n - 1,
                     m - k,
                     eta,
+                    amplitude_log_source,
                     source_cache,
                     raw_cache,
                     resolve_cache,
@@ -732,6 +811,7 @@ class ActualScheduleWideFirstPicardRemainderState:
         n: int,
         m: int,
         eta: float,
+        amplitude_log_source: AmplitudeLogSource,
     ) -> tuple[_RemainderVector, _RemainderVector]:
         source_cache: dict[tuple[str, int, int], _RemainderVector] = {}
         raw_cache: dict[tuple[str, int, int], _RemainderVector] = {}
@@ -743,25 +823,35 @@ class ActualScheduleWideFirstPicardRemainderState:
                 n,
                 m,
                 eta,
+                amplitude_log_source,
                 source_cache,
                 raw_cache,
                 resolve_cache,
                 chi_cache,
             ),
-            self._source("axial", n, m, eta, source_cache, raw_cache),
+            self._source(
+                "axial",
+                n,
+                m,
+                eta,
+                amplitude_log_source,
+                source_cache,
+                raw_cache,
+            ),
         )
 
     def _jet_from_vector(
         self,
         value: _RemainderVector,
-        eta: float,
+        amplitude_log_source: AmplitudeLogSource,
     ) -> MixedScaleFirstPicardNaturalRemainderCoefficientJet:
         return MixedScaleFirstPicardNaturalRemainderCoefficientJet(
             ordinary=value.ordinary,
             pressure_linear=value.pressure_linear,
             pressure_square_inverse_lambda_cubed=value.pressure_square_inverse_lambda_cubed,
             Lambda=self.Lambda,
-            amplitude_log=self.amplitude_log(eta),
+            amplitude_log=amplitude_log_source.midpoint,
+            amplitude_log_source=amplitude_log_source,
         )
 
     def jet_pair(
@@ -778,8 +868,12 @@ class ActualScheduleWideFirstPicardRemainderState:
         n = _index(n, "n")
         m = _index(m, "m")
         eta = _eta_in_window(eta)
-        angular, axial = self._resolved_pair(n, m, eta)
-        return self._jet_from_vector(angular, eta), self._jet_from_vector(axial, eta)
+        amplitude_log_source = self.amplitude_log_source(eta)
+        angular, axial = self._resolved_pair(n, m, eta, amplitude_log_source)
+        return (
+            self._jet_from_vector(angular, amplitude_log_source),
+            self._jet_from_vector(axial, amplitude_log_source),
+        )
 
     def second_picard_jet_pair(
         self,
@@ -792,9 +886,15 @@ class ActualScheduleWideFirstPicardRemainderState:
         n = _index(n, "n")
         m = _index(m, "m")
         eta = _eta_in_window(eta)
-        remainder_angular, remainder_axial = self._resolved_pair(n, m, eta)
+        amplitude_log_source = self.amplitude_log_source(eta)
+        remainder_angular, remainder_axial = self._resolved_pair(
+            n,
+            m,
+            eta,
+            amplitude_log_source,
+        )
         phi0, u0 = self.x1.reference.jet_pair(n, m, eta)
-        amplitude_log = self.amplitude_log(eta)
+        amplitude_log = amplitude_log_source.midpoint
 
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
@@ -811,6 +911,7 @@ class ActualScheduleWideFirstPicardRemainderState:
                 ),
                 Lambda=self.Lambda,
                 amplitude_log=amplitude_log,
+                amplitude_log_source=amplitude_log_source,
             )
             axial = SecondPicardCoefficientJet(
                 ordinary=(
@@ -824,6 +925,7 @@ class ActualScheduleWideFirstPicardRemainderState:
                 ),
                 Lambda=self.Lambda,
                 amplitude_log=amplitude_log,
+                amplitude_log_source=amplitude_log_source,
             )
         return angular, axial
 

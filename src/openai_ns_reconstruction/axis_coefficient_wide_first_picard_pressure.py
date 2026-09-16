@@ -29,6 +29,7 @@ from decimal import Decimal, localcontext
 import math
 from typing import Callable
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
 from .axis_coefficient_data import (
     ActualScheduleAxisCoefficientData,
@@ -85,28 +86,33 @@ def _decimal_from_float(value: float, name: str) -> Decimal:
 def _signed_log_term(
     numerator: Decimal,
     *,
-    amplitude_log: Decimal,
+    amplitude_source: AmplitudeLogSource,
     Lambda: Decimal,
     inverse_lambda_power: int,
 ) -> SignedLogCoefficientJet:
     _finite_decimal(numerator, "normalized pressure numerator")
-    _finite_decimal(amplitude_log, "amplitude_log")
+    if not isinstance(amplitude_source, AmplitudeLogSource):
+        raise TypeError("amplitude_source must be AmplitudeLogSource")
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if Lambda != amplitude_source.enclosure.Lambda:
+        raise ValueError("Lambda must match amplitude_source enclosure Lambda")
     if inverse_lambda_power < 0:
         raise ValueError("inverse_lambda_power must be nonnegative")
     if numerator == 0:
         return SignedLogCoefficientJet.zero()
     with localcontext() as ctx:
         ctx.prec = _DECIMAL_PRECISION
+        log_scale = +(Decimal(2) * amplitude_source.midpoint)
         return SignedLogCoefficientJet(
             sign=1 if numerator > 0 else -1,
-            log_scale=+(Decimal(2) * amplitude_log),
+            log_scale=log_scale,
             log_factor=+(
                 abs(numerator).ln()
                 - Decimal(inverse_lambda_power) * Lambda.ln()
             ),
+            amplitude_log_scale=amplitude_source.power(2, log_scale),
         )
 
 
@@ -384,11 +390,11 @@ class ActualScheduleWideFirstPicardPressureState:
 
         eta = _eta_in_window(eta)
         values = self.normalized_source_factors(n, m, eta)
-        amplitude_log = self.amplitude_log(eta)
+        amplitude_source = self.amplitude.log_amplitude_source(eta)
         return tuple(
             _signed_log_term(
                 value,
-                amplitude_log=amplitude_log,
+                amplitude_source=amplitude_source,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
             )
@@ -405,11 +411,11 @@ class ActualScheduleWideFirstPicardPressureState:
 
         eta = _eta_in_window(eta)
         values = self.normalized_pressure_factors(n, m, eta)
-        amplitude_log = self.amplitude_log(eta)
+        amplitude_source = self.amplitude.log_amplitude_source(eta)
         return tuple(
             _signed_log_term(
                 value,
-                amplitude_log=amplitude_log,
+                amplitude_source=amplitude_source,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
             )
