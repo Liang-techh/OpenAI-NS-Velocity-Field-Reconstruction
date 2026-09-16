@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO4-ALIAS-RIGHTS-AUDIT-003",
+  "purpose": "Audit public Kokuno Navier-Stokes release aliases and rights metadata so imports use an exact, non-ambiguous provenance path without treating public availability as a license grant.",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "inspected_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "inspected_math_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "doi": "10.5281/zenodo.22678406",
+    "topic_entry": "navier-stokes/README.md",
+    "release_map": "releases/2026-09-09/README.md",
+    "release_hash_map": "releases/2026-09-09/HASHES.md",
+    "public_git_payload_manifest": {
+      "path": "releases/2026-09-09/GITHUB_TREE_MANIFEST.json",
+      "git_blob_oid": "92177fa56c061bab25c2d3982b144e74bf95e01e",
+      "artifact_count": 299,
+      "payload_inventory_sha256": "588d15c19be36432508f6f2931e42d30afaf888985d3e2781c7dbb7acb187dec",
+      "verification_scope": "publication-integrity metadata only; not mathematical verification or a fresh Zenodo byte replay"
+    }
+  },
+  "rights_boundary": {
+    "github_repository_license_field": null,
+    "root_LICENSE_http_status": 404,
+    "frozen_inventory_rights_note_paraphrase": "The source inventory does not declare a new corpus license and directs readers to check permission before redistributing material.",
+    "policy": {
+      "direct_metadata_reuse": [
+        "repository and DOI identifiers",
+        "public URLs and repository-relative paths",
+        "Git blob object IDs",
+        "file byte counts",
+        "published SHA-256 values",
+        "independently authored provenance classifications"
+      ],
+      "reimplementation_required_without_file_specific_grant": [
+        "checker or replay program code",
+        "proof-source TeX bodies",
+        "substantial authored explanatory prose"
+      ],
+      "formal_repository_license_not_inherited_by_kokuno_material": true
+    }
+  },
+  "alias_audit": [
+    {
+      "artifact": "recorded checks",
+      "topic_path": "navier-stokes/navier_stokes_checks.json",
+      "root_path": "navier_stokes_checks.json",
+      "topic_git_blob_oid": "03c5061b57913350bcc73e95ff11790b37c2dbc4",
+      "root_git_blob_oid": "03c5061b57913350bcc73e95ff11790b37c2dbc4",
+      "topic_sha256": "4ccf9256d9ab40d01a7920d501578092a2c14335751ba82dd5976b4f8aeb3633",
+      "root_sha256": "4ccf9256d9ab40d01a7920d501578092a2c14335751ba82dd5976b4f8aeb3633",
+      "topic_bytes": 17112,
+      "root_bytes": 17112,
+      "byte_identity_from_manifest": true,
+      "preferred_import_provenance_path": "navier-stokes/navier_stokes_checks.json"
+    },
+    {
+      "artifact": "primary manifest",
+      "topic_path": "navier-stokes/navier_stokes_primary_manifest.json",
+      "root_path": "navier_stokes_primary_manifest.json",
+      "topic_git_blob_oid": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+      "root_git_blob_oid": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+      "topic_sha256": "386d3fef8edcf2665ecd5daa2944269f414ced12c1afe89d9d7fc50973fbd76a",
+      "root_sha256": "386d3fef8edcf2665ecd5daa2944269f414ced12c1afe89d9d7fc50973fbd76a",
+      "topic_bytes": 4368339,
+      "root_bytes": 4368339,
+      "byte_identity_from_manifest": true,
+      "preferred_import_provenance_path": "navier-stokes/navier_stokes_primary_manifest.json"
+    },
+    {
+      "artifact": "corrected source bundle",
+      "topic_path": "navier-stokes/navier_stokes_source_bundle.zip",
+      "root_path": "navier_stokes_source_bundle.zip",
+      "topic_git_blob_oid": "b3cf3be2d969381548778508650690ba679c7554",
+      "root_git_blob_oid": "b3cf3be2d969381548778508650690ba679c7554",
+      "topic_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+      "root_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+      "topic_bytes": 4266561,
+      "root_bytes": 4266561,
+      "byte_identity_from_manifest": true,
+      "preferred_import_provenance_path": "navier-stokes/navier_stokes_source_bundle.zip"
+    },
+    {
+      "artifact": "workbench TeX",
+      "topic_path": "navier-stokes/navier_stokes_workbench.tex",
+      "root_path": "navier_stokes_workbench.tex",
+      "topic_git_blob_oid": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+      "root_git_blob_oid": "99cd13ac2da9c674e70bf941d8a4ab5b99862b5e",
+      "topic_sha256": "3b20e30b9b55c2126103e7374caa8c44489ae63a6be9223483c7901f1d333c0f",
+      "root_sha256": "0b5b832e1845469b316b992880b4731a88681e018b58fd50f9f38e1c0a1ec263",
+      "topic_bytes": 840076,
+      "root_bytes": 854321,
+      "byte_identity_from_manifest": false,
+      "preferred_import_provenance_path": "navier-stokes/navier_stokes_workbench.tex",
+      "fail_closed_note": "Do not treat the preserved root TeX path as a byte alias of the organized topic TeX path."
+    },
+    {
+      "artifact": "208-page workbench PDF",
+      "topic_path": "navier-stokes/navier_stokes_workbench_208p.pdf",
+      "root_path": "navier_stokes_workbench_208p.pdf",
+      "topic_git_blob_oid": "ab94c6dfac3124e97661dad5d868741f40d6c346",
+      "root_git_blob_oid": "ab94c6dfac3124e97661dad5d868741f40d6c346",
+      "topic_sha256": "242fe7f83feab43b91915595230b5e93e9f344eb654e1edcb65e9669a9cd5878",
+      "root_sha256": "242fe7f83feab43b91915595230b5e93e9f344eb654e1edcb65e9669a9cd5878",
+      "topic_bytes": 1993960,
+      "root_bytes": 1993960,
+      "byte_identity_from_manifest": true,
+      "preferred_import_provenance_path": "navier-stokes/navier_stokes_workbench_208p.pdf"
+    }
+  ],
+  "summary": {
+    "artifact_pair_count": 5,
+    "byte_identical_pair_count": 4,
+    "nonidentical_pair_count": 1,
+    "nonidentical_pairs": [
+      "workbench TeX"
+    ],
+    "canonical_path_rule": "Prefer the organized navier-stokes/ topic path for provenance. A root path may be treated as an alias only when exact Git blob and SHA-256 identity are both recorded.",
+    "zenodo_equivalence": "Source README records GitHub-to-Zenodo byte identity for matching corrected artifacts, but this audit did not download and freshly hash the Zenodo files."
+  },
+  "validation_boundary": {
+    "fresh_local_source_zip_sha256_rehash": false,
+    "fresh_zenodo_artifact_rehash": false,
+    "published_source_replay_status_promoted_to_local_validation": false,
+    "complete_independent_analytical_validation": false,
+    "lean_kernel_certificate": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
