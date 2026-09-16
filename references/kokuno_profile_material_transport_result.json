@@ -1,0 +1,69 @@
+{
+  "task_id": "KOKUNO6-PROFILE-MATERIAL-TRANSPORT-006",
+  "scope": "Independent exact replay of the NS-profiles material-transport reduction from separately composed time, radial, and axial contributions to the W/Hc form.",
+  "source": {
+    "repository": "https://github.com/KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-profiles",
+    "archive_path": "proof_sources/profiles/profiles_body.tex",
+    "source_pages": "24-45,144-157",
+    "component_sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+    "associated_checker": "proof_sources/profiles/exact_checks.py",
+    "checker_sha256": "a7ee77024a92d06c1b69055a00b10a7d5fd600ca424fe084e2f4399310cf56e7",
+    "recorded_result_sha256": "5ef2b5f7cee750088143acda8d4a5ee4f0b12f36f0344ab991f5c9333a842e24",
+    "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license": null,
+    "source_checker_executed_here": false
+  },
+  "public_identity": {
+    "V0": "(2 eta X U - 2 D eta M - d M_eta)/L",
+    "W": "1 - (2 D eta M + d M_eta)/X",
+    "Hc": "D eta + d U",
+    "transport": "(d_t + u_r d_r + u_z d_z)(q^b f) = q^(b-1)/L [W X f_X + Hc f_eta - b(1-2 eta U) f]"
+  },
+  "exact_fixture": {
+    "h": "1/8",
+    "eta": "1/3",
+    "X": "5/7",
+    "U": "11/9",
+    "M": "2/5",
+    "M_eta": "-3/10",
+    "b": "-2/3",
+    "f": "7/5",
+    "f_eta": "-4/11",
+    "f_X": "13/17",
+    "V0": "566/735",
+    "W": "37/30",
+    "Hc": "785/648",
+    "composed_transport_core": "19132/45815",
+    "reduced_transport_core": "19132/45815",
+    "residual": "0",
+    "coefficient_residuals": ["0", "0", "0"],
+    "tolerance": "0"
+  },
+  "failure_boundary": {
+    "mutation": "V0 += 2^-40 while keeping U, M, M_eta fixed",
+    "exact_residual": "13/18691697672192",
+    "status": "nonzero; same-witness binding fails closed"
+  },
+  "checks": [
+    {
+      "command": "PYTHONPATH=/tmp/kokuno6_transport/src python -m pytest -q -W error /tmp/kokuno6_transport/tests/test_kokuno_profile_material_transport.py",
+      "result": "6 passed in 0.06s"
+    },
+    {
+      "command": "python -W error -m py_compile /tmp/kokuno6_transport/src/openai_ns_reconstruction/kokuno_profile_material_transport.py /tmp/kokuno6_transport/tests/test_kokuno_profile_material_transport.py",
+      "result": "exit 0"
+    }
+  ],
+  "limits": {
+    "imported_profile_existence_proved_here": false,
+    "source_checker_replayed": false,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "note": "A finite exact transport identity at supplied jets does not establish existence, regularity, normalization, support/decay, exterior matching, or all-stage assembly of the imported profile."
+  }
+}
