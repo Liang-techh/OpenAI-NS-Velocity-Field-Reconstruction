@@ -1,0 +1,61 @@
+{
+  "task_id": "KOKUNO6-BASE-HEAT-COORDINATE-BRIDGE-010",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-base_heat",
+    "archive_path": "proof_sources/base_heat/derivation.tex",
+    "source_pages": "45–62,126–144",
+    "component_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+    "associated_checker": "proof_sources/base_heat/verify_identities.py",
+    "checker_sha256": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+    "recorded_result": "proof_sources/base_heat/identity_check_results.json",
+    "recorded_result_sha256": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "license_observation": "GitHub repository metadata reports license=null"
+  },
+  "public_structure": {
+    "chart": "d=1-eta^2, tau=q*d, s=q*X with s=r^2/2",
+    "profile_heat": "q^(-A) c_inf X^(-A) H(2d/X)",
+    "physical_heat": "c_inf s^(-A) H(2tau/s)",
+    "A": "1/2+h"
+  },
+  "fixture": {
+    "h": "1/200",
+    "A": "101/200",
+    "eta": "1/3",
+    "d": "8/9",
+    "q": "(3/2)^200",
+    "X": "(5/4)^200",
+    "s": "(15/8)^200",
+    "tau": "(8/9)(3/2)^200",
+    "c_inf": "17/19",
+    "H_value": "11/13",
+    "common_heat_argument": "41315998049390537434494706752048189989275292685267576205290549704650361952269459114074325652482205302974450751563959894016/560071375007502753642965764840211181653122695184905041979100495331072895063184509706555034081314225526126993059961023391224443912506103515625",
+    "common_heat_value": "3047405820596391185057594749860429728932996716924240630951666112234154424445951712450362474496/15063091627679724545569213165358893910934871347929670235046368074007923997418103602419225950370673672296106815338134765625",
+    "z_residual": "0",
+    "value_residual": "0",
+    "tolerance": "0"
+  },
+  "failure_boundaries": {
+    "tau_mutation": "tau += 2^-40 is rejected before identity evaluation",
+    "wrong_s_convention": "s=2*q*X is rejected; source chart requires s=q*X exactly",
+    "non_exact_fractional_power": "base=2 with exponent -101/200 is rejected because no exact rational 200th root exists",
+    "float_inputs": "rejected",
+    "h_boundary": "h=1/100 rejected by source-construction domain"
+  },
+  "local_checks": {
+    "pytest": "7 passed in 0.06s",
+    "py_compile": "exit 0"
+  },
+  "truth_boundary": {
+    "source_checker_executed": false,
+    "imported_heat_profile_existence_verified": false,
+    "imported_leading_profile_existence_verified": false,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
