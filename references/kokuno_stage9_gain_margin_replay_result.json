@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO5-STAGE9-GAIN-MARGIN-REPLAY-004",
+  "component": "NS-stage9",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "archive_path": "proof_sources/stage9/stage9_body.tex",
+    "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+    "associated_checker": "proof_sources/stage9/exact_checks.py",
+    "checker_sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+    "recorded_result_sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f",
+    "workbench_blob_sha1": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "source_pages": "100-116",
+    "repository_license_metadata": null,
+    "source_checker_executed": false
+  },
+  "independent_replay": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "stage_fixture": 0,
+    "kappa_s": "1/100000",
+    "sigma_0": "1/5",
+    "B_0": "7/10",
+    "C_star_0": "6/5",
+    "H_0": "59999/50000",
+    "stage_step": "1/10",
+    "transport_radial_gain": "8999/50000",
+    "curl_radial_gain": "49997/100000",
+    "self_product_radial_gain": "19997/100000",
+    "mean_to_wave_gain": "24999/50000",
+    "auxiliary_gain": "39999/100000",
+    "pressure_gain": "24999/25000",
+    "high_gain": "22499/25000",
+    "radial_gain_floor": "17/100",
+    "common_gain": "1/10",
+    "passed": true
+  },
+  "mutation_boundary": {
+    "mutation": "kappa_s += 2^-40",
+    "effect": "published exact margin equality becomes nonzero while inequality may still hold",
+    "passed": false
+  },
+  "checks": [
+    {
+      "command": "PYTHONPATH=/tmp/kokuno5_stage9_gain/src python -m pytest -q -W error /tmp/kokuno5_stage9_gain/tests/test_kokuno_stage9_gain_margin_replay.py",
+      "result": "9 passed in 0.10s"
+    },
+    {
+      "command": "python -W error -m py_compile /tmp/kokuno5_stage9_gain/src/openai_ns_reconstruction/kokuno_stage9_gain_margin_replay.py /tmp/kokuno5_stage9_gain/tests/test_kokuno_stage9_gain_margin_replay.py",
+      "result": "exit 0"
+    }
+  ],
+  "coverage": {
+    "target_side_result_groups_added": 1,
+    "complete_source_replay_programs_reproduced": 0,
+    "source_named_result_groups_claimed_as_reproduced": 0,
+    "source_structural_probes_claimed_as_reproduced": 0
+  },
+  "limitations": [
+    "Does not execute the Kokuno source checker or source bundle replay.",
+    "Checks only finite-stage exponent/gain arithmetic, not the analytic estimates producing those classes.",
+    "Does not prove stage residual improvement for an assembled same-witness field.",
+    "Does not prove all-stage realization, convergence, endpoint closure, or final force regularity."
+  ],
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "acceptance": "pending"
+  }
+}
