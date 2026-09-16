@@ -1,0 +1,70 @@
+{
+  "task_id": "KOKUNO8-PROFILE-ASSEMBLY-PA16-POWER-BLOCKS-010",
+  "component": "NS-profile_assembly",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "archive_path": "proof_sources/profile_assembly_audit/profile_assembly_body.tex",
+    "component_sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+    "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+    "source_pages": null,
+    "archive_discovered_checker": "proof_sources/profile_assembly_audit/check_assembly.py",
+    "checker_sha256": "c1910515deca5db40c54b62f93c1b3ebbb0e875df0474d1862490701c589be6f",
+    "recorded_result": "proof_sources/profile_assembly_audit/exact_assembly_checks.json",
+    "recorded_result_sha256": "d71247c54835c97e9fc1c61c99625a0edbd41a2da75e5ab93d9fb593976d7b0b",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "license_status": "repository metadata reports license=null"
+  },
+  "public_formula_surface": {
+    "reader_formula": "PA.16",
+    "substitution": "y = x^(1/10)",
+    "normalized_u_powers": [0, 6],
+    "normalized_e_signed_powers": [5, 1, -9],
+    "scope_note": "Nonzero row factors do not affect invertibility; this audit checks the exact rational point-evaluation kernel only."
+  },
+  "exact_fixture": {
+    "u_points_y": ["1/2", "3/4"],
+    "e_points_y": ["1/2", "2/3", "3/4"],
+    "u_determinant": "665/4096",
+    "e_determinant": "137274860048095/5015306502144",
+    "u_sign": 1,
+    "e_sign": 1,
+    "tolerance": "0"
+  },
+  "failure_boundaries": [
+    "support-coordinate collision is rejected rather than treated as invertible",
+    "reversed or nonpositive support coordinates are rejected",
+    "float theorem data are rejected",
+    "a 2^-40 exact separation remains nonzero and is not rounded to zero"
+  ],
+  "actual_local_checks": {
+    "pytest_command": "PYTHONPATH=/mnt/data/kokuno8_pa16/src python -m pytest -q -W error /mnt/data/kokuno8_pa16/tests/test_kokuno_profile_assembly_pa16.py",
+    "pytest_result": "7 passed in 0.04s",
+    "py_compile_command": "python -W error -m py_compile src/openai_ns_reconstruction/kokuno_profile_assembly_pa16.py tests/test_kokuno_profile_assembly_pa16.py",
+    "py_compile_exit": 0,
+    "environment_note": "Python startup emitted an unrelated spreadsheet-runtime warmup warning; pytest and py_compile both exited 0."
+  },
+  "closure_gap_ledger_update": {
+    "removed_conditionally": [
+      "finite exact PA.16 point-evaluation determinant bookkeeping for the two normalized power blocks, conditional on supplied strictly ordered positive exact support coordinates"
+    ],
+    "still_open": [
+      "construction of the production nonnegative ordered disjoint bump functions",
+      "passage from point-evaluation determinant sign to the full bump-integral Jacobian for the actual source witness",
+      "PA.16 nonlinear local inverse/submersion with quantitative radius",
+      "same-witness five-moment target realization",
+      "imported leading-profile existence and regularity",
+      "admissible-stress existence",
+      "all-stage realization and convergence",
+      "final force for the same assembled witness",
+      "formal endpoint/Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
