@@ -3,6 +3,10 @@
 An independent, **partial** executable reconstruction of the velocity construction in
 OpenAI's September 2026 *Finite Time Blowup for Navier–Stokes*. This is not an OpenAI repository.
 
+**Agent handoff:** read the [current checkpoint](docs/CURRENT_CHECKPOINT.md) and
+[detailed task board](docs/AGENT_TASKS.md) before claiming work. Task completion,
+coordinator acceptance, and PR merge status are recorded separately.
+
 **Current result:** tested similarity kinematics; natural-axis/range structure, an admissible
 ideal-prefix pressure witness, the constructive outgoing scalar schedule, executable
 `finalAngular/clockWeight`, the actual outgoing `SchedulePressure.axisPressure`, an analytic
