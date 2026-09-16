@@ -9,11 +9,15 @@
     "component_id": "NS-stage_inputs",
     "component_path": "proof_sources/stage_inputs_audit/stage_inputs_body.tex",
     "component_sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+    "recorded_covariance_checker_path": "proof_sources/stage_inputs_audit/maps_covariance/exact_checks.py",
+    "recorded_covariance_checker_sha256": "ac81831f59f0aef9a980671df3ab53afe2933fa2994e3c6b97ff99f1ea0f4ef8",
+    "recorded_covariance_result_path": "proof_sources/stage_inputs_audit/maps_covariance/exact_checks.json",
+    "recorded_covariance_result_sha256": "31f2a1ae9bfff6cfad82d40a1eb866cf9d8247ab0eace15d8737ca643255c99d",
     "workbench_tex_git_blob_sha1": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
     "primary_manifest_git_blob_sha1": "4f60fc4db69ea73191cbb40b85938c4661425c88",
     "bundle_sha256_published_metadata": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
     "doi": "10.5281/zenodo.22678406",
-    "license_boundary": "Repository REST metadata reports license=null. No source checker/proof implementation or substantial authored prose is copied. Published bundle/component hashes are provenance metadata, not fresh local ZIP byte re-hashes."
+    "license_boundary": "Repository REST metadata reports license=null. No source checker/proof implementation or substantial authored prose is copied. Published checker/result/bundle/component hashes are provenance metadata, not locally executed source-side PASS evidence or fresh local ZIP byte re-hashes."
   },
   "public_formula_structure_reimplemented": {
     "d_sigma": "H^{-1}(Sigma/epsilon)",
