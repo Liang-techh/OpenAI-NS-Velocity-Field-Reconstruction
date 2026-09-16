@@ -1,7 +1,7 @@
 """Certified rational enclosure of the actual outgoing release lag.
 
 For ``TailData`` write ``h = Fraction.from_float(data.h)`` and
-``lambda = Fraction.from_float(data.core.lam)``.  The finite release schedule
+``lambda = Fraction.from_float(data.core.lam)``. The finite release schedule
 reduces to a one-dimensional monotone Darboux enclosure, so this module
 certifies the selected scalar ``releaseLag(rampEnd)`` without using the
 rounded geometry or cached floating-point lag stored on ``TailData``.
@@ -13,13 +13,19 @@ from dataclasses import dataclass
 from fractions import Fraction
 
 from .axis_amplitude_derivative_enclosure import rational_log_enclosure
-from .outgoing_sigma_enclosure import RationalInterval, validated_exp_negative, validated_outgoing_sigma
+from .outgoing_sigma_enclosure import (
+    validated_exp_negative,
+    validated_exp_positive_on_0_3,
+    validated_outgoing_sigma,
+)
 from .outgoing_tail import TailData
-from .outgoing_tail_debt_enclosure import (
-    _ceil_grid,
-    _dyadic_step,
-    _exp_positive_on_0_3,
-    _floor_grid,
+from .rational_interval import (
+    RationalInterval,
+    ceil_grid as _ceil_grid,
+    dyadic_step as _dyadic_step,
+    floor_grid as _floor_grid,
+    positive_cap as _positive_cap,
+    positive_fraction as _positive_fraction,
 )
 
 
@@ -27,20 +33,6 @@ _DEFAULT_TOLERANCE = Fraction(1, 256)
 _DEFAULT_MAX_CELLS = 4096
 _DEFAULT_MAX_TERMS = 1024
 _DEFAULT_MAX_SQUARINGS = 4096
-
-
-def _positive_fraction(value: object, name: str) -> Fraction:
-    if not isinstance(value, Fraction):
-        raise TypeError(f"{name} must be a Fraction")
-    if value <= 0:
-        raise ValueError(f"{name} must be positive")
-    return value
-
-
-def _positive_cap(value: object, name: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
-        raise ValueError(f"{name} must be a positive integer")
-    return value
 
 
 def _round_interval(interval: RationalInterval, step: Fraction) -> RationalInterval:
@@ -90,11 +82,11 @@ def _f_value_interval(
         max_terms=max_terms,
         max_squarings=max_squarings,
     )
-    positive = _exp_positive_on_0_3(
+    positive = validated_exp_positive_on_0_3(
         k * value,
-        node_tolerance,
-        max_terms,
-        max_squarings,
+        absolute_tolerance=node_tolerance,
+        max_terms=max_terms,
+        max_squarings=max_squarings,
     )
     raw = RationalInterval(
         negative.lower + positive.lower,
@@ -147,8 +139,6 @@ def _integral_f_levels(
         width = Fraction(1, cells)
         sigma_nodes = [sigma(Fraction(index, cells)) for index in range(cells + 1)]
 
-        # I(0) = 0.  Each prefix uses the left lower and right upper endpoint
-        # of the monotone sigma, while I(1) is fixed exactly by symmetry.
         prefixes = [RationalInterval(Fraction(0), Fraction(0))]
         for index in range(1, cells):
             previous = prefixes[-1]
@@ -164,8 +154,6 @@ def _integral_f_levels(
 
         f_nodes = []
         for prefix in prefixes:
-            # f is increasing on [0, 1/2], so these endpoint evaluations
-            # preserve the enclosure direction without nested primitive calls.
             f_nodes.append(
                 RationalInterval(
                     f_value(prefix.lower).lower,
@@ -256,11 +244,11 @@ def validated_release_lag_enclosure(
         Fraction(1, 1024),
         epsilon / (1024 * (1 + L.upper)),
     )
-    exp_a = _exp_positive_on_0_3(
+    exp_a = validated_exp_positive_on_0_3(
         a,
-        node_tolerance,
-        max_terms,
-        max_squarings,
+        absolute_tolerance=node_tolerance,
+        max_terms=max_terms,
+        max_squarings=max_squarings,
     )
     exp_minus_B = validated_exp_negative(
         B,

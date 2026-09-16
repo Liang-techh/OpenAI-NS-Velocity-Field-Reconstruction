@@ -27,7 +27,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | NS001 | decayHold 严格区间 | 已有 lag/debt | TODO | — | pending | — / unsubmitted |
 | NS002 | 实际过渡几何与尾部位置 | NS001 | TODO | — | pending | — / unsubmitted |
-| NS003 | 公共有理区间运算与精度预算 | 无 | TODO | — | pending | — / unsubmitted |
+| NS003 | 公共有理区间运算与精度预算 | 无 | DONE | Agent 2 | pending | #370 / open |
 | NS004 | 释放前 clockWeight 区间 | NS002,NS003 | TODO | — | pending | — / unsubmitted |
 | NS005 | 释放段及尾部 clockWeight 区间 | NS004 | TODO | — | pending | — / unsubmitted |
 | NS006 | 压力核及任意有限参数阶区间 | 无 | TODO | — | pending | — / unsubmitted |
@@ -308,3 +308,35 @@ next_unblocked_tasks:
 协调者验收时追加 `accepted/rejected + reviewed_commit + evidence + remaining_conditions`。
 若修改了已验收实现，重新记录新提交的验收，不沿用旧 SHA 的结果。
 本次发布时没有预先把任何未来任务标成 DONE；已完成代码见检查点文件，不能重复认领实现。
+
+## Agent 2 completion — NS003
+
+```text
+task_id: NS003
+status: DONE
+owner: Agent 2
+base_commit: 77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0
+implementation_commit: 7309bef0f569d7a2b3149afe40dfc24d8784808e
+pr_url: https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/pull/370
+merge_status: open
+acceptance: pending
+changed_files:
+- references/RATIONAL_INTERVAL_PROVENANCE.md
+- src/openai_ns_reconstruction/rational_interval.py
+- src/openai_ns_reconstruction/outgoing_sigma_enclosure.py
+- src/openai_ns_reconstruction/outgoing_tail_debt_enclosure.py
+- src/openai_ns_reconstruction/outgoing_release_lag_enclosure.py
+- tests/test_rational_interval.py
+implemented_behavior: Extracted the shared exact-Fraction interval layer for add/subtract/sign-safe multiply, strictly-positive division, monotone endpoint propagation, purely outward dyadic rounding, common cap/positive validation, and shared positive-exp control. Removed release-lag imports of private tail-debt helpers while preserving the outgoing sigma/tail-debt/release-lag formulas and public compatibility surface.
+mathematical_source_and_assumptions: This is a semantics-preserving arithmetic consolidation, not a new theorem. Existing outgoing sigma, tail-debt, and release-lag provenance remains authoritative. Interval division is admitted only after a strict positive denominator lower bound; no rounded float is promoted to theorem-exact input.
+commands_and_actual_results:
+- `python -m pytest -q /tmp/test_rational_interval.py` -> 5 passed in 0.04s on implementation head logic.
+- Exact-head Actions run `35047709857`: `slice-forcing`, `slice-velocity`, `slice-provenance`, `slice-coordinates` -> success.
+- Python 3.13 / NumPy 2.5.3 full job: `python -m pip check` -> No broken requirements found; `python -m pytest -q -W error` -> 2 failed, 1996 passed in 2206.98s. Both failures are the unrelated stale injected slow2 metadata fixture in `tests/test_axis_coefficient_wide_first_picard_slow2.py`; NS021 / PR #373 owns that fixture repair. No NS003 test failed. Wheel/outside-checkout/diagnostic steps were skipped after pytest failure.
+- Python 3.10 / NumPy <2 full job -> in progress at the last exact-head check.
+- `ns-reconstruct demo --output artifacts` -> not run locally as a standalone command.
+- `ns-reconstruct audit --require-paper-exact` -> not run locally as a standalone command.
+- Lean build -> not run.
+remaining_limitations: NS003 only consolidates arithmetic and validation plumbing. It does not certify NS001/NS002, clockWeight, full-real-line pressure integration, zStar, coefficient-space contraction/fixed point, paper-exact velocity, or full reconstruction. `paper_exact_velocity_available=false` and `full_reconstruction=false` remain mandatory.
+next_unblocked_tasks: NS003 can satisfy downstream dependency only after coordinator acceptance/integration. NS004 still additionally depends on NS002.
+```

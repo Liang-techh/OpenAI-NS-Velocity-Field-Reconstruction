@@ -12,73 +12,24 @@ uses the different exponent ``exp(-1/x)`` and is not the schedule function.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from fractions import Fraction
+
+from .rational_interval import (
+    RationalInterval,
+    ceil_grid as _ceil_grid,
+    dyadic_step as _dyadic_step,
+    floor_grid as _floor_grid,
+    positive_cap as _positive_cap,
+    positive_fraction as _positive_fraction,
+)
 
 
 _DEFAULT_SIGMA_TOLERANCE = Fraction(1, 1024)
 _DEFAULT_MAX_TERMS = 1024
 _DEFAULT_MAX_SQUARINGS = 4096
 _DEFAULT_MAX_CELLS = 4096
-
-
-def _positive_fraction(value: object, name: str) -> Fraction:
-    if not isinstance(value, Fraction):
-        raise TypeError(f"{name} must be a Fraction")
-    if value <= 0:
-        raise ValueError(f"{name} must be positive")
-    return value
-
-
-def _positive_cap(value: object, name: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
-        raise ValueError(f"{name} must be a positive integer")
-    return value
-
-
-def _dyadic_step(bound: Fraction) -> Fraction:
-    """Return a dyadic step no larger than the positive rational ``bound``."""
-
-    if not isinstance(bound, Fraction) or bound <= 0:
-        raise ValueError("dyadic step bound must be positive")
-    exponent = max(0, bound.denominator.bit_length() - bound.numerator.bit_length())
-    step = Fraction(1, 1 << exponent)
-    while step > bound:
-        exponent += 1
-        step = Fraction(1, 1 << exponent)
-    while exponent > 0 and Fraction(1, 1 << (exponent - 1)) <= bound:
-        exponent -= 1
-        step = Fraction(1, 1 << exponent)
-    return step
-
-
-def _floor_grid(value: Fraction, step: Fraction) -> Fraction:
-    return (value // step) * step
-
-
-def _ceil_grid(value: Fraction, step: Fraction) -> Fraction:
-    quotient = value / step
-    return (-((-quotient.numerator) // quotient.denominator)) * step
-
-
-@dataclass(frozen=True)
-class RationalInterval:
-    """An ordered interval whose endpoints are exact rational numbers."""
-
-    lower: Fraction
-    upper: Fraction
-
-    def __post_init__(self) -> None:
-        if not isinstance(self.lower, Fraction):
-            raise TypeError("lower must be a Fraction")
-        if not isinstance(self.upper, Fraction):
-            raise TypeError("upper must be a Fraction")
-        if self.lower > self.upper:
-            raise ValueError("interval bounds must be ordered")
-
-    @property
-    def width(self) -> Fraction:
-        return self.upper - self.lower
+_EXP_SAFE_UPPER = Fraction(1)
+_EXP_SAFE_LOWER = Fraction(1, 27)
 
 
 def _binary_scale_to_unit(value: Fraction) -> tuple[int, Fraction]:
@@ -169,8 +120,6 @@ def validated_exp_negative(
         raise ArithmeticError("exponential enclosure exceeded max_terms")
 
     finite_sum = _exp_positive_sum(y, degree)
-    # exp(y) lies in [finite_sum, finite_sum + tail], so reciprocals reverse
-    # the endpoints and enclose exp(-y).
     lower = Fraction(1, 1) / (finite_sum + tail)
     upper = Fraction(1, 1) / finite_sum
 
@@ -190,6 +139,48 @@ def validated_exp_negative(
     if interval.width > epsilon:
         raise ArithmeticError("exponential enclosure exceeded requested tolerance")
     return interval
+
+
+def validated_exp_positive_on_0_3(
+    z: Fraction,
+    *,
+    absolute_tolerance: Fraction,
+    max_terms: int = _DEFAULT_MAX_TERMS,
+    max_squarings: int = _DEFAULT_MAX_SQUARINGS,
+) -> RationalInterval:
+    """Enclose ``exp(z)`` for rational ``0 <= z <= 3``.
+
+    This is the shared positive-exponential helper used by the outgoing tail
+    debt and release-lag enclosures.  It preserves the previous proof: enclose
+    ``exp(-z)``, intersect with the independent range ``[1/27, 1]``, and
+    invert endpoints.
+    """
+
+    if not isinstance(z, Fraction):
+        raise TypeError("z must be a Fraction")
+    if not Fraction(0) <= z <= Fraction(3):
+        raise ValueError("z must lie in [0, 3]")
+    tolerance = _positive_fraction(absolute_tolerance, "absolute_tolerance")
+    max_terms = _positive_cap(max_terms, "max_terms")
+    max_squarings = _positive_cap(max_squarings, "max_squarings")
+
+    negative = validated_exp_negative(
+        z,
+        absolute_tolerance=tolerance / 729,
+        max_terms=max_terms,
+        max_squarings=max_squarings,
+    )
+    inverse_lower = max(_EXP_SAFE_LOWER, negative.lower)
+    inverse_upper = min(_EXP_SAFE_UPPER, negative.upper)
+    if inverse_lower <= 0 or inverse_lower > inverse_upper:
+        raise ArithmeticError("positive exponential input interval is invalid")
+    result = RationalInterval(
+        Fraction(1, 1) / inverse_upper,
+        Fraction(1, 1) / inverse_lower,
+    )
+    if result.width > tolerance:
+        raise ArithmeticError("positive exponential enclosure exceeded requested tolerance")
+    return result
 
 
 def _validate_sigma_controls(
@@ -281,7 +272,6 @@ def validated_sigma_primitive(
     )
     max_cells = _positive_cap(max_cells, "max_cells")
 
-    # Validate every control before exact outside-domain branches.
     epsilon = min(tolerance, Fraction(1))
     if x <= 0:
         return RationalInterval(Fraction(0), Fraction(0))
@@ -338,6 +328,7 @@ def validated_sigma_primitive(
 __all__ = [
     "RationalInterval",
     "validated_exp_negative",
+    "validated_exp_positive_on_0_3",
     "validated_outgoing_sigma",
     "validated_sigma_primitive",
 ]
