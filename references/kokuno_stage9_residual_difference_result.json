@@ -1,0 +1,75 @@
+{
+  "fixture": {
+    "component_majorant_m0": "672/25",
+    "direct_difference": [
+      "-10/231",
+      "1218167/1124550",
+      "433429/1149120"
+    ],
+    "expanded_difference": [
+      "-10/231",
+      "1218167/1124550",
+      "433429/1149120"
+    ],
+    "identity_residual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "majorant_inputs": {
+      "E2": "7/5",
+      "V2": "5/3"
+    },
+    "omitted_quadratic_defect": [
+      "-211/3080",
+      "9437/38220",
+      "307/1680"
+    ],
+    "pressure_sign_flip_component0_defect": "-3/7"
+  },
+  "local_checks": {
+    "focused_pytest": "7 passed in 0.06s",
+    "module_sha256": "41e5992c82b04b37682a3f3582d639bcf51772b2ab53feb73e6b5e9a5007955e",
+    "py_compile": "exit 0",
+    "pytest_command": "PYTHONPATH=/mnt/data/kokuno7_stage9_residual/src python -m pytest -q -W error /mnt/data/kokuno7_stage9_residual/tests/test_kokuno_stage9_residual_difference.py",
+    "test_sha256": "eb11e99dcbfbcbcc511f4f438852693859f6bf50aeb527871d4f6a9d56ef3e00"
+  },
+  "public_formula_surface": {
+    "component_majorant_m0": "(5 + 6*V2 + 3*E2)*E2",
+    "difference": "e_t - Delta e + grad pi + v.grad(e) + e.grad(v) + e.grad(e)",
+    "reader_labels": [
+      "A37",
+      "A38",
+      "A39"
+    ],
+    "residual": "R_i(u,p)=dt u_i + sum_k u_k d_k u_i - sum_k d_k^2 u_i + d_i p",
+    "scope": "I=0 Cartesian viscosity-one residual difference and scalar m=0 counting majorant",
+    "tolerance": "0"
+  },
+  "source": {
+    "archive_path": "proof_sources/stage9/stage9_body.tex",
+    "associated_checker": "proof_sources/stage9/exact_checks.py",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "component": "NS-stage9",
+    "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+    "doi": "10.5281/zenodo.22678406",
+    "license_observed": null,
+    "public_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "recorded_checker_sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+    "recorded_result_sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f",
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "source_checker_executed": false,
+    "source_pages": "100-116"
+  },
+  "task_id": "KOKUNO7-STAGE9-RESIDUAL-DIFFERENCE-009",
+  "truth_boundary": {
+    "all_stage_convergence": false,
+    "complete_independent_analytic_validation": false,
+    "complete_source_stage9_checker_replayed": false,
+    "full_reconstruction": false,
+    "notes": "Finite exact zero-order Cartesian identity only; no source checker execution, coefficient-estimate proof, all-label uniformity, or all-stage conclusion.",
+    "paper_exact_velocity_available": false,
+    "same_witness_stage_residual_improvement": false
+  }
+}
