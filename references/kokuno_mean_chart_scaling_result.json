@@ -1,0 +1,60 @@
+{
+  "associated_checker": "proof_sources/mean_corrections/verify_exact.py",
+  "complete_independent_analytic_validation": false,
+  "complete_source_replay_program_reproduced": false,
+  "component": "NS-mean_corrections",
+  "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+  "doi": "10.5281/zenodo.22678406",
+  "exact_fixture": {
+    "A": "101/200",
+    "D": "99/200",
+    "M_theta_chart_over_physical_exponent": "-199/200",
+    "M_z_chart_over_physical_exponent": "-99/200",
+    "Psi_star_exponent": "1/200",
+    "g_star_exponent": "151/100",
+    "mc27_amplitude_ratio_exponent": "101/200",
+    "mc27_argument_ratio_exponent": "1/2",
+    "negative_dz_Psi_exponent": "1/200",
+    "negative_dz_Psi_sign": -1,
+    "p_star_exponent": "101/100",
+    "u_star_exponent": "101/200"
+  },
+  "failure_boundaries": [
+    "flipping the normalized -dz Psi sign fails",
+    "adding 2^-40 to the normalized derivative exponent fails",
+    "reversing the MC27 sqrt(Q/q) argument ratio exponent fails",
+    "float theorem inputs, bool indices, h>=1/100, and negative moment index fail closed"
+  ],
+  "fixture_h": "1/200",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "recorded_checker_sha256": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+  "recorded_result_sha256": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f",
+  "replayed_surface": {
+    "field_exponents": {
+      "Psi_star": "A-1/2",
+      "g_star": "2A+1/2",
+      "negative_dz_Psi_star": "1/2-D=h",
+      "p_star": "2A",
+      "u_star": "A"
+    },
+    "mc15_radial_primitive_exponent": "a-1/2",
+    "mc15_weighted_moment_exponent": "a-(e+1)/2",
+    "mc27_fixed_Q_amplitude_ratio_exponent": "A",
+    "mc27_fixed_Q_argument_ratio_exponent": "1/2"
+  },
+  "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+  "rights_boundary": {
+    "copied_source_checker_code": false,
+    "copied_substantial_source_prose": false,
+    "implementation_basis": "short public formulas MC15/MC27 plus structured provenance; clean-room target implementation",
+    "source_repository_license": null
+  },
+  "source_body": "proof_sources/mean_corrections/mean_corrections_body.tex",
+  "source_body_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+  "source_checker_executed": false,
+  "source_pages": "87\u2013100",
+  "source_public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+  "source_repository": "KokunoYumeto/yang-mills-interacting-workbench",
+  "task_id": "KOKUNO7-MEAN-CHART-SCALING-010"
+}
