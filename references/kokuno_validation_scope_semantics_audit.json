@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO4-VALIDATION-SCOPE-SEMANTICS-AUDIT-008",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "workbench_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "checks_path": "navier_stokes_checks.json",
+    "checks_git_blob": "03c5061b57913350bcc73e95ff11790b37c2dbc4",
+    "primary_manifest_path": "navier_stokes_primary_manifest.json",
+    "primary_manifest_git_blob": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "manuscript_derivation_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+    "manuscript_later_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f",
+    "formal_source_commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "bundle_members": 120,
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license": null
+  },
+  "source_recorded_validation_inventory": {
+    "artifact_integrity": [
+      {
+        "field": "all_member_hashes_verified",
+        "value": true,
+        "classification": "SOURCE_RECORDED_ARTIFACT_INTEGRITY",
+        "target_independently_reverified_this_increment": false
+      },
+      {
+        "field": "all_component_paths_present",
+        "value": true,
+        "classification": "SOURCE_RECORDED_ARTIFACT_INTEGRITY",
+        "target_independently_reverified_this_increment": false
+      },
+      {
+        "field": "source_privacy_scan_passed",
+        "value": true,
+        "classification": "SOURCE_RECORDED_PACKAGE_METADATA",
+        "target_independently_reverified_this_increment": false
+      }
+    ],
+    "package_replay_and_build": [
+      {
+        "field": "fresh_zip_extraction_replay_passed",
+        "value": true,
+        "classification": "SOURCE_RECORDED_PACKAGE_REPLAY",
+        "target_independently_replayed_this_increment": false
+      },
+      {
+        "field": "fresh_zip_extraction_reader_rebuild_passed",
+        "value": true,
+        "classification": "SOURCE_RECORDED_READER_BUILD",
+        "target_independently_rebuilt_this_increment": false
+      }
+    ],
+    "published_math_check_inventory": [
+      {
+        "field": "replay_program_count",
+        "value": 9,
+        "classification": "SOURCE_RECORDED_INVENTORY_COUNT",
+        "target_complete_replays_independently_reproduced_by_this_increment": 0
+      },
+      {
+        "field": "named_mathematical_result_groups",
+        "value": 144,
+        "classification": "SOURCE_RECORDED_INVENTORY_COUNT",
+        "target_groups_independently_reproduced_by_this_increment": 0
+      },
+      {
+        "field": "structural_probes",
+        "value": 12,
+        "classification": "SOURCE_RECORDED_INVENTORY_COUNT",
+        "target_probes_independently_reproduced_by_this_increment": 0
+      },
+      {
+        "field": "full_mathematical_source_parts",
+        "value": 13,
+        "classification": "SOURCE_RECORDED_SOURCE_PART_COUNT",
+        "target_full_components_independently_validated_by_this_increment": 0
+      },
+      {
+        "field": "additional_replay_program_count",
+        "value": 0,
+        "classification": "SOURCE_RECORDED_INVENTORY_COUNT"
+      }
+    ]
+  },
+  "scope_crosscheck": {
+    "publication_update_execution_classification": "ARTIFACT_IDENTITY_ONLY_FOR_THIS_UPDATE",
+    "published_mathematical_replays_rerun_in_publication_update": false,
+    "new_independent_mathematical_review_count": 0,
+    "research_state_complete_independent_analytical_validation": false,
+    "primary_manifest_complete_independent_analytical_validation": false,
+    "primary_manifest_lean_kernel_certificate": false,
+    "formal_static_audit_classification": "STATIC_SOURCE_AND_DECLARATION_COMPARISON_NOT_KERNEL_VERIFICATION",
+    "formal_import_compilation_complete": false,
+    "formal_endpoint_fresh_replay_comparator_complete": false
+  },
+  "interpretation_rules": [
+    {
+      "rule": "SOURCE_TRUE_IS_NOT_TARGET_PASS",
+      "meaning": "A true boolean in the published check record is retained as source-recorded evidence unless the target independently repeats the corresponding operation."
+    },
+    {
+      "rule": "PACKAGE_REPLAY_IS_NOT_INDEPENDENT_MATH_REPLAY",
+      "meaning": "ZIP extraction and reader rebuild success establishes package reproducibility, not complete independent verification of the mathematical construction."
+    },
+    {
+      "rule": "COUNTS_ARE_INVENTORY_NOT_REPRODUCTION_PROGRESS",
+      "meaning": "The 9 replay programs, 144 result groups, 12 structural probes and 13 source parts are inventory facts and are not target completion counters."
+    },
+    {
+      "rule": "HASH_MATCH_IS_NOT_SEMANTIC_OR_THEOREM_VALIDATION",
+      "meaning": "Matching source paths or digests establishes identity/integrity only and does not prove the theorem, same-witness closure or formal endpoint."
+    }
+  ],
+  "migration_effect": {
+    "directly_reusable": [
+      "factual hashes",
+      "source paths",
+      "published inventory counts",
+      "published boolean check metadata",
+      "DOI and commit identifiers"
+    ],
+    "requires_independent_reimplementation_or_replay": [
+      "checker and replay logic before target PASS",
+      "mathematical result-group validation",
+      "structural probes before target PASS",
+      "formal endpoint and Comparator certificate"
+    ],
+    "reference_only_until_replayed": [
+      "source-recorded PASS outcomes",
+      "source-recorded true validation flags with mathematical implications",
+      "source-side replay/result receipts"
+    ],
+    "still_unverified": [
+      "imported profile existence",
+      "admissible-stress existence",
+      "all-stage realization and convergence",
+      "final force for the same assembled witness",
+      "formal endpoint and Comparator certificate"
+    ]
+  },
+  "rights_boundary": {
+    "license_status": "NO_REPOSITORY_LICENSE_DECLARED_IN_GITHUB_METADATA",
+    "bulk_copy_source_code_or_text": false,
+    "permitted_increment_content": "factual metadata plus independently authored classification text"
+  },
+  "truth_boundary": {
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
