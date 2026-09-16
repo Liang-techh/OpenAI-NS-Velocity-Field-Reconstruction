@@ -44,6 +44,10 @@ from .axis_coefficient_reference_state import (
 )
 from .axis_coefficient_rational_data import RationalAxisCoefficientData
 from .axis_amplitude_log_scale import AmplitudeLogSource, AmplitudePowerLogScale
+from .axis_amplitude_derivative_enclosure import (
+    AmplitudeDerivativeLogEnclosure,
+    rational_log_enclosure,
+)
 from .axis_phase_integral import PhaseIntegralResult, validated_phase_integral
 from .axis_phase_log_enclosure import RationalLogAmplitudeEnclosure
 from .natural_axis import real_phase
@@ -413,6 +417,68 @@ class ActualScheduleAmplitudeLogState:
                 self.Lambda,
             ),
             "amplitude Bell factor",
+        )
+
+    def derivative_log_enclosure(
+        self,
+        power: int,
+        order: int,
+        eta: float,
+        *,
+        absolute_log_factor_tolerance: Fraction = Fraction(1, 10**96),
+        max_terms: int = 1024,
+    ) -> AmplitudeDerivativeLogEnclosure:
+        """Return a bounded log enclosure for a full amplitude derivative.
+
+        The exact Bell factor comes from the rational coefficient provider,
+        while ``log_amplitude_source`` supplies the exact phase/log-scale
+        interval.  Validation is deliberately performed before inspecting
+        whether the Bell factor vanishes, so an exact zero cannot hide an
+        invalid tolerance or series cap.
+        """
+
+        if isinstance(power, bool) or not isinstance(power, int) or power not in (1, 2):
+            raise ValueError("power must be 1 or 2")
+        if isinstance(order, bool) or not isinstance(order, int) or order < 0:
+            raise ValueError("order must be a nonnegative integer")
+        if not isinstance(absolute_log_factor_tolerance, Fraction):
+            raise TypeError("absolute_log_factor_tolerance must be a Fraction")
+        if absolute_log_factor_tolerance <= 0:
+            raise ValueError("absolute_log_factor_tolerance must be positive")
+        if isinstance(max_terms, bool) or not isinstance(max_terms, int) or max_terms <= 0:
+            raise ValueError("max_terms must be a positive integer")
+
+        eta = float(eta)
+        if not math.isfinite(eta):
+            raise ValueError("eta must be finite")
+
+        source = self.log_amplitude_source(eta)
+        exact_factor = self.rational_data.amplitude_power_bell_fraction(
+            power,
+            order,
+            eta,
+            self.Lambda,
+        )
+        if exact_factor == 0:
+            return AmplitudeDerivativeLogEnclosure(
+                source=source,
+                power=power,
+                order=order,
+                exact_bell_factor=exact_factor,
+                log_factor=None,
+            )
+
+        log_factor = rational_log_enclosure(
+            abs(exact_factor),
+            absolute_tolerance=absolute_log_factor_tolerance,
+            max_terms=max_terms,
+        )
+        return AmplitudeDerivativeLogEnclosure(
+            source=source,
+            power=power,
+            order=order,
+            exact_bell_factor=exact_factor,
+            log_factor=log_factor,
         )
 
     def jet_log(self, n: int, m: int, eta: float) -> SignedLogCoefficientJet:
