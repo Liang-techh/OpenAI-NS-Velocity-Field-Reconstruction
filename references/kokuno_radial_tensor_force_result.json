@@ -1,0 +1,85 @@
+{
+  "closure_gap_ledger_update": {
+    "narrowed": [
+      "R31-R34 cylindrical symmetric stress tensor divergence is independently replayed at an exact rational point",
+      "the radial force component dz_sigma1 is explicitly retained rather than silently dropped",
+      "the e=2 and e=1 radial inverse outputs are exactly connected to azimuthal and axial force components in the finite fixture"
+    ],
+    "still_open": [
+      "R13-R30 moving-q derivative bounds and half-power gain",
+      "smooth compact zero-extension and full domain/support proof",
+      "imported admissible-stress existence",
+      "binding these stresses to an actual materialized correction stage",
+      "all-stage realization/convergence",
+      "final force for the same assembled witness",
+      "formal endpoint/Comparator certificate"
+    ]
+  },
+  "local_replay": {
+    "actual_result": "7 passed in 0.10s; py_compile exit 0",
+    "arithmetic": "fractions.Fraction",
+    "cartesian_divergence_direct_product_rule": [
+      "1289/1950",
+      "1461/2600",
+      "16/63"
+    ],
+    "cartesian_from_cylindrical_force": [
+      "1289/1950",
+      "1461/2600",
+      "16/63"
+    ],
+    "commands": [
+      "PYTHONPATH=/tmp/kokuno8_tensor/src python -m pytest -q -W error /tmp/kokuno8_tensor/tests/test_kokuno_radial_tensor_force.py",
+      "python -W error -m py_compile /tmp/kokuno8_tensor/src/openai_ns_reconstruction/kokuno_radial_tensor_force.py /tmp/kokuno8_tensor/tests/test_kokuno_radial_tensor_force.py"
+    ],
+    "cylindrical_force": {
+      "axial": "16/63",
+      "azimuthal": "-23/120",
+      "radial": "11/13"
+    },
+    "failure_boundaries": {
+      "binary64_input_rejected": true,
+      "drop_radial_force_defect": "11/13",
+      "omit_one_sigma2_over_r_connection_term_defect": "-8/15",
+      "r_zero_rejected": true
+    },
+    "fixture": {
+      "dr_sigma1": "-2/9",
+      "dr_sigma2": "7/8",
+      "dz_sigma1": "11/13",
+      "r": "3/2",
+      "sigma1": "5/7",
+      "sigma2": "-4/5",
+      "x": "9/10",
+      "y": "6/5"
+    },
+    "radial_inverse_binding": {
+      "-F1+b1_M1": "16/63",
+      "-F2+b2_M2": "-23/120",
+      "F1": "-53/126",
+      "F2": "59/120",
+      "b1_M1": "-1/6",
+      "b2_M2": "3/10"
+    },
+    "tolerance": "0"
+  },
+  "source": {
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "component": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/radial_stress_reconstruction_audit.tex",
+    "component_sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+    "doi": "10.5281/zenodo.22678406",
+    "license_boundary": "repository metadata reports license=null; clean-room short-formula reimplementation only",
+    "public_formula_range": "R31-R34",
+    "public_reader": "navier-stokes/navier_stokes_workbench.tex",
+    "public_repo_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f"
+  },
+  "task_id": "KOKUNO8-RADIAL-TENSOR-FORCE-005",
+  "truth_boundary": {
+    "complete_independent_validation": false,
+    "full_reconstruction": false,
+    "paper_exact_velocity_available": false,
+    "source_checker_executed": false
+  }
+}
