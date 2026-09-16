@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "task_id": "NS006",
+  "artifact_id": "schedule-axis-pressure-kernel-enclosure",
+  "status": "formal-structure",
+  "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+  "official_lean": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "modules": [
+      "NavierStokes/PressureDatum.lean",
+      "NavierStokes/SchedulePressure.lean"
+    ]
+  },
+  "runtime_sources": [
+    "src/openai_ns_reconstruction/schedule_axis_pressure.py",
+    "src/openai_ns_reconstruction/schedule_axis_pressure_jets.py"
+  ],
+  "new_artifacts": [
+    "src/openai_ns_reconstruction/schedule_axis_pressure_kernel_enclosure.py",
+    "tests/test_schedule_axis_pressure_kernel_enclosure.py",
+    "references/SCHEDULE_AXIS_PRESSURE_KERNEL_ENCLOSURE_PROVENANCE.md"
+  ],
+  "verified_claims": [
+    "strict real exact-rational enclosure of (1+eta^2)^(-2a) for a in [0,1]",
+    "arbitrary requested finite eta-jet enclosure via the exact differential recurrence",
+    "normalized Taylor coefficients are separated from full factorial-scaled derivatives",
+    "a=0 and a=1 exact identities are independently regressed",
+    "interval exponent/eta inputs are never midpoint-substituted",
+    "type/order/subdivision/series/range-reduction limits fail closed"
+  ],
+  "not_verified": [
+    "complex-domain or holomorphic-strip enclosure",
+    "clockWeight enclosure",
+    "full-real-line axis-pressure integration",
+    "differentiation-under-integral domination",
+    "global weighted AxisCoefficientSpace fixed point",
+    "paper-exact velocity",
+    "full reconstruction"
+  ],
+  "truth_flags": {
+    "strict_real_kernel_interval": true,
+    "finite_eta_jets": true,
+    "complex_analytic_enclosure": false,
+    "axis_pressure_integral_certified": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
