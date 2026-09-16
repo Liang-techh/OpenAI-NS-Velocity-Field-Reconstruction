@@ -1,0 +1,51 @@
+{
+  "task_id": "KOKUNO7-MEAN-MC30-GAIN-FLOOR-007",
+  "scope": "clean-room exact replay of the publicly exposed subset of MC30 gain-floor exponent arithmetic",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-mean_corrections",
+    "archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+    "source_pages": "87-100",
+    "component_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+    "associated_checker": "proof_sources/mean_corrections/verify_exact.py",
+    "checker_sha256": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+    "recorded_result_sha256": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license_metadata": null
+  },
+  "fixture": {
+    "alpha": "9/10",
+    "kappa_s": "1/100000",
+    "target_exponent": "89999/50000",
+    "term_exponents": {
+      "rg_time_epsilon_dT_B": "29/10",
+      "rg_radial_2bB": "289999/100000",
+      "rg_radial_2betaB": "379999/100000",
+      "rg_radial_B2": "379999/100000",
+      "rg_axial_bd": "29/10",
+      "mc29_product_alpha_plus_09": "9/5",
+      "mc29_product_2alpha": "9/5"
+    },
+    "minimum_margin": "1/50000",
+    "tolerance": "0"
+  },
+  "failure_boundary": {
+    "mutation": "replace the alpha+0.9 product-only row by target_exponent-kappa_s",
+    "mutated_margin": "-1/100000",
+    "expected": "reject"
+  },
+  "validation_boundary": {
+    "source_checker_executed": false,
+    "full_mc30_term_table_replayed": false,
+    "complete_mean_correction_verified": false,
+    "same_witness_finite_stage_residual_improvement_verified": false,
+    "all_stage_convergence_verified": false,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "license_boundary": "No source checker/proof implementation or substantial source prose copied; implementation is independently authored from short public formulas and factual provenance because repository license metadata is absent."
+}
