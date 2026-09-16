@@ -28,7 +28,7 @@
   "target": {
     "module": "src/openai_ns_reconstruction/kokuno_summation_local_band_window.py",
     "test": "tests/test_kokuno_summation_local_band_window.py",
-    "module_sha256": "8fbaf9fb970df2d02e6b84b759ce139b0cac745ae744c27131795065506f1186",
+    "module_sha256": "d929dafe297d56e29d3d30abeb8894a3d80ea74067db6e198d30684cc918076a",
     "test_sha256": "76fb24ef8e22a5bdee3f24c6ca58b80f18a595a3043ee74c0a3a557abcf36c1d"
   },
   "verification": {
