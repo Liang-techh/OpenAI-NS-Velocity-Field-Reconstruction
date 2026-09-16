@@ -1,0 +1,44 @@
+{
+  "task_id": "KOKUNO7-RADIAL-TRANSPORT-PRODUCT-003",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_repo_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "proof_sources/oscillations/oscillations_body.tex",
+    "component_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+    "source_pages": "62–87,157–165",
+    "associated_checker": "proof_sources/oscillations/exact_checks.py",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406"
+  },
+  "clean_room_formula": {
+    "transport_defect": "epsilon*v*(H_T-G*H_Z)+b*n_phi_r",
+    "product_rule": "D^I(b*n_phi_r)=sum_{J<=I} binom(I,J) D^J b D^(I-J) n_phi_r",
+    "corrected_bound": "epsilon*sum_{J<=I} binom(I,J) C_b,J C_n,I-J S_*^d_(I-J)"
+  },
+  "local_replay": {
+    "tolerance": "0",
+    "fixture": {
+      "epsilon": "1/1024",
+      "S_star": "16",
+      "multiindex": [1, 0, 0, 0, 0]
+    },
+    "actual": {
+      "corrected_product_bound": "1/64",
+      "max_degree_envelope": "1/64",
+      "max_degree": 1
+    },
+    "mutation": {
+      "dropped_polynomial_factor_bound": "1/1024",
+      "corrected_value": "1/64",
+      "strictly_exceeds_dropped_bound": true
+    },
+    "transport_fixture_value": "311/832"
+  },
+  "truth_boundary": {
+    "source_checker_pass_is_local_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "all_stage_convergence": false
+  }
+}
