@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO5-OSCILLATION-PLANE-INVERSE-REPLAY-006",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-oscillations",
+    "component_path": "proof_sources/oscillations/oscillations_body.tex",
+    "component_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+    "source_pages": "62-87,157-165",
+    "associated_checker": "proof_sources/oscillations/exact_checks.py",
+    "recorded_checker_sha256": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+    "recorded_result_path": "proof_sources/oscillations/exact_checks_results.json",
+    "recorded_result_sha256": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "license_boundary": "repository metadata reports license=null; no source checker/proof implementation or substantial authored prose copied"
+  },
+  "public_formula_reimplemented": {
+    "basis": "K_a=n_tan/|n_tan|, N_a=((K_a)_z,-(K_a)_theta), U=[e_r-s_a K_a,N_a]",
+    "coordinate_map": "B=U M; B_left=M^{-1}(e_r^T;N_a^T)",
+    "left_inverse_identity": "B_left B = I_2",
+    "ambient_projection_identity": "B B_left = I_3 - K_a n_Phi^T/|n_{Phi,tan}|",
+    "domain_boundary": "ambient map is a projection onto n_Phi^perp along span(K_a), not an inverse on all ambient vectors"
+  },
+  "fixture": {
+    "s_a": "2/3",
+    "K_a": ["0", "3/5", "4/5"],
+    "N_a": ["0", "4/5", "-3/5"],
+    "tangential_norm": "7/5",
+    "n_Phi": ["14/15", "21/25", "28/25"],
+    "gamma": "5/4",
+    "B": [
+      ["1", "1"],
+      ["3/5", "-7/5"],
+      ["-77/60", "13/60"]
+    ],
+    "B_left": [
+      ["1/2", "8/25", "-6/25"],
+      ["1/2", "-8/25", "6/25"]
+    ],
+    "ambient_projector": [
+      ["1", "0", "0"],
+      ["-2/5", "16/25", "-12/25"],
+      ["-8/15", "-12/25", "9/25"]
+    ]
+  },
+  "actual_local_replay": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "left_inverse_max_residual": "0",
+    "ambient_formula_max_residual": "0",
+    "projector_idempotence_max_residual": "0",
+    "normal_range_max_residual": "0",
+    "kernel_K_a_max_residual": "0",
+    "passed": true
+  },
+  "failure_boundary": {
+    "mutation": "add 2^-40 to only the radial component of the reported n_Phi while keeping B fixed",
+    "ambient_formula_max_residual": "1/1924145348608",
+    "normal_range_max_residual": "1/1099511627776",
+    "accepted": false
+  },
+  "source_replay_status": {
+    "original_checker_executed_locally": false,
+    "original_result_treated_as_local_pass": false,
+    "reason": "checker/result bodies are recorded inside the published source bundle but were not executable through the available GitHub UTF-8 text interface in this run",
+    "complete_source_replay_program_reproduced": false,
+    "source_named_result_group_claimed_reproduced": false,
+    "source_structural_probe_claimed_reproduced": false
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "all_stage_convergence": false,
+    "same_witness_residual_improvement": false
+  }
+}
