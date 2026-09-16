@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO4-PORTABLE-BODY-LINEAGE-AUDIT-005",
+  "purpose": "Machine-readable provenance audit of portability identity and manuscript-capture lineage for the eight late Kokuno Navier-Stokes component bodies. Hash identity is integrity metadata only, not mathematical validation or a license grant.",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "inspected_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "primary_manifest_path": "navier_stokes_primary_manifest.json",
+    "primary_manifest_git_blob_sha1": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "research_state_path": "navier-stokes/research-state.json",
+    "checks_path": "navier_stokes_checks.json",
+    "release_hash_map_path": "releases/2026-09-09/HASHES.md",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "corrected_bundle_member_count": 120,
+    "derivation_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+    "later_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f",
+    "formal_source_commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538"
+  },
+  "license_boundary": {
+    "github_repository_license_field": null,
+    "direct_reuse_policy": "Factual identifiers, paths, hashes, counts, and independently authored provenance conclusions may be recorded. Kokuno proof bodies, checker implementations, and substantial authored text are not copied while no repository-level reuse license is identified.",
+    "portable_hash_identity_is_not_a_license_grant": true
+  },
+  "late_component_bodies": [
+    {
+      "id": "NS-terminal_endpoint",
+      "path": "proof_sources/terminal_endpoint/endpoint_derivation.tex",
+      "sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+      "original_sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+      "portable_sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": "117-126",
+      "migration_status": "DIRECT-METADATA; body remains REIMPLEMENT/REFERENCE-ONLY"
+    },
+    {
+      "id": "NS-profile_assembly",
+      "path": "proof_sources/profile_assembly_audit/profile_assembly_body.tex",
+      "sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+      "original_sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+      "portable_sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; body remains REIMPLEMENT/REFERENCE-ONLY"
+    },
+    {
+      "id": "NS-stage_inputs",
+      "path": "proof_sources/stage_inputs_audit/stage_inputs_body.tex",
+      "sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+      "original_sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+      "portable_sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; body remains REIMPLEMENT/REFERENCE-ONLY"
+    },
+    {
+      "id": "NS-summation_realization",
+      "path": "proof_sources/primary_continuation/summation_realization_body.tex",
+      "sha256": "13d370917df47e46e2d75e0cd3a5d4ab5f2dfd1fd1f31e4eef3fa4413b6a3fa5",
+      "original_sha256": "13d370917df47e46e2d75e0cd3a5d4ab5f2dfd1fd1f31e4eef3fa4413b6a3fa5",
+      "portable_sha256": "13d370917df47e46e2d75e0cd3a5d4ab5f2dfd1fd1f31e4eef3fa4413b6a3fa5",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f",
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; body remains REIMPLEMENT/REFERENCE-ONLY"
+    },
+    {
+      "id": "NS-terminal_trace",
+      "path": "proof_sources/primary_continuation/terminal_trace_body.tex",
+      "sha256": "f0eb87504ca5246eec37b09cfb17807053eee37e5282bc6ea4badefb3c822eb5",
+      "original_sha256": "f0eb87504ca5246eec37b09cfb17807053eee37e5282bc6ea4badefb3c822eb5",
+      "portable_sha256": "f0eb87504ca5246eec37b09cfb17807053eee37e5282bc6ea4badefb3c822eb5",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": null,
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; capture lineage remains UNVERIFIED/UNSPECIFIED in component metadata"
+    },
+    {
+      "id": "NS-radial_stress_reconstruction_audit",
+      "path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/radial_stress_reconstruction_audit.tex",
+      "sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+      "original_sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+      "portable_sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": null,
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; capture lineage remains UNVERIFIED/UNSPECIFIED in component metadata"
+    },
+    {
+      "id": "NS-stage_cycle_gain_audit",
+      "path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/stage_cycle_gain_audit.tex",
+      "sha256": "497cb07b95a651bd5ed76f74c004722dc2172c1ef0575ddfea43c95cd56b361e",
+      "original_sha256": "497cb07b95a651bd5ed76f74c004722dc2172c1ef0575ddfea43c95cd56b361e",
+      "portable_sha256": "497cb07b95a651bd5ed76f74c004722dc2172c1ef0575ddfea43c95cd56b361e",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": null,
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; capture lineage remains UNVERIFIED/UNSPECIFIED in component metadata"
+    },
+    {
+      "id": "NS-global_closure_body",
+      "path": "proof_sources/global_analytic_closure_review/global_closure_body.tex",
+      "sha256": "b212819c6788fc74086e501292567ba7630cd67f7a308f54c2102732c40e0954",
+      "original_sha256": "b212819c6788fc74086e501292567ba7630cd67f7a308f54c2102732c40e0954",
+      "portable_sha256": "b212819c6788fc74086e501292567ba7630cd67f7a308f54c2102732c40e0954",
+      "text_changed_for_portability": false,
+      "source_capture_sha256": null,
+      "source_pages": null,
+      "migration_status": "DIRECT-METADATA; capture lineage remains UNVERIFIED/UNSPECIFIED in component metadata"
+    }
+  ],
+  "portability_counterexample": {
+    "path": "proof_sources/terminal_endpoint/endpoint_review.json",
+    "original_sha256": "489a9bafef4639a4c2c636e6d59b6e42b5cb6b60726621fa7b6d20ddb644b941",
+    "portable_sha256": "cf1fefa6d9b3cd8407aadcb6ab77e59280fbfd5a3799fb2bc56d0c1479239dc3",
+    "text_changed_for_portability": true,
+    "reason_for_recording": "The eight body files are byte-identical across the manifest's original/portable mapping, but that property must not be generalized to sibling review/check artifacts."
+  },
+  "summary": {
+    "late_component_count": 8,
+    "body_files_with_original_equals_portable_sha256": 8,
+    "body_files_marked_text_changed_for_portability": 0,
+    "components_explicitly_bound_to_165_page_capture": 3,
+    "components_explicitly_bound_to_166_page_capture": 1,
+    "components_with_null_capture_lineage": 4,
+    "null_capture_component_ids": [
+      "NS-terminal_trace",
+      "NS-radial_stress_reconstruction_audit",
+      "NS-stage_cycle_gain_audit",
+      "NS-global_closure_body"
+    ]
+  },
+  "truth_boundary": {
+    "byte_identity_does_not_imply_semantic_validation": true,
+    "byte_identity_does_not_imply_mathematical_validation": true,
+    "null_capture_lineage_is_not_inferred_from_neighboring_components": true,
+    "source_recorded_pass_is_not_target_local_pass": true,
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "limitations": [
+    "This audit compares source-recorded SHA-256 and portability metadata; it does not download and freshly rehash the corrected ZIP or all 120 members.",
+    "No Kokuno checker or proof body was copied or executed.",
+    "A null source_capture_sha256 is preserved as null rather than inferred from release narrative or adjacent component lineage.",
+    "The eight body identities do not establish imported-profile/admissible-stress existence, all-stage realization/convergence, same-witness final force, or formal endpoint/Comparator closure."
+  ]
+}
