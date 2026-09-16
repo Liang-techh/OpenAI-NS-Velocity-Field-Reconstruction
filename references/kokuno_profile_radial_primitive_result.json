@@ -1,0 +1,63 @@
+{
+  "task_id": "KOKUNO6-PROFILE-RADIAL-PRIMITIVE-003",
+  "source": {
+    "repository": "https://github.com/KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-profiles",
+    "archive_path": "proof_sources/profiles/profiles_body.tex",
+    "component_sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+    "source_pages": "24-45,144-157",
+    "associated_checker": "proof_sources/profiles/exact_checks.py",
+    "checker_sha256": "a7ee77024a92d06c1b69055a00b10a7d5fd600ca424fe084e2f4399310cf56e7",
+    "recorded_result": "proof_sources/profiles/exact_checks.json",
+    "recorded_result_sha256": "5ef2b5f7cee750088143acda8d4a5ee4f0b12f36f0344ab991f5c9333a842e24",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406"
+  },
+  "license_boundary": {
+    "repository_license_metadata": null,
+    "copied_source_checker_or_proof_code": false,
+    "implementation_mode": "clean-room from short public formulas and structured provenance"
+  },
+  "formula_unit": {
+    "A": "1/2+h",
+    "D": "1/2-h",
+    "d": "1-eta^2",
+    "L": "1-2*h*eta^2",
+    "V0": "(2*eta*X*U-2*D*eta*M-d*M_eta)/L",
+    "dV0_dX": "(2*A*eta*U-d*U_eta+2*eta*X*U_X)/L"
+  },
+  "exact_fixture": {
+    "X": "1/2",
+    "eta": "1/2",
+    "h": "1/16",
+    "U": "11/8",
+    "U_X": "1/2",
+    "U_eta": "1/4",
+    "M": "5/8",
+    "M_eta": "1/8",
+    "V0": "41/124",
+    "dV0_dX_from_primitive": "107/124",
+    "divergence_rhs": "107/124",
+    "divergence_residual": "0",
+    "target_bridge_V0_error": 0.0,
+    "target_bridge_flux_error": 0.0
+  },
+  "fail_closed_mutation": {
+    "mutation": "M_X += 2^-40",
+    "exact_divergence_residual": "-7/17042430230528",
+    "tolerance": "0"
+  },
+  "local_checks": {
+    "pytest": "5 passed in 0.07s",
+    "py_compile": "exit 0"
+  },
+  "truth_boundary": {
+    "imported_profile_existence_proved_here": false,
+    "source_checker_rerun": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "complete_independent_analytic_validation": false
+  }
+}
