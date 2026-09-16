@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO5-STAGE9-PHYSICAL-LOSS-REPLAY-008",
+  "component": "NS-stage9",
+  "source": {
+    "public_repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "archive_path": "proof_sources/stage9/stage9_body.tex",
+    "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+    "source_pages": "100–116",
+    "associated_checker": "proof_sources/stage9/exact_checks.py",
+    "checker_sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+    "recorded_result": "proof_sources/stage9/exact_checks.json",
+    "recorded_result_sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f",
+    "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406"
+  },
+  "license_boundary": {
+    "repository_license": null,
+    "copied_source_checker_or_proof_code": false,
+    "clean_room_from_short_public_formulas": true,
+    "source_checker_executed": false,
+    "checker_tree_lookup": "404 Not Found"
+  },
+  "replay_scope": {
+    "physical_residual_factor": "Q^(-2A-1/2)",
+    "A": "1/2+h",
+    "spatial_derivative_loss": "1/2+h/2",
+    "temporal_derivative_loss": "1+3h/2",
+    "fixed_loss": "K_m=2A+1/2+m(1+3h/2)",
+    "stage_exponent": "sigma_j=1/5+j/10",
+    "stage_gain": "h*sigma_j=h/5+h*j/10",
+    "tolerance": "0"
+  },
+  "fixture": {
+    "h": "1/200",
+    "m": 3,
+    "j": 17,
+    "A": "101/200",
+    "physical_residual_loss": "151/100",
+    "spatial_derivative_loss": "201/400",
+    "temporal_derivative_loss": "403/400",
+    "fixed_loss_Km": "1813/400",
+    "sigma_j": "19/10",
+    "stage_gain": "19/2000",
+    "next_stage_gain": "1/100",
+    "gain_increment": "1/2000",
+    "net_power": "-4523/1000"
+  },
+  "failure_boundaries": {
+    "A_mutation": "+2^-40",
+    "A_parameter_residual": "1/1099511627776",
+    "physical_loss_drift_if_bad_A_used": "1/549755813888",
+    "underestimated_temporal_loss": "1+h",
+    "per_derivative_loss_deficit": "1/400",
+    "m3_total_loss_deficit": "3/400",
+    "float_inputs_rejected": true,
+    "h_equal_1_over_100_rejected": true
+  },
+  "local_validation": {
+    "focused_pytest": "7 passed",
+    "py_compile_exit": 0,
+    "structured_json_parse": true
+  },
+  "truth_boundary": {
+    "complete_source_replay_program_reproduced": false,
+    "source_named_result_group_claimed_as_reproduced": false,
+    "source_structural_probe_claimed_as_reproduced": false,
+    "analytic_coefficient_estimates_proved": false,
+    "same_witness_residual_improvement_proved": false,
+    "all_stage_convergence_proved": false,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
