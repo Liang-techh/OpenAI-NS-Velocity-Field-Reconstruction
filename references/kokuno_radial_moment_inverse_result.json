@@ -1,0 +1,81 @@
+{
+  "task_id": "KOKUNO8-RADIAL-MOMENT-INVERSE-004",
+  "source_component": "NS-radial_stress_reconstruction_audit",
+  "source_repository": "KokunoYumeto/yang-mills-interacting-workbench",
+  "source_public_main": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+  "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+  "source_path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/radial_stress_reconstruction_audit.tex",
+  "source_sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+  "source_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f",
+  "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+  "doi": "10.5281/zenodo.22678406",
+  "formula_scope": [
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R10",
+    "R11",
+    "R12"
+  ],
+  "local_reimplementation": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "weights": [
+      1,
+      2
+    ],
+    "verified_claim": "finite exact polynomial audit of moment complement and radial differential inverse"
+  },
+  "license_boundary": {
+    "repository_license_metadata": null,
+    "copied_source_checker_or_proof_code": false,
+    "implementation_kind": "clean-room from short public formulas and structured provenance"
+  },
+  "closure_gap_ledger_update": {
+    "narrowed": [
+      "The R6-R12 moment-complement/radial-inverse algebra is independently executable for exact finite polynomial fixtures.",
+      "The nonzero scalar weighted moment is retained explicitly rather than silently projecting the source to moment zero."
+    ],
+    "still_open": [
+      "smooth compact zero-extension and moving-q derivative estimates R13-R30",
+      "full tensor/chart correspondence",
+      "admissible-stress existence",
+      "same-witness binding to an actual oscillatory/stage producer",
+      "all-stage realization/convergence",
+      "same-witness final force and endpoint closure"
+    ]
+  },
+  "truth_boundary": {
+    "source_checker_executed": false,
+    "complete_radial_stress_reconstruction_verified": false,
+    "admissible_stress_existence_proved_here": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "actual_checks": {
+    "pytest": "6 passed in 0.13s",
+    "py_compile_exit": 0,
+    "json_parse": "pass",
+    "fixture": {
+      "interval": [
+        "1/2",
+        "5/2"
+      ],
+      "radius": "7/5",
+      "e1": {
+        "source_moment": "513211/120120",
+        "projected_moment": "0",
+        "upper_weighted_primitive": "0",
+        "inverse_residual": "0"
+      },
+      "e2": {
+        "source_moment": "17935289/2162160",
+        "projected_moment": "0",
+        "upper_weighted_primitive": "0",
+        "inverse_residual": "0"
+      }
+    },
+    "mutation": "normalized profile constant coefficient += 2^-40; exact weighted moment differs from 1 and replay rejects"
+  }
+}
