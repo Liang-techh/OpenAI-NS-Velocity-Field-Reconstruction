@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "locations": [
+      "NavierStokes/NaturalAxisCoefficients.lean:413-414",
+      "NavierStokes/NaturalAxisCoefficients.lean:468-485"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-rational-amplitude-power-bell",
+    "status": "exact-finite-normalized-derivative-algebra",
+    "artifacts": [
+      "references/AXIS_COEFFICIENT_RATIONAL_BELL_PROVENANCE.md",
+      "references/provenance_manifest_addendum_axis_coefficient_rational_bell.json"
+    ],
+    "capability": "Exact normalized eta derivatives of a^p through finite complete exponential Bell recurrence for rational h,j,sigma,Lambda inputs",
+    "pinned_identity": "a=exp(Lambda*realPhase)/C, a'=Lambda*realGradient*a, C independent of eta",
+    "normalized_ratio_cancellation": "The phase value and eta-independent C cancel from (a^p)^(m)/a^p; they remain in the unnormalized magnitude",
+    "bell_recurrence": {
+      "q_r": "p*Lambda*realGradient^(r-1)(eta), r>=1",
+      "B_0": "1",
+      "B_m": "(a^p)^(m)/a^p",
+      "next": "B_(m+1)=sum(k=0..m) binom(m,k)*q_(k+1)*B_(m-k)"
+    },
+    "exact_input": "Fraction Taylor derivatives of realGradient=-L*H/(H^2+sigma^2), with each coefficient multiplied by r!",
+    "directed_decimal": "Convert exact rational B_m outward with ROUND_FLOOR and ROUND_CEILING at the selected precision",
+    "comparison": "Before this change the legacy recurrence used binary64 gradient jets; current amplitude, wide-source, and formal-solver paths use the rational Bell provider, while the phase value remains numerical quadrature",
+    "truth_flags": {
+      "normalized_bell_factors_exact": true,
+      "directed_bell_input_enclosure": true,
+      "phase_interval_certified": false,
+      "log_amplitude_certified": false,
+      "amplitude_magnitude_certified": false,
+      "coefficient_roundoff_certified": false,
+      "global_parameter_certified": false,
+      "paper_exact": false,
+      "paper_exact_velocity_available": false
+    },
+    "next_missing_primitive": "validated_real_phase_interval",
+    "next_missing_reason": "realPhase integrates the rational gradient across a possible narrow H-root region; fixed 4001-point trapezoids provide no error bound",
+    "validation": {
+      "scope": "provenance artifact only",
+      "tests_run": false,
+      "exact_real_or_interval_global_proof": false
+    },
+    "remaining_boundary": "The Bell ratio is exact only for the rational input layer; phase, amplitude magnitude, schedule pressure, accumulated coefficient arithmetic, global norms, and paper-exact velocity remain outside this artifact."
+  }
+}

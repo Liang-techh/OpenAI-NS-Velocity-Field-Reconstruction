@@ -117,37 +117,12 @@ class ActualScheduleReferenceNaturalSourceLogState:
 
         order = _index(order, "order")
         eta = _eta_in_window(eta)
-        if order == 0:
-            return Decimal(1)
-
-        # If f = log(a), then a^2 = exp(2 f) and
-        # (2 f)^(k+1) = 2 * Lambda * d_eta^k(realGradient).
-        q: list[Decimal] = [Decimal(0)]
-        with localcontext() as ctx:
-            ctx.prec = _DECIMAL_PRECISION
-            for derivative_order in range(order):
-                gradient_jet = self.amplitude.data.normalizedGradient.jet(
-                    0, derivative_order, eta
-                )
-                q.append(
-                    +(
-                        Decimal(2)
-                        * self.amplitude.Lambda
-                        * _decimal_from_float(gradient_jet, "realGradient jet")
-                    )
-                )
-
-            bell = [Decimal(1)]
-            for n in range(order):
-                total = Decimal(0)
-                for k in range(n + 1):
-                    total += (
-                        Decimal(math.comb(n, k))
-                        * q[k + 1]
-                        * bell[n - k]
-                    )
-                bell.append(+total)
-            return bell[order]
+        return self.amplitude.rational_data.amplitude_power_bell_decimal(
+            2,
+            order,
+            eta,
+            self.amplitude.Lambda,
+        )
 
     def normalized_factor(self, n: int, m: int, eta: float) -> Decimal:
         """Return the factor after extracting the common ``a(eta)^2`` scale.
@@ -184,14 +159,16 @@ class ActualScheduleReferenceNaturalSourceLogState:
         if factor == 0:
             return SignedLogCoefficientJet.zero()
 
+        source = self.amplitude.log_amplitude_source(eta)
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
-            log_scale = +(Decimal(2) * self.amplitude.log_amplitude(eta))
+            log_scale = +(Decimal(2) * source.midpoint)
             log_factor = +abs(factor).ln()
         return SignedLogCoefficientJet(
             sign=1 if factor > 0 else -1,
             log_scale=log_scale,
             log_factor=log_factor,
+            amplitude_log_scale=source.power(2, log_scale),
         )
 
     def binary64_state(self) -> AxisCoefficientJetState:

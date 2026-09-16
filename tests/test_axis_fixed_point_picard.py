@@ -1,4 +1,5 @@
-from decimal import Decimal, localcontext
+from decimal import Decimal, ROUND_CEILING, localcontext
+from fractions import Fraction
 
 import pytest
 
@@ -9,6 +10,8 @@ from openai_ns_reconstruction.axis_fixed_point_picard import (
     iterate_natural_picard,
 )
 from openai_ns_reconstruction.natural_scale_selection_wide import (
+    SymbolicExponentialThreshold,
+    WideNaturalScaleSelection,
     select_natural_scale_wide,
 )
 from openai_ns_reconstruction.outgoing_tail import OutgoingCoreParameters, TailData
@@ -75,6 +78,45 @@ def test_tail_bound_matches_an_independent_geometric_sum() -> None:
         oracle = (q**n) / (Decimal(1) - q) * first
     assert bound >= oracle
     assert bound - oracle < Decimal("1e-80")
+
+
+def test_tail_multiplier_upper_dominates_tiny_q_exact_fraction() -> None:
+    q = Decimal("1e-100")
+    cert = NaturalPicardContractionCertificate(
+        remainder_bound_upper=Decimal(0),
+        remainder_lipschitz_upper=Decimal(0),
+        Lambda=Decimal(1),
+        inverse_two_lambda_upper=Decimal(1),
+        one_step_radius_upper=Decimal(0),
+        contraction_factor_upper=q,
+    )
+
+    actual = Fraction(cert.tail_multiplier_upper(0))
+    exact = Fraction(1, 1) / (Fraction(1, 1) - Fraction(q))
+    assert actual >= exact
+
+
+def test_inverse_two_lambda_upper_dominates_exact_wide_reciprocal() -> None:
+    Lambda = Decimal("9." + "9" * 95)
+    with localcontext() as ctx:
+        ctx.prec = 96
+        ctx.rounding = ROUND_CEILING
+        rounded_product = +(Decimal(2) * Lambda)
+    assert Fraction(rounded_product) > Fraction(2, 1) * Fraction(Lambda)
+
+    scale = WideNaturalScaleSelection(
+        remainder_bound=Decimal(0),
+        remainder_lipschitz=Decimal(0),
+        phase_real_part_sup=Decimal(0),
+        contraction=Decimal(1),
+        stability=Decimal(1),
+        Lambda=Lambda,
+        C=SymbolicExponentialThreshold(Decimal(0)),
+    )
+    cert = NaturalPicardContractionCertificate.from_scale(scale)
+    actual = Fraction(cert.inverse_two_lambda_upper)
+    exact = Fraction(1, 1) / (Fraction(2, 1) * Fraction(Lambda))
+    assert actual >= exact
 
 
 def test_execution_adapter_uses_the_pinned_picard_map_shape() -> None:

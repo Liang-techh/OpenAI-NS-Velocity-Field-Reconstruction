@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "provenance-manifest-addendum",
   "base_manifest": "references/provenance_manifest.json",
-  "base_main_commit": "3615d71a602824304455682b49968788ff777859",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
   "full_reconstruction": false,
   "paper_exact_velocity_available": false,
   "layer": {
@@ -19,6 +19,7 @@
       "files": [
         "NavierStokes/AxisContraction.lean",
         "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
         "NavierStokes/NaturalAxisCoefficients.lean"
       ],
       "symbols": [
@@ -26,10 +27,27 @@
         "NavierStokes.AxisOperators.regularInverse",
         "NavierStokes.AxisOperators.inverseDotProduct",
         "NavierStokes.AxisOperators.inverseMixed",
-        "NavierStokes.AxisOperators.inverseParamProduct"
-      ]
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.AxisOperators.average",
+        "NavierStokes.NaturalAxisCoefficients.CoefficientFamily.axisData"
+      ],
+      "locations": {
+        "coefficient_definitions": "NavierStokes/AxisContraction.lean:327-334",
+        "natural_remainder": "NavierStokes/AxisContraction.lean:339-365",
+        "product": "NavierStokes/AxisOperators.lean:86-95",
+        "regular_inverse": "NavierStokes/AxisOperators.lean:501-504",
+        "differential_family": "NavierStokes/AxisOperators.lean:512-518",
+        "operator_bindings": "NavierStokes/AxisOperators.lean:681-717",
+        "radial_divisor": "NavierStokes/AxisWeightEstimates.lean:388",
+        "coefficient_window": "NavierStokes/NaturalAxisCoefficients.lean:27"
+      }
     },
-    "capability": "Composes all four already-materialized theorem-scale slow2(x1) constituents into one typed complete slow2 state bound to the identical actual SchedulePressure first Picard state, preserving ordinary Lambda^0..-4, signed-log a^2 Lambda^-1..-3, and signed-log a^4 Lambda^-2 scales. Regression reconstructs Decimal branch sums and amplitude powers under the same explicit 96-digit precision used by the wide implementation.",
+    "prerequisite": {
+      "pull_request": 279,
+      "head": "11811fb66101bf31b5be892062f6291f3091a410",
+      "required_artifact": "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_slow2_param.py"
+    },
+    "capability": "Aggregates all four pinned theorem-scale slow2(x1) branches into one mixed-scale coefficient jet, preserving ordinary Lambda^0..Lambda^-4, normalized a^2 Lambda^-1..Lambda^-3, and normalized a^4 Lambda^-2 contributions.",
     "truth_boundary": {
       "first_picard_x1_materialized": true,
       "slow2_axial_quadratic_branch_materialized": true,
@@ -41,16 +59,23 @@
       "natural_remainder_x1_materialized": false,
       "picard_x2_materialized": false,
       "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
       "natural_profile_assembly_materialized": false,
       "paper_exact_velocity_available": false
     },
     "forbidden_promotions": [
-      "caller-supplied or fitted branch/coefficient/Lambda/C/amplitude/pressure data",
-      "toy or surrogate x1 states represented as theorem-selected data",
-      "binary64 collapse of nonzero signed-log theorem-scale pressure terms",
-      "default-precision Decimal regression used as evidence against or instead of the explicit wide-precision algebra",
-      "naturalRemainder(x1), x2, fixed-point, or paper-exact claims from complete slow2(x1) alone"
+      "caller-supplied or fitted branch, d, Lambda, C, amplitude, or pressure data",
+      "mixing branch states from different x1 or SchedulePressure datum",
+      "applying an extra minus sign to the PR 279 parameter branch",
+      "binary64 collapse of nonzero signed-log pressure terms",
+      "naturalRemainder(x1), x2, fixed-point, or paper-exact claims from complete slow2 alone"
     ],
-    "remaining_boundary": "Complete slow2(x1) is now typed and materialized. The remaining theorem-scale angular lin/quad/slow pieces and source/pressure/resolvent recombination must be materialized before complete naturalRemainder(x1); then x2, contraction-driven fixed-point phi/u, derived average/pressure, NaturalProfileAssembly, global AxisSpace certification, and support/moments/matching/cone closure remain unresolved."
+    "remaining_boundary": "The companion lin2 module materializes raw axial lin2(x1). Its recombination with this slow2 aggregate, the remaining mixed-scale angular lin1/quad1/slow1 terms, x1 source-pressure-resolvent path, complete naturalRemainder(x1), later Picard iterates, fixed-point convergence, derived average/pressure, NaturalProfileAssembly, global AxisSpace certification, and downstream support/moment/matching/cone checks remain unresolved.",
+    "numerical_caveats": [
+      "the four branch numerators are summed in ordinary Decimal arithmetic with precision 96; this is a numerical representation, not exact real arithmetic, interval certification, or an independent theorem proof",
+      "rounded cancellation in a summed numerator can lose digits; the implementation preserves the formal-structure truth boundary and does not promote the result",
+      "the outer naturalRemainder(x1) factor -slow2/Lambda is intentionally outside this aggregate"
+    ]
   }
 }

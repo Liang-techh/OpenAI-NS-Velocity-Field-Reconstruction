@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_pressure.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_PRESSURE_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.productFamily",
+        "NavierStokes.AxisOperators.primitive",
+        "NavierStokes.AxisOperators.parameterPrimitive",
+        "NavierStokes.AxisOperators.mulY",
+        "NavierStokes.AxisOperators.regularInverse"
+      ],
+      "locations": {
+        "natural_remainder": "NavierStokes/AxisContraction.lean:339-365",
+        "product": "NavierStokes/AxisOperators.lean:86-95",
+        "operator_bindings": "NavierStokes/AxisOperators.lean:681-717",
+        "radial_divisor": "NavierStokes/AxisWeightEstimates.lean:388",
+        "coefficient_window": "NavierStokes/NaturalAxisCoefficients.lean:27"
+      }
+    },
+    "prerequisites": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard.py",
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_angular_square.py",
+      "src/openai_ns_reconstruction/axis_coefficient_wide_natural_source.py",
+      "src/openai_ns_reconstruction/axis_coefficient_wide_natural_pressure.py"
+    ],
+    "capability": "Materializes the actual first-Picard a^2*phi1^2 source and the pinned linear pressure chain as normalized five-channel Lambda^0..Lambda^-4 Decimal factors with the common a^2 scale retained in signed-log form.",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "fixed_axis_data_source": "x1.reference only",
+      "angular_square_source": "actual phi1*phi1 five-channel state",
+      "amplitude_source": "x1.remainder.axial.wide_pressure.source.amplitude",
+      "amplitude_derivatives": "reused wide-source amplitude-square Bell recurrence",
+      "pressure_formula": "j1(-4*A*eta*primitive(source) + d*parameterPrimitive(source) - 2*eta*mulY(source))",
+      "ordinary_inverse_lambda_powers": [0, 1, 2, 3, 4],
+      "common_amplitude_power": 2,
+      "Lambda_override": false,
+      "epsilon_override": false,
+      "amplitude_override": false,
+      "pressure_override": false,
+      "coefficient_table_override": false,
+      "derivative_table_override": false,
+      "inverseL_outer_multiplication": false,
+      "collapsed_total_value": false
+    },
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "wide_first_picard_pressure_materialized": true,
+      "pressure_x1_materialized": true,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted source, pressure, amplitude, Lambda, epsilon, or coefficient data",
+      "mixing x1 states or fixed AxisData from different SchedulePressure constructions",
+      "dropping amplitude derivatives by differentiating a normalized value as if a were constant",
+      "collapsing nonzero a^2 terms into binary64",
+      "applying outer inverseL inside this raw pressure chain",
+      "complete naturalRemainder(x1), x2, fixed-point, or paper-exact claims from this pressure seam"
+    ],
+    "remaining_boundary": "Combine this x1 source-pressure chain with raw lin2 and complete slow2, materialize the remaining angular and axial naturalRemainder(x1) branches, then execute later Picard iterates and certify fixed-point convergence, derived average/pressure, NaturalProfileAssembly, global AxisSpace bounds, and downstream paper conditions.",
+    "numerical_caveats": [
+      "normalized source and pressure channels are accumulated in a local 96-digit Decimal context; this is a numerical representation rather than an exact real or interval certificate",
+      "the common amplitude magnitude remains in signed-log metadata and no collapsed total-value binary64 projection is provided",
+      "the actual phase and amplitude chain inherits the landed numerical quadrature boundary",
+      "the outer inverseL multiplication is intentionally outside this seam"
+    ]
+  }
+}

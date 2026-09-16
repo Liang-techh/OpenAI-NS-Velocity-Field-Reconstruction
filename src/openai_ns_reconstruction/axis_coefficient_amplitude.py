@@ -10,21 +10,26 @@ choices are finite mathematical reals but can lie far outside binary64.  This
 module therefore materializes the amplitude in signed-log coefficient-jet
 coordinates instead of narrowing Lambda or C to float.
 
-Only the scalar representation changes.  The parameter derivatives use
-(realAmplitude)' = Lambda * realGradient * realAmplitude and the complete Bell
-recurrence, while radial degree is exactly zero.  ``binary64_state`` is an
-explicit projection for callers that need the existing coefficient backend; it
-fails closed whenever a nonzero jet is outside binary64's representable range
-rather than silently replacing it by zero or infinity.
-
-The phase value still uses the landed numerical ``real_phase`` quadrature, so
-this object remains ``formal-structure`` rather than a paper-exact certificate.
+Only the scalar representation changes.  The default phase value is the
+nearest Decimal midpoint of a validated exact-rational kernel interval at the
+selected finite tolerance.  Its returned point is still numerical, and a
+large ``Lambda`` can amplify the phase error substantially; callers needing
+that uncertainty should use the explicit log-amplitude enclosure.  The
+parameter derivatives use (realAmplitude)' = Lambda * realGradient *
+realAmplitude and the complete Bell recurrence, while radial degree is exactly
+zero.  ``binary64_state`` is an explicit projection for callers that need the
+existing coefficient backend; it fails closed whenever a nonzero jet is outside
+binary64's representable range rather than silently replacing it by zero or
+infinity.  No path here claims a paper-exact parameter selection, global norm,
+or total reconstruction.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal, localcontext
+from fractions import Fraction
+from functools import lru_cache
 import math
 import sys
 
@@ -37,6 +42,14 @@ from .axis_coefficient_reference_state import (
     AxisCoefficientJetState,
     actual_schedule_reference_axis_state,
 )
+from .axis_coefficient_rational_data import RationalAxisCoefficientData
+from .axis_amplitude_log_scale import AmplitudeLogSource, AmplitudePowerLogScale
+from .axis_amplitude_derivative_enclosure import (
+    AmplitudeDerivativeLogEnclosure,
+    rational_log_enclosure,
+)
+from .axis_phase_integral import PhaseIntegralResult, validated_phase_integral
+from .axis_phase_log_enclosure import RationalLogAmplitudeEnclosure
 from .natural_axis import real_phase
 from .natural_scale_selection_wide import WideNaturalScaleSelection
 from .outgoing_tail import TailData
@@ -44,6 +57,10 @@ from .stage1_scale_chain_wide import diagnose_actual_schedule_scale_chain_wide
 
 
 _DECIMAL_PRECISION = 96
+_PHASE_INITIAL_ORDER = 16
+_PHASE_MAX_ORDER = 4096
+_PHASE_MAX_CELLS = 4096
+_PHASE_MAX_DEPTH = 128
 
 
 def _index(value: int, name: str) -> int:
@@ -82,6 +99,34 @@ with localcontext() as _ctx:
     _BINARY64_MIN_SUBNORMAL_LOG = Decimal.from_float(math.ulp(0.0)).ln()
 
 
+@lru_cache(maxsize=16)
+def _cached_phase_integral(
+    h: Fraction,
+    j: Fraction,
+    sigma: Fraction,
+    eta: Fraction,
+    absolute_tolerance: Fraction,
+    initial_order: int,
+    max_order: int,
+    max_cells: int,
+    max_depth: int,
+) -> PhaseIntegralResult:
+    """Cache only exact scalar inputs and finite integrator settings."""
+
+    return validated_phase_integral(
+        h,
+        j,
+        sigma,
+        eta,
+        absolute_tolerance=absolute_tolerance,
+        initial_order=initial_order,
+        max_order=max_order,
+        max_cells=max_cells,
+        max_depth=max_depth,
+        accumulation="dyadic",
+    )
+
+
 @dataclass(frozen=True)
 class SignedLogCoefficientJet:
     """One real coefficient jet with a lossless split logarithmic magnitude.
@@ -91,23 +136,41 @@ class SignedLogCoefficientJet:
     on the current theorem scale: ``log_scale`` is about 10^784 in magnitude,
     while a derivative correction can be only about 10^3.  A fixed-precision
     Decimal sum would erase that correction even though both inputs are known.
+
+    Optional ``amplitude_log_scale`` metadata encloses only the common phase
+    and log scale supplied by the source and returned power.  It does not
+    enclose the derivative factor or the full coefficient arithmetic.
     """
 
     sign: int
     log_scale: Decimal | None
     log_factor: Decimal | None
+    amplitude_log_scale: AmplitudePowerLogScale | None = None
 
     def __post_init__(self) -> None:
         if self.sign not in (-1, 0, 1):
             raise ValueError("sign must be -1, 0, or 1")
         if self.sign == 0:
-            if self.log_scale is not None or self.log_factor is not None:
+            if (
+                self.log_scale is not None
+                or self.log_factor is not None
+                or self.amplitude_log_scale is not None
+            ):
                 raise ValueError("zero jet must not carry logarithmic components")
             return
         if self.log_scale is None or self.log_factor is None:
             raise ValueError("nonzero jet requires both logarithmic components")
         _finite_decimal(self.log_scale, "log_scale")
         _finite_decimal(self.log_factor, "log_factor")
+        if self.amplitude_log_scale is not None:
+            if not isinstance(self.amplitude_log_scale, AmplitudePowerLogScale):
+                raise TypeError(
+                    "amplitude_log_scale must be AmplitudePowerLogScale"
+                )
+            if self.amplitude_log_scale.returned_log_scale != self.log_scale:
+                raise ValueError(
+                    "amplitude_log_scale returned_log_scale must match log_scale"
+                )
 
     @classmethod
     def zero(cls) -> "SignedLogCoefficientJet":
@@ -152,6 +215,8 @@ class ActualScheduleAmplitudeLogState:
     data: ActualScheduleAxisCoefficientData
     scale: WideNaturalScaleSelection
     phase_samples: int = 4001
+    phase_absolute_tolerance: Fraction = Fraction(1, 10**12)
+    rational_data: RationalAxisCoefficientData = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         samples = int(self.phase_samples)
@@ -161,9 +226,14 @@ class ActualScheduleAmplitudeLogState:
             samples += 1
         if self.data.epsilon != self.reference.epsilon:
             raise ValueError("amplitude data/reference epsilon mismatch")
+        if not isinstance(self.phase_absolute_tolerance, Fraction):
+            raise TypeError("phase_absolute_tolerance must be a Fraction")
+        if self.phase_absolute_tolerance <= 0:
+            raise ValueError("phase_absolute_tolerance must be positive")
         _finite_decimal(self.scale.Lambda, "scale.Lambda")
         _finite_decimal(self.scale.C.exponent_upper, "scale.C.exponent_upper")
         object.__setattr__(self, "phase_samples", samples)
+        object.__setattr__(self, "rational_data", RationalAxisCoefficientData(self.data))
 
     @property
     def epsilon(self) -> float:
@@ -192,18 +262,84 @@ class ActualScheduleAmplitudeLogState:
         return True
 
     @property
+    def phase_has_error_enclosure(self) -> bool:
+        return True
+
+    @property
     def radial_degree_zero(self) -> bool:
         return True
 
     def log_amplitude(self, eta: float) -> Decimal:
-        """Evaluate ``Lambda*realPhase(eta) - log(C)`` without forming C."""
+        """Return the Decimal96 midpoint of the default validated log interval."""
 
         eta = float(eta)
         if not math.isfinite(eta):
             raise ValueError("eta must be finite")
-        # The landed real_phase implementation returns 0 exactly here. Preserve
-        # the symbolic normalization exponent without passing a no-op through
-        # the working Decimal precision.
+        if eta == 0.0:
+            return self.C_exponent.copy_negate()
+
+        return self.default_log_amplitude_enclosure(eta).midpoint_decimal()
+
+    def log_amplitude_source(self, eta: float) -> AmplitudeLogSource:
+        """Return the exact phase/log-scale source for one normalized eta."""
+
+        eta = float(eta)
+        if not math.isfinite(eta):
+            raise ValueError("eta must be finite")
+        eta_fraction = Fraction.from_float(eta)
+        enclosure = self.default_log_amplitude_enclosure(eta)
+        if eta == 0.0:
+            midpoint = self.C_exponent.copy_negate()
+        else:
+            midpoint = enclosure.midpoint_decimal()
+        return AmplitudeLogSource(
+            h=self.rational_data.h,
+            j=self.rational_data.j,
+            sigma=self.rational_data.sigma,
+            eta=eta_fraction,
+            enclosure=enclosure,
+            midpoint=midpoint,
+        )
+
+    def phase_enclosure(self, eta: float) -> PhaseIntegralResult:
+        """Return the cached default exact-rational phase integral interval."""
+
+        eta = float(eta)
+        if not math.isfinite(eta):
+            raise ValueError("eta must be finite")
+        eta_fraction = Fraction.from_float(eta)
+        return _cached_phase_integral(
+            self.rational_data.h,
+            self.rational_data.j,
+            self.rational_data.sigma,
+            eta_fraction,
+            self.phase_absolute_tolerance,
+            _PHASE_INITIAL_ORDER,
+            _PHASE_MAX_ORDER,
+            _PHASE_MAX_CELLS,
+            _PHASE_MAX_DEPTH,
+        )
+
+    def default_log_amplitude_enclosure(
+        self,
+        eta: float,
+    ) -> RationalLogAmplitudeEnclosure:
+        """Return the default validated interval transported to log amplitude."""
+
+        phase = self.phase_enclosure(eta)
+        return RationalLogAmplitudeEnclosure(
+            phase.lower,
+            phase.upper,
+            self.Lambda,
+            self.C_exponent,
+        )
+
+    def legacy_log_amplitude_diagnostic(self, eta: float) -> Decimal:
+        """Evaluate the former 4001-point phase path for diagnostics only."""
+
+        eta = float(eta)
+        if not math.isfinite(eta):
+            raise ValueError("eta must be finite")
         if eta == 0.0:
             return self.C_exponent.copy_negate()
         phase = real_phase(
@@ -217,36 +353,133 @@ class ActualScheduleAmplitudeLogState:
             ctx.prec = _DECIMAL_PRECISION
             return +(self.Lambda * _decimal_from_float(phase, "realPhase") - self.C_exponent)
 
+    def log_amplitude_enclosure(
+        self,
+        eta: Fraction,
+        *,
+        absolute_log_tolerance: Fraction,
+        initial_order: int = 16,
+        max_order: int = 4096,
+        max_cells: int = 4096,
+        max_depth: int = 128,
+    ) -> RationalLogAmplitudeEnclosure:
+        """Enclose ``log(a(eta))`` from a validated exact phase interval.
+
+        The selected finite ``Lambda`` and ``C`` exponent are used exactly as
+        the affine map ``Lambda * phase - log(C)``.  The supplied positive
+        ``absolute_log_tolerance`` is the requested half-width in log space;
+        the phase integrator receives the exact tolerance divided by
+        ``Lambda``.  This remains conditional on the selected finite
+        parameters and on the integrator's phase enclosure, rather than a
+        proof of the scale selection or of the full reconstruction.
+        """
+
+        if not isinstance(eta, Fraction):
+            raise TypeError("eta must be a Fraction")
+        if not isinstance(absolute_log_tolerance, Fraction):
+            raise TypeError("absolute_log_tolerance must be a Fraction")
+        if absolute_log_tolerance <= 0:
+            raise ValueError("absolute_log_tolerance must be positive")
+
+        # Keep the phase tolerance rational all the way to the validated
+        # integrator.  Fraction(Decimal) is exact for the selected Lambda.
+        phase_tolerance = absolute_log_tolerance / Fraction(self.Lambda)
+        from .axis_phase_integral import validated_phase_integral
+
+        result = validated_phase_integral(
+            self.rational_data.h,
+            self.rational_data.j,
+            self.rational_data.sigma,
+            eta,
+            absolute_tolerance=phase_tolerance,
+            initial_order=initial_order,
+            max_order=max_order,
+            max_cells=max_cells,
+            max_depth=max_depth,
+            accumulation="dyadic",
+        )
+        return RationalLogAmplitudeEnclosure(
+            result.lower,
+            result.upper,
+            self.Lambda,
+            self.C_exponent,
+        )
+
     def _bell_factor(self, order: int, eta: float) -> Decimal:
         """Return B_m for d^m exp(f)=exp(f) B_m(f',...,f^(m))."""
 
         order = _index(order, "order")
-        if order == 0:
-            return Decimal(1)
+        return _finite_decimal(
+            self.rational_data.amplitude_power_bell_decimal(
+                1,
+                order,
+                float(eta),
+                self.Lambda,
+            ),
+            "amplitude Bell factor",
+        )
 
-        # q[k] = f^(k) for k>=1, where f' = Lambda * realGradient.
-        q: list[Decimal] = [Decimal(0)]
-        with localcontext() as ctx:
-            ctx.prec = _DECIMAL_PRECISION
-            for derivative_order in range(order):
-                gradient_jet = self.data.normalizedGradient.jet(
-                    0, derivative_order, float(eta)
-                )
-                q.append(
-                    +(self.Lambda * _decimal_from_float(gradient_jet, "realGradient jet"))
-                )
+    def derivative_log_enclosure(
+        self,
+        power: int,
+        order: int,
+        eta: float,
+        *,
+        absolute_log_factor_tolerance: Fraction = Fraction(1, 10**96),
+        max_terms: int = 1024,
+    ) -> AmplitudeDerivativeLogEnclosure:
+        """Return a bounded log enclosure for a full amplitude derivative.
 
-            bell = [Decimal(1)]
-            for n in range(order):
-                total = Decimal(0)
-                for k in range(n + 1):
-                    total += (
-                        Decimal(math.comb(n, k))
-                        * q[k + 1]
-                        * bell[n - k]
-                    )
-                bell.append(+total)
-            return bell[order]
+        The exact Bell factor comes from the rational coefficient provider,
+        while ``log_amplitude_source`` supplies the exact phase/log-scale
+        interval.  Validation is deliberately performed before inspecting
+        whether the Bell factor vanishes, so an exact zero cannot hide an
+        invalid tolerance or series cap.
+        """
+
+        if isinstance(power, bool) or not isinstance(power, int) or power not in (1, 2):
+            raise ValueError("power must be 1 or 2")
+        if isinstance(order, bool) or not isinstance(order, int) or order < 0:
+            raise ValueError("order must be a nonnegative integer")
+        if not isinstance(absolute_log_factor_tolerance, Fraction):
+            raise TypeError("absolute_log_factor_tolerance must be a Fraction")
+        if absolute_log_factor_tolerance <= 0:
+            raise ValueError("absolute_log_factor_tolerance must be positive")
+        if isinstance(max_terms, bool) or not isinstance(max_terms, int) or max_terms <= 0:
+            raise ValueError("max_terms must be a positive integer")
+
+        eta = float(eta)
+        if not math.isfinite(eta):
+            raise ValueError("eta must be finite")
+
+        source = self.log_amplitude_source(eta)
+        exact_factor = self.rational_data.amplitude_power_bell_fraction(
+            power,
+            order,
+            eta,
+            self.Lambda,
+        )
+        if exact_factor == 0:
+            return AmplitudeDerivativeLogEnclosure(
+                source=source,
+                power=power,
+                order=order,
+                exact_bell_factor=exact_factor,
+                log_factor=None,
+            )
+
+        log_factor = rational_log_enclosure(
+            abs(exact_factor),
+            absolute_tolerance=absolute_log_factor_tolerance,
+            max_terms=max_terms,
+        )
+        return AmplitudeDerivativeLogEnclosure(
+            source=source,
+            power=power,
+            order=order,
+            exact_bell_factor=exact_factor,
+            log_factor=log_factor,
+        )
 
     def jet_log(self, n: int, m: int, eta: float) -> SignedLogCoefficientJet:
         """Return the (n,m) amplitude jet without narrowing its magnitude."""
@@ -260,13 +493,16 @@ class ActualScheduleAmplitudeLogState:
         if factor == 0:
             return SignedLogCoefficientJet.zero()
 
+        source = self.log_amplitude_source(float(eta))
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
             log_factor = +abs(factor).ln()
+            log_scale = source.midpoint
         return SignedLogCoefficientJet(
             sign=1 if factor > 0 else -1,
-            log_scale=self.log_amplitude(float(eta)),
+            log_scale=log_scale,
             log_factor=log_factor,
+            amplitude_log_scale=source.power(1, log_scale),
         )
 
     def binary64_state(self) -> AxisCoefficientJetState:
@@ -296,6 +532,7 @@ def actual_schedule_amplitude_log_state(
     j: float,
     *,
     phase_samples: int = 4001,
+    phase_absolute_tolerance: Fraction = Fraction(1, 10**12),
 ) -> ActualScheduleAmplitudeLogState:
     """Bind realAmplitude to the actual schedule and pinned wide Lambda/C choice.
 
@@ -318,4 +555,5 @@ def actual_schedule_amplitude_log_state(
         data=axis_data,
         scale=diagnostic.scale,
         phase_samples=phase_samples,
+        phase_absolute_tolerance=phase_absolute_tolerance,
     )

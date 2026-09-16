@@ -1,43 +1,57 @@
-"""Complete pinned ``slow2(x1)`` at the genuine first Picard state.
+"""Complete mixed-scale ``slow2(x1)`` for the actual first Picard state.
 
-The four theorem-scale constituents of ``AxisContraction.naturalRemainder.slow2``
-are already materialized separately on the actual SchedulePressure first Picard
-state.  This module performs the missing typed composition only:
+The pinned natural-axis remainder has the axial slow term
 
-    j1 ((2*A*eta) * (u1*u1))
-  + dot1 ((2*D*eta) * average(u1)) u1
-  + d * mixed1 (average(u1)) u1
-  - param1 u1 (d*u1).
+    j1((2*A*eta) * (u*u))
+      + dot1((2*D*eta) * average(u), u)
+      + d * mixed1(average(u), u)
+      - param1(u, d*u).
 
-Every constituent uses the same genuine ``ActualScheduleWideFirstPicardState``.
-The composition keeps the existing theorem-scale representation: ordinary
-``Lambda^0..Lambda^-4`` numerators, pressure-linear ``a^2 Lambda^-1..-3``
-numerators, and the pressure-square ``a^4 Lambda^-2`` numerator.  No branch is
-recomputed here, no caller may replace coefficient data, and no signed-log
-pressure term is collapsed to binary64.
+The four theorem-scale branches are materialized by the companion modules
+``axis_coefficient_wide_first_picard_slow2_axial_quadratic``,
+``..._average_dot``, ``..._average_mixed``, and ``..._param``.  This module
+does only their exact typed assembly.  Every branch is evaluated on one genuine
+``ActualScheduleWideFirstPicardState`` and its nine Decimal numerators are added
+at the pinned 96-digit precision.  In particular, the parameter branch already
+contains the displayed minus sign and is added without another sign change.
 
-This closes ``slow2(x1)`` only.  It does not materialize the remaining angular
-or source/pressure/resolvent pieces of ``naturalRemainder(x1)``, ``x2``, a
-fixed point, ``NaturalProfileAssembly``, or paper-exact velocity.
+The ordinary terms remain split as ``Lambda^0`` through ``Lambda^-4``.  The
+pressure-linear terms remain normalized ``a^2`` numerators for
+``Lambda^-1`` through ``Lambda^-3`` and the pressure-square term remains the
+normalized ``a^4 Lambda^-2`` numerator.  Signed-log views are rebuilt only
+after these normalized numerators have been summed, so no nonzero theorem-scale
+pressure contribution is narrowed through binary64.
+
+This is a complete ``slow2(x1)`` value only.  It does not materialize the
+remaining angular/axial pieces of ``naturalRemainder(x1)``, a later Picard
+iterate, a fixed point, a global weighted ``AxisSpace`` certificate, or a
+paper-exact velocity profile.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal, localcontext
+import math
 
+from .axis_amplitude_log_scale import AmplitudeLogSource
 from .axis_coefficient_amplitude import SignedLogCoefficientJet
+from .axis_coefficient_reference_state import WINDOW_LEFT, WINDOW_RIGHT
 from .axis_coefficient_wide_first_picard import ActualScheduleWideFirstPicardState
 from .axis_coefficient_wide_first_picard_slow2_axial_quadratic import (
+    ActualScheduleWideFirstPicardSlow2AxialQuadraticState,
     wide_first_picard_slow2_axial_quadratic_state,
 )
 from .axis_coefficient_wide_first_picard_slow2_average_dot import (
+    ActualScheduleWideFirstPicardSlow2AverageDotState,
     wide_first_picard_slow2_average_dot_state,
 )
 from .axis_coefficient_wide_first_picard_slow2_average_mixed import (
+    ActualScheduleWideFirstPicardSlow2AverageMixedState,
     wide_first_picard_slow2_average_mixed_state,
 )
 from .axis_coefficient_wide_first_picard_slow2_param import (
+    ActualScheduleWideFirstPicardSlow2ParamState,
     wide_first_picard_slow2_param_state,
 )
 
@@ -56,6 +70,19 @@ _FIELDS = (
 )
 
 
+def _index(value: int, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{name} must be a nonnegative integer")
+    return value
+
+
+def _eta_in_window(value: float) -> float:
+    eta = float(value)
+    if not math.isfinite(eta) or not WINDOW_LEFT <= eta <= WINDOW_RIGHT:
+        raise ValueError("eta must be finite and lie in the pinned window [-11/10,11/10]")
+    return eta
+
+
 def _finite_decimal(value: Decimal, name: str) -> Decimal:
     if not isinstance(value, Decimal) or not value.is_finite():
         raise ValueError(f"{name} must be a finite Decimal")
@@ -69,28 +96,48 @@ def _signed_log_term(
     amplitude_power: int,
     Lambda: Decimal,
     inverse_lambda_power: int,
+    amplitude_log_source: AmplitudeLogSource | None = None,
 ) -> SignedLogCoefficientJet:
+    """Encode one normalized numerator in the companion signed-log format."""
+
     _finite_decimal(numerator, "numerator")
     _finite_decimal(amplitude_log, "amplitude_log")
     _finite_decimal(Lambda, "Lambda")
     if Lambda <= 0:
         raise ValueError("Lambda must be positive")
+    if amplitude_log_source is not None:
+        if not isinstance(amplitude_log_source, AmplitudeLogSource):
+            raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+        if amplitude_log_source.midpoint != amplitude_log:
+            raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+        if amplitude_log_source.enclosure.Lambda != Lambda:
+            raise ValueError("Lambda must match amplitude_log_source enclosure Lambda")
+    if amplitude_power <= 0 or inverse_lambda_power < 0:
+        raise ValueError("invalid signed-log scale powers")
     if numerator == 0:
         return SignedLogCoefficientJet.zero()
     with localcontext() as ctx:
         ctx.prec = _DECIMAL_PRECISION
         log_scale = +(Decimal(amplitude_power) * amplitude_log)
-        log_factor = +(abs(numerator).ln() - Decimal(inverse_lambda_power) * Lambda.ln())
+        log_factor = +(
+            abs(numerator).ln()
+            - Decimal(inverse_lambda_power) * Lambda.ln()
+        )
     return SignedLogCoefficientJet(
         sign=1 if numerator > 0 else -1,
         log_scale=log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=(
+            None
+            if amplitude_log_source is None
+            else amplitude_log_source.power(amplitude_power, log_scale)
+        ),
     )
 
 
 @dataclass(frozen=True)
 class MixedScaleFirstPicardSlow2CoefficientJet:
-    """One coefficient eta-jet of the complete four-term ``slow2(x1)`` sum."""
+    """One complete coefficient jet of the pinned ``slow2(x1)`` sum."""
 
     ordinary_reference: Decimal
     ordinary_inverse_lambda_numerator: Decimal
@@ -103,14 +150,30 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
     pressure_square_inverse_lambda_squared_numerator: Decimal
     Lambda: Decimal
     amplitude_log: Decimal
+    amplitude_log_source: AmplitudeLogSource | None = None
 
     def __post_init__(self) -> None:
         for name, value in self.__dict__.items():
+            if name == "amplitude_log_source":
+                continue
             _finite_decimal(value, name)
         if self.Lambda <= 0:
             raise ValueError("Lambda must be positive")
+        if self.amplitude_log_source is not None:
+            if not isinstance(self.amplitude_log_source, AmplitudeLogSource):
+                raise TypeError("amplitude_log_source must be AmplitudeLogSource")
+            if self.amplitude_log_source.midpoint != self.amplitude_log:
+                raise ValueError("amplitude_log_source midpoint must match amplitude_log")
+            if self.amplitude_log_source.enclosure.Lambda != self.Lambda:
+                raise ValueError(
+                    "Lambda must match amplitude_log_source enclosure Lambda"
+                )
 
-    def ordinary_correction_terms_decimal(self) -> tuple[Decimal, Decimal, Decimal, Decimal]:
+    def ordinary_correction_terms_decimal(
+        self,
+    ) -> tuple[Decimal, Decimal, Decimal, Decimal]:
+        """Return the four ordinary inverse-Lambda correction terms."""
+
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
             inverse = +(Decimal(1) / self.Lambda)
@@ -122,7 +185,11 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
                 +(self.ordinary_inverse_lambda_fourth_numerator * inverse2 * inverse2),
             )
 
-    def pressure_linear_terms_log(self) -> tuple[SignedLogCoefficientJet, SignedLogCoefficientJet, SignedLogCoefficientJet]:
+    def pressure_linear_terms_log(
+        self,
+    ) -> tuple[SignedLogCoefficientJet, SignedLogCoefficientJet, SignedLogCoefficientJet]:
+        """Return the normalized ``a^2 Lambda^-1..Lambda^-3`` terms."""
+
         return tuple(
             _signed_log_term(
                 numerator,
@@ -130,6 +197,7 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
                 amplitude_power=2,
                 Lambda=self.Lambda,
                 inverse_lambda_power=power,
+                amplitude_log_source=self.amplitude_log_source,
             )
             for power, numerator in enumerate(
                 (
@@ -142,20 +210,39 @@ class MixedScaleFirstPicardSlow2CoefficientJet:
         )
 
     def pressure_square_term_log(self) -> SignedLogCoefficientJet:
+        """Return the normalized ``a^4 Lambda^-2`` term."""
+
         return _signed_log_term(
             self.pressure_square_inverse_lambda_squared_numerator,
             amplitude_log=self.amplitude_log,
             amplitude_power=4,
             Lambda=self.Lambda,
             inverse_lambda_power=2,
+            amplitude_log_source=self.amplitude_log_source,
         )
 
 
 @dataclass(frozen=True)
 class ActualScheduleWideFirstPicardSlow2State:
-    """Typed complete ``slow2(x1)`` bound to one genuine theorem-selected ``x1``."""
+    """Complete mixed-scale ``slow2(x1)`` on one actual first Picard state."""
 
     x1: ActualScheduleWideFirstPicardState
+    axial_quadratic: ActualScheduleWideFirstPicardSlow2AxialQuadraticState = field(
+        init=False,
+        repr=False,
+    )
+    average_dot: ActualScheduleWideFirstPicardSlow2AverageDotState = field(
+        init=False,
+        repr=False,
+    )
+    average_mixed: ActualScheduleWideFirstPicardSlow2AverageMixedState = field(
+        init=False,
+        repr=False,
+    )
+    param: ActualScheduleWideFirstPicardSlow2ParamState = field(
+        init=False,
+        repr=False,
+    )
 
     def __post_init__(self) -> None:
         if not isinstance(self.x1, ActualScheduleWideFirstPicardState):
@@ -164,6 +251,49 @@ class ActualScheduleWideFirstPicardSlow2State:
             raise ValueError("the genuine first Picard iterate must be materialized")
         if self.x1.fixed_point_materialized:
             raise ValueError("x1 must not be mislabeled as the final fixed point")
+        if self.x1.Lambda != self.x1.remainder.axial.wide_pressure.amplitude.Lambda:
+            raise ValueError("x1 Lambda must match the actual theorem-selected amplitude scale")
+        _finite_decimal(self.x1.Lambda, "x1 Lambda")
+        if self.x1.Lambda <= 0:
+            raise ValueError("x1 Lambda must be positive")
+
+        # All four factories receive this exact x1 object.  This prevents a
+        # branch from a different schedule datum from entering the aggregate.
+        object.__setattr__(
+            self,
+            "axial_quadratic",
+            wide_first_picard_slow2_axial_quadratic_state(self.x1),
+        )
+        object.__setattr__(
+            self,
+            "average_dot",
+            wide_first_picard_slow2_average_dot_state(self.x1),
+        )
+        object.__setattr__(
+            self,
+            "average_mixed",
+            wide_first_picard_slow2_average_mixed_state(self.x1),
+        )
+        object.__setattr__(self, "param", wide_first_picard_slow2_param_state(self.x1))
+        self._validate_branches()
+
+    def _validate_branches(self) -> None:
+        branches = (self.axial_quadratic, self.average_dot, self.average_mixed, self.param)
+        for branch in branches:
+            if branch.x1 is not self.x1:
+                raise ValueError("all slow2 branches must use the exact same x1 object")
+            if branch.epsilon != self.epsilon:
+                raise ValueError("slow2 branch epsilon mismatch")
+            if branch.Lambda != self.Lambda:
+                raise ValueError("slow2 branch Lambda mismatch")
+        if not self.axial_quadratic.slow2_axial_quadratic_branch_materialized:
+            raise ValueError("axial quadratic slow2 branch is incomplete")
+        if not self.average_dot.slow2_average_dot_branch_materialized:
+            raise ValueError("average dot slow2 branch is incomplete")
+        if not self.average_mixed.slow2_average_mixed_branch_materialized:
+            raise ValueError("average mixed slow2 branch is incomplete")
+        if not self.param.slow2_param_branch_materialized:
+            raise ValueError("parameter slow2 branch is incomplete")
 
     @property
     def Lambda(self) -> Decimal:
@@ -176,6 +306,22 @@ class ActualScheduleWideFirstPicardSlow2State:
     @property
     def paper_exact(self) -> bool:
         return False
+
+    @property
+    def slow2_axial_quadratic_branch_materialized(self) -> bool:
+        return True
+
+    @property
+    def slow2_average_dot_branch_materialized(self) -> bool:
+        return True
+
+    @property
+    def slow2_average_mixed_branch_materialized(self) -> bool:
+        return True
+
+    @property
+    def slow2_param_branch_materialized(self) -> bool:
+        return True
 
     @property
     def slow2_all_constituent_branches_materialized(self) -> bool:
@@ -197,47 +343,113 @@ class ActualScheduleWideFirstPicardSlow2State:
     def fixed_point_materialized(self) -> bool:
         return False
 
-    def _branch_states(self):
-        branches = (
-            wide_first_picard_slow2_axial_quadratic_state(self.x1),
-            wide_first_picard_slow2_average_dot_state(self.x1),
-            wide_first_picard_slow2_average_mixed_state(self.x1),
-            wide_first_picard_slow2_param_state(self.x1),
+    @property
+    def fixed_point_convergence_certified(self) -> bool:
+        return False
+
+    @property
+    def global_axis_norm_certified(self) -> bool:
+        return False
+
+    @staticmethod
+    def _validate_jet_metadata(
+        jet: object,
+        *,
+        branch_name: str,
+        Lambda: Decimal,
+        amplitude_log: Decimal,
+    ) -> None:
+        for name in _FIELDS:
+            value = getattr(jet, name, None)
+            _finite_decimal(value, f"{branch_name}.{name}")
+        jet_Lambda = _finite_decimal(getattr(jet, "Lambda", None), f"{branch_name}.Lambda")
+        if jet_Lambda != Lambda:
+            raise ValueError(f"{branch_name} jet Lambda mismatch")
+        jet_amplitude_log = _finite_decimal(
+            getattr(jet, "amplitude_log", None),
+            f"{branch_name}.amplitude_log",
         )
-        if any(branch.x1 is not self.x1 for branch in branches):
-            raise ValueError("all slow2 branches must share the identical first Picard state")
-        if any(branch.Lambda != self.Lambda for branch in branches):
-            raise ValueError("all slow2 branches must share the first Picard Lambda")
-        if any(branch.epsilon != self.epsilon for branch in branches):
-            raise ValueError("all slow2 branches must share the first Picard epsilon")
-        return branches
+        if jet_amplitude_log != amplitude_log:
+            raise ValueError(f"{branch_name} jet amplitude log mismatch")
 
-    def jet(self, n: int, m: int, eta: float) -> MixedScaleFirstPicardSlow2CoefficientJet:
-        """Sum the four already-materialized pinned ``slow2(x1)`` branches."""
+    def jet(
+        self,
+        n: int,
+        m: int,
+        eta: float,
+    ) -> MixedScaleFirstPicardSlow2CoefficientJet:
+        """Return one complete theorem-scale ``slow2(x1)`` coefficient jet."""
 
-        jets = tuple(branch.jet(n, m, eta) for branch in self._branch_states())
-        amplitude_log = jets[0].amplitude_log
-        if any(jet.Lambda != self.Lambda for jet in jets):
-            raise ValueError("slow2 branch Lambda mismatch")
-        if any(jet.amplitude_log != amplitude_log for jet in jets[1:]):
-            raise ValueError("slow2 branches must share the same theorem amplitude")
+        n = _index(n, "n")
+        m = _index(m, "m")
+        eta = _eta_in_window(eta)
+        self._validate_branches()
+
+        branch_jets = (
+            (
+                "axial quadratic",
+                self.axial_quadratic.jet(n, m, eta),
+            ),
+            (
+                "average dot",
+                self.average_dot.jet(n, m, eta),
+            ),
+            (
+                "average mixed",
+                self.average_mixed.jet(n, m, eta),
+            ),
+            (
+                "parameter",
+                self.param.jet(n, m, eta),
+            ),
+        )
+        canonical_source = getattr(branch_jets[0][1], "amplitude_log_source", None)
+        if not isinstance(canonical_source, AmplitudeLogSource):
+            raise ValueError("slow2 branch jet missing amplitude log source metadata")
+        actual_source = (
+            self.x1.remainder.axial.wide_pressure.amplitude.log_amplitude_source(eta)
+        )
+        canonical_source.assert_compatible(actual_source)
+        amplitude_log = _finite_decimal(canonical_source.midpoint, "actual amplitude log")
+        for branch_name, branch_jet in branch_jets:
+            self._validate_jet_metadata(
+                branch_jet,
+                branch_name=branch_name,
+                Lambda=self.Lambda,
+                amplitude_log=amplitude_log,
+            )
+            branch_source = getattr(branch_jet, "amplitude_log_source", None)
+            if not isinstance(branch_source, AmplitudeLogSource):
+                raise ValueError(
+                    f"{branch_name} jet missing amplitude log source metadata"
+                )
+            canonical_source.assert_compatible(branch_source)
 
         with localcontext() as ctx:
             ctx.prec = _DECIMAL_PRECISION
-            values = {
-                name: +sum((getattr(jet, name) for jet in jets), Decimal(0))
+            sums = {
+                name: +sum(getattr(branch_jet, name) for _, branch_jet in branch_jets)
                 for name in _FIELDS
             }
+
         return MixedScaleFirstPicardSlow2CoefficientJet(
-            **values,
+            **sums,
             Lambda=self.Lambda,
             amplitude_log=amplitude_log,
+            amplitude_log_source=canonical_source,
         )
 
 
 def wide_first_picard_slow2_state(
     x1: ActualScheduleWideFirstPicardState,
 ) -> ActualScheduleWideFirstPicardSlow2State:
-    """Compose all four pinned first-Picard ``slow2`` branches."""
+    """Assemble all four pinned ``slow2(x1)`` branches from one genuine x1."""
 
     return ActualScheduleWideFirstPicardSlow2State(x1=x1)
+
+
+__all__ = [
+    "ActualScheduleWideFirstPicardSlow2State",
+    "MixedScaleFirstPicardSlow2CoefficientJet",
+    "wide_first_picard_slow2_state",
+]

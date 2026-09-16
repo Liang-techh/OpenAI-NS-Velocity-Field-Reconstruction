@@ -3,6 +3,10 @@
 An independent, **partial** executable reconstruction of the velocity construction in
 OpenAI's September 2026 *Finite Time Blowup for Navier–Stokes*. This is not an OpenAI repository.
 
+**Agent handoff:** read the [current checkpoint](docs/CURRENT_CHECKPOINT.md) and
+[detailed task board](docs/AGENT_TASKS.md) before claiming work. Task completion,
+coordinator acceptance, and PR merge status are recorded separately.
+
 **Current result:** tested similarity kinematics; natural-axis/range structure, an admissible
 ideal-prefix pressure witness, the constructive outgoing scalar schedule, executable
 `finalAngular/clockWeight`, the actual outgoing `SchedulePressure.axisPressure`, an analytic
@@ -32,10 +36,134 @@ arithmetic and exposes the exact Picard update shape plus a geometric tail budge
 schedule now also feeds `axis_reference_pair.py`, which materializes the pinned `referencePair`
 zeroth parameter-jet radial coefficient functions on the full coefficient window: the angular
 coefficients follow the exact `AxisReference` recurrence/factorial formula, and the axial reference
-uses `u0[1]=-(1/2) inverseL*zStar` with `zStar` rebuilt from the actual schedule pressure. This is
-still a formal execution boundary, not a materialized fixed point: the complete compatible
-coefficient-state operations, genuine `naturalRemainder` evaluator, `phi/u`, average, and pressure
-fields are still missing.
+uses `u0[1]=-(1/2) inverseL*zStar` with `zStar` rebuilt from the actual schedule pressure. The
+coefficientwise Stage 1 chain now includes the complete mixed-scale `naturalRemainder(x0)`, its
+first Picard state `x1`, the full coefficientwise `naturalRemainder(x1)`, and the coefficientwise
+second Picard state `x2`. These adapters preserve ordinary, pressure-linear, and pressure-square
+scale channels without collapsing them into binary64 totals. A generic sparse mixed-scale algebra
+and formal triangular coefficient solver are now implemented. The solver computes each requested
+formal coefficient directly from lower radial rows and uses no fixed iteration cutoff. This generic
+formal prefix is an x1-anchored triangular coefficient representation; it is separate from the
+coefficientwise first-Picard `x1`/`x2` adapters and is not itself a finite Picard iterate. Its one-graph
+`jet_prefix` path now feeds `axis_coefficient_profile_prefix.py`, which evaluates finite natural-radial
+polynomial prefixes for `phi`, `u`, radial derivatives, eta-derivative jets, and the radial-average
+map while preserving split signed-log amplitude/Lambda channels. The same graph now exposes the
+scaled formal pressure primitive `P=primitive((a phi)^2)` as a sparse pressure map and signed-log
+view; this is separate from the axial remainder pressure forcing and does not apply an outer
+`1/Lambda` factor. The conditional `axis_coefficient_radial_tail.py` majorant is tied to the pinned
+`AxisSpace` weight and does not infer a global norm or absorb coefficient roundoff.
+`natural_axis_wide.py` now exposes the reviewed `wide_natural_profile_prefix`, retaining the actual
+Decimal Lambda and symbolic amplitude while exposing sparse `F`, `E`, `U`, `d_eta U`, `Ubar`, and
+`Pi` maps. The reviewed conditional `F/P` norm-budget extension derives its inputs from the same
+actual reference/remainder chain. `WideNaturalProfilePrefix.conditional_truncation_bounds` also
+provides the six-field conditional mapping with exact Fraction scaling and upward square-root
+rounding; its latest focused acceptance passed 4 tests in 0.64 s. These interfaces remain conditional
+on compatible global `AxisSpace` identification and exclude coefficient and axis-pressure
+quadrature roundoff. This remains a formal execution boundary: no weighted-space fixed point,
+converged `phi/u` profile, or paper-exact leading field is claimed. `NaturalProfileAssembly` continues
+to expose the smooth ratio `F=a phi` separately from the physical swirl `E=sqrt(2X) F`.
+
+The formal Stage 1 bridge now also exposes
+`formal_axis_picard_family_state(solver).jet_prefix(iterations, max_n, m, eta)`:
+`iterations=0` is the actual reference `x0`, and each further finite step applies
+the same sparse map `reference + R(input)/(2 Lambda)` through externally routed
+full derivative families. The wide physical prefix additionally retains
+`d_average_U_deta` and the regular radial-velocity numerator `V0`; its
+`conditional_truncation_bounds` values use exact Fraction scaling and an
+upward-verified square-root factor. A source-pinned manual proof of
+coefficientwise finite-filtration stabilization has been accepted: under the
+theorem-side hypotheses, row `n` stabilizes after update `n` and identifies the
+compatible fixed-point coefficient. This exact-arithmetic argument concerns
+formal recurrence dependence only and does not bound errors in the evaluated
+scalar jets or coefficient roundoff; the jet values are finite, but their
+numerical errors lack certified bounds. These additions remain conditional on compatible global
+`AxisSpace` identification and do not claim a converged fixed point.
+
+The exact rational input seam is now available through
+`RationalAxisCoefficientData(actual_data)`: selected `h`, `j`, and `sigma` inputs are
+treated as exact binary rationals, `A` and `D` are recomputed from `h`, and the nine
+fixed scalar fields plus `chi` and the angular reference coefficients use exact
+normalized Taylor/Fraction algebra. `jet_decimal` and
+`angular_reference_jet_decimal` use nearest Decimal96 conversion, while the scalar
+and angular enclosure APIs use directed Decimal96 bounds. The exact domain is
+`[-11/10, 11/10]`, so binary64 literal `1.1` is outside this rational interface;
+the physical `|eta| <= 1` chart is unaffected. `zStar`, pressure/Bell-phase inputs,
+and accumulated coefficient-error control remain outside this seam. The measured
+baseline command `python -m pytest -q tests\test_axis_coefficient_rational_data.py
+tests\test_axis_coefficient_formal_solver.py tests\test_axis_coefficient_picard_family.py
+tests\test_axis_coefficient_profile_prefix.py tests\test_natural_axis_wide.py -W error`
+returned `16 passed in 25.22 s`; the remaining cleanup only removes a discarded
+reference-half evaluation and preserves the value formulas.
+
+The rational input provider also supplies exact normalized amplitude-power Bell jets through
+`amplitude_power_bell_fraction(power, order, eta, Lambda)`, using the selected rational
+`normalizedGradient` jets and the full Bell recurrence without forming amplitude, phase, or `C`.
+Nearest Decimal96 and directed enclosure wrappers preserve the same exact source value. Focused
+acceptance for this Bell extension returned `12 passed in 0.30 s` with the affected-source command
+`python -m pytest -q tests\test_axis_coefficient_wide_natural_source.py tests\test_axis_coefficient_rational_bell.py -W error`, using independent Fraction expectations for the first two Bell values. The broader formal/Picard/profile/wide integration command
+`python -m pytest -q tests\test_axis_coefficient_formal_solver.py tests\test_axis_coefficient_picard_family.py tests\test_axis_coefficient_profile_prefix.py tests\test_natural_axis_wide.py -W error` returned `13 passed in 24.37 s`; phase and total-product construction and accumulated coefficient-error control remain outside the certified boundary.
+
+The new `axis_phase_log_enclosure.py` primitive maps an externally supplied phase interval to exact
+Fraction affine bounds for `log a = Lambda * phase - log_C`, with directed Decimal presentation and
+`paper_exact=False`. Its focused command `python -m pytest -q tests\test_axis_phase_log_enclosure.py -W error`
+returned `4 passed in 0.14 s`. It does not replace runtime phase quadrature or certify `C`, scalar
+parameter selection, or global reconstruction; fixed-order Cauchy bisection requires order growth for
+arbitrary tolerance. The related GitHub `hub281`/`task282` exchange remains unintegrated.
+
+`axis_phase_integral.py` now supplies the linked exact-rational default phase path: it forms centered
+`P/Q` polynomials for `g=-L*H/(H^2+sigma^2)`, accepts a cell only when the exact Cauchy denominator
+gate `theta < 1/2` holds, and adaptively bisects cells and raises Taylor order until the rational
+error budget is met. `ActualScheduleAmplitudeLogState` defaults to phase tolerance `10^-12`;
+`phase_enclosure` uses the selected exact Fraction `h,j,sigma,eta` inputs and an exact-input LRU
+cache of size `16`. `log_amplitude` returns the nearest Decimal96 midpoint of that validated
+log-amplitude interval, while `default_log_amplitude_enclosure` exposes the interval after the
+selected positive `Lambda` amplification and symbolic `C` exponent transport. The explicit
+`log_amplitude_enclosure(eta, absolute_log_tolerance=...)` path requests a log-space tolerance and
+passes the exact quotient `absolute_log_tolerance/Fraction(Lambda)` to the phase integrator.
+`phase_samples` and `legacy_log_amplitude_diagnostic` retain the former 4001-point trapezoid only
+as a named diagnostic; it no longer supplies the default phase value. The historical pre-default
+commands returned `5 passed in 0.17 s` for
+`tests\test_axis_phase_integral.py`, `3 passed in 0.17 s` for
+`tests\test_axis_amplitude_phase_enclosure.py`, and `6 passed in 0.16 s` for the prior amplitude
+compatibility target. The completed bounded command
+`python -m pytest -q tests\test_axis_phase_integral.py -W error` returned `7 passed in 0.20 s`.
+The combined default regression
+`python -m pytest -q tests\test_axis_amplitude_validated_default.py tests\test_axis_coefficient_amplitude.py tests\test_axis_phase_log_enclosure.py -W error`
+returned `13 passed in 43.71 s` under the hard `120 s` cap. On the actual selected fixture at
+`eta=-1/50`, the prior direct phase measurement at tolerance `10^-12` returned in `10.664 s` with
+`225` cells, maximum order `64`, estimate `0.05073499503328993`, and error `7.357907e-13`.
+The current default validated binary64-input diagnostic hit its `45 s` cap before completing, so no
+precise runtime is claimed. These are selected-fixture observations, not a general benchmark.
+The interval certifies the chosen rational phase kernel and its selected scalar `Lambda` transport;
+it does not certify SchedulePressure quadrature, theorem parameter selection, `C` selection,
+coefficient roundoff, global `AxisSpace`, or the full reconstruction. A prior combined default attempt
+was interrupted after approximately `9` minutes without a pytest summary and remains historical; the
+bounded command above resolves the default-regression performance blocker. Full-suite, demo, and
+strict-audit acceptance remain separate. The current metadata chain reaches the assigned remainder,
+second-Picard, formal-solver, and wide-profile surfaces. The next Stage 1 boundary is validated
+Bell-factor/logarithm enclosures, general coefficient arithmetic, SchedulePressure and parameter
+proofs, and compatible global `AxisSpace` certification.
+
+The amplitude log-scale metadata evidence now totals `35` distinct tests from the prior
+`24` foundation/integration/mixed/aggregate tests, `5` nonlinear metadata tests in `0.80 s`,
+`3` remainder/second-Picard tests in `0.38 s`, and `3` formal/wide-profile tests in `0.22 s`.
+The chain reaches all assigned remainder, second-Picard, formal, and wide-profile metadata
+surfaces, with shared actual-source and cross-branch identity checks. A separate batch of the
+existing default test file returned `4 passed in 20.19 s` and included one new nonzero-eta
+(`eta=-0.02`) metadata test, bringing the new metadata total to `36` distinct tests. These
+focused results do not certify exact Bell-factor/logarithm enclosures, general coefficient
+arithmetic, SchedulePressure or parameter selection, global weighted-space bounds, or the
+paper-exact reconstruction.
+
+## Current local checkpoint — 2026-09-14
+
+The full suite immediately preceding the metadata chain returned `1936 passed, 1 failed` in
+`1723.45 s`; the sole fixture-argument issue was fixed and its affected test subsequently
+passed in `0.20 s`. The full suite has not been rerun after that fix, so current full acceptance
+remains pending. The demo exited `0` with all checks; the direct strict-audit module exited `2`
+as expected and this was confirmed in its log, while an earlier console-wrapper exit `1` is
+historical. All relevant source compilation and review checks passed. The local checkpoint is
+being saved without an external push.
 
 Section 5 includes pressure/Omega recurrence rows, the Eq. (5.7) singular Picard primitive, a
 theorem-shaped Lemma 5.1 / Eq. (5.8) Picard-term and complete-tail truncation certificate, Lemma 5.2
@@ -116,9 +244,21 @@ numerical diagnostics remain explicitly diagnostic rather than proof.
 
 **Not yet delivered:** the materialized coefficient-space fixed-point `phi/u/average/pressure`
 fields and complete regular leading profile; the actual-schedule wide `Lambda/C`, scalar contraction
-gates, and zeroth-parameter-jet `referencePair` radial coefficients are now connected, but a genuine
-compatible coefficient-space backend and real `naturalRemainder`/Picard materialization, plus
-possibly tighter theorem-side conservative majorants, are still needed; the profile-derived
+gates, zeroth-parameter-jet `referencePair` radial coefficients, and coefficientwise
+`naturalRemainder(x0)`, `x1`, `naturalRemainder(x1)`, and `x2` adapters are now connected, and a
+generic mixed-scale algebra/triangular solver now computes requested formal coefficients directly
+from lower radial rows without a fixed iteration cutoff. Weighted-space membership and fixed-point
+convergence remain unavailable. Finite `jet_prefix`/`formal_axis_profile_prefix` polynomial
+evaluation, radial-average/derivative maps, and the scaled formal pressure primitive
+`P=primitive((a phi)^2)` are available; the axial remainder pressure forcing remains a separate
+quantity. The conditional radial-tail majorant does not establish global membership or cover
+coefficient roundoff. The reviewed `wide_natural_profile_prefix` now retains Decimal Lambda and
+symbolic amplitude in `F`, `E`, `U`, `d_eta U`, `Ubar`, and `Pi`; the reviewed conditional `F/P`
+norm-budget extension uses the same actual chain. Its optional six-field truncation mapping passed
+the latest 4-test exact-scaling, square-root, axis-tail, and solver-mismatch acceptance check. The
+reviewed wide prefix supplies the physical assembly maps; a converged paper-exact profile remains
+unavailable, and
+possibly tighter theorem-side conservative majorants are also still needed; the profile-derived
 converged all-order background solve, genuine strict-lower-history second jets feeding the landed
 SourceJet bridge, actual positive-order Picard constants, hierarchy-derived moment/`p=e_*f` jets
 with interval nonvanishing control, true eta-dependent repaired hierarchy/support closure, uniform
@@ -172,8 +312,9 @@ proof checker. `demo --require-paper-exact` also refuses before generating toy d
 | Component | Implementation and boundary |
 |---|---|
 | Similarity coordinates, Eq. (4.1) | Relative-scale root solve, finite-input checks, direct `tau` API |
-| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas, outgoing schedule, actual `axisPressure`, analytic low-|Z| margin, theorem-faithful `Lambda/C` selection, theorem-shaped conservative `remainderBound/remainderLip` propagation, and canonical analytic-input norm/resolvent propagation are present. The actual schedule has an analytic no-grid common-neighborhood certificate producing `rho`, an 11-field complex bound, and a conservative `realPartSup(axisPhase)` upper bound. A theorem-faithful componentwise adapter applies `radiusLoss(1/2)=12` per field, retains the fieldwise maximum only for the family ledger, and sends the chi-specific norm to AxisResolvent. The current regression resolvent majorant is representable. The original binary64 remainder path overflows, while the landed 96-digit Decimal adapter carries the same positive conservative `remainderBound/remainderLip` ledger to finite values beyond float range; the landed wide scale selector then carries those values through `Lambda` and represents `C=exp(Lambda*phaseSup)` symbolically by its exponent without binary64 down-conversion. The landed Picard gate verifies `s*remainderBound<=1`, `s*remainderLip<=1/2`, `s=1/(2Lambda)`, and exposes the theorem-shaped update/tail budget. The landed `axis_reference_pair` path now materializes the pinned angular/axial reference radial coefficients at parameter-jet order zero from the actual schedule, on the full coefficient window. **The former arbitrary reference-array/scalar Lambda-C blockers are narrowed, but there is still no complete compatible coefficient-state backend or fixed point. The next blocker is lifting the real reference coefficients into AxisCoefficientSpace, implementing the pinned coefficient operations/naturalRemainder, executing the real Picard sequence, deriving average/pressure, and completing `NaturalProfileAssembly`; the wide arithmetic/reference evaluator is not interval/Lean proof.** |
+| Leading velocity, Eqs. (4.3)–(4.7) | Caller-supplied profiles, regular-axis handling, pressure evaluation; natural-axis/range formulas, outgoing schedule, actual `axisPressure`, analytic low-|Z| margin, theorem-faithful `Lambda/C` selection, theorem-shaped conservative `remainderBound/remainderLip` propagation, and canonical analytic-input norm/resolvent propagation are present. The actual schedule has an analytic no-grid common-neighborhood certificate producing `rho`, an 11-field complex bound, and a conservative `realPartSup(axisPhase)` upper bound. A theorem-faithful componentwise adapter applies `radiusLoss(1/2)=12` per field, retains the fieldwise maximum only for the family ledger, and sends the chi-specific norm to AxisResolvent. The current regression resolvent majorant is representable. The original binary64 remainder path overflows, while the landed 96-digit Decimal adapter carries the same positive conservative `remainderBound/remainderLip` ledger to finite values beyond float range; the landed wide scale selector then carries those values through `Lambda` and represents `C=exp(Lambda*phaseSup)` symbolically by its exponent without binary64 down-conversion. The landed Picard gate verifies `s*remainderBound<=1`, `s*remainderLip<=1/2`, `s=1/(2Lambda)`, and exposes the theorem-shaped update/tail budget. The landed `axis_reference_pair` path now materializes the pinned angular/axial reference radial coefficients at parameter-jet order zero from the actual schedule, on the full coefficient window. The coefficientwise Stage 1 chain now represents complete `naturalRemainder(x0)`, the first Picard state `x1`, full `naturalRemainder(x1)`, and `x2` with explicit mixed-scale channels. A generic sparse mixed-scale algebra and formal triangular solver now computes requested formal coefficients directly from lower radial rows without a fixed iteration cutoff. The one-graph `jet_prefix`/`formal_axis_profile_prefix` path evaluates finite `Y`-radial polynomial prefixes, radial derivatives, eta-derivative jets, averages, and the scaled formal pressure primitive `P=primitive((a phi)^2)` with split signed-log channels; `wide_natural_profile_prefix` now retains Decimal Lambda/symbolic amplitude in `F`, `E`, `U`, `d_eta U`, `Ubar`, and `Pi`, with reviewed conditional `F/P` norm budgets and a six-field truncation interface. **These are formal coefficient recursions; the weighted-space fixed point, adjacent-eta compatibility/error budget, global `AxisSpace` certificate, interval/Lean proof, and paper-exact leading field remain unavailable. The axial remainder's pressure forcing is not the final profile pressure.** |
 | Profile averages | Cached 32-point Gauss–Legendre rule; optional exact-average callbacks |
+| Stage 1 formal profile prefix/tail | The generic `jet_prefix`/`formal_axis_profile_prefix` is an x1-anchored triangular formal prefix, separate from the finite first-Picard `x1`/`x2` adapters. It evaluates finite `Y`-radial `phi/u`, radial and eta-derivative jets, radial averages, and scaled formal `P=primitive((a phi)^2)`. Reviewed `wide_natural_profile_prefix` maps retain Decimal Lambda/symbolic amplitude in `F/E/U/d_eta U/Ubar/Pi`, and reviewed conditional `F/P` norm budgets feed the six-field truncation interface. The focused command `python -m pytest -q tests\test_natural_axis_wide.py tests\test_axis_coefficient_profile_prefix.py -W error` returned `5 passed in 0.66 s`; the latest exact-scaling, square-root, axis-tail, and solver-mismatch check `python -m pytest -q tests\test_natural_axis_wide.py -W error` returned `4 passed in 0.64 s`. Global `AxisSpace` identification and coefficient/axis-pressure roundoff control remain open. |
 | Exterior heat swirl, Appendix A.6 | Adaptive evaluation of H and derivatives, swirl and centrifugal pressure; **r>0 only** |
 | Section 5 background rows | Eq. (5.2) radial flux, Eq. (5.27) streamfunction/vector potential, Eq. (5.5) pressure row, regular Eq. (5.6) `Omega_k/X`, Eq. (5.7) singular inverse/Picard primitive, and a pinned PositiveAxisSystem adapter that constructs the real `A0`, sparse `A1`, and `f_n` from typed BaseJet/SourceJet inputs and evaluates a theorem-shaped first `G f_n` step. The landed lower-history adapter builds the order-zero BaseJet and four SourceJet entries from genuine strict-lower `ProfileSecondJet` history, including analytic preceding double-Z diffusion and the regular `Omega/X` source, so hand-supplied source scalars are no longer required once that hierarchy exists. Also present: the Lemma 5.1 / Eq. (5.8) term majorant and fail-closed complete-tail truncation certificate, Lemma 5.2 compact five-moment repair, finite `eta`-jet and function-level repaired-profile adapters with `paper_exact=False`, Eq. (5.15) forward `F_n/V_n/Pi_n` reconstruction from supplied repaired analytic data, finite-prefix recursive cutoff scheduling from supplied analytic `C[j,m]`, exact finite-prefix cutoff support/truncation certification, exact fixed-prefix tail-order arithmetic for `2^-J q^(h(J+1)-m)` / physical exponent `h(J+1)+b-2M`, and an exact finite recurrence/truncation identity that retains nonzero `R_n` defects and conditionally exposes the first omitted slow-order factor. A valid cutoff scale beyond binary64 is preserved as an arbitrary-precision integer witness with the original log-space inequality; an unrepresentable reciprocal edge fails closed instead of becoming zero. **The strict-lower second jets still need to come from the real solved/repaired hierarchy; actual analytic constants needed to instantiate Picard convergence, genuine hierarchy-derived moment/patch-factor jets and nonvanishing control, the converged coefficient hierarchy, true eta-dependent support/stress closure, true uniform `C[j,m]`, completed infinite schedule/theorem-level local-finiteness argument, independently proved order-by-order residual cancellation identities, and Proposition 5.3 all-jets-flat decay are not yet constructed.** |
 | Dyadic geometry / phase, Sections 6–7 | Fixed chart scaling and exact covering matrices; active-shell/slow-label bridge; squared partitions; constructive 2250-color/rational-center/common-`r0` witness; physical slow-support-to-`SlotColoring.Adj` bridge with cross-band common-point handling; Section 7.1 phase/tangent-frame algebra; pointwise rounded-normal adapters; a fail-closed UniformLocalBase implication bridge; and pinned BasePhaseGeometry frame/damping consequence bounds, including the enlarged family-level phase constant. **The paper-exact Proposition 5.5 provider and actual LocalBase C1/C2, unit/orthogonality, normal-closeness and slot-normal derivative-closeness certificates remain missing; the landed implications cannot be promoted until those true hypotheses are supplied.** |
@@ -213,10 +354,21 @@ our regression suite additionally uses independently specified manufactured forc
 localization must preserve that property. Prefer the `LocalField.from_axisymmetric` and
 `LocalizedField.from_axisymmetric` factories.
 
-The regular inner core and materialized coefficient-space fixed point, derivation of average/pressure
-and completion of `NaturalProfileAssembly`, lifting the actual schedule-derived zeroth-parameter-jet
-`referencePair` radial coefficients into a complete compatible coefficient state and executing the
-genuine `naturalRemainder`/Picard map, real leading/lower-order instantiation of the Section 5
+The regular inner core and materialized coefficient-space fixed point, and weighted-space
+membership/convergence remain unresolved. The generic mixed-scale algebra is implemented, and the
+formal triangular solver now
+computes requested formal coefficients directly from lower radial rows without a fixed iteration
+cutoff. `jet_prefix`/`formal_axis_profile_prefix` evaluates finite `Y`-radial polynomial prefixes,
+radial and eta-derivative jets, radial averages, and the scaled formal pressure primitive
+`P = primitive((a phi)^2)` while preserving split signed-log channels. The reviewed wide profile
+now exposes sparse `F`, `E`, `U`, `d_eta U`, `Ubar`, and physical `Pi` maps, together with a
+conditional `F/P` norm budget and six-field truncation interface. Its latest focused acceptance
+check passed `4` tests in `0.64 s`; these interfaces remain conditional on compatible global
+`AxisSpace` identification and do not absorb coefficient or axis-pressure quadrature roundoff.
+These coefficientwise stages are formal local recursions; they do not establish a complete
+compatible weighted coefficient state or a converged paper-exact profile. The axial remainder
+pressure forcing is not the final profile pressure. Real
+leading/lower-order instantiation of the Section 5
 BaseJet plus the landed strict-lower-history SourceJet adapter from genuinely solved/repaired second
 jets, converged hierarchy and actual Picard constants, genuine hierarchy-derived moment/patch-factor
 jets and interval nonvanishing control, true uniform coefficient-template bounds and completed

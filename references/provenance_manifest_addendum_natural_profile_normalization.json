@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/NaturalProfile.lean:21-33",
+      "NavierStokes/NaturalProfile.lean:559-599",
+      "NavierStokes/ProfileHistories.lean:301-328",
+      "NavierStokes/NaturalAxisBridge.lean:321-342",
+      "NavierStokes/NaturalAxisData.lean:27-38",
+      "NavierStokes/NaturalAxisCoefficients.lean:26-33"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-natural-profile-normalization",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/natural_axis.py",
+      "references/NATURAL_PROFILE_NORMALIZATION_PROVENANCE.md"
+    ],
+    "provenance": "references/NATURAL_PROFILE_NORMALIZATION_PROVENANCE.md",
+    "capability": "Preserve the pinned distinction between the smooth angular ratio F and physical swirl E during NaturalProfileAssembly rescaling.",
+    "assembly_formulas": {
+      "Y": "Lambda * X",
+      "F": "a(eta) * Phi(Lambda * X, eta)",
+      "E": "sqrt(2 * X) * F",
+      "U": "UStar(eta) + Lambda^-1 * u(Lambda * X, eta)",
+      "radial_average": "UStar(eta) + Lambda^-1 * B(Lambda * X, eta)",
+      "Pi": "P0(eta) + Lambda^-1 * P(Lambda * X, eta)"
+    },
+    "axis_behavior": {
+      "scaled": "Phi(0,eta)=1, u(0,eta)=B(0,eta)=P(0,eta)=0",
+      "unscaled": "F(0,eta)=a(eta), E(0,eta)=0, U(0,eta)=radialAverage(0,eta)=4*eta+j, Pi(0,eta)=P0(eta)",
+      "parameter_window": "-11/10 < eta < 11/10, with [-1,1] contained in the interior",
+      "radial_domain": "-20 < Lambda*X < 20"
+    },
+    "local_bridge": {
+      "assembly_file": "src/openai_ns_reconstruction/natural_axis.py",
+      "ratio_callback": "NaturalProfileAssembly.F",
+      "physical_swirl_callback": "NaturalProfileAssembly.E",
+      "leading_profile_binding": "to_leading_profile passes F=self.F and E=self.E",
+      "reason": "velocity.py and profiles.py use F as the regular axis quantity and E=sqrt(2*X)*F"
+    },
+    "final_pressure": {
+      "scaled_formula": "P(Y,eta)=integral_0^Y (a(eta)*Phi(y,eta))^2 dy",
+      "unscaled_formula": "Pi(X,eta)-P0(eta)=integral_0^X F(s,eta)^2 ds",
+      "distinct_from": "axialRemainder pressure forcing d*partialEta(P)-4*A*eta*P-2*eta*Y*partialY(P)",
+      "bridge_status": "final pressure assembly from the solved phi family remains downstream"
+    },
+    "truth_flags": {
+      "normalization_mapping_materialized": true,
+      "final_pressure_materialized": false,
+      "weighted_axis_norm_certified": false,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "paper_exact": false,
+      "paper_exact_velocity_available": false
+    },
+    "measured_validation": {
+      "command": "python -m pytest -q tests/test_natural_axis.py -W error",
+      "result": "4 passed in 0.15s, exit 0",
+      "measured_by": "root agent",
+      "tests_run_by_this_task": false,
+      "full_test_suite_run": false
+    },
+    "remaining_boundary": "The corrected F/E bridge does not supply the weighted-space norm, converged phi/u fixed point, final solved pressure, support and moment closure, or paper-exact velocity construction."
+  },
+  "forbidden_inferences": [
+    "a(eta)*Phi(Lambda*X,eta) can be passed as direct physical LeadingProfile.E",
+    "E(0,eta) may be nonzero for the regular axis profile",
+    "the axial naturalRemainder pressure forcing is the final profile pressure",
+    "a finite normalization or baseline check proves the weighted fixed point or paper-exact profile",
+    "formal phi/u coefficient data imply a final pressure field without the primitive and axis datum"
+  ]
+}

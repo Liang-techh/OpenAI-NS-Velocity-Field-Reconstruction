@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/AxisContraction.lean:347-349",
+      "NavierStokes/AxisContraction.lean:502-511",
+      "NavierStokes/AxisWeightEstimates.lean:24-27",
+      "NavierStokes/AxisCoefficientSpace.lean:400-414",
+      "NavierStokes/AxisOperators.lean:326-331",
+      "NavierStokes/AxisOperators.lean:467-483"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-actual-schedule-conditional-profile-budget",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_profile_budget.py",
+      "references/AXIS_COEFFICIENT_PROFILE_BUDGET_PROVENANCE.md"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_PROFILE_BUDGET_PROVENANCE.md",
+    "capability": "Derive an actual-parameter conditional common profile norm budget from the existing wide reference majorant and one-step fixed-point radius, then delegate omitted radial tails.",
+    "factory": "actual_schedule_profile_budget(solver)",
+    "input_identity": {
+      "accepted_input": "FormalAxisCoefficientSolverState",
+      "schedule_source": "solver.x1.reference.reference.data and solver.x1.reference.reference.j",
+      "caller_fitted_norms_accepted": false,
+      "caller_fitted_scale_accepted": false,
+      "upstream_obstruction_fail_closed": true,
+      "missing_analytic_norms_fail_closed": true
+    },
+    "validation": {
+      "recomputed_Lambda_matches_amplitude_scale": true,
+      "recomputed_symbolic_C_matches_amplitude_scale": true,
+      "recomputed_Lambda_matches_solver": true,
+      "analytic_epsilon_matches_source_reference_and_solver": true,
+      "contraction_certificate": "NaturalPicardContractionCertificate.from_scale(recomputed_scale)"
+    },
+    "budget": {
+      "reference_norm_upper": "wide remainder.reference_norm_upper = B0",
+      "fixed_point_distance_upper": "certificate.one_step_radius_upper",
+      "profile_norm_upper": "ROUND_CEILING_96(B0 + fixed_point_distance_upper)",
+      "shared_pair_majorant": true,
+      "separate_component_fits": false,
+      "tail_delegate": "axis_coefficient_radial_tail_bound(profile_norm_upper, Decimal.from_float(solver.epsilon), ...)"
+    },
+    "derived_final_profile_budgets": {
+      "amplitude_norm_upper": "diagnostic.narrow_prefix.analytic_norms.amplitude_norm_upper",
+      "angular_ratio_norm_upper": "ROUND_CEILING_96(64 * amplitude_norm_upper * profile_norm_upper)",
+      "pressure_norm_upper": "ROUND_CEILING_96(80 * 64 * angular_ratio_norm_upper^2)",
+      "product_operator_bound": 64,
+      "primitive_operator_bound": 80,
+      "ratio_tail_delegate": "conditional_angular_ratio_tail_bound -> axis_coefficient_radial_tail_bound(angular_ratio_norm_upper, ...)",
+      "pressure_tail_delegate": "conditional_pressure_tail_bound -> axis_coefficient_radial_tail_bound(pressure_norm_upper, ...)",
+      "physical_swirl_factor": "E=sqrt(2*X)*F remains outside this coefficient-weight budget",
+      "axis_pressure_datum": "P0 is independent of the scaled increment P=primitive(F^2)"
+    },
+    "truth_flags": {
+      "conditional_on_axis_space_identification": true,
+      "global_axis_norm_certified": false,
+      "includes_coefficient_roundoff": false,
+      "paper_exact": false,
+      "formal_solver_fixed_point_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "assumptions": [
+      "the existing analytic/operator majorants are valid for the actual schedule",
+      "the implemented compatible coefficient jets can be identified with the theorem AxisSpace fixed-point object",
+      "the actual analytic amplitude_norm_upper bounds the normalized amplitude on the common coefficient window",
+      "the pinned product norm bound 64 and primitive norm bound 80 apply for epsilon > 0",
+      "the delegated coefficient roundoff is outside this scalar budget"
+    ],
+    "validation_scope": {
+      "py_compile": "python -m py_compile src/openai_ns_reconstruction/axis_coefficient_profile_budget.py (exit 0)",
+      "actual_schedule_smoke": "constructed actual_schedule_profile_budget(formal_axis_coefficient_solver(x1)); finite amplitude, ratio, pressure, ratio-tail, and pressure-tail Decimal bounds",
+      "focused_pytest": "not run",
+      "full_test_suite_run": false,
+      "global_AxisSpace_membership_proved": false,
+      "fixed_point_convergence_proved": false
+    },
+    "remaining_boundary": "This is an actual-parameter-derived conditional budget. It does not prove the global norm hypothesis, identify the executable formal solver with the theorem fixed point, include coefficient roundoff, or establish convergence or paper exactness."
+  },
+  "forbidden_inferences": [
+    "profile_norm_upper is a proved global AxisSpace norm",
+    "the actual schedule chain's formal-structure majorants are interval or Lean certificates",
+    "conditional_on_axis_space_identification proves that identification",
+    "the scalar budget includes coefficient-evaluation roundoff",
+    "the budget materializes the final fixed point or paper-exact velocity"
+  ]
+}

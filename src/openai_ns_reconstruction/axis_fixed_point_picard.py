@@ -27,7 +27,7 @@ state is promoted to paper-exact status here.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_CEILING, localcontext
+from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR, localcontext
 from typing import Callable, Generic, TypeVar, Union
 import math
 
@@ -94,6 +94,49 @@ def _mul_up(*values: Decimal) -> Decimal:
         return +out
 
 
+def _positive_product_lower(*values: Decimal) -> Decimal:
+    """Return a positive denominator product without rounding it upward.
+
+    A denominator rounded upward before taking an upward reciprocal would
+    produce a lower, rather than upper, bound.  The precision is widened
+    enough for the small fixed products used here, and ``ROUND_FLOOR`` keeps
+    the result on the safe side even if a product still needs rounding.
+    """
+
+    if not values:
+        raise ValueError("denominator product requires at least one value")
+    for value in values:
+        if not isinstance(value, Decimal) or not value.is_finite() or value <= 0:
+            raise ValueError("denominator factors must be finite and positive")
+    precision = max(
+        _DECIMAL_PRECISION,
+        sum(len(value.as_tuple().digits) for value in values) + 2,
+    )
+    with localcontext() as ctx:
+        ctx.prec = precision
+        ctx.rounding = ROUND_FLOOR
+        out = Decimal(1)
+        for value in values:
+            out *= value
+        return +out
+
+
+def _positive_difference_lower(minuend: Decimal, subtrahend: Decimal) -> Decimal:
+    """Return a positive difference rounded downward for reciprocal bounds."""
+
+    if (
+        not isinstance(minuend, Decimal)
+        or not minuend.is_finite()
+        or not isinstance(subtrahend, Decimal)
+        or not subtrahend.is_finite()
+    ):
+        raise ValueError("difference operands must be finite Decimals")
+    with localcontext() as ctx:
+        ctx.prec = _DECIMAL_PRECISION
+        ctx.rounding = ROUND_FLOOR
+        return +(minuend - subtrahend)
+
+
 @dataclass(frozen=True)
 class NaturalPicardContractionCertificate:
     """Wide certificate for the two hypotheses used by the Lean fixed-point step.
@@ -142,7 +185,7 @@ class NaturalPicardContractionCertificate:
         if Lambda < contraction:
             raise ValueError("Lambda must dominate the pinned contraction threshold")
 
-        denominator = _mul_up(Decimal(2), Lambda)
+        denominator = _positive_product_lower(Decimal(2), Lambda)
         inverse_upper = _ratio_up(Decimal(1), denominator)
         step_upper = _mul_up(inverse_upper, bound)
         q_upper = _mul_up(inverse_upper, lip)
@@ -173,7 +216,7 @@ class NaturalPicardContractionCertificate:
             ctx.prec = _DECIMAL_PRECISION
             ctx.rounding = ROUND_CEILING
             numerator = +(q**n)
-            denominator = _ONE - q
+            denominator = _positive_difference_lower(_ONE, q)
             if denominator <= 0:
                 raise ValueError("contraction factor must be < 1")
             return +(numerator / denominator)

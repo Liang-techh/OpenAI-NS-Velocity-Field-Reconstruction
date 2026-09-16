@@ -1,0 +1,17 @@
+radius,tau,K,scope
+0.5,1.0,2.8238098916193928,paper-formula-exterior-only
+1.0,1.0,1.4096191471156854,paper-formula-exterior-only
+2.0,1.0,0.7025555360262365,paper-formula-exterior-only
+4.0,1.0,0.3495341407707122,paper-formula-exterior-only
+0.5,0.1,2.846438044048627,paper-formula-exterior-only
+1.0,0.1,1.4169628599109159,paper-formula-exterior-only
+2.0,0.1,0.704336364034702,paper-formula-exterior-only
+4.0,0.1,0.3498535660238721,paper-formula-exterior-only
+0.5,0.01,2.8559779811988535,paper-formula-exterior-only
+1.0,0.01,1.4188487806142376,paper-formula-exterior-only
+2.0,0.01,0.704625318181531,paper-formula-exterior-only
+4.0,0.01,0.349892081840756,paper-formula-exterior-only
+0.5,0.0,2.857988279482186,paper-formula-exterior-only
+1.0,0.0,1.4191233562003824,paper-formula-exterior-only
+2.0,0.0,0.7046603775710097,paper-formula-exterior-only
+4.0,0.0,0.34989646639879896,paper-formula-exterior-only

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/AxisWeightEstimates.lean:24-27",
+      "NavierStokes/AxisCoefficientSpace.lean:400-414",
+      "NavierStokes/NaturalAxisCoefficients.lean:27"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-conditional-axis-coefficient-radial-tail",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_radial_tail.py",
+      "references/AXIS_COEFFICIENT_RADIAL_TAIL_PROVENANCE.md"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_RADIAL_TAIL_PROVENANCE.md",
+    "capability": "Evaluate a conditional analytic majorant for omitted radial coefficient rows from a supplied global AxisCoefficientSpace norm upper bound.",
+    "factory": "axis_coefficient_radial_tail_bound(norm_upper, epsilon, Y, max_n, eta_order=0, radial_order=0, average=False)",
+    "weight": {
+      "formula": "20^-n epsilon^-m m! binom(n+m,m) / ((n+1)^2 (m+1)^2)",
+      "source": "NavierStokes/AxisWeightEstimates.lean:24-27",
+      "coefficient_control": "NavierStokes/AxisCoefficientSpace.lean:400-414"
+    },
+    "derived_parameters": {
+      "L": "max(max_n+1, radial_order)",
+      "J": "L-radial_order",
+      "K": "eta_order+radial_order",
+      "q": "abs(Y)/20",
+      "average_denominator_power": "2+int(average)",
+      "tail_series": "sum(k>=J) binom(k+K,K) q^k"
+    },
+    "rational_formula": "M*K!/[20^r epsilon^m (m+1)^2 (L+1)^(2+int(average))] * H",
+    "negative_binomial_tail": {
+      "J_zero": "(1-q)^(-(K+1))",
+      "J_positive": "q^J*(1-q)^(-(K+1))*sum(k=0..K) binom(J-1+k,k)*(1-q)^k",
+      "q_zero_J_positive": "0"
+    },
+    "arithmetic": {
+      "input_scalars": "finite Decimal only",
+      "exact_intermediate": "Fraction from supplied Decimals plus integer factorials/binomials",
+      "final_conversion": "nonnegative rational to Decimal with precision 96 and ROUND_CEILING",
+      "coefficient_roundoff_included": false
+    },
+    "domain": {
+      "norm_upper": "finite and nonnegative",
+      "epsilon": "finite and positive",
+      "Y": "finite with abs(Y)<20",
+      "indices": "max_n, eta_order, radial_order are nonnegative integers",
+      "eta_attachment": "caller separately enforces [-11/10,11/10] from NaturalAxisCoefficients.lean:27"
+    },
+    "truth_flags": {
+      "conditional_on_global_norm": true,
+      "includes_coefficient_roundoff": false,
+      "paper_exact": false,
+      "global_axis_norm_certified": false,
+      "formal_solver_tail_certified": false,
+      "paper_exact_velocity_available": false
+    },
+    "validation": {
+      "scope": "bounded compile and one exact simple-case smoke",
+      "full_test_suite_run": false,
+      "analytic_estimate_is_pinned_Lean_theorem": false
+    },
+    "remaining_boundary": "The module does not establish the global norm hypothesis, attach a guessed norm to finite rows, include coefficient roundoff, prove formal-solver convergence, or certify a paper-exact profile."
+  },
+  "forbidden_inferences": [
+    "a finite coefficient prefix supplies norm_upper",
+    "conditional_on_global_norm means global AxisCoefficientSpace membership has been proved",
+    "the derived negative-binomial estimate is itself a pinned Lean tail theorem",
+    "Decimal ROUND_CEILING output includes coefficient-evaluation roundoff",
+    "the radial-tail bound proves convergence or paper-exact velocity"
+  ]
+}

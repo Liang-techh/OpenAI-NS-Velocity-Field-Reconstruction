@@ -119,7 +119,7 @@ def test_amplitude_provenance_is_machine_readable_and_fail_closed() -> None:
     assert layer["id"] == "stage-1-leading-profile"
     assert layer["status"] == "formal-structure"
     assert "realAmplitude" in layer["capability"]
-    assert "binary64" in layer["remaining_boundary"]
+    assert "signed-log/wide theorem amplitude" in layer["remaining_boundary"]
     assert (root / layer["provenance"]).is_file()
     for artifact in layer["artifacts"]:
         assert (root / artifact).is_file()

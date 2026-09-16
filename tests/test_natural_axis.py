@@ -63,7 +63,10 @@ def test_natural_profile_assembly_matches_lean_rescaling_formulas():
     Y = p.Lambda * X
 
     assert a.rescale_point(X, eta) == pytest.approx((Y, eta))
-    assert a.E(X, eta) == pytest.approx(p.amplitude(eta) * phi(Y, eta))
+    assert a.F(X, eta) == pytest.approx(p.amplitude(eta) * phi(Y, eta))
+    assert a.E(X, eta) == pytest.approx(math.sqrt(2.0 * X) * a.F(X, eta))
+    assert a.F(0.0, eta) == pytest.approx(p.amplitude(eta) * phi(0.0, eta))
+    assert a.E(0.0, eta) == pytest.approx(0.0)
     assert a.U(X, eta) == pytest.approx(axis_U(p.j, eta) + u(Y, eta) / p.Lambda)
     assert a.dU_deta(X, eta) == pytest.approx(4.0 + du_deta(Y, eta) / p.Lambda)
     assert a.radial_average(X, eta) == pytest.approx(
@@ -74,6 +77,9 @@ def test_natural_profile_assembly_matches_lean_rescaling_formulas():
     leading = a.to_leading_profile()
     assert leading.paper_exact is False
     assert leading.E(X, eta) == pytest.approx(a.E(X, eta))
+    assert leading.F(X, eta) == pytest.approx(a.F(X, eta))
+    assert leading.smooth_swirl_factor(0.0, eta) == pytest.approx(a.F(0.0, eta))
+    assert leading.E(0.0, eta) == pytest.approx(0.0)
     assert leading.U(X, eta) == pytest.approx(a.U(X, eta))
 
 

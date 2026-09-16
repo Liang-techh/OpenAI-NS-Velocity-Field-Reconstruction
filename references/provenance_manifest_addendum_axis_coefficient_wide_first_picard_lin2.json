@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_lin2.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_LIN2_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/AxisWeightEstimates.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.productFamily",
+        "NavierStokes.AxisOperators.regularInverse",
+        "NavierStokes.AxisOperators.inverseDotProduct",
+        "NavierStokes.AxisOperators.inverseParamProduct",
+        "NavierStokes.NaturalAxisCoefficients.CoefficientFamily.axisData"
+      ],
+      "locations": {
+        "coefficient_definitions": "NavierStokes/AxisContraction.lean:327-334",
+        "natural_remainder": "NavierStokes/AxisContraction.lean:339-365",
+        "product": "NavierStokes/AxisOperators.lean:86-95",
+        "regular_inverse": "NavierStokes/AxisOperators.lean:501-504",
+        "differential_family": "NavierStokes/AxisOperators.lean:512-518",
+        "operator_bindings": "NavierStokes/AxisOperators.lean:681-717",
+        "radial_divisor": "NavierStokes/AxisWeightEstimates.lean:388",
+        "coefficient_window": "NavierStokes/NaturalAxisCoefficients.lean:27"
+      }
+    },
+    "capability": "Materializes the raw pinned axial lin2 branch at the genuine theorem-scale first Picard state, preserving ordinary Lambda^0, Lambda^-1, Lambda^-2, and normalized a^2 Lambda^-1 pieces without applying the outer inverseL.",
+    "actual_data": {
+      "input_state": "genuine ActualScheduleWideFirstPicardState only",
+      "fixed_axis_data_source": "x1.reference only",
+      "Lambda_override": false,
+      "epsilon_override": false,
+      "pressure_override": false,
+      "pressure_derivative_source": "actual wide pressure normalized_factor, including full amplitude derivatives",
+      "inverseL_outer_multiplication": false,
+      "collapsed_total_value": false
+    },
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "lin2_x1_materialized": true,
+      "axial_lin2_materialized": true,
+      "lin2_complete": true,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "fixed_point_convergence_certified": false,
+      "global_axis_norm_certified": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted axial data, pressure derivative data, Lambda, amplitude, or coefficient tables",
+      "mixing x1 states or fixed AxisData from different SchedulePressure constructions",
+      "differentiating a zeroth-order normalized pressure value instead of using the full pressure derivative jet",
+      "applying an extra minus sign to the already signed second ordinary x1 numerator",
+      "multiplying by inverseL inside the raw lin2 seam",
+      "binary64 collapse of a nonzero signed-log pressure term",
+      "complete naturalRemainder(x1), x2, fixed-point, or paper-exact claims from lin2 alone"
+    ],
+    "remaining_boundary": "The companion slow2 module materializes complete slow2(x1). Its recombination with this raw lin2 state, the angular lin1/quad1/slow1 pieces, x1 source-pressure-resolvent path, complete naturalRemainder(x1), later Picard iterates, fixed-point convergence, derived final average/pressure, NaturalProfileAssembly, global AxisSpace certification, and downstream support/moment/matching/cone checks remain unresolved.",
+    "numerical_caveats": [
+      "ordinary and normalized pressure numerators are accumulated in a local 96-digit Decimal context; this is a numerical representation, not exact real arithmetic, interval certification, or an independent theorem proof",
+      "the pressure signed-log view preserves the common amplitude logarithm and the Lambda denominator, but does not provide a binary64 total-value projection",
+      "the fixed AxisData product and row actions are evaluated from the executable coefficient-jet representatives and remain formal-structure",
+      "the outer inverseL multiplication and all nonlinear/source/resolvent x1 branches are intentionally outside this seam"
+    ]
+  }
+}

@@ -1,4 +1,5 @@
-from decimal import Decimal, localcontext
+from decimal import Decimal, ROUND_HALF_EVEN, localcontext
+from fractions import Fraction
 import json
 import math
 from pathlib import Path
@@ -28,6 +29,28 @@ def source():
 
 def _d(value: float) -> Decimal:
     return Decimal.from_float(float(value))
+
+
+def _nearest96(value: Fraction) -> Decimal:
+    with localcontext() as ctx:
+        ctx.prec = PRECISION
+        ctx.rounding = ROUND_HALF_EVEN
+        return +(Decimal(value.numerator) / Decimal(value.denominator))
+
+
+def _a_square_bell_fraction(source, order: int, eta: float) -> Fraction:
+    """Independent low-order Bell factors for ``a^2``."""
+
+    if order == 0:
+        return Fraction(1)
+    rational = source.amplitude.rational_data
+    t = 2 * Fraction(source.amplitude.Lambda)
+    g0 = rational.jet_fraction("normalizedGradient", 0, 0, eta)
+    if order == 1:
+        return t * g0
+    assert order == 2
+    g1 = rational.jet_fraction("normalizedGradient", 0, 1, eta)
+    return t * g1 + t * t * g0 * g0
 
 
 def test_source_is_bound_to_actual_reference_pair_and_theorem_amplitude(source) -> None:
@@ -64,12 +87,15 @@ def test_first_eta_jet_matches_direct_product_rule(source) -> None:
     n = 0
     payload0 = _d(source.angular_square.jet(n, 0, eta))
     payload1 = _d(source.angular_square.jet(n, 1, eta))
-    gradient0 = _d(source.amplitude.data.normalizedGradient.jet(0, 0, eta))
+    bell0 = _nearest96(_a_square_bell_fraction(source, 0, eta))
+    bell1 = _nearest96(_a_square_bell_fraction(source, 1, eta))
 
     with localcontext() as ctx:
         ctx.prec = PRECISION
-        q1 = +(Decimal(2) * source.amplitude.Lambda * gradient0)
-        expected = +(q1 * payload0 + payload1)
+        expected = Decimal(0)
+        expected += bell0 * payload1
+        expected += bell1 * payload0
+        expected = +expected
 
     assert source.normalized_factor(n, 1, eta) == expected
 
@@ -80,14 +106,17 @@ def test_second_eta_jet_matches_explicit_bell_leibniz_identity(source) -> None:
     p0 = _d(source.angular_square.jet(n, 0, eta))
     p1 = _d(source.angular_square.jet(n, 1, eta))
     p2 = _d(source.angular_square.jet(n, 2, eta))
-    g0 = _d(source.amplitude.data.normalizedGradient.jet(0, 0, eta))
-    g1 = _d(source.amplitude.data.normalizedGradient.jet(0, 1, eta))
+    bell0 = _nearest96(_a_square_bell_fraction(source, 0, eta))
+    bell1 = _nearest96(_a_square_bell_fraction(source, 1, eta))
+    bell2 = _nearest96(_a_square_bell_fraction(source, 2, eta))
 
     with localcontext() as ctx:
         ctx.prec = PRECISION
-        q1 = +(Decimal(2) * source.amplitude.Lambda * g0)
-        q2 = +(Decimal(2) * source.amplitude.Lambda * g1)
-        expected = +((q1 * q1 + q2) * p0 + Decimal(2) * q1 * p1 + p2)
+        expected = Decimal(0)
+        expected += bell0 * p2
+        expected += Decimal(2) * bell1 * p1
+        expected += bell2 * p0
+        expected = +expected
 
     assert source.normalized_factor(n, 2, eta) == expected
 

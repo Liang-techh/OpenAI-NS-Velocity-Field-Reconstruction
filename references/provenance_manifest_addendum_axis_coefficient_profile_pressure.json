@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "official_lean_repository": "openai/NavierStokesAndEuler",
+    "official_lean_commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "paper_locations": [
+      "NavierStokes/NaturalAxisBridge.lean:321-342",
+      "NavierStokes/NaturalProfile.lean:559-599"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-formal-scaled-profile-pressure",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_formal_solver.py",
+      "src/openai_ns_reconstruction/axis_coefficient_profile_prefix.py",
+      "references/AXIS_COEFFICIENT_PROFILE_PRESSURE_PROVENANCE.md"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_PROFILE_PRESSURE_PROVENANCE.md",
+    "capability": "Materialize finite sparse mixed-scale rows of the scaled profile pressure primitive alongside formal angular and axial rows.",
+    "apis": {
+      "solver": "profile_jet_prefix(max_n, m, eta) -> tuple[(phi,u,P)]",
+      "profile": "formal_axis_profile_prefix(solver, max_n, Y, eta, radial_order=0, eta_order=0)",
+      "pressure_view": "FormalAxisProfilePrefix.pressure_terms_log()"
+    },
+    "formula": {
+      "scaled_pressure": "P=primitive((a*phi)^2)=primitive(a^2*phi^2)",
+      "source": "S=product(a^2,product(phi,phi)) using full eta Bell family",
+      "primitive": "P[0,m]=0; P[n,m]=S[n-1,m]/n for n>0",
+      "separate_from_axial_forcing": true,
+      "outer_inverse_Lambda_applied": false,
+      "physical_pressure_Pi_materialized": false
+    },
+    "representation": {
+      "channels_preserved": true,
+      "amplitude_power": "q=2 from a^2 source",
+      "bare_amplitude_shift": false,
+      "finite_x1_coefficients_used": false,
+      "decimal_precision": 96,
+      "signed_log_view": true
+    },
+    "truth_flags": {
+      "paper_exact": false,
+      "global_axis_norm_certified": false,
+      "fixed_point_materialized": false,
+      "truncation_certified": false,
+      "paper_exact_velocity_available": false
+    },
+    "validation": {
+      "compile": "python -B -m py_compile src/openai_ns_reconstruction/axis_coefficient_formal_solver.py src/openai_ns_reconstruction/axis_coefficient_profile_prefix.py",
+      "smoke": "actual x1 profile rows confirm P[0]=0 and P_Y(axis)=(2,0) a^2 channel numerator 1",
+      "full_test_suite_run": false
+    },
+    "remaining_boundary": "The scaled primitive remains a finite formal prefix with unknown tail; it does not prove global AxisSpace membership, convergence, physical pressure Pi, final velocity, or paper exactness."
+  },
+  "forbidden_inferences": [
+    "scaled P is the full physical pressure Pi",
+    "scaled pressure rows certify the unknown radial tail",
+    "the formal pressure family proves a converged fixed point",
+    "a channel numerator smoke is a global norm or paper certificate",
+    "Decimal96 rounded channel arithmetic is exact real arithmetic"
+  ]
+}

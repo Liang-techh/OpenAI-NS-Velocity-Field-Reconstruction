@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "67ab5ecd32f80225df8bce2760b943c20a7d3d7b",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "source_pin": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+    "locations": [
+      "NavierStokes/NaturalAxisData.lean:24-35",
+      "NavierStokes/NaturalAxisCoefficients.lean:23-49",
+      "NavierStokes/NaturalAxisCoefficients.lean:65-78",
+      "NavierStokes/NaturalAxisCoefficients.lean:105-134",
+      "NavierStokes/AxisReference.lean:61-98"
+    ]
+  },
+  "layer": {
+    "id": "stage-1-rational-axis-data-input",
+    "status": "exact-finite-scalar-algebra",
+    "artifacts": [
+      "references/AXIS_COEFFICIENT_RATIONAL_DATA_PROVENANCE.md",
+      "references/provenance_manifest_addendum_axis_coefficient_rational_data.json"
+    ],
+    "capability": "Exact Fraction interpretation of selected binary64 h,j,sigma,eta, nine radial-degree-zero fixed fields, chi, and finite angular-reference eta derivatives",
+    "input_interpretation": "Fraction.from_float preserves each selected binary64 input as an exact dyadic rational",
+    "exact_scalars": {
+      "A": "1/2 + h",
+      "D": "1/2 - h"
+    },
+    "fixed_fields": [
+      "one",
+      "eta",
+      "d",
+      "inverseL",
+      "uStar",
+      "uStarEta",
+      "wStar",
+      "hStar",
+      "normalizedGradient"
+    ],
+    "formulas": {
+      "d": "1-eta^2",
+      "uStar": "4*eta+j",
+      "L": "1-2*h*eta^2",
+      "H": "D*eta+(1-eta^2)*(4*eta+j)",
+      "wStar": "1-4*(1-eta^2)-2*D*eta*(4*eta+j)",
+      "chi": "H^2/(H^2+sigma^2)",
+      "normalizedGradient": "-L*H/(H^2+sigma^2)",
+      "phi0": "(-chi/2)^n/(n!*(n+1)!)"
+    },
+    "taylor_convention": "q[m] is the coefficient of t^m in f(eta+t); the actual eta derivative is m!*q[m]",
+    "directed_decimal": "For exact Fraction q, use ROUND_FLOOR and ROUND_CEILING at the selected precision; this bounds only this rational input layer",
+    "comparison": "Existing natural_axis.py, axis_coefficient_data.py, and axis_reference_angular_jets.py agree algebraically but evaluate in binary64 with point-rounding",
+    "excluded_inputs": [
+      "zStar SchedulePressure datum and derivative",
+      "realPhase integral",
+      "realAmplitude exponential and phase oracle",
+      "accumulated coefficient roundoff",
+      "global parameter or AxisSpace certification"
+    ],
+    "truth_flags": {
+      "rational_scalar_fields_materialized": true,
+      "finite_angular_reference_derivatives_materialized": true,
+      "directed_decimal_input_enclosure": true,
+      "zStar_pressure_enclosed": false,
+      "amplitude_phase_enclosed": false,
+      "global_parameter_certified": false,
+      "paper_exact": false,
+      "paper_exact_velocity_available": false
+    },
+    "validation": {
+      "scope": "provenance artifact only",
+      "tests_run": false,
+      "old_binary64_outputs_are_enclosures": false,
+      "exact_real_or_interval_global_proof": false
+    },
+    "remaining_boundary": "This records an exact rational input interpretation and finite Taylor algebra only; pressure, amplitude/phase, accumulated coefficient rounding, global parameter certification, and paper-exact velocity remain outside the layer."
+  }
+}

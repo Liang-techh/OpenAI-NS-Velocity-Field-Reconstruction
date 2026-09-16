@@ -99,6 +99,7 @@ def _pressure_over_two_lambda(
         sign=pressure.sign,
         log_scale=pressure.log_scale,
         log_factor=log_factor,
+        amplitude_log_scale=pressure.amplitude_log_scale,
     )
 
 

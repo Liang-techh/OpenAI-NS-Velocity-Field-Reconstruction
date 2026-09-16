@@ -12,3 +12,10 @@ Read README.md, docs/RECONSTRUCTION_PLAN.md and references/provenance_manifest.j
 - Run `python -m pytest -q -W error`, `ns-reconstruct demo --output artifacts`, and confirm `ns-reconstruct audit --require-paper-exact` exits 2 while constructors are incomplete.
 - Preserve existing tests and reconcile source/manifest/CI changes against the latest main; never force-push over another agent.
 - Record measured results and remaining blockers. Do not invent PDF hashes, Lean builds or CI outcomes.
+
+## Persistent agent handoff
+
+- Before selecting new work, read `docs/CURRENT_CHECKPOINT.md` and `docs/AGENT_TASKS.md` on the published checkpoint branch, then inspect current remote refs and relevant open PRs.
+- Use the task IDs and claim/completion protocol in that board. Preserve another agent's ownership; do not duplicate an active task or assume an old branch is the latest baseline.
+- A reported DONE task must link its implementation commit/PR and actual checks. Read its coordinator acceptance separately; a status label alone does not prove mathematical completion or paper exactness.
+- On resumption, reconcile new DONE records against their exact commits before scheduling the same work again. Update only the owned task and its completion record in a PR; do not force-push or overwrite other agents' results.
