@@ -1,0 +1,45 @@
+{
+  "task_id": "KOKUNO8-STAGE-INPUT-COVARIANCE-002",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_main_inspected": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_path": "proof_sources/stage_inputs_audit/stage_inputs_body.tex",
+    "component_sha256_published_metadata": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+    "covariance_result_sha256_published_metadata": "31f2a1ae9bfff6cfad82d40a1eb866cf9d8247ab0eace15d8737ca643255c99d",
+    "bundle_sha256_published_metadata": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "license_boundary": "No reusable source license was identified; no source checker or proof body is copied."
+  },
+  "local_replay": {
+    "method": "independent exact-rational reimplementation of the public covariance scaling and partition-square formulas",
+    "tolerance": "0",
+    "fixture": {
+      "h": "1/8",
+      "A": "5/8",
+      "partition_weights": ["3/5", "4/5"]
+    },
+    "actual": {
+      "q_exponent": "-9/8",
+      "Q_exponent": "0",
+      "partition_square_sum": "1",
+      "verified": true
+    },
+    "negative_controls": {
+      "A_defect": "1/1099511627776",
+      "expected_Q_exponent": "-1/1099511627776",
+      "partition_weight_defect": "1/1099511627776",
+      "fail_closed": true
+    }
+  },
+  "truth_boundary": {
+    "source_recorded_pass_is_local_validation": false,
+    "complete_stage_inputs_verified": false,
+    "actual_stage_sequence_constructed": false,
+    "all_stage_realization_or_convergence": false,
+    "same_witness_final_force_verified": false,
+    "formal_endpoint_or_comparator_certificate": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "acceptance": "pending"
+  }
+}
