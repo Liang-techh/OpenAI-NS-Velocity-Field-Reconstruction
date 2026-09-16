@@ -1,0 +1,60 @@
+{
+  "id": "KOKUNO7-OSCILLATORY-CURL-REPLAY-004",
+  "scope": "exact transverse phase-polarization recovery plus normalized cylindrical curl non-phase remainder",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "repository_commit_inspected": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-oscillations",
+    "archive_path": "proof_sources/oscillations/oscillations_body.tex",
+    "source_pages": "62-87,157-165",
+    "component_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+    "associated_checker": "proof_sources/oscillations/exact_checks.py",
+    "checker_sha256_recorded": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+    "result_sha256_recorded": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12",
+    "corrected_bundle_sha256_recorded": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "source_checker_executed_here": false,
+    "direct_checker_path_fetchable_from_repository": false
+  },
+  "local_replay": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "transverse_fixture": {
+      "normal": ["1", "2", "-1"],
+      "target": ["2", "-1", "0"],
+      "dot": "0",
+      "recovered": ["2", "-1", "0"],
+      "residual": ["0", "0", "0"]
+    },
+    "nontransverse_mutation": {
+      "target": ["2", "-1", "1"],
+      "dot": "-1",
+      "recovery_minus_target": ["1/6", "1/3", "-1/6"]
+    },
+    "curl_remainder_fixture": {
+      "epsilon": "1/8",
+      "radius": "3/2",
+      "remainder": ["-181/540", "-19/44", "613/6048"],
+      "cartesianized_z_omission_defect": "-1/27"
+    }
+  },
+  "license_boundary": {
+    "repository_license_metadata": null,
+    "copied_source_checker_code": false,
+    "copied_substantial_source_text": false,
+    "implementation_style": "clean-room from short public formulas and structured provenance"
+  },
+  "truth_boundary": {
+    "complete_oscillatory_velocity_constructed": false,
+    "complete_oscillatory_stress_constructed": false,
+    "covariance_construction_verified_here": false,
+    "actual_shear_retested_here": false,
+    "radial_transport_derivative_factors_retested_here": false,
+    "mean_correction_verified_here": false,
+    "finite_stage_residual_improvement_verified_here": false,
+    "source_checker_executed_here": false,
+    "all_stage_convergence": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
