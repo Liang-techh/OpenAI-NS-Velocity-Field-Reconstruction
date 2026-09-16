@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO8-STAGE-INPUT-RIGHT-INVERSE-003",
+  "status": "target_side_clean_room_exact_replay",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_main_commit_inspected": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-stage_inputs",
+    "component_path": "proof_sources/stage_inputs_audit/stage_inputs_body.tex",
+    "component_sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+    "recorded_covariance_checker_path": "proof_sources/stage_inputs_audit/maps_covariance/exact_checks.py",
+    "recorded_covariance_checker_sha256": "ac81831f59f0aef9a980671df3ab53afe2933fa2994e3c6b97ff99f1ea0f4ef8",
+    "recorded_covariance_result_path": "proof_sources/stage_inputs_audit/maps_covariance/exact_checks.json",
+    "recorded_covariance_result_sha256": "31f2a1ae9bfff6cfad82d40a1eb866cf9d8247ab0eace15d8737ca643255c99d",
+    "workbench_tex_git_blob_sha1": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "primary_manifest_git_blob_sha1": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "bundle_sha256_published_metadata": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "license_boundary": "Repository REST metadata reports license=null. No source checker/proof implementation or substantial authored prose is copied. Published checker/result/bundle/component hashes are provenance metadata, not locally executed source-side PASS evidence or fresh local ZIP byte re-hashes."
+  },
+  "public_formula_structure_reimplemented": {
+    "d_sigma": "H^{-1}(Sigma/epsilon)",
+    "delta_amplitude_sigma": "(d_sigma)_sigma/(2*a_sigma)",
+    "first_variation_component": "2*epsilon*a_sigma*delta_amplitude_sigma",
+    "local_covariance_response": "H(first_variation_components)=Sigma",
+    "partition_assembly": "sum_beta eta_beta^2 * Sigma = Sigma when sum_beta eta_beta^2 = 1"
+  },
+  "exact_fixture": {
+    "H": [["2", "1"], ["1", "3"]],
+    "Sigma": ["7/10", "-2/5"],
+    "epsilon": "1/16",
+    "amplitudes": ["3/2", "5/4"],
+    "d_sigma": ["8", "-24/5"],
+    "delta_amplitudes": ["8/3", "-48/25"],
+    "component_variation": ["1/2", "-3/10"],
+    "covariance_response": ["7/10", "-2/5"],
+    "local_residual": ["0", "0"],
+    "partition_weights": ["3/5", "4/5"],
+    "partition_square_sum": "1",
+    "global_residual": ["0", "0"],
+    "tolerance": "0"
+  },
+  "mutation_boundary": {
+    "mutation": "delta_a_plus += 2^-40",
+    "response_residual": ["3/8796093022208", "3/17592186044416"],
+    "expected_outcome": "fail_closed_exact_nonzero"
+  },
+  "closure_gap_ledger_update": {
+    "gap_reduced": "The finite algebraic signed differential-inverse and squared-partition local-to-global covariance handoff can be independently replayed without paper-exact hidden choices once H, epsilon, positive amplitudes, Sigma, and exact partition weights are supplied.",
+    "still_open": [
+      "existence/admissibility of the source stress in the required cone/class",
+      "existence and lower bounds for the positive amplitudes used by the source differential inverse",
+      "materialization of those data from the same actual stage producer",
+      "same-witness radial-stress reconstruction and five-equation closure",
+      "all-stage realization/convergence and Eq. 9.21 field",
+      "final force for the same assembled witness",
+      "formal endpoint and Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "source_side_pass_is_local_validation": false,
+    "imported_profile_or_admissible_stress_existence_proved_here": false,
+    "actual_section9_stage_materialized_here": false,
+    "all_stage_realization_or_convergence_verified": false,
+    "same_witness_final_force_verified": false,
+    "formal_endpoint_or_comparator_verified": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
