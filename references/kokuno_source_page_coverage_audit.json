@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO4-SOURCE-PAGE-COVERAGE-AUDIT-010",
+  "purpose": "Machine-readable provenance audit of explicit manuscript page ranges attached to Kokuno Navier-Stokes source components. This records navigation/integrity facts only and does not validate mathematics.",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "research_state_path": "navier-stokes/research-state.json",
+    "primary_manifest_path": "navier_stokes_primary_manifest.json",
+    "primary_manifest_git_blob": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "checks_path": "navier_stokes_checks.json",
+    "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "source_bundle_member_count": 120,
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license_metadata": null
+  },
+  "manuscripts": {
+    "derivation_capture": {
+      "pages": 165,
+      "sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81"
+    },
+    "later_capture": {
+      "pages": 166,
+      "sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f"
+    }
+  },
+  "explicit_page_components": [
+    {
+      "id": "NS-profiles",
+      "archive_path": "proof_sources/profiles/profiles_body.tex",
+      "component_sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": [[24, 45], [144, 157]]
+    },
+    {
+      "id": "NS-base_heat",
+      "archive_path": "proof_sources/base_heat/derivation.tex",
+      "component_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": [[45, 62], [126, 144]]
+    },
+    {
+      "id": "NS-oscillations",
+      "archive_path": "proof_sources/oscillations/oscillations_body.tex",
+      "component_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": [[62, 87], [157, 165]]
+    },
+    {
+      "id": "NS-mean_corrections",
+      "archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+      "component_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": [[87, 100]]
+    },
+    {
+      "id": "NS-stage9",
+      "archive_path": "proof_sources/stage9/stage9_body.tex",
+      "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": [[100, 116]]
+    },
+    {
+      "id": "NS-terminal_endpoint",
+      "archive_path": "proof_sources/terminal_endpoint/endpoint_derivation.tex",
+      "component_sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "source_pages": [[117, 126]]
+    }
+  ],
+  "components_without_explicit_source_pages": [
+    {
+      "id": "NS-profile_assembly",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "rule": "capture identity is recorded, but source_pages is null; do not infer pages from neighboring components"
+    },
+    {
+      "id": "NS-stage_inputs",
+      "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "rule": "capture identity is recorded, but source_pages is null; do not infer pages from neighboring components"
+    },
+    {
+      "id": "NS-summation_realization",
+      "source_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f",
+      "rule": "later-capture identity is recorded, but source_pages is null; no page number, including page 166, is inferred"
+    },
+    {
+      "id": "NS-terminal_trace",
+      "source_capture_sha256": null,
+      "rule": "source capture and source_pages are both null; preserve both as unknown"
+    },
+    {
+      "id": "NS-radial_stress_reconstruction_audit",
+      "source_capture_sha256": null,
+      "rule": "source_pages is null; no neighboring manuscript range is inferred"
+    },
+    {
+      "id": "NS-stage_cycle_gain_audit",
+      "source_capture_sha256": null,
+      "rule": "source_pages is null; no neighboring manuscript range is inferred"
+    },
+    {
+      "id": "NS-global_closure_body",
+      "source_capture_sha256": null,
+      "rule": "source_pages is null; no neighboring manuscript range is inferred"
+    }
+  ],
+  "finite_interval_audit": {
+    "component_count_total": 13,
+    "component_count_with_explicit_pages": 6,
+    "component_count_without_explicit_pages": 7,
+    "all_explicit_page_components_reference_derivation_capture": true,
+    "explicit_union_first_page": 24,
+    "explicit_union_last_page": 165,
+    "explicit_union_integer_page_count": 142,
+    "gaps_within_24_through_165": [],
+    "derivation_capture_pages_not_assigned_by_explicit_component_ranges": [[1, 23]],
+    "shared_boundary_pages": {
+      "45": ["NS-profiles", "NS-base_heat"],
+      "62": ["NS-base_heat", "NS-oscillations"],
+      "87": ["NS-oscillations", "NS-mean_corrections"],
+      "100": ["NS-mean_corrections", "NS-stage9"],
+      "126": ["NS-base_heat", "NS-terminal_endpoint"],
+      "144": ["NS-profiles", "NS-base_heat"],
+      "157": ["NS-profiles", "NS-oscillations"]
+    },
+    "interpretation": "The six source-recorded derivation-capture ranges form a contiguous integer-page union from 24 through 165. Shared endpoint pages are provenance overlaps only; this audit does not assert semantic duplication or complete proof coverage. Pages 1-23 are simply not assigned by these explicit component ranges."
+  },
+  "cross_source_consistency": {
+    "research_state_vs_primary_manifest_explicit_page_ranges": "match for all six components with explicit ranges",
+    "research_state_vs_primary_manifest_capture_hashes": "match for all components where a capture hash is present in both records",
+    "component_body_hashes_are_published_member_hashes": true,
+    "checks_record_scope": "published package/integrity evidence; source-side PASS/true values are not target-side independent mathematical validation"
+  },
+  "migration_rules": [
+    "Page ranges may be used as provenance/navigation metadata only.",
+    "A null source_pages field stays null; do not fill it from nearby sections, later reviews, or release layout.",
+    "A source_capture_sha256 identifies the manuscript capture used for provenance but does not license or validate the corresponding proof body.",
+    "Because Kokuno repository license metadata is null, do not bulk-copy authored proof/checker text; retain paths, hashes, page ranges, DOI/URL metadata, short public formulas when necessary, and independently authored reimplementations.",
+    "Do not promote page-range continuity, member-hash agreement, source-side replay records, or capture identity to complete independent validation, paper exactness, or full reconstruction."
+  ],
+  "truth_boundary": {
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
