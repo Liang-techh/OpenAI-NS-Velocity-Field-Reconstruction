@@ -1,5 +1,7 @@
 # GitHub Agent 任务清单与完成台账
 
+统一认领与结果入口：[#368](https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/issues/368)。
+
 版本：v1。共 **36 项任务**。当前基线分支：`codex/stage1-complete-slow2`；
 代码检查点 `5c53dcc`；同步 PR：[#367](https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/pull/367)。
 先读 [CURRENT_CHECKPOINT.md](CURRENT_CHECKPOINT.md)，再 fetch 并记录最新远端 SHA。
