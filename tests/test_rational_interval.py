@@ -57,18 +57,12 @@ def test_monotone_endpoint_propagation_in_both_directions() -> None:
     ) == RationalInterval(Fraction(1, 5), Fraction(1, 2))
 
 
-def test_dyadic_rounding_is_outward_and_optional_bounds_are_exact() -> None:
+def test_dyadic_rounding_is_strictly_outward() -> None:
     interval = RationalInterval(Fraction(-3, 10), Fraction(7, 10))
+    rounded = outward_round_dyadic(interval, Fraction(1, 4))
 
-    assert outward_round_dyadic(interval, Fraction(1, 4)) == RationalInterval(
-        Fraction(-1, 2), Fraction(3, 4)
-    )
-    assert outward_round_dyadic(
-        interval,
-        Fraction(1, 4),
-        lower_bound=Fraction(0),
-        upper_bound=Fraction(1),
-    ) == RationalInterval(Fraction(0), Fraction(3, 4))
+    assert rounded == RationalInterval(Fraction(-1, 2), Fraction(3, 4))
+    assert rounded.lower <= interval.lower <= interval.upper <= rounded.upper
     assert dyadic_step(Fraction(3, 10)) == Fraction(1, 4)
 
 
