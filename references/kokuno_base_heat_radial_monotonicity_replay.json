@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "check_id": "KOKUNO6-BASE-HEAT-RADIAL-MONOTONICITY-008",
+  "agent": "Kokuno Agent 6",
+  "scope": "NS-base_heat exact positive-integrand identity behind radial monotonicity of the exterior heat field",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+    "module": "src/openai_ns_reconstruction/kokuno_base_heat_radial_monotonicity.py",
+    "test": "tests/test_kokuno_base_heat_radial_monotonicity.py"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "current_public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-base_heat",
+    "archive_path": "proof_sources/base_heat/derivation.tex",
+    "source_pages": "45–62,126–144",
+    "component_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+    "associated_checker": "proof_sources/base_heat/verify_identities.py",
+    "associated_checker_sha256": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+    "recorded_result": "proof_sources/base_heat/identity_check_results.json",
+    "recorded_result_sha256": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "public_formula_location": "navier-stokes/navier_stokes_workbench.tex, subsection 6 Direct heat-exterior verification"
+  },
+  "rights_boundary": {
+    "repository_license_metadata": null,
+    "policy": "fail_closed",
+    "copied_source_code": false,
+    "copied_long_source_text": false,
+    "implementation": "clean-room from short public formulas and factual provenance"
+  },
+  "public_structure_reimplemented": {
+    "heat_integral": "H(Z)=Gamma(1+h)^(-1) integral_0^inf exp(-v) v^h (1+Zv)^(-h) dv",
+    "similarity_exponent": "A=1/2+h",
+    "derivative_relative_factor": "H' integrand / H integrand = -h v/(1+Zv)",
+    "combined_relative_factor": "A-hZv/(1+Zv)",
+    "positive_form": "A-hZv/(1+Zv)=(A+Zv/2)/(1+Zv)=1/2+h/(1+Zv)>1/2",
+    "radial_sign_use": "the relative integrand in -A H-ZH' is strictly negative; with the positive public integral representation this yields K_s<0 and K_r=r K_s<0 for r>0"
+  },
+  "exact_fixture": {
+    "h": "1/113",
+    "Z": "7/5",
+    "v": "11/3",
+    "Zv": "77/15",
+    "A": "115/226",
+    "combined_factor": "5213/10396",
+    "half_margin": "15/10396",
+    "outward_bracket": "-5213/10396",
+    "identity_residual": "0",
+    "tolerance": "0"
+  },
+  "large_finite_node_probe": {
+    "h": "1/113",
+    "Z": "1000000",
+    "v": "1000000",
+    "h_minus_local_log_slope": "1/113000000000113",
+    "strict_upper_bound_preserved": true
+  },
+  "failure_boundary": {
+    "mutation": "increase the direct combined factor by 2^-40 while retaining the exact positive form",
+    "exact_residual": "1/1099511627776",
+    "passes": false
+  },
+  "local_verification": {
+    "pytest_command": "PYTHONPATH=src python -m pytest -q tests/test_kokuno_base_heat_radial_monotonicity.py",
+    "pytest_result": "7 passed in 0.06s",
+    "py_compile_command": "python -m py_compile src/openai_ns_reconstruction/kokuno_base_heat_radial_monotonicity.py tests/test_kokuno_base_heat_radial_monotonicity.py",
+    "py_compile_exit_code": 0,
+    "module_sha256_before_commit": "0e51e461dea2edc0c9332a56874f6b505f205d2203d7958a818ea77690b45428",
+    "test_sha256_before_commit": "5303912a834b2e2b80201dc5c81dbb5a92b84f39e8668ba229543d5d6dec7d53"
+  },
+  "source_checker_execution": {
+    "executed": false,
+    "reason": "The source checker remains provenance only in this increment; no recorded source PASS is represented as local validation."
+  },
+  "analytic_boundary": {
+    "pointwise_integrand_algebra_replayed": true,
+    "positive_kernel_weight_used_as_public_assumption": true,
+    "differentiation_under_integral_reproved_here": false,
+    "gamma_integral_profile_existence_proved_here": false,
+    "heat_profile_global_regularization_proved_here": false
+  },
+  "truth_boundary": {
+    "leading_profile_existence_proved_here": false,
+    "base_heat_full_component_replayed": false,
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
