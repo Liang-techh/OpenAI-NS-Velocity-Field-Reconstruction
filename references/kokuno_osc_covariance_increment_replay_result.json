@@ -1,0 +1,56 @@
+{
+  "task_id": "KOKUNO5-OSC-COVARIANCE-INCREMENT-REPLAY-009",
+  "component": "NS-oscillations",
+  "source_public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+  "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+  "source_body": "proof_sources/oscillations/oscillations_body.tex",
+  "source_body_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+  "source_pages": "62-87,157-165",
+  "associated_checker": "proof_sources/oscillations/exact_checks.py",
+  "recorded_checker_sha256": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+  "recorded_result_sha256": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12",
+  "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+  "doi": "10.5281/zenodo.22678406",
+  "license_boundary": "Source repository metadata reports license=null. No source checker/proof implementation or substantial source prose was copied; this is an independently authored exact-rational replay of short public formulas. The original source checker was not executed.",
+  "replayed_formula_surface": {
+    "signed_inverse_premise": "B(W0,L)=Sigma",
+    "actual_increment": "C(U+V)-C(U)=Sigma+B(E,L)+B(U,R)+C(V)",
+    "field_bindings": "U=W0+E; V=L+R",
+    "quadratic_split": "C(V)=C(L)+B(L,R)+C(R)",
+    "remainder_exponents": {
+      "B(E,L)": "rho+alpha-1/2",
+      "B(U,R)": "alpha+1/2-kappa_s",
+      "C(L)": "2alpha-1",
+      "B(L,R)": "2alpha-1/2-kappa_s",
+      "C(R)": "2alpha-2kappa_s"
+    }
+  },
+  "exact_fixture": {
+    "weights": ["1/3", "2/3"],
+    "sigma": [["8/45", "-83/180"], ["-83/180", "5/9"]],
+    "delta_covariance": [["7037/14700", "18577/25200"], ["18577/25200", "248429/151200"]],
+    "omitting_B_E_L_defect": [["13/45", "767/1260"], ["767/1260", "65/189"]],
+    "omitting_B_U_R_defect": [["-8/35", "6407/25200"], ["6407/25200", "13/105"]],
+    "omitting_C_V_defect": [["1179/4900", "169/504"], ["169/504", "13387/21600"]],
+    "signed_inverse_mutation": "L[0][0] += 2^-40",
+    "signed_inverse_mutation_defect": [["1/1649267441664", "1/1649267441664"], ["1/1649267441664", "0"]],
+    "alpha": "9/10",
+    "rho": "3/4",
+    "kappa_s": "1/100000",
+    "exponents": {
+      "B(E,L)": "23/20",
+      "B(U,R)": "139999/100000",
+      "C(L)": "4/5",
+      "B(L,R)": "129999/100000",
+      "C(R)": "89999/50000"
+    },
+    "tolerance": "0"
+  },
+  "source_checker_executed": false,
+  "complete_source_replay_program_reproduced": false,
+  "source_named_result_group_claimed": false,
+  "source_structural_probe_claimed": false,
+  "complete_independent_analytic_validation": false,
+  "paper_exact_velocity_available": false,
+  "full_reconstruction": false
+}
