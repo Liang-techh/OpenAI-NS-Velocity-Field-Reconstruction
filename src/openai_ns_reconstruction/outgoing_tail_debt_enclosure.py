@@ -1,13 +1,13 @@
 """Certified rational enclosure of the pinned outgoing ``tailDebt`` scalar.
 
 For the actual :class:`~openai_ns_reconstruction.outgoing_tail.TailData`, write
-``h = Fraction.from_float(data.h)`` and ``k = 1 - h``.  Integration by parts
+``h = Fraction.from_float(data.h)`` and ``k = 1 - h``. Integration by parts
 in the pinned tail transition gives
 
     tailDebt = rho / (1 - rho) * (exp(3 k) - 2 k J),
     J = integral_0^1 exp(k * (1 + 2 x)) * sigma(x) dx,
 
-where ``rho = h * exp(-5) / 528``.  The scalar is enclosed with exact
+where ``rho = h * exp(-5) / 528``. The scalar is enclosed with exact
 fractions, using the validated exponential and outgoing-sigma primitives.
 This does not certify the complete pressure integral or any global norm.
 """
@@ -19,11 +19,21 @@ from dataclasses import dataclass
 from fractions import Fraction
 
 from .outgoing_sigma_enclosure import (
-    RationalInterval,
     validated_exp_negative,
+    validated_exp_positive_on_0_3,
     validated_outgoing_sigma,
 )
 from .outgoing_tail import TailData
+from .rational_interval import (
+    RationalInterval,
+    ceil_grid as _ceil_grid,
+    dyadic_step as _dyadic_step,
+    floor_grid as _floor_grid,
+    interval_divide_positive,
+    interval_multiply,
+    positive_cap as _positive_cap,
+    positive_fraction as _positive_fraction,
+)
 
 
 _DEFAULT_TOLERANCE = Fraction(1, 10**8)
@@ -31,45 +41,6 @@ _DEFAULT_MAX_CELLS = 4096
 _DEFAULT_MAX_TERMS = 1024
 _DEFAULT_MAX_SQUARINGS = 4096
 _RHO_DENOMINATOR = 528
-_EXP_SAFE_UPPER = Fraction(1)
-_EXP_SAFE_LOWER = Fraction(1, 27)
-
-
-def _positive_fraction(value: object, name: str) -> Fraction:
-    if not isinstance(value, Fraction):
-        raise TypeError(f"{name} must be a Fraction")
-    if value <= 0:
-        raise ValueError(f"{name} must be positive")
-    return value
-
-
-def _positive_cap(value: object, name: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
-        raise ValueError(f"{name} must be a positive integer")
-    return value
-
-
-def _dyadic_step(bound: Fraction) -> Fraction:
-    if not isinstance(bound, Fraction) or bound <= 0:
-        raise ValueError("dyadic step bound must be positive")
-    exponent = max(0, bound.denominator.bit_length() - bound.numerator.bit_length())
-    step = Fraction(1, 1 << exponent)
-    while step > bound:
-        exponent += 1
-        step = Fraction(1, 1 << exponent)
-    while exponent > 0 and Fraction(1, 1 << (exponent - 1)) <= bound:
-        exponent -= 1
-        step = Fraction(1, 1 << exponent)
-    return step
-
-
-def _floor_grid(value: Fraction, step: Fraction) -> Fraction:
-    return (value // step) * step
-
-
-def _ceil_grid(value: Fraction, step: Fraction) -> Fraction:
-    quotient = value / step
-    return (-((-quotient.numerator) // quotient.denominator)) * step
 
 
 def _require_tail_data(data: object) -> tuple[TailData, Fraction]:
@@ -79,44 +50,6 @@ def _require_tail_data(data: object) -> tuple[TailData, Fraction]:
     if not Fraction(0) < h < Fraction(1, 20):
         raise ValueError("TailData h must satisfy 0 < h < 1/20")
     return data, h
-
-
-def _exp_positive_on_0_3(
-    z: Fraction,
-    absolute_tolerance: Fraction,
-    max_terms: int,
-    max_squarings: int,
-) -> RationalInterval:
-    """Enclose ``exp(z)`` for ``0 <= z <= 3`` using ``exp(-z)``."""
-
-    if not isinstance(z, Fraction):
-        raise TypeError("z must be a Fraction")
-    if not Fraction(0) <= z <= Fraction(3):
-        raise ValueError("z must lie in [0, 3]")
-    tolerance = _positive_fraction(absolute_tolerance, "absolute_tolerance")
-    max_terms = _positive_cap(max_terms, "max_terms")
-    max_squarings = _positive_cap(max_squarings, "max_squarings")
-
-    negative = validated_exp_negative(
-        z,
-        absolute_tolerance=tolerance / 729,
-        max_terms=max_terms,
-        max_squarings=max_squarings,
-    )
-    # The exact value exp(-z) lies in [1/27, 1].  Intersecting the input
-    # interval with this independently proved range prevents a rounded lower
-    # endpoint from causing a false loss of positivity on inversion.
-    inverse_lower = max(_EXP_SAFE_LOWER, negative.lower)
-    inverse_upper = min(_EXP_SAFE_UPPER, negative.upper)
-    if inverse_lower <= 0 or inverse_lower > inverse_upper:
-        raise ArithmeticError("positive exponential input interval is invalid")
-    result = RationalInterval(
-        Fraction(1, 1) / inverse_upper,
-        Fraction(1, 1) / inverse_lower,
-    )
-    if result.width > tolerance:
-        raise ArithmeticError("positive exponential enclosure exceeded requested tolerance")
-    return result
 
 
 @dataclass(frozen=True)
@@ -183,10 +116,8 @@ def _rho_interval(
 
 
 def _tail_ratio(rho: RationalInterval) -> RationalInterval:
-    return RationalInterval(
-        rho.lower / (1 - rho.lower),
-        rho.upper / (1 - rho.upper),
-    )
+    denominator = RationalInterval(1 - rho.upper, 1 - rho.lower)
+    return interval_divide_positive(rho, denominator)
 
 
 def _integral_j_levels(
@@ -222,18 +153,13 @@ def _integral_j_levels(
             )
         if node not in exponential_cache:
             z = k * (1 + 2 * node)
-            exponential_cache[node] = _exp_positive_on_0_3(
+            exponential_cache[node] = validated_exp_positive_on_0_3(
                 z,
-                endpoint_tolerance,
-                max_terms,
-                max_squarings,
+                absolute_tolerance=endpoint_tolerance,
+                max_terms=max_terms,
+                max_squarings=max_squarings,
             )
-        sigma = sigma_cache[node]
-        exponential = exponential_cache[node]
-        raw = RationalInterval(
-            sigma.lower * exponential.lower,
-            sigma.upper * exponential.upper,
-        )
+        raw = interval_multiply(sigma_cache[node], exponential_cache[node])
         rounded = RationalInterval(
             _floor_grid(raw.lower, product_step),
             _ceil_grid(raw.upper, product_step),
@@ -254,7 +180,6 @@ def _integral_j_levels(
         result = RationalInterval(lower, upper)
         yield result, cells
         cells *= 2
-    return
 
 
 def validated_tail_debt_enclosure(
@@ -275,8 +200,6 @@ def validated_tail_debt_enclosure(
     epsilon = min(tolerance, Fraction(1))
     k = 1 - h
 
-    # Keep the local function enclosures small, then let the final debt width
-    # determine when the spatial Darboux refinement can stop.
     component_tolerance = min(Fraction(1, 1024), epsilon / 1024)
     rho = _rho_interval(
         h,
@@ -285,11 +208,11 @@ def validated_tail_debt_enclosure(
         max_squarings,
     )
     ratio = _tail_ratio(rho)
-    exp_3k = _exp_positive_on_0_3(
+    exp_3k = validated_exp_positive_on_0_3(
         3 * k,
-        component_tolerance,
-        max_terms,
-        max_squarings,
+        absolute_tolerance=component_tolerance,
+        max_terms=max_terms,
+        max_squarings=max_squarings,
     )
     for j_interval, cells in _integral_j_levels(
         k,
@@ -302,19 +225,13 @@ def validated_tail_debt_enclosure(
             exp_3k.lower - 2 * k * j_interval.upper,
             exp_3k.upper - 2 * k * j_interval.lower,
         )
-        # Integration by parts identifies this factor with
-        # integral exp(k(1+2x)) d sigma, whose total sigma mass is one.
-        # Since k > 0, it lies in [exp(k), exp(3k)] subset [1,27].
         factor = RationalInterval(
             max(Fraction(1), factor.lower),
             min(Fraction(27), factor.upper),
         )
         if factor.lower <= 0 or factor.lower > factor.upper:
             raise ArithmeticError("tail debt integration-by-parts factor lost positivity")
-        debt = RationalInterval(
-            ratio.lower * factor.lower,
-            ratio.upper * factor.upper,
-        )
+        debt = interval_multiply(ratio, factor)
         if debt.width <= tolerance:
             return TailDebtEnclosure(h=h, rho=rho, debt=debt, cells=cells)
 
