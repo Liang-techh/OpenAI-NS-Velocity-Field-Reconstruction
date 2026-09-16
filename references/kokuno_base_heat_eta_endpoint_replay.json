@@ -1,0 +1,62 @@
+{
+  "task_id": "KOKUNO6-BASE-HEAT-ETA-ENDPOINT-JET-009",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-base_heat",
+    "archive_path": "proof_sources/base_heat/derivation.tex",
+    "source_pages": "45–62,126–144",
+    "component_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+    "associated_checker": "proof_sources/base_heat/verify_identities.py",
+    "checker_sha256": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+    "recorded_result": "proof_sources/base_heat/identity_check_results.json",
+    "recorded_result_sha256": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "public_reader_blob": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "repository_license": null
+  },
+  "public_formula_surface": {
+    "Z": "2*(1-eta^2)/X",
+    "Z_eta": "-4*eta/X",
+    "Z_etaeta": "-4/X",
+    "heat_origin_jet": "H^(m)(0)=(-1)^m*(h)_m*(1+h)_m",
+    "chain_rule_first": "H_eta=H'(0)*Z_eta at eta=+/-1",
+    "chain_rule_second": "H_etaeta=H''(0)*Z_eta^2+H'(0)*Z_etaeta at eta=+/-1"
+  },
+  "exact_fixture": {
+    "h": "1/200",
+    "X": "7/3",
+    "eta_endpoints": [-1, 1],
+    "H_prime_0": "-201/40000",
+    "H_second_0": "8120601/1600000000",
+    "Z_eta_at_plus": "-12/7",
+    "Z_etaeta": "-12/7",
+    "H_eta_at_plus": "603/70000",
+    "H_eta_at_minus": "-603/70000",
+    "H_etaeta_both": "188017209/4900000000",
+    "tolerance": 0
+  },
+  "failure_boundaries": {
+    "origin_derivative_mutation": "H'(0)+=2^-40 changes H_eta(+1) by -3/(7*2^38), exactly nonzero",
+    "wrong_coordinate_second_derivative": "using Z_etaeta=-2/X instead of -4/X gives an exact nonzero second-jet defect",
+    "type_policy": "float theorem inputs rejected",
+    "parameter_policy": "requires 0<h<1/100, X>0, eta_endpoint in {-1,+1}"
+  },
+  "actual_checks": {
+    "focused_pytest": "7 passed in 0.05s",
+    "py_compile": "exit 0",
+    "source_checker_executed": false,
+    "source_recorded_pass_promoted_to_local_pass": false
+  },
+  "rights_boundary": "Kokuno repository metadata exposes no license. No source checker/proof implementation or substantial authored prose is copied; this is an independent implementation of short public formulas plus structured provenance.",
+  "truth_boundary": {
+    "differentiation_under_integral_reproved": false,
+    "imported_heat_profile_existence_proved": false,
+    "imported_leading_profile_existence_proved": false,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
