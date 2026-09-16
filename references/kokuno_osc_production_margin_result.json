@@ -1,0 +1,77 @@
+{
+  "task_id": "KOKUNO7-OSC-PRODUCTION-MARGIN-008",
+  "scope": "clean-room exact dyadic-grid replay of the corrected NS-oscillations actual-shear production error budget exposed in public reader AS35/AS37",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-oscillations",
+    "archive_path": "proof_sources/oscillations/oscillations_body.tex",
+    "source_pages": "62-87,157-165",
+    "component_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+    "associated_checker": "proof_sources/oscillations/exact_checks.py",
+    "checker_sha256": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+    "recorded_result_sha256": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license_metadata": null
+  },
+  "public_formula_surface": {
+    "reader_labels": ["AS35", "AS37"],
+    "s_star_specialization": "S_*=ell^2",
+    "error_budget": "g_plus*C_T*ell^-2 + (C_B*2^(-2*h*ell) + L_g*C_box*ell^-6)*(s_max+Gamma_max+C_T*ell^-2)",
+    "sufficient_half_leading_condition": "error_budget <= g_minus*c_minus/2",
+    "resulting_lower_P2_coefficient": "(g_minus*c_minus/2)*c_x^2"
+  },
+  "fixture": {
+    "h": "1/200",
+    "g_plus": "2",
+    "g_minus": "1",
+    "c_minus": "1/2",
+    "C_T": "3",
+    "C_B": "1",
+    "L_g": "1",
+    "C_box": "1",
+    "s_max": "2",
+    "Gamma_max": "2",
+    "c_x": "3/4",
+    "passing_ell": 500,
+    "passing_dyadic_exponent": 5,
+    "passing_total_error": "488376464843751000003/3906250000000000000000",
+    "passing_half_leading_budget": "1/4",
+    "passing_margin": "488186035156248999997/3906250000000000000000",
+    "lower_P2_coefficient": "9/64",
+    "tolerance": "0"
+  },
+  "failure_boundary": {
+    "ell": 400,
+    "dyadic_exponent": 4,
+    "borel_actual_shear_error": "1/16",
+    "full_corrected_margin": "-25344000000640003/655360000000000000000",
+    "frozen_frame_only_would_pass": true,
+    "meaning": "dropping the Delta-g actual-shear contribution can create a false positive"
+  },
+  "mutation": {
+    "change": "C_B += 2^-40 at ell=500",
+    "exact_margin_decrease": "1000003/8796093022208000000"
+  },
+  "actual_local_checks": {
+    "pytest": "7 passed in 0.07s",
+    "py_compile": "exit 0",
+    "result_json_parse": "pass"
+  },
+  "exact_replay_restriction": "The helper deliberately accepts only lattice points with integral 2*h*ell so the dyadic factor is a Fraction; it does not approximate a general real exponent.",
+  "validation_boundary": {
+    "source_checker_executed": false,
+    "source_bundle_fresh_rehash_performed": false,
+    "synthetic_fixture_not_source_witness": true,
+    "complete_oscillation_checker_replayed": false,
+    "actual_oscillatory_witness_constructed": false,
+    "same_witness_finite_stage_residual_improvement_verified": false,
+    "all_stage_convergence_verified": false,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "license_boundary": "Repository license metadata is absent. No source checker/proof implementation or substantial source prose is copied; code is independently authored from short public formulas and factual provenance."
+}
