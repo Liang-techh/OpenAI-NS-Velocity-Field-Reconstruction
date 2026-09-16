@@ -1,0 +1,89 @@
+{
+  "id": "KOKUNO7-MEAN-VANDERMONDE-REPLAY-005",
+  "scope": "exact clean-room regression of NS-mean_corrections MC23-MC26 translated-moment, three-node angular interpolation, determinant, and two-node axial solve",
+  "target_base": "codex/stage1-complete-slow2@77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "repository_commit_inspected": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-mean_corrections",
+    "archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+    "source_pages": "87-100",
+    "component_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+    "associated_checker": "proof_sources/mean_corrections/verify_exact.py",
+    "checker_sha256_recorded": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+    "result_sha256_recorded": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f",
+    "corrected_bundle_sha256_recorded": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "public_formula_surface_used": "navier-stokes/navier_stokes_workbench.tex (MC23-MC26)",
+    "archive_body_path_fetchable_from_repo_tree_here": false,
+    "source_checker_path_fetchable_from_repo_tree_here": false,
+    "source_checker_executed_here": false
+  },
+  "local_replay": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "pytest": "8 passed in 0.04s",
+    "py_compile_exit": 0,
+    "translated_moment_fixture": {
+      "mu_p": "7/5",
+      "t": "9/4",
+      "j0": "7/5",
+      "j1": "63/20",
+      "j2": "567/80"
+    },
+    "angular_fixture": {
+      "a": "9/8",
+      "mu_p0": "3/2",
+      "mu_p1": "5/4",
+      "mu_p2": "7/6",
+      "nodes": ["2", "3", "5"],
+      "pressure_target": "11/7",
+      "axial_target": "-13/9",
+      "b1": "-176/315",
+      "b2": "-208/189",
+      "coefficients_u0_u1_u2": ["320/189", "-2944/2835", "272/2835"],
+      "node_residuals": ["0", "0", "0"],
+      "source_determinant": "-8505/256"
+    },
+    "coefficient_mutation": {
+      "mutation": "u0 += 2^-40",
+      "t0_residual": "1/1099511627776"
+    },
+    "node_collision": {
+      "condition": "t0 == t1",
+      "determinant": "0",
+      "behavior": "fails closed"
+    },
+    "axial_fixture": {
+      "t_b": "4/3",
+      "t_a": "7/5",
+      "j_theta": "17/11",
+      "a": "9/8",
+      "mu_weighted": "6/5",
+      "s0": "6800/297",
+      "s1": "-1700/99",
+      "zero_moment_residual": "0",
+      "target_residual": "0"
+    },
+    "lambda_zero_style_axial_collision": {
+      "condition": "t_a == t_b",
+      "behavior": "fails closed"
+    }
+  },
+  "license_boundary": {
+    "repository_license_metadata": null,
+    "copied_source_checker_code": false,
+    "copied_substantial_source_text": false,
+    "implementation_style": "clean-room from short public formulas and structured provenance"
+  },
+  "truth_boundary": {
+    "complete_mean_correction_constructed": false,
+    "mc14_retested_here": false,
+    "nonlinear_remainder_estimates_verified_here": false,
+    "source_checker_executed_here": false,
+    "complete_source_replay_program_reproduced": false,
+    "all_stage_convergence": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
