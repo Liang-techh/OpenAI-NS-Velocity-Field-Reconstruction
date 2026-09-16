@@ -105,16 +105,19 @@ def _initial_source_tolerances(
     tolerance.  Debt receives more of the final hold-width budget because its
     absolute scale is much smaller; the final enclosure check remains the
     authority if this sensitivity allocation is not yet tight enough.
+
+    The pilot enclosures are used only to obtain certified positive scale
+    information.  They do not cap these budgets: otherwise a fixed pilot
+    tolerance can dominate two different requested final hold widths and make
+    the reported source budget insensitive to the caller's requested accuracy.
     """
 
     k = 1 - h
-    lag_tolerance = min(
-        _PILOT_LAG_TOLERANCE,
-        k * hold_tolerance * _LAG_HOLD_SHARE * release_lag.lag.lower,
+    lag_tolerance = (
+        k * hold_tolerance * _LAG_HOLD_SHARE * release_lag.lag.lower
     )
-    debt_tolerance = min(
-        _PILOT_DEBT_TOLERANCE,
-        k * hold_tolerance * _DEBT_HOLD_SHARE * tail_debt.debt.lower,
+    debt_tolerance = (
+        k * hold_tolerance * _DEBT_HOLD_SHARE * tail_debt.debt.lower
     )
     log_tolerance = k * hold_tolerance * _LOG_ENDPOINT_SHARE
     if lag_tolerance <= 0 or debt_tolerance <= 0 or log_tolerance <= 0:
