@@ -1,0 +1,308 @@
+{
+  "schema": "kokuno-component-evidence-tier-audit-v1",
+  "generated_from": {
+    "target_base": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction@77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+    "source_repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "source_public_main": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "research_state_path": "navier-stokes/research-state.json",
+    "checks_path": "navier_stokes_checks.json",
+    "primary_manifest_git_blob": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "source_bundle_member_count": 120,
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license": null
+  },
+  "interpretation": {
+    "purpose": "Separate research-state-declared checker bindings from executable/check-result artifacts discoverable only through the published archive inventory.",
+    "declared_checker_rule": "Only research-state.json associated_checker is treated as an explicit component-to-checker binding.",
+    "archive_discovered_rule": "A .py/check-result pair under a component directory in navier_stokes_checks.json is recorded as archive-discovered evidence only; it is not silently promoted to associated_checker.",
+    "pass_rule": "Published PASS or result hashes are provenance only until independently replayed in the target repository.",
+    "replay_count_rule": "The nine component-local executable candidates listed here are not asserted to be the same nine replay programs counted by navier_stokes_checks.json.",
+    "license_rule": "Because the source repository reports license=null, copy no checker/proof implementation or substantial authored prose; retain factual paths/hashes and independently reimplement short public mathematical structures.",
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  },
+  "summary": {
+    "components": 13,
+    "research_state_declared_checker_components": 5,
+    "archive_discovered_additional_checker_components": 2,
+    "components_with_no_component_local_executable_candidate_recorded_here": 6,
+    "component_local_executable_candidates_total": 9,
+    "important_mismatch": "NS-profile_assembly and NS-stage_inputs have executable/check-result artifacts in the archive inventory but no associated_checker field in research-state.json."
+  },
+  "components": [
+    {
+      "id": "NS-profiles",
+      "archive_path": "proof_sources/profiles/profiles_body.tex",
+      "body_sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+      "evidence_tier": "DECLARED_CHECKER",
+      "declared_associated_checker": "proof_sources/profiles/exact_checks.py",
+      "executable_candidates": [
+        {
+          "path": "proof_sources/profiles/exact_checks.py",
+          "sha256": "a7ee77024a92d06c1b69055a00b10a7d5fd600ca424fe084e2f4399310cf56e7",
+          "binding": "research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/profiles/exact_checks.json",
+          "sha256": "5ef2b5f7cee750088143acda8d4a5ee4f0b12f36f0344ab991f5c9333a842e24"
+        }
+      ],
+      "migration": "independent_reimplementation_or_replay_only"
+    },
+    {
+      "id": "NS-base_heat",
+      "archive_path": "proof_sources/base_heat/derivation.tex",
+      "body_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+      "evidence_tier": "DECLARED_CHECKER",
+      "declared_associated_checker": "proof_sources/base_heat/verify_identities.py",
+      "executable_candidates": [
+        {
+          "path": "proof_sources/base_heat/verify_identities.py",
+          "sha256": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+          "binding": "research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/base_heat/identity_check_results.json",
+          "sha256": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843"
+        }
+      ],
+      "migration": "independent_reimplementation_or_replay_only"
+    },
+    {
+      "id": "NS-oscillations",
+      "archive_path": "proof_sources/oscillations/oscillations_body.tex",
+      "body_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+      "evidence_tier": "DECLARED_CHECKER",
+      "declared_associated_checker": "proof_sources/oscillations/exact_checks.py",
+      "executable_candidates": [
+        {
+          "path": "proof_sources/oscillations/exact_checks.py",
+          "sha256": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+          "binding": "research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/oscillations/exact_checks_results.json",
+          "sha256": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12"
+        }
+      ],
+      "migration": "independent_reimplementation_or_replay_only"
+    },
+    {
+      "id": "NS-mean_corrections",
+      "archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+      "body_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+      "evidence_tier": "DECLARED_CHECKER",
+      "declared_associated_checker": "proof_sources/mean_corrections/verify_exact.py",
+      "executable_candidates": [
+        {
+          "path": "proof_sources/mean_corrections/verify_exact.py",
+          "sha256": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+          "binding": "research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/mean_corrections/exact_checks.json",
+          "sha256": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f"
+        }
+      ],
+      "migration": "independent_reimplementation_or_replay_only"
+    },
+    {
+      "id": "NS-stage9",
+      "archive_path": "proof_sources/stage9/stage9_body.tex",
+      "body_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+      "evidence_tier": "DECLARED_CHECKER",
+      "declared_associated_checker": "proof_sources/stage9/exact_checks.py",
+      "executable_candidates": [
+        {
+          "path": "proof_sources/stage9/exact_checks.py",
+          "sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+          "binding": "research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/stage9/exact_checks.json",
+          "sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f"
+        }
+      ],
+      "migration": "independent_reimplementation_or_replay_only"
+    },
+    {
+      "id": "NS-terminal_endpoint",
+      "archive_path": "proof_sources/terminal_endpoint/endpoint_derivation.tex",
+      "body_sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+      "evidence_tier": "BODY_REVIEW_ONLY",
+      "declared_associated_checker": null,
+      "executable_candidates": [],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/terminal_endpoint/endpoint_review.json",
+          "sha256": "cf1fefa6d9b3cd8407aadcb6ab77e59280fbfd5a3799fb2bc56d0c1479239dc3",
+          "classification": "review_record"
+        }
+      ],
+      "migration": "reference_metadata_and_independent_reimplementation"
+    },
+    {
+      "id": "NS-profile_assembly",
+      "archive_path": "proof_sources/profile_assembly_audit/profile_assembly_body.tex",
+      "body_sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+      "evidence_tier": "ARCHIVE_DISCOVERED_CHECKER",
+      "declared_associated_checker": null,
+      "executable_candidates": [
+        {
+          "path": "proof_sources/profile_assembly_audit/check_assembly.py",
+          "sha256": "c1910515deca5db40c54b62f93c1b3ebbb0e875df0474d1862490701c589be6f",
+          "binding": "archive-discovered-not-research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/profile_assembly_audit/exact_assembly_checks.json",
+          "sha256": "d71247c54835c97e9fc1c61c99625a0edbd41a2da75e5ab93d9fb593976d7b0b"
+        },
+        {
+          "path": "proof_sources/profile_assembly_audit/assembly_receipt.json",
+          "sha256": "c6b604338eef7b9f1b27f2adf9682efdca87bdb69857395dc1914876a34cd35c",
+          "classification": "receipt"
+        }
+      ],
+      "migration": "candidate_for_clean_room_replay_after_formula_scope_is_confirmed"
+    },
+    {
+      "id": "NS-stage_inputs",
+      "archive_path": "proof_sources/stage_inputs_audit/stage_inputs_body.tex",
+      "body_sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+      "evidence_tier": "ARCHIVE_DISCOVERED_CHECKER",
+      "declared_associated_checker": null,
+      "executable_candidates": [
+        {
+          "path": "proof_sources/stage_inputs_audit/check_exponents.py",
+          "sha256": "565a40c1db7e41c1d07c1db00e47be539d30d154ab19c565cf77d2c82ee4161a",
+          "binding": "archive-discovered-not-research-state-declared"
+        },
+        {
+          "path": "proof_sources/stage_inputs_audit/maps_covariance/exact_checks.py",
+          "sha256": "ac81831f59f0aef9a980671df3ab53afe2933fa2994e3c6b97ff99f1ea0f4ef8",
+          "binding": "archive-discovered-not-research-state-declared"
+        },
+        {
+          "path": "proof_sources/stage_inputs_audit/radial_fiveeq/exact_checks.py",
+          "sha256": "18a43535e7d0be367d7f33466935e1cbae353f1f05b145ca78e5275c0cc2dc61",
+          "binding": "archive-discovered-not-research-state-declared"
+        }
+      ],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/stage_inputs_audit/exponent_checks.json",
+          "sha256": "598225f5167b8601d01008d6e2e92fbf02128c764776140fa86775877e2bae2c"
+        },
+        {
+          "path": "proof_sources/stage_inputs_audit/maps_covariance/exact_checks.json",
+          "sha256": "31f2a1ae9bfff6cfad82d40a1eb866cf9d8247ab0eace15d8737ca643255c99d"
+        },
+        {
+          "path": "proof_sources/stage_inputs_audit/radial_fiveeq/exact_checks.json",
+          "sha256": "6f8c0cba88edf14277aad1b782b973c21d03102310c4b5028ccc72e20ae9de29"
+        }
+      ],
+      "migration": "candidate_for_clean_room_replay_after_formula_scope_is_confirmed"
+    },
+    {
+      "id": "NS-summation_realization",
+      "archive_path": "proof_sources/primary_continuation/summation_realization_body.tex",
+      "body_sha256": "13d370917df47e46e2d75e0cd3a5d4ab5f2dfd1fd1f31e4eef3fa4413b6a3fa5",
+      "evidence_tier": "BODY_REVIEW_ONLY",
+      "declared_associated_checker": null,
+      "executable_candidates": [],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/primary_continuation/summation_realization_audit_receipt.json",
+          "sha256": "86a2b53e8541bd8b2a63481d6b26228564be77818a9ae5b9ee6fbf2a6867aa73",
+          "classification": "audit_receipt"
+        }
+      ],
+      "migration": "reference_metadata_and_independent_reimplementation"
+    },
+    {
+      "id": "NS-terminal_trace",
+      "archive_path": "proof_sources/primary_continuation/terminal_trace_body.tex",
+      "body_sha256": "f0eb87504ca5246eec37b09cfb17807053eee37e5282bc6ea4badefb3c822eb5",
+      "evidence_tier": "BODY_REVIEW_ONLY",
+      "declared_associated_checker": null,
+      "executable_candidates": [],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/terminal_trace_topology/FINAL_REVIEW.md",
+          "sha256": "be85b378b477852aa6ed3232d77fcaebf7a14f703643f69920cae488e81e22a8",
+          "classification": "review"
+        }
+      ],
+      "migration": "reference_metadata_and_independent_reimplementation"
+    },
+    {
+      "id": "NS-radial_stress_reconstruction_audit",
+      "archive_path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/radial_stress_reconstruction_audit.tex",
+      "body_sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+      "evidence_tier": "BODY_REVIEW_ONLY",
+      "declared_associated_checker": null,
+      "executable_candidates": [],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/radial_stress_reconstruction_review.md",
+          "sha256": "7665677d58abfcfc624db6287f0d25d15a72e343bfaff3ef74d80962b1ff4228",
+          "classification": "review"
+        }
+      ],
+      "migration": "reference_metadata_and_independent_reimplementation"
+    },
+    {
+      "id": "NS-stage_cycle_gain_audit",
+      "archive_path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/stage_cycle_gain_audit.tex",
+      "body_sha256": "497cb07b95a651bd5ed76f74c004722dc2172c1ef0575ddfea43c95cd56b361e",
+      "evidence_tier": "BODY_REVIEW_ONLY",
+      "declared_associated_checker": null,
+      "executable_candidates": [],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/stage_cycle_gain_audit_receipt.json",
+          "sha256": "208a7bb0e98a098dcbf754cd82585dd1e29bfa2ca1ac6ec6cdab04ae56d5b2c1",
+          "classification": "receipt"
+        }
+      ],
+      "migration": "reference_metadata_and_independent_reimplementation"
+    },
+    {
+      "id": "NS-global_closure_body",
+      "archive_path": "proof_sources/global_analytic_closure_review/global_closure_body.tex",
+      "body_sha256": "b212819c6788fc74086e501292567ba7630cd67f7a308f54c2102732c40e0954",
+      "evidence_tier": "BODY_REVIEW_ONLY",
+      "declared_associated_checker": null,
+      "executable_candidates": [],
+      "result_artifacts": [
+        {
+          "path": "proof_sources/global_analytic_closure_review/GLOBAL_CLOSURE_ASSEMBLY_RECEIPT.json",
+          "sha256": "dfa5c56a83c5cdc97f8da415f7483be7bb0f5485605ff443fa1fa37cf26df864",
+          "classification": "receipt"
+        },
+        {
+          "path": "proof_sources/global_analytic_closure_review/PUBLIC_CORRECTION_RECEIPT.json",
+          "sha256": "55d0d7dcb74be70f7e040caffcf719263719a6c962cbce1c0e2afda4a1189ca7",
+          "classification": "receipt"
+        }
+      ],
+      "migration": "reference_metadata_and_independent_reimplementation"
+    }
+  ]
+}
