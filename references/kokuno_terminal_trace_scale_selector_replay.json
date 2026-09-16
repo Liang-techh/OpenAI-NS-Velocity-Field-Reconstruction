@@ -1,0 +1,114 @@
+{
+  "task_id": "KOKUNO8-TERMINAL-TRACE-SCALE-SELECTOR-008",
+  "agent": "Kokuno Agent 8",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_main_commit_inspected": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-terminal_trace",
+    "archive_path": "proof_sources/primary_continuation/terminal_trace_body.tex",
+    "component_sha256": "f0eb87504ca5246eec37b09cfb17807053eee37e5282bc6ea4badefb3c822eb5",
+    "source_capture_sha256": null,
+    "source_pages": null,
+    "public_reader_path": "navier-stokes/navier_stokes_workbench.tex",
+    "public_reader_git_blob": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "associated_checker_declared_in_research_state": false
+  },
+  "rights_boundary": {
+    "github_repository_license": null,
+    "policy": "fail_closed_clean_room",
+    "copied_source_checker_code": false,
+    "copied_substantial_source_prose": false,
+    "implementation_basis": "short public E.10/E.11 formulas plus structured path/hash provenance"
+  },
+  "reimplemented_structure": {
+    "cutoff_constant": "C[j,m] = sum_{0<=a<=m, m-a<=j} binom(m,a) * ||chi_0^(a)||_inf / (j-m+a)!",
+    "single_bound": "C[j,m] * b^(m-j) * ||F_j||_{C^a0}",
+    "finite_index_set": "a0,m >= 0 and a0+m <= floor(j/2)",
+    "target": "2^(-j)",
+    "selection": "b_0=1; for j>=1 choose the least integer b>b_(j-1) satisfying every finite bound",
+    "exact_arithmetic": "fractions.Fraction",
+    "tolerance": "0"
+  },
+  "fixture": {
+    "stage_index": 4,
+    "previous_scale": 2,
+    "cutoff_derivative_norms": {
+      "0": "1",
+      "1": "2",
+      "2": "3"
+    },
+    "jet_norms": {
+      "0": "1",
+      "1": "5/2",
+      "2": "7/3"
+    },
+    "cutoff_constants": {
+      "m=0": "1/24",
+      "m=1": "1/4",
+      "m=2": "31/24"
+    },
+    "constraint_count": 6,
+    "selected_scale": 5,
+    "selected_max_bound_to_target_ratio": "62/75",
+    "predecessor_scale": 4,
+    "predecessor_worst_constraint": {
+      "spatial_order": 0,
+      "time_order": 2,
+      "bound": "31/384",
+      "target": "1/16",
+      "bound_to_target_ratio": "31/24",
+      "passes": false
+    }
+  },
+  "mutation_probe": {
+    "change": "increase jet_norm[0] by 2^-40 at j=4,m=2,b=5",
+    "exact_bound_change": "31/659706976665600",
+    "tolerance": "0",
+    "equality_hidden": false
+  },
+  "actual_local_checks": [
+    {
+      "command": "PYTHONPATH=/tmp/kokuno8_terminal_trace/src python -m pytest -q -W error /tmp/kokuno8_terminal_trace/tests/test_kokuno_terminal_trace_scale_selector.py",
+      "result": "7 passed in 0.07s"
+    },
+    {
+      "command": "python -W error -m py_compile /tmp/kokuno8_terminal_trace/src/openai_ns_reconstruction/kokuno_terminal_trace_scale_selector.py /tmp/kokuno8_terminal_trace/tests/test_kokuno_terminal_trace_scale_selector.py",
+      "result": "exit 0"
+    },
+    {
+      "command": "python -m json.tool references/kokuno_terminal_trace_scale_selector_replay.json",
+      "result": "PASS before upload"
+    }
+  ],
+  "closure_gap_ledger_update": {
+    "narrowed": [
+      "finite E.10 cutoff-monomial derivative bookkeeping",
+      "deterministic least-integer E.11 scale selection once exact finite norm bounds are supplied",
+      "exact predecessor/minimality regression and explicit search-cap failure"
+    ],
+    "still_open": [
+      "certified same-witness terminal jet norms F_j",
+      "certified cutoff derivative sup-norm table for the production cutoff",
+      "construction and convergence of the complete infinite terminal extension sequence",
+      "all-stage realization/convergence for the assembled velocity witness",
+      "final force for the same assembled witness",
+      "formal endpoint and Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "source_recorded_pass_is_local_pass": false,
+    "finite_selector_is_full_terminal_extension": false,
+    "acceptance": "pending"
+  }
+}
