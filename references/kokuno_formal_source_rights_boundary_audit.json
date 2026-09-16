@@ -1,0 +1,75 @@
+{
+  "audit_id": "KOKUNO4-FORMAL-SOURCE-RIGHTS-BOUNDARY-AUDIT-009",
+  "scope": "Provenance and license-boundary audit for the formal-source commit referenced by Kokuno Navier-Stokes metadata; no Kokuno proof/checker code or substantial prose is copied.",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+    "artifact_path": "references/kokuno_formal_source_rights_boundary_audit.json"
+  },
+  "kokuno_source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "repository_license_spdx": null,
+    "formal_source_recorded_commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538",
+    "formal_source_recorded_toolchain": "leanprover/lean4:v4.34.0-rc2",
+    "formal_source_recorded_scope": "Static source/import and declaration comparison; not kernel verification.",
+    "formal_source_recorded_import_compilation": "in progress; endpoint, fresh replay and comparator not completed",
+    "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "source_bundle_members": 120,
+    "source_bundle_doi": "10.5281/zenodo.22678406",
+    "manuscript_sha256": {
+      "165_page_derivation_capture": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "166_page_later_capture": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f"
+    }
+  },
+  "formal_source_verified": {
+    "repository": "openai/NavierStokesAndEuler",
+    "commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538",
+    "commit_tree_sha": "8163a2fac282a90cc60b5afbc1f0dc7b2e5c6755",
+    "commit_parent_count": 0,
+    "repository_license_spdx": "Apache-2.0",
+    "license_path": "LICENSE",
+    "license_git_blob_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+    "notice_path_present_at_pinned_commit": false,
+    "root_entry_spot_checks": {
+      "NavierStokes.lean": "40970393bdbd8c884e9a95f82a1a80452da5ce12",
+      "README.md": "7605002090afc6e2603ba2f624d41af1c6da5149",
+      "formalization.yaml": "01270e9f666b0400b60d032204e02e6d684cee98"
+    }
+  },
+  "rights_boundary": {
+    "formal_repo_material": {
+      "classification": "DIRECT_REUSE_POSSIBLE_SUBJECT_TO_APACHE_2_0",
+      "rule": "Only material whose provenance is actually in openai/NavierStokesAndEuler at the pinned commit may rely on that repository's Apache-2.0 grant; preserve attribution/license obligations when reused."
+    },
+    "kokuno_workbench_and_bundle_material": {
+      "classification": "NO_LICENSE_GRANT_VERIFIED_FAIL_CLOSED",
+      "rule": "Do not infer that the formal repository's Apache-2.0 license covers Kokuno-authored reader, proof-body, checker, review, or bundle material. For Kokuno material, retain DOI/URL/path/hash/provenance and independently reimplement facts/formulas unless a separate license grant is verified."
+    },
+    "cross_repo_rule": "A citation or attribution relationship between repositories is provenance evidence, not a license transitivity rule."
+  },
+  "migration_effect": {
+    "SOURCE_IMPORT_MAP_refinement": [
+      "Formal-source identifiers and declarations may be mapped as separately licensed provenance.",
+      "Kokuno component hashes, paths, counts, formulas/facts remain metadata/reference inputs unless independently reimplemented or separately licensed.",
+      "No component status is upgraded by the existence of the formal-source repository."
+    ],
+    "component_count_affected": 13
+  },
+  "verification_limits": {
+    "formal_commit_exists": true,
+    "formal_license_file_read": true,
+    "formal_repo_metadata_reports_apache_2_0": true,
+    "kokuno_repo_metadata_reports_license_null": true,
+    "formal_notice_probe_returned_404": true,
+    "source_bundle_freshly_downloaded_and_rehashed": false,
+    "all_120_members_freshly_rehashed": false,
+    "source_checker_executed": false,
+    "lean_kernel_build_executed": false,
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
