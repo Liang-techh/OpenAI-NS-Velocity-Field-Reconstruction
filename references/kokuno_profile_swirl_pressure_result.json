@@ -1,0 +1,68 @@
+{
+  "task_id": "KOKUNO6-PROFILE-SWIRL-PRESSURE-004",
+  "source": {
+    "repository": "https://github.com/KokunoYumeto/yang-mills-interacting-workbench",
+    "public_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-profiles",
+    "archive_path": "proof_sources/profiles/profiles_body.tex",
+    "component_sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+    "source_pages": "24-45,144-157",
+    "associated_checker": "proof_sources/profiles/exact_checks.py",
+    "checker_sha256": "a7ee77024a92d06c1b69055a00b10a7d5fd600ca424fe084e2f4399310cf56e7",
+    "recorded_result": "proof_sources/profiles/exact_checks.json",
+    "recorded_result_sha256": "5ef2b5f7cee750088143acda8d4a5ee4f0b12f36f0344ab991f5c9333a842e24",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406"
+  },
+  "license_boundary": {
+    "repository_license_metadata": null,
+    "copied_source_checker_or_proof_code": false,
+    "implementation_mode": "clean-room from short public formulas and structured provenance"
+  },
+  "formula_unit": {
+    "E_relation": "E^2=2*X*F^2",
+    "pressure_relation": "Pi_X=F^2",
+    "cartesian_tangential_factor": "(-y2*F,y1*F)",
+    "cartesian_radius_relation": "2*X=y1^2+y2^2"
+  },
+  "exact_fixture": {
+    "X": "13/17",
+    "F": "-5/7",
+    "Pi_X": "25/49",
+    "E_squared": "650/833",
+    "swirl_pressure_residual": "0",
+    "cartesian_y1": "3/5",
+    "cartesian_y2": "4/5",
+    "cartesian_F": "-7/11",
+    "cartesian_X": "1/2",
+    "cartesian_tangential_factor": ["28/55", "-21/55"],
+    "cartesian_squared_norm": "49/121",
+    "cartesian_energy_residual": "0",
+    "axis_tangential_factor": ["0", "0"]
+  },
+  "fail_closed_mutation": {
+    "mutation": "Pi_X += 2^-40",
+    "exact_swirl_pressure_residual": "13/9345848836096",
+    "tolerance": "0"
+  },
+  "target_interface": {
+    "module": "openai_ns_reconstruction.profiles",
+    "type": "LeadingProfile",
+    "methods": ["smooth_swirl_factor", "pressure_radial_derivative"],
+    "current_target_profiles_blob_sha": "6b91069abe0b2b798be264e8784dcb6ff475b318",
+    "bridge_kind": "floating regression diagnostic; exact identity remains Fraction-based"
+  },
+  "local_checks": {
+    "pytest": "6 passed in 0.06s",
+    "py_compile": "exit 0",
+    "target_bridge_harness": "current profiles.py interface mirrored locally from target base; unused dependencies stubbed only for import"
+  },
+  "truth_boundary": {
+    "imported_profile_existence_proved_here": false,
+    "source_checker_rerun": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "complete_independent_analytic_validation": false
+  }
+}
