@@ -30,7 +30,7 @@
 | NS003 | 公共有理区间运算与精度预算 | 无 | TODO | — | pending | — / unsubmitted |
 | NS004 | 释放前 clockWeight 区间 | NS002,NS003 | TODO | — | pending | — / unsubmitted |
 | NS005 | 释放段及尾部 clockWeight 区间 | NS004 | TODO | — | pending | — / unsubmitted |
-| NS006 | 压力核及任意有限参数阶区间 | 无 | TODO | — | pending | — / unsubmitted |
+| NS006 | 压力核及任意有限参数阶区间 | 无 | DONE | Agent 3 | pending | #371 / open |
 | NS007 | 实际压力值的全积分区间 | NS005,NS006 | TODO | — | pending | — / unsubmitted |
 | NS008 | 实际压力的参数导数区间 | NS007 | TODO | — | pending | — / unsubmitted |
 | NS009 | zStar 完整有限参数 jet 区间 | NS008 | TODO | — | pending | — / unsubmitted |
@@ -308,3 +308,32 @@ next_unblocked_tasks:
 协调者验收时追加 `accepted/rejected + reviewed_commit + evidence + remaining_conditions`。
 若修改了已验收实现，重新记录新提交的验收，不沿用旧 SHA 的结果。
 本次发布时没有预先把任何未来任务标成 DONE；已完成代码见检查点文件，不能重复认领实现。
+
+## NS006 completion — Agent 3
+
+```text
+task_id: NS006
+status: DONE
+owner: Agent 3
+base_commit: 77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0
+implementation_commit: 91249caf7cb8d0ce26ef8ef5ce9df2a3a8f63454
+pr_url: https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/pull/371
+merge_status: open
+acceptance: pending
+changed_files:
+- src/openai_ns_reconstruction/schedule_axis_pressure_kernel_enclosure.py
+- tests/test_schedule_axis_pressure_kernel_enclosure.py
+- references/SCHEDULE_AXIS_PRESSURE_KERNEL_ENCLOSURE_PROVENANCE.md
+- references/provenance_manifest_addendum_schedule_axis_pressure_kernel_enclosure.json
+implemented_behavior: Strict exact-rational real enclosure of (1+eta^2)^(-2a) for a in [0,1], arbitrary requested finite eta jets through the exact differential recurrence, separate normalized Taylor coefficients/full derivatives, interval subdivision without midpoint replacement, and explicit resource/type caps.
+mathematical_source_and_assumptions: Pinned openai/NavierStokesAndEuler f9e8bc5... PressureDatum/SchedulePressure kernel formula; real eta and a in [0,1] only. No complex-strip or outer y-integral certification is claimed.
+commands_and_actual_results:
+- python -m pytest -q -W error tests/test_schedule_axis_pressure_kernel_enclosure.py -> 15 passed in 0.21s
+- python -m py_compile openai_ns_reconstruction/schedule_axis_pressure_kernel_enclosure.py tests/test_schedule_axis_pressure_kernel_enclosure.py -> exit 0
+- full repository pytest -> not run
+- ns-reconstruct demo --output artifacts -> not run
+- ns-reconstruct audit --require-paper-exact -> not run
+- Lean build -> not run
+remaining_limitations: Does not certify clockWeight, full-real-line pressure integration, differentiation under that integral, zStar, global fixed point, complex analyticity, paper-exact velocity, or full reconstruction. Exact-head CI was queued when the PR was opened and is not reported as passed here.
+next_unblocked_tasks: NS007 now has its NS006 dependency delivered but remains blocked on NS005; NS008 remains blocked on NS007.
+```
