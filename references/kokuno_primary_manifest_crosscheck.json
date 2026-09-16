@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO4-PRIMARY-MANIFEST-CROSSCHECK-002",
+  "purpose": "Machine-readable metadata consistency audit for the public Kokuno Navier-Stokes primary manifest. This is provenance evidence only, not mathematical validation or a license grant.",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "inspected_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "primary_manifest_path": "navier_stokes_primary_manifest.json",
+    "primary_manifest_git_blob_sha1": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "primary_manifest_access": "The normal contents endpoint returned an empty body for the oversized manifest; the public Git blob endpoint for the recorded blob identity returned parseable UTF-8 content including the manifest header and all 13 component rows.",
+    "research_state_path": "navier-stokes/research-state.json",
+    "checks_path": "navier_stokes_checks.json",
+    "release_hash_map_path": "releases/2026-09-09/HASHES.md",
+    "doi": "10.5281/zenodo.22678406",
+    "manuscript_derivation_capture": {
+      "pages": 165,
+      "sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81"
+    },
+    "manuscript_later_capture": {
+      "pages": 166,
+      "sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f"
+    },
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538"
+    },
+    "corrected_bundle": {
+      "members": 120,
+      "sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5"
+    }
+  },
+  "license_boundary": {
+    "github_repository_license_field": null,
+    "root_LICENSE_status": 404,
+    "reuse_policy": "No Kokuno proof body, checker code, or substantial authored prose is admitted for direct copying by this audit. Only factual identifiers, paths, hashes, counts, and independently authored mapping/audit metadata are recorded. Reimplementation remains required unless a file-specific license grant is later established.",
+    "formal_source_license_is_not_inherited": true
+  },
+  "top_level_crosschecks": {
+    "derivation_capture_sha256_primary_manifest_equals_research_state": true,
+    "later_capture_sha256_primary_manifest_equals_research_state": true,
+    "formal_source_commit_primary_manifest_equals_research_state": true,
+    "bundle_sha256_research_state_equals_checks_record_equals_release_hash_map": true,
+    "checks_record_member_count": 120,
+    "checks_record_replay_program_count": 9,
+    "checks_record_named_mathematical_result_groups": 144,
+    "checks_record_structural_probes": 12,
+    "source_recorded_member_hash_verification_is_not_local_rehash_evidence": true
+  },
+  "components": [
+    {
+      "id": "NS-profiles",
+      "primary_manifest_id": "profiles",
+      "path": "proof_sources/profiles/profiles_body.tex",
+      "sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-base_heat",
+      "primary_manifest_id": "base_heat",
+      "path": "proof_sources/base_heat/derivation.tex",
+      "sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-oscillations",
+      "primary_manifest_id": "oscillations",
+      "path": "proof_sources/oscillations/oscillations_body.tex",
+      "sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-mean_corrections",
+      "primary_manifest_id": "mean_corrections",
+      "path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+      "sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-stage9",
+      "primary_manifest_id": "stage9",
+      "path": "proof_sources/stage9/stage9_body.tex",
+      "sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-terminal_endpoint",
+      "primary_manifest_id": "terminal_endpoint",
+      "path": "proof_sources/terminal_endpoint/endpoint_derivation.tex",
+      "sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-profile_assembly",
+      "primary_manifest_id": "profile_assembly",
+      "path": "proof_sources/profile_assembly_audit/profile_assembly_body.tex",
+      "sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-stage_inputs",
+      "primary_manifest_id": "stage_inputs",
+      "path": "proof_sources/stage_inputs_audit/stage_inputs_body.tex",
+      "sha256": "61aa4684591b964321b00304d58ca7e8e2bbf538cfc930bc8a6be219755bd7e3",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-summation_realization",
+      "primary_manifest_id": "summation_realization",
+      "path": "proof_sources/primary_continuation/summation_realization_body.tex",
+      "sha256": "13d370917df47e46e2d75e0cd3a5d4ab5f2dfd1fd1f31e4eef3fa4413b6a3fa5",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-terminal_trace",
+      "primary_manifest_id": "terminal_trace",
+      "path": "proof_sources/primary_continuation/terminal_trace_body.tex",
+      "sha256": "f0eb87504ca5246eec37b09cfb17807053eee37e5282bc6ea4badefb3c822eb5",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-radial_stress_reconstruction_audit",
+      "primary_manifest_id": "radial_stress_reconstruction_audit",
+      "path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/radial_stress_reconstruction_audit.tex",
+      "sha256": "dd6c119670316f1804226723caaefe062a580e40d2101efab86d823b5858ed8a",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-stage_cycle_gain_audit",
+      "primary_manifest_id": "stage_cycle_gain_audit",
+      "path": "proof_sources/lanes/web_bundle_audit/tex_handoff/portable_upstream/stage_cycle_gain_audit.tex",
+      "sha256": "497cb07b95a651bd5ed76f74c004722dc2172c1ef0575ddfea43c95cd56b361e",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    },
+    {
+      "id": "NS-global_closure_body",
+      "primary_manifest_id": "global_closure_body",
+      "path": "proof_sources/global_analytic_closure_review/global_closure_body.tex",
+      "sha256": "b212819c6788fc74086e501292567ba7630cd67f7a308f54c2102732c40e0954",
+      "primary_manifest_equals_research_state": true,
+      "primary_manifest_equals_checks_member_sha256": true
+    }
+  ],
+  "component_crosscheck_summary": {
+    "component_count": 13,
+    "all_primary_manifest_paths_match_research_state": true,
+    "all_primary_manifest_sha256_match_research_state": true,
+    "all_primary_manifest_sha256_match_checks_member_sha256": true
+  },
+  "source_validation_status_preserved": {
+    "complete_independent_analytical_validation": false,
+    "lean_kernel_certificate": false,
+    "analytical_validation_status": "in progress",
+    "formal_validation_status": "in progress"
+  },
+  "limitations": [
+    "The corrected source ZIP was not downloaded or freshly SHA-256 rehashed in this increment.",
+    "The 120 archive members were not extracted and independently byte-rehashed here; equality above is a cross-check among public metadata records.",
+    "No Kokuno replay/checker program was executed by this increment.",
+    "No primary/formal proof was independently validated by this increment.",
+    "A metadata match does not prove that a mathematical source body is correct or that its source-side PASS claims reproduce locally.",
+    "No copyright license for Kokuno-authored proof/checker bodies was established by this increment."
+  ],
+  "truth_boundary": {
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "acceptance": "pending"
+  }
+}
