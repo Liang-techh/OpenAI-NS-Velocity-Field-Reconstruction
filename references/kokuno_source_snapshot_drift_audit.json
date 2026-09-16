@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "audit_id": "KOKUNO4-SOURCE-SNAPSHOT-DRIFT-AUDIT-006",
+  "target": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "base_branch": "codex/stage1-complete-slow2",
+    "base_commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+    "owned_file": "references/kokuno_source_snapshot_drift_audit.json"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "recorded_navier_stokes_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "current_public_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "main_commit_date_utc": "2026-09-14T18:01:25Z",
+    "compare": {
+      "status": "ahead",
+      "ahead_by": 17,
+      "behind_by": 0,
+      "merge_base_equals_recorded_source_commit": true
+    },
+    "research_state_as_of": "2026-09-09",
+    "source_manuscript": {
+      "derivation_capture_pages": 165,
+      "derivation_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "later_capture_pages": 166,
+      "later_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f"
+    },
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538",
+      "toolchain": "leanprover/lean4:v4.34.0-rc2",
+      "recorded_scope": "static source/import and declaration comparison; not kernel verification"
+    },
+    "corrected_source_bundle": {
+      "path": "navier_stokes_source_bundle.zip",
+      "members": 120,
+      "published_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+      "doi": "10.5281/zenodo.22678406"
+    }
+  },
+  "payload_git_blob_identity": [
+    {
+      "path": "navier_stokes_checks.json",
+      "recorded_source_commit_blob": "03c5061b57913350bcc73e95ff11790b37c2dbc4",
+      "current_main_blob": "03c5061b57913350bcc73e95ff11790b37c2dbc4",
+      "same_blob": true
+    },
+    {
+      "path": "navier_stokes_primary_manifest.json",
+      "recorded_source_commit_blob": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+      "current_main_blob": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+      "same_blob": true
+    },
+    {
+      "path": "navier_stokes_source_bundle.zip",
+      "recorded_source_commit_blob": "b3cf3be2d969381548778508650690ba679c7554",
+      "current_main_blob": "b3cf3be2d969381548778508650690ba679c7554",
+      "same_blob": true
+    },
+    {
+      "path": "navier_stokes_workbench.tex",
+      "recorded_source_commit_blob": "99cd13ac2da9c674e70bf941d8a4ab5b99862b5e",
+      "current_main_blob": "99cd13ac2da9c674e70bf941d8a4ab5b99862b5e",
+      "same_blob": true
+    },
+    {
+      "path": "navier_stokes_workbench_208p.pdf",
+      "recorded_source_commit_blob": "ab94c6dfac3124e97661dad5d868741f40d6c346",
+      "current_main_blob": "ab94c6dfac3124e97661dad5d868741f40d6c346",
+      "same_blob": true
+    }
+  ],
+  "navier_stokes_directory_changes_after_source_anchor": [
+    {
+      "path": "navier-stokes/README.md",
+      "status": "modified",
+      "recorded_source_commit_blob": "6388177d742aa3c6e9aec184d60a410d1aeed5ad",
+      "current_main_blob": "4796e79d1f1fb7cb2c1485c9654135e7f4e4054b",
+      "classification": "navigation/organizational metadata"
+    },
+    {
+      "path": "navier-stokes/RESEARCH_STATE.md",
+      "status": "added",
+      "current_main_blob": "fe04bb04e7de0fdf9c2f66e8538bb63b4efd54fc",
+      "classification": "human-readable research-state metadata"
+    },
+    {
+      "path": "navier-stokes/research-state.json",
+      "status": "added",
+      "classification": "machine-readable research-state metadata",
+      "current_main_blob": "3ef168f3c71b4c16313bf204d0d65f38ccf233e0"
+    }
+  ],
+  "interpretation": {
+    "payload_stability": "The five pinned Navier-Stokes payload artifacts above are Git-blob-identical between the recorded source commit and the current public main head.",
+    "metadata_layering": "The current organized navier-stokes research-state files postdate the recorded source payload anchor. Consumers should cite both the payload source commit and the packaging/workbench commit rather than treating them as the same provenance layer.",
+    "migration_rule": "Use recorded source_commit plus published SHA-256/member provenance for payload identity; use current main for organizational research-state metadata. Do not infer mathematical revalidation from later workbench commits when the underlying payload blobs are unchanged."
+  },
+  "rights_boundary": {
+    "source_repository_license_metadata": null,
+    "policy": "fail_closed",
+    "allowed_import": [
+      "URLs and DOI",
+      "commit and Git blob identifiers",
+      "SHA-256 and member counts",
+      "component paths and source-page metadata",
+      "independently authored classifications and reimplementations"
+    ],
+    "not_imported": [
+      "substantial Kokuno-authored prose",
+      "proof body text",
+      "checker/replay implementation code"
+    ]
+  },
+  "verification": {
+    "performed": [
+      "read target AGENTS.md, CURRENT_CHECKPOINT.md and AGENT_TASKS.md at base commit",
+      "read Issue #368 and open Kokuno PR scope before claiming",
+      "read source navier-stokes README, RESEARCH_STATE.md and research-state.json",
+      "checked source repository license metadata",
+      "compared recorded source commit to current main",
+      "compared Git blob identities for checks, primary manifest, source ZIP, TeX and 208-page PDF",
+      "read the public 2026-09-09 release hash record"
+    ],
+    "not_performed": [
+      "fresh SHA-256 byte rehash of the binary source ZIP or PDF",
+      "fresh rehash of all 120 archive members",
+      "execution of source checker/replay programs",
+      "Lean kernel build or endpoint/Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false,
+    "note": "Git blob stability and published hash consistency are provenance/integrity evidence only."
+  }
+}
