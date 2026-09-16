@@ -1,0 +1,68 @@
+{
+  "task_id": "KOKUNO5-STAGE9-TRUNCATION-REPLAY-007",
+  "component": "NS-stage9",
+  "scope": "clean-room exact replay of the finite truncation-stage selector following the public Stage-9 residual/gain estimates",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_snapshot_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "public_reader_path": "navier-stokes/navier_stokes_workbench.tex",
+    "public_reader_git_blob": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "archive_path": "proof_sources/stage9/stage9_body.tex",
+    "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+    "associated_checker": "proof_sources/stage9/exact_checks.py",
+    "checker_sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+    "recorded_result_path": "proof_sources/stage9/exact_checks.json",
+    "recorded_result_sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license_metadata": null,
+    "source_checker_executed_in_this_run": false
+  },
+  "public_formula_surface": {
+    "sigma_j": "1/5 + j/10",
+    "g_j": "h*j/10",
+    "mandatory_stage_floor": "J >= m+2",
+    "strict_condition_1": "g_(J+1)/2 - L_(m+2) > N + K_(m+2) + 2",
+    "strict_condition_2": "h*sigma_J - K_m > N + 1"
+  },
+  "exact_fixture": {
+    "h": "1/200",
+    "m": 1,
+    "N": 2,
+    "L_m_plus_2": "1/3",
+    "K_m_plus_2": "1/4",
+    "K_m": "1/5",
+    "minimal_J": 18333,
+    "condition_1_margin_at_J": "1/6000",
+    "condition_2_margin_at_J": "2387/400",
+    "condition_1_margin_at_J_minus_1": "-1/12000",
+    "tolerance": "0"
+  },
+  "actual_checks": {
+    "pytest_command": "PYTHONPATH=/mnt/data/kokuno5_stage9_trunc/src python -m pytest -q -W error /mnt/data/kokuno5_stage9_trunc/tests/test_kokuno_stage9_truncation_replay.py",
+    "pytest_result": "7 passed in 0.82s",
+    "py_compile_result": "exit 0",
+    "failure_boundaries": [
+      "an exact equality in either source inequality is rejected because the inequalities are strict",
+      "max_stage=18332 exhausts the computational cap before the fixture's minimal stage and raises RuntimeError",
+      "h >= 1/100 is rejected for this construction-facing replay",
+      "float theorem inputs are rejected rather than silently rationalized"
+    ]
+  },
+  "rights_boundary": {
+    "copied_source_checker_code": false,
+    "copied_substantial_source_prose": false,
+    "method": "independent implementation from short public formulas and factual provenance because repository-level reuse license is not declared"
+  },
+  "truth_boundary": {
+    "complete_source_replay_program_reproduced": false,
+    "source_named_result_group_claimed_reproduced": false,
+    "source_structural_probe_claimed_reproduced": false,
+    "complete_independent_analytic_validation": false,
+    "same_witness_finite_stage_residual_improvement": false,
+    "all_stage_realization_or_convergence": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
