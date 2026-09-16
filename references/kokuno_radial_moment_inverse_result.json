@@ -54,7 +54,7 @@
     "full_reconstruction": false
   },
   "actual_checks": {
-    "pytest": "6 passed in 0.13s",
+    "pytest": "6 passed in 0.04s",
     "py_compile_exit": 0,
     "json_parse": "pass",
     "fixture": {
