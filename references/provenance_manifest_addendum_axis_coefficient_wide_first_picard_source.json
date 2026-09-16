@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "provenance-manifest-addendum",
+  "base_manifest": "references/provenance_manifest.json",
+  "base_main_commit": "13f9c53bbe1a68ddd3fdaf1805e7f8b6bbd38b5d",
+  "full_reconstruction": false,
+  "paper_exact_velocity_available": false,
+  "layer": {
+    "id": "stage-1-leading-profile",
+    "status": "formal-structure",
+    "artifacts": [
+      "src/openai_ns_reconstruction/axis_coefficient_wide_first_picard_source.py",
+      "tests/test_axis_coefficient_wide_first_picard_source.py"
+    ],
+    "provenance": "references/AXIS_COEFFICIENT_WIDE_FIRST_PICARD_SOURCE_PROVENANCE.md",
+    "formal_source": {
+      "repository": "openai/NavierStokesAndEuler",
+      "commit": "f9e8bc5b38b6e212696e8a30e3e91517af887bbd",
+      "files": [
+        "NavierStokes/AxisContraction.lean",
+        "NavierStokes/AxisOperators.lean",
+        "NavierStokes/NaturalAxisCoefficients.lean"
+      ],
+      "symbols": [
+        "NavierStokes.AxisContraction.naturalRemainder",
+        "NavierStokes.AxisOperators.product",
+        "NavierStokes.NaturalAxisCoefficients.realAmplitude"
+      ]
+    },
+    "capability": "Materializes the genuine first-Picard natural source a^2*phi1^2 from the landed x1 angular-square state and the identical theorem-selected amplitude. Eta derivatives use the exact Bell/Leibniz chain while Lambda^0..-4 factors and the common a^2 signed-log scale remain separate.",
+    "truth_boundary": {
+      "first_picard_x1_materialized": true,
+      "first_picard_angular_square_materialized": true,
+      "natural_source_x1_materialized": true,
+      "natural_pressure_x1_materialized": false,
+      "natural_remainder_x1_materialized": false,
+      "picard_x2_materialized": false,
+      "fixed_point_materialized": false,
+      "global_axis_norm_certified": false,
+      "natural_profile_assembly_materialized": false,
+      "paper_exact_velocity_available": false
+    },
+    "forbidden_promotions": [
+      "caller-supplied or fitted x1/source/amplitude/Lambda/C/coefficient/derivative data",
+      "binary64 collapse of the nonzero theorem-selected amplitude scale",
+      "finite sampled derivatives substituted for the Bell/Leibniz identities",
+      "naturalRemainder(x1), x2, fixed-point, AxisCoefficientSpace, or paper-exact claims from source(x1) alone"
+    ],
+    "remaining_boundary": "The genuine source(x1) constituent is now materialized. The source must still pass through the pinned primitive/parameterPrimitive/mulY/j1 pressure chain, and the remaining angular lin/quad/slow plus axial lin/slow2 terms must be recombined before complete naturalRemainder(x1); x2, contraction closure, global AxisCoefficientSpace certification, fixed-point phi/u, derived average/pressure, NaturalProfileAssembly, and support/moment/matching/cone closure remain unresolved."
+  }
+}
