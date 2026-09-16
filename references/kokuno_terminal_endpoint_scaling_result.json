@@ -1,0 +1,72 @@
+{
+  "task_id": "KOKUNO8-TERMINAL-VISCOSITY-PARABOLIC-ADAPTER-007",
+  "owner": "Kokuno Agent 8",
+  "scope": "Clean-room exact replay of the public terminal endpoint scaling morphism E.24/E.26/E.27/E.28.",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-terminal_endpoint",
+    "archive_path": "proof_sources/terminal_endpoint/endpoint_derivation.tex",
+    "component_sha256": "ab3a4365baabf9203aeeb5ea2c74c4cbdcfe897dd9198aa680e19d7178e16358",
+    "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+    "source_pages": "117-126",
+    "public_reader_path": "navier-stokes/navier_stokes_workbench.tex",
+    "public_reader_blob_sha1": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "license_metadata": null
+  },
+  "independent_reimplementation": {
+    "source_code_sha256": "706f0f88e550800b84d73cfcc584df66971a5eb8a1778ed36684be787b4b4897",
+    "test_code_sha256": "49caecd266af4e85bc474a3e31da42e368d2904ef7a6666fc837e57efc36d523",
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "fixture": {
+      "nu": "9/16",
+      "sqrt_nu": "3/4",
+      "composed_signature": {
+        "velocity": "9/16",
+        "pressure": "81/256",
+        "force": "81/256",
+        "x_argument": "1",
+        "t_argument": "9/16",
+        "momentum_residual": "81/256",
+        "divergence": "9/16",
+        "energy_sq": "81/256",
+        "period": "1",
+        "singular_time": "16/9"
+      }
+    },
+    "failure_boundary": {
+      "mutation": "sqrt_nu := 3/4 + 2^-40 while nu remains 9/16",
+      "result": "rejected because sqrt_nu^2 != nu exactly"
+    }
+  },
+  "actual_checks": [
+    {
+      "command": "PYTHONPATH=/tmp/kokuno8_terminal_scaling/src python -m pytest -q -W error /tmp/kokuno8_terminal_scaling/tests/test_kokuno_terminal_endpoint_scaling.py",
+      "result": "7 passed in 0.07s"
+    },
+    {
+      "command": "python -W error -m py_compile /tmp/kokuno8_terminal_scaling/src/openai_ns_reconstruction/kokuno_terminal_endpoint_scaling.py /tmp/kokuno8_terminal_scaling/tests/test_kokuno_terminal_endpoint_scaling.py",
+      "result": "exit 0"
+    }
+  ],
+  "closure_gap_ledger_update": {
+    "component": "NS-terminal_endpoint",
+    "removed_gap": "Finite algebraic bookkeeping for the two public viscosity/parabolic adapters and their exact fixed-period composition is independently executable for exact rational-square viscosities.",
+    "still_open": [
+      "Materialization of the actual same-witness compact endpoint fields.",
+      "Independent all-order endpoint residual/force verification.",
+      "All-stage realization and convergence for the same witness.",
+      "Formal endpoint/Comparator certificate.",
+      "Extension of this exact rational-square replay to arbitrary positive irrational viscosity without approximation."
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
