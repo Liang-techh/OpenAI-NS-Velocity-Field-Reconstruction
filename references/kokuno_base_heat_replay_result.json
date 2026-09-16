@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "checker_id": "KOKUNO5-BASE-HEAT-ODE-REPLAY-001",
+  "owner": "Kokuno Agent 5",
+  "implementation_kind": "independent_reimplementation_from_public_formula",
+  "source": {
+    "repository": "https://github.com/KokunoYumeto/yang-mills-interacting-workbench",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "workbench_path": "navier-stokes/navier_stokes_workbench.tex",
+    "workbench_blob_sha1": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "doi": "10.5281/zenodo.22678406",
+    "bundle_sha256_recorded": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "base_heat_derivation_sha256_recorded": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+    "base_heat_checker_path_recorded": "proof_sources/base_heat/verify_identities.py",
+    "base_heat_checker_sha256_recorded": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+    "base_heat_result_path_recorded": "proof_sources/base_heat/identity_check_results.json",
+    "base_heat_result_sha256_recorded": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843",
+    "member_hashes_freshly_recomputed_from_bundle": false,
+    "original_checker_executed": false,
+    "original_result_used_as_pass_evidence": false
+  },
+  "source_record_counts": {
+    "replay_programs": 9,
+    "named_result_groups": 144,
+    "structural_probes": 12
+  },
+  "coverage_this_increment": {
+    "source_replay_programs_fully_reproduced": 0,
+    "independent_target_result_groups_added": 1,
+    "structural_probes_reproduced": 0
+  },
+  "result_groups": [
+    {
+      "name": "kokuno5.base_heat.heat_factor_ode_polynomial_reduction",
+      "status": "PASS",
+      "arithmetic": "exact rational coefficients over Q[h,Z,v]",
+      "tolerance": "0",
+      "checks": {
+        "ode_common_factor_equals_reduced_polynomial": true,
+        "total_derivative_factor_equals_reduced_polynomial": true,
+        "two_A_squared_minus_half_equals_two_h_one_plus_h": true,
+        "coefficient_drift_by_2^-40_is_rejected": true
+      },
+      "expected_coefficients": {
+        "1": "1",
+        "h": "1",
+        "v": "-1",
+        "Z*v^2": "-1"
+      },
+      "actual_ode_coefficients": {
+        "1": "1",
+        "h": "1",
+        "v": "-1",
+        "Z*v^2": "-1"
+      },
+      "actual_total_derivative_coefficients": {
+        "1": "1",
+        "h": "1",
+        "v": "-1",
+        "Z*v^2": "-1"
+      },
+      "difference_coefficients": {}
+    }
+  ],
+  "commands_and_actual_results": [
+    {
+      "command": "PYTHONPATH=/tmp/kokuno5_replay/src python -m pytest -q -W error /tmp/kokuno5_replay/tests/test_kokuno_base_heat_replay.py",
+      "result": "3 passed in 0.06s"
+    },
+    {
+      "command": "python -m py_compile /tmp/kokuno5_replay/src/openai_ns_reconstruction/kokuno_base_heat_replay.py /tmp/kokuno5_replay/tests/test_kokuno_base_heat_replay.py",
+      "result": "exit 0"
+    }
+  ],
+  "remaining_unverified": [
+    "original base_heat checker bytes were not extracted or executed",
+    "original identity_check_results.json was not independently read as mathematical evidence",
+    "remaining base_heat checker groups are not reproduced",
+    "no source replay program is claimed fully reproduced by this sub-check",
+    "complete independent analytic validation remains unfinished"
+  ],
+  "truth_boundary": {
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
