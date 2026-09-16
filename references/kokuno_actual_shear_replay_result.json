@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "task_id": "KOKUNO7-ACTUAL-SHEAR-REPLAY-001",
+  "checker_kind": "independent_exact_rational_actual_shear_split",
+  "source_component": "NS-oscillations",
+  "source_record_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+  "public_workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+  "source_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+  "component_body_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+  "recorded_source_checker_sha256": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+  "recorded_source_result_sha256": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12",
+  "doi": "10.5281/zenodo.22678406",
+  "fixture": {
+    "frozen_shear_magnitude": "7/5",
+    "delta_normal": "-2/9",
+    "delta_tangent": "3/7",
+    "flux_normal": "11/13",
+    "flux_tangent": "-5/8"
+  },
+  "expected_exact_result": {
+    "identity_residual": "0",
+    "retained_remainder": "2987/6552",
+    "leading_only_defect": "2987/6552",
+    "leading_only_is_valid": false
+  },
+  "tolerance": "0",
+  "source_checker_executed": false,
+  "source_bundle_fresh_rehash_performed": false,
+  "complete_independent_analytic_validation": false,
+  "paper_exact_velocity_available": false,
+  "full_reconstruction": false
+}
