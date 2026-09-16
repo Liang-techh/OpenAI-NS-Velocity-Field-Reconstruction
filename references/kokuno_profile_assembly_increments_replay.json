@@ -11,9 +11,9 @@
     "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
     "source_pages": null,
     "archive_discovered_checker": "proof_sources/profile_assembly_audit/check_assembly.py",
-    "archive_discovered_checker_sha256": "7b99bf7f034483f528ee6fedbf84f9e475bed5f663512612925d59d031ccdb88",
+    "archive_discovered_checker_sha256": "c1910515deca5db40c54b62f93c1b3ebbb0e875df0474d1862490701c589be6f",
     "recorded_result": "proof_sources/profile_assembly_audit/exact_assembly_checks.json",
-    "recorded_result_sha256": "ef1355ebba851014a94ced17ad142de2462a4e11947cb57ca5306154c2404f73",
+    "recorded_result_sha256": "d71247c54835c97e9fc1c61c99625a0edbd41a2da75e5ab93d9fb593976d7b0b",
     "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
     "doi": "10.5281/zenodo.22678406",
     "repository_license_metadata": null
