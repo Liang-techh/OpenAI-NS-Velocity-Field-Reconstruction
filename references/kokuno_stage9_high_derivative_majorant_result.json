@@ -1,0 +1,74 @@
+{
+  "task_id": "KOKUNO5-STAGE9-HIGH-DERIVATIVE-MAJORANT-REPLAY-010",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_snapshot": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-stage9",
+    "component_path": "proof_sources/stage9/stage9_body.tex",
+    "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+    "source_pages": "100-116",
+    "associated_checker": "proof_sources/stage9/exact_checks.py",
+    "checker_sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+    "recorded_result": "proof_sources/stage9/exact_checks.json",
+    "recorded_result_sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "source_recorded_stage9_named_result_groups": 15,
+    "source_recorded_stage9_structural_probes": 7,
+    "source_checker_executed_this_run": false,
+    "source_checker_blocker": "The archived checker path is recorded by the public bundle metadata but is not directly available as a normal file in the public GitHub tree; source-recorded PASS is provenance only."
+  },
+  "rights_boundary": {
+    "source_repository_license": null,
+    "copied_source_checker_code": false,
+    "copied_substantial_source_prose": false,
+    "method": "Independent clean-room implementation from short public A38/A39 formulas and structured provenance."
+  },
+  "replay_scope": {
+    "public_formula_surface": ["A38", "A39"],
+    "verified_structure": [
+      "sum_{J<=I} binom(I,J) = 2^|I| by finite enumeration",
+      "one-component linear derivative count = 5",
+      "mixed-product weight = 6 * 2^|I|",
+      "quadratic-product weight = 3 * 2^|I|",
+      "exact rational scalar A39 majorant before sqrt(3)",
+      "exact squared Euclidean-output majorant = 3 * scalar_majorant^2"
+    ],
+    "complete_source_replay_programs_reproduced": 0
+  },
+  "exact_fixture": {
+    "multiindex": [2, 1, 0, 0],
+    "total_order": 3,
+    "enumerated_binomial_sum": 8,
+    "expected_binomial_sum": 8,
+    "linear_term_count": 5,
+    "mixed_product_weight": 48,
+    "quadratic_product_weight": 24,
+    "v_mplus2_bound": "5/3",
+    "e_mplus2_bound": "7/5",
+    "scalar_component_majorant": "4151/25",
+    "euclidean_squared_majorant": "51692403/625",
+    "m0_crosscheck_majorant": "672/25",
+    "undercounted_half_partition_majorant": "2163/25",
+    "undercount_gap": "1988/25",
+    "tolerance": "0"
+  },
+  "checks": {
+    "pytest_command": "PYTHONPATH=src python -m pytest -q -W error tests/test_kokuno_stage9_high_derivative_majorant.py",
+    "pytest_result": "7 passed in 0.06s",
+    "py_compile_result": "exit 0",
+    "structured_json_parse": "PASS"
+  },
+  "limits": {
+    "higher_derivative_coefficient_counting_only": true,
+    "does_not_execute_source_checker": true,
+    "does_not_certify_source_coefficient_estimates": true,
+    "does_not_bind_to_same_witness_stage_field": true,
+    "does_not_prove_finite_stage_residual_improvement": true,
+    "does_not_prove_all_stage_realization_or_convergence": true,
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
