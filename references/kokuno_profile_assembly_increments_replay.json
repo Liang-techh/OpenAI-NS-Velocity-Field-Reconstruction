@@ -1,0 +1,91 @@
+{
+  "task": "KOKUNO8-PROFILE-ASSEMBLY-QUADRATIC-INCREMENTS-009",
+  "scope": "clean-room exact replay of public PA.14 five profile-assembly perturbation density increments",
+  "target_base": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-profile_assembly",
+    "archive_path": "proof_sources/profile_assembly_audit/profile_assembly_body.tex",
+    "component_sha256": "32ed054afdb0aca39ad66aa03a30ef9a3d3e004b60d7d9ba1b972435703c3c28",
+    "source_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+    "source_pages": null,
+    "archive_discovered_checker": "proof_sources/profile_assembly_audit/check_assembly.py",
+    "archive_discovered_checker_sha256": "c1910515deca5db40c54b62f93c1b3ebbb0e875df0474d1862490701c589be6f",
+    "recorded_result": "proof_sources/profile_assembly_audit/exact_assembly_checks.json",
+    "recorded_result_sha256": "d71247c54835c97e9fc1c61c99625a0edbd41a2da75e5ab93d9fb593976d7b0b",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406",
+    "repository_license_metadata": null
+  },
+  "rights_boundary": {
+    "source_code_copied": false,
+    "substantial_source_text_copied": false,
+    "implementation_kind": "independently authored from short public formulas and factual provenance",
+    "source_checker_executed": false,
+    "source_recorded_pass_promoted_to_local_pass": false
+  },
+  "public_formula_surface": {
+    "label": "PA.14",
+    "radial_factor": "R=sqrt(2X)",
+    "increments": {
+      "M": "u",
+      "I": "R e",
+      "J": "H u + U R e + R u e, H=R E",
+      "S": "2 U u + u^2 - E e - e^2/2",
+      "C_p": "E e/X + e^2/(2X)"
+    }
+  },
+  "exact_fixture": {
+    "X": "9/32",
+    "radial_factor": "3/4",
+    "U": "5/7",
+    "E": "-4/9",
+    "u": "2/11",
+    "e": "3/13",
+    "expected_increment": {
+      "M": "2/11",
+      "I": "9/52",
+      "J": "1135/12012",
+      "S": "316691/858858",
+      "C_p": "-1232/4563"
+    },
+    "formula_minus_direct_residual": {
+      "M": "0",
+      "I": "0",
+      "J": "0",
+      "S": "0",
+      "C_p": "0"
+    },
+    "tolerance": "0"
+  },
+  "failure_boundaries": {
+    "omit_J_cross_term_Rue": "exact defect 9/286",
+    "linearize_S_and_drop_quadratic_terms": "exact defect 263/40898",
+    "omit_Cp_quadratic_term": "exact defect 16/169",
+    "radial_factor_plus_2^-40_with_X_fixed": "rejected because radial_factor^2 != 2X exactly",
+    "float_decimal_bool_theorem_inputs": "rejected",
+    "nonpositive_X": "rejected"
+  },
+  "closure_gap_ledger_update": {
+    "eliminated": [
+      "finite pointwise algebra for the five PA.14 perturbation-density increments, conditional on exact supplied X,U,E,u,e and an exact positive sqrt(2X) factor",
+      "silent linearization that drops the displayed J/S/C_p quadratic or cross terms"
+    ],
+    "remaining": [
+      "imported leading-profile existence, regularity, normalization, support and decay",
+      "existence of perturbations u,e satisfying the required support and symmetry conditions",
+      "the PA.15 finite-dimensional rank/submersion argument and realization of target moments by the same witness",
+      "binding these pointwise increments to an actual materialized profile/stage producer",
+      "admissible-stress existence",
+      "all-stage realization and convergence",
+      "final residual and force for the same assembled witness",
+      "formal endpoint/Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
