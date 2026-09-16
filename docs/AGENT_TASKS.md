@@ -44,7 +44,7 @@
 | NS017 | Stage-1 支撑、矩、匹配与锥约束 | NS016 | TODO | — | pending | — / unsubmitted |
 | NS018 | 严格积分的高精度效率优化 | 无 | TODO | — | pending | — / unsubmitted |
 | NS019 | 参数覆盖与性能回归样例 | NS007,NS013 | TODO | — | pending | — / unsubmitted |
-| NS020 | 开放/堆叠/替代 PR 对账 | 无 | TODO | — | pending | — / unsubmitted |
+| NS020 | 开放/堆叠/替代 PR 对账 | 无 | DONE | Agent 4 | pending | #372 / open |
 | NS021 | 准确检查点的集成验收与报告 | NS020 | TODO | — | pending | — / unsubmitted |
 | NS022 | Section 5 真实 lower-source/forcing 接口 | NS017 | TODO | — | pending | — / unsubmitted |
 | NS023 | 正阶系数的完整 Picard 求解 | NS022 | TODO | — | pending | — / unsubmitted |
@@ -308,3 +308,20 @@ next_unblocked_tasks:
 协调者验收时追加 `accepted/rejected + reviewed_commit + evidence + remaining_conditions`。
 若修改了已验收实现，重新记录新提交的验收，不沿用旧 SHA 的结果。
 本次发布时没有预先把任何未来任务标成 DONE；已完成代码见检查点文件，不能重复认领实现。
+
+## NS020 completion record
+
+task_id: NS020  
+status: DONE  
+owner: Agent 4  
+base_commit: `77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0`  
+implementation_commit: `c641a5577eb22618e565da423f652bf06bc6d63d`  
+pr_url: https://github.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction/pull/372  
+merge_status: open  
+acceptance: pending  
+changed_files: `docs/OPEN_PR_RECONCILIATION.md`, `docs/AGENT_TASKS.md`  
+implemented_behavior: read-only reconciliation of priority open/stacked/replay PRs against checkpoint `77ed17c`, with exact head/base SHAs, observed CI status, checkpoint divergence/overlap, supersession relationships, and a minimal dependency-aware integration order.  
+mathematical_source_and_assumptions: no new mathematical constructor; all existing formal/runtime truth boundaries are preserved.  
+commands_and_actual_results: GitHub PR metadata, compare-commit results, and exact-head Actions metadata were inspected for #366/#365/#364/#363/#362/#361/#360; pytest `not run` (documentation-only), demo `not run`, `audit --require-paper-exact` `not run`, Lean `not run`.  
+remaining_limitations: this does not accept, merge, replay, or validate any legacy PR on the checkpoint. #366 has failing full exact-head CI; #362's observed run was cancelled; green old heads still require coordinator acceptance and fresh validation after replay.  
+next_unblocked_tasks: NS021 is dependency-ready for coordinator-selected integration validation; legacy feature PRs remain gated by their corresponding NS013/NS016/NS022/NS025-26/NS027/NS034 dependencies.
