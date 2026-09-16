@@ -1,0 +1,76 @@
+{
+  "task_id": "KOKUNO7-MEAN-PRESSURE-MOMENT-REPLAY-006",
+  "scope": "Exact clean-room replay of the public NS-mean_corrections MC29 pressure-source moment sign and its MC24 fifth-row combination.",
+  "target_base": {
+    "repository": "Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction",
+    "branch": "codex/stage1-complete-slow2",
+    "commit": "77ed17c1e81b7abce99fa4c7ffc5b3d96ba389d0"
+  },
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_workbench_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component": "NS-mean_corrections",
+    "archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+    "source_pages": "87-100",
+    "component_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+    "associated_checker": "proof_sources/mean_corrections/verify_exact.py",
+    "recorded_checker_sha256": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+    "recorded_result_sha256": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f",
+    "corrected_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406"
+  },
+  "license_boundary": {
+    "repository_license_metadata": null,
+    "copied_source_checker_code": false,
+    "copied_substantial_source_text": false,
+    "implementation_mode": "independent clean-room reimplementation from short public formulas and structured provenance"
+  },
+  "public_formulas_replayed": [
+    "MC24 fifth row: integral(2 R G d - R V u) dR",
+    "MC29 pressure-source linear moment: -1/2 integral R^2 (2 V/R) u dR = - integral R V u dR",
+    "MC29 retained nonlinear remainder: integral R d^2 dR - 1/2 integral R^2 R_g,nonlinear dR"
+  ],
+  "fixture": {
+    "integration_domain": "R in [0,1]",
+    "G_coefficients": ["2/3", "-1/5", "3/7"],
+    "d_coefficients": ["-3/8", "4/9"],
+    "V_over_R_coefficients": ["5/6", "-2/7", "1/4"],
+    "u_coefficients": ["7/10", "1/3"],
+    "R_g_nonlinear_coefficients": ["2/11", "-5/13", "1/6"]
+  },
+  "exact_results": {
+    "pressure_source_linear_moment": "-3071/12600",
+    "mc29_linear_jz": "-66863/226800",
+    "mc24_fifth_row_linear": "-66863/226800",
+    "linear_identity_residual": "0",
+    "wrong_sign_defect": "3071/6300",
+    "retained_quadratic_defect": "71843/7413120",
+    "tiny_V_over_R_constant_mutation": "1/2^40",
+    "tiny_mutation_pressure_moment_change": "-19/65970697666560",
+    "tolerance": "0"
+  },
+  "actual_checks": [
+    {
+      "command": "PYTHONPATH=/tmp/kokuno7_mc29/src python -m pytest -q -W error /tmp/kokuno7_mc29/tests/test_kokuno_mean_pressure_moment_replay.py",
+      "result": "7 passed in 0.04s"
+    },
+    {
+      "command": "python -W error -m py_compile /tmp/kokuno7_mc29/src/openai_ns_reconstruction/kokuno_mean_pressure_moment_replay.py /tmp/kokuno7_mc29/tests/test_kokuno_mean_pressure_moment_replay.py",
+      "result": "exit 0"
+    }
+  ],
+  "not_claimed": [
+    "execution of the original Kokuno checker",
+    "complete NS-mean_corrections replay",
+    "construction of the reserved bump profiles",
+    "same-witness oscillatory defect production",
+    "finite-stage residual improvement for an actual materialized stage",
+    "all-stage convergence or realization",
+    "complete independent analytic validation",
+    "paper-exact velocity",
+    "full reconstruction"
+  ],
+  "paper_exact_velocity_available": false,
+  "full_reconstruction": false
+}
