@@ -1,0 +1,74 @@
+{
+  "task_id": "KOKUNO8-SUMMATION-LOCAL-BAND-WINDOW-006",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "repository_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-summation_realization",
+    "archive_path": "proof_sources/primary_continuation/summation_realization_body.tex",
+    "component_sha256": "13d370917df47e46e2d75e0cd3a5d4ab5f2dfd1fd1f31e4eef3fa4413b6a3fa5",
+    "source_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f",
+    "bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "bundle_members": 120,
+    "doi": "10.5281/zenodo.22678406",
+    "public_reader_path": "navier-stokes/navier_stokes_workbench.tex",
+    "public_reader_git_blob": "205a99807302e21a51c5eaf223390c0dfc42bcd0",
+    "license_status": "repository metadata reports license=null; no source proof/checker implementation copied"
+  },
+  "clean_room_scope": {
+    "formula_structure": [
+      "q(U) subset (q_local/2, 2 q_local)",
+      "active band: q(point)/2 <= Q_l <= 2 q(point)",
+      "conservative exact enclosure: q_local/4 <= Q_l <= 4 q_local",
+      "dyadic Q_l = 2^(-l) gives index span <= 4"
+    ],
+    "copied_source_code": false,
+    "copied_substantial_source_text": false
+  },
+  "target": {
+    "module": "src/openai_ns_reconstruction/kokuno_summation_local_band_window.py",
+    "test": "tests/test_kokuno_summation_local_band_window.py",
+    "module_sha256": "8fbaf9fb970df2d02e6b84b759ce139b0cac745ae744c27131795065506f1186",
+    "test_sha256": "76fb24ef8e22a5bdee3f24c6ca58b80f18a595a3043ee74c0a3a557abcf36c1d"
+  },
+  "verification": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "focused_pytest": "8 passed in 0.04s",
+    "py_compile": "exit 0",
+    "fixtures": {
+      "boundary_q_local": "1/64",
+      "boundary_window": "[1/256,1/16]",
+      "boundary_indices": [4, 5, 6, 7, 8],
+      "boundary_index_span": 4,
+      "nondyadic_q_local": "3/128",
+      "nondyadic_indices": [4, 5, 6, 7],
+      "nondyadic_index_span": 3
+    },
+    "failure_boundaries": [
+      "open neighborhood endpoints q=q_local/2 and q=2*q_local are rejected",
+      "band scale 1/8 at q_local=q_point=1/64 is rejected",
+      "float inputs are rejected",
+      "explicit max_steps exhaustion raises RuntimeError instead of fabricating a window"
+    ]
+  },
+  "closure_gap_ledger_update": {
+    "narrowed": [
+      "finite local dyadic-band window around every supplied positive q_local",
+      "exact conservative span<=4 replay for the public common-torus/local-count seam"
+    ],
+    "still_open": [
+      "construction/existence of the full stage sequence for one same witness",
+      "uniform all-stage coefficient and derivative bounds",
+      "infinite-stage realization and convergence",
+      "Eq. 9.21 / final summed velocity materialization",
+      "same-witness final residual and force",
+      "formal endpoint and Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
