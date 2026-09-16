@@ -1,0 +1,61 @@
+{
+  "task_id": "KOKUNO5-BASE-HEAT-RADIAL-REPLAY-003",
+  "source": {
+    "repository": "KokunoYumeto/yang-mills-interacting-workbench",
+    "public_main_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "research_state_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "component_id": "NS-base_heat",
+    "archive_path": "proof_sources/base_heat/derivation.tex",
+    "component_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+    "source_pages": "45–62,126–144",
+    "associated_checker": "proof_sources/base_heat/verify_identities.py",
+    "checker_sha256_recorded": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+    "recorded_result_sha256": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843",
+    "bundle_sha256_recorded": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "doi": "10.5281/zenodo.22678406"
+  },
+  "license_boundary": {
+    "repository_license_clear": false,
+    "source_checker_copied": false,
+    "proof_body_copied": false,
+    "implementation": "clean-room reimplementation from short public formulas"
+  },
+  "local_replay": {
+    "arithmetic": "fractions.Fraction",
+    "tolerance": "0",
+    "fixture": {
+      "h": "1/8",
+      "Z": "2/3",
+      "H": "5/7",
+      "H1": "-3/11",
+      "H2": "25785/19712"
+    },
+    "actual": {
+      "heat_ode_residual": "0",
+      "time_core": "6/11",
+      "cylindrical_swirl_core": "6/11",
+      "heat_equation_residual": "0",
+      "bridge_residual": "0"
+    },
+    "identity": "heat_equation_residual = 2 * heat_ode_residual",
+    "mutation": {
+      "field": "H2",
+      "delta": "1/1099511627776",
+      "actual_heat_equation_residual": "1/1236950581248",
+      "passes": false
+    },
+    "focused_test_result": "5 passed in 0.06s",
+    "py_compile_exit": 0
+  },
+  "scope": {
+    "complete_source_replay_program_reproduced": false,
+    "named_target_result_groups_added": 1,
+    "source_checker_executed": false,
+    "fresh_bundle_byte_rehash": false
+  },
+  "truth_boundary": {
+    "complete_independent_analytic_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
