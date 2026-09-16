@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "increment_id": "KOKUNO4-CHECKER-RESULT-HASH-CROSSWALK-004",
+  "purpose": "Provenance-only crosswalk from research-state associated checkers to published member SHA-256 records; no source checker execution or code import.",
+  "source": {
+    "repository": "https://github.com/KokunoYumeto/yang-mills-interacting-workbench",
+    "repository_snapshot_commit": "fab69fdc4ac197159b8e6ae8d73a82bde2b20d55",
+    "recorded_reconstruction_source_commit": "e0a04c078eaf0209e40b3d47d6f6dffb3f2a3e7f",
+    "research_state_path": "navier-stokes/research-state.json",
+    "checks_path": "navier-stokes/navier_stokes_checks.json",
+    "primary_manifest_path": "navier-stokes/navier_stokes_primary_manifest.json",
+    "primary_manifest_git_blob_oid": "4f60fc4db69ea73191cbb40b85938c4661425c88",
+    "primary_manifest_sha256": "386d3fef8edcf2665ecd5daa2944269f414ced12c1afe89d9d7fc50973fbd76a",
+    "published_bundle_path": "navier-stokes/navier_stokes_source_bundle.zip",
+    "published_bundle_sha256": "43b128e24f395327b2dd0f9874ca1ff120a52d625ab454f7df97d51f10c328c5",
+    "published_bundle_members": 120,
+    "published_bundle_doi": "10.5281/zenodo.22678406",
+    "source_manuscript": {
+      "derivation_capture_pages": 165,
+      "derivation_capture_sha256": "8c8a94ad9ac824c8b605b9827cadf7beaca48bd10b380de3cfc872a2c37afa81",
+      "later_capture_pages": 166,
+      "later_capture_sha256": "0e779481c4da40bd28d1e642e1d8ca57447d129610df28dfa5a11e9af8ae228f"
+    },
+    "formal_source": {
+      "repository": "https://github.com/openai/NavierStokesAndEuler",
+      "commit": "8937a8f4cbc7abaab5e9e97d1cc7f5d2319d9538",
+      "recorded_scope": "static source/import and declaration comparison; not kernel verification"
+    },
+    "release_integrity_metadata": {
+      "hashes_path": "releases/2026-09-09/HASHES.md",
+      "git_tree_manifest_path": "releases/2026-09-09/GITHUB_TREE_MANIFEST.json",
+      "git_tree_manifest_payload_inventory_sha256": "588d15c19be36432508f6f2931e42d30afaf888985d3e2781c7dbb7acb187dec",
+      "git_tree_manifest_artifact_count": 299,
+      "verification_scope": "publication integrity metadata; not mathematical verification or Zenodo byte replay"
+    }
+  },
+  "license_boundary": {
+    "repository_declared_license": null,
+    "reuse_policy": "fail_closed",
+    "copied_source_checker_code": false,
+    "copied_proof_body_text": false,
+    "permitted_in_this_increment": [
+      "factual repository paths",
+      "commit and blob identifiers",
+      "SHA-256 values",
+      "counts and DOI/URL provenance",
+      "independently authored classification and limitations"
+    ],
+    "not_permitted_without_clear_reuse_rights": [
+      "verbatim checker implementations",
+      "large proof-body excerpts",
+      "bulk copyrighted source text"
+    ]
+  },
+  "crosswalk": [
+    {
+      "component_id": "NS-profiles",
+      "component_archive_path": "proof_sources/profiles/profiles_body.tex",
+      "component_sha256": "63327f4a6d339d39de096230af1810cb83e7c427ba0b0cc78c576b2750437a95",
+      "associated_checker_path": "proof_sources/profiles/exact_checks.py",
+      "checker_sha256": "a7ee77024a92d06c1b69055a00b10a7d5fd600ca424fe084e2f4399310cf56e7",
+      "recorded_result_artifact_path": "proof_sources/profiles/exact_checks.json",
+      "recorded_result_artifact_sha256": "5ef2b5f7cee750088143acda8d4a5ee4f0b12f36f0344ab991f5c9333a842e24"
+    },
+    {
+      "component_id": "NS-base_heat",
+      "component_archive_path": "proof_sources/base_heat/derivation.tex",
+      "component_sha256": "98d101542a7d8d5c1475764ec99178a663fe363e416d572eeafa048e724a193d",
+      "associated_checker_path": "proof_sources/base_heat/verify_identities.py",
+      "checker_sha256": "da6fe495af223772824b2f658c83c4aec08d7aa41882818589eaf14c6a3425dc",
+      "recorded_result_artifact_path": "proof_sources/base_heat/identity_check_results.json",
+      "recorded_result_artifact_sha256": "5b74d2d2598841ce2512790dd70efe35640b69a4ea5a8516a4dbbd482f0bd843"
+    },
+    {
+      "component_id": "NS-oscillations",
+      "component_archive_path": "proof_sources/oscillations/oscillations_body.tex",
+      "component_sha256": "3fd5c61de39b6f65a581ead5b29c741c2e0f46fb30f62e582dc24d93bbe83615",
+      "associated_checker_path": "proof_sources/oscillations/exact_checks.py",
+      "checker_sha256": "a44ba49990c3b604c883d5b4e1726cb33068867cd85b23f3a2c22847e4ce8184",
+      "recorded_result_artifact_path": "proof_sources/oscillations/exact_checks_results.json",
+      "recorded_result_artifact_sha256": "30d7a4d934e984a77cfcb04188d72c35391c46e38bcbf25a2024e38bcb783a12"
+    },
+    {
+      "component_id": "NS-mean_corrections",
+      "component_archive_path": "proof_sources/mean_corrections/mean_corrections_body.tex",
+      "component_sha256": "c494cebcaf476a01c5aae17d38f84dfc6b0092040c03b9aecbad1f5c3831ea29",
+      "associated_checker_path": "proof_sources/mean_corrections/verify_exact.py",
+      "checker_sha256": "5d54f54000e0cf03e70cfde1d298398bd29d091addf07887f70660af7c98a366",
+      "recorded_result_artifact_path": "proof_sources/mean_corrections/exact_checks.json",
+      "recorded_result_artifact_sha256": "5b81365d43a7108b16d11eba8cdf1dc267266226a0d90ff221ff67827f37495f"
+    },
+    {
+      "component_id": "NS-stage9",
+      "component_archive_path": "proof_sources/stage9/stage9_body.tex",
+      "component_sha256": "bce636fb3ed7348ed9c73912183f81a75557cc975418ce9e162c4be994f82cb0",
+      "associated_checker_path": "proof_sources/stage9/exact_checks.py",
+      "checker_sha256": "228935772385483e92c5dcac118290243135ba467541abba5e4f345b9fc513c1",
+      "recorded_result_artifact_path": "proof_sources/stage9/exact_checks.json",
+      "recorded_result_artifact_sha256": "a54a985c47a5da769f68f7dc04d1ff59ee46025371cd6f6a852369d8898d349f"
+    }
+  ],
+  "pairing_basis": "The checker path is declared by research-state.json. The result artifact is a same-component published result record present in navier_stokes_checks.json/member_sha256. This crosswalk does not claim the result artifact was freshly produced by executing that checker in the target repository.",
+  "source_recorded_evidence_counts": {
+    "replay_programs": 9,
+    "named_result_groups": 144,
+    "structural_probes": 12,
+    "bundle_members": 120
+  },
+  "verification": {
+    "performed_this_increment": [
+      "confirmed the five associated_checker paths from research-state.json",
+      "matched each checker path to its published member SHA-256 in navier_stokes_checks.json",
+      "matched one same-component recorded result artifact path and SHA-256 for each checker",
+      "confirmed source bundle SHA-256 against releases/2026-09-09/HASHES.md and GITHUB_TREE_MANIFEST.json"
+    ],
+    "not_performed_this_increment": [
+      "executing any source checker",
+      "re-deriving any source result artifact",
+      "freshly downloading and re-hashing every source-bundle member",
+      "fresh Zenodo archive byte replay",
+      "mathematical validation of source PASS records"
+    ]
+  },
+  "classification": {
+    "directly_reusable": [
+      "paths",
+      "commit/blob identifiers",
+      "SHA-256 provenance",
+      "DOI/URL identifiers",
+      "source-recorded counts"
+    ],
+    "must_be_independently_reimplemented_or_replayed": [
+      "checker logic",
+      "mathematical identities",
+      "result-group verification"
+    ],
+    "reference_only_until_independently_verified": [
+      "source-side PASS/result receipts",
+      "source-side static formal audit"
+    ],
+    "still_unverified": [
+      "complete independent analytical validation",
+      "all 9 replay programs in the target repository",
+      "all 144 named result groups in the target repository",
+      "all 12 structural probes in the target repository",
+      "formal endpoint/Comparator certificate"
+    ]
+  },
+  "truth_boundary": {
+    "complete_independent_validation": false,
+    "paper_exact_velocity_available": false,
+    "full_reconstruction": false
+  }
+}
