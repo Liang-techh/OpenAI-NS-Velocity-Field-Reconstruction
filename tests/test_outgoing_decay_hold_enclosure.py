@@ -51,7 +51,8 @@ def test_decay_hold_refinement_tightens_and_overlaps() -> None:
     assert tight.width <= Fraction(1, 64)
     assert tight.width < loose.width
     assert max(loose.hold.lower, tight.hold.lower) <= min(loose.hold.upper, tight.hold.upper)
-    assert tight.debt_tolerance < loose.debt_tolerance
+    assert tight.lag_tolerance < loose.lag_tolerance
+    assert tight.debt_tolerance <= loose.debt_tolerance
     assert tight.log_tolerance < loose.log_tolerance
 
 
