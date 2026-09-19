@@ -5,10 +5,13 @@ on:
     paths: [.github/workflows/release-import.yml]
 permissions:
   contents: write
+concurrency:
+  group: st054-release-import
+  cancel-in-progress: false
 jobs:
   import-pinned-assets:
     if: github.repository == 'Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     env:
       OPENBLAS_NUM_THREADS: '1'
