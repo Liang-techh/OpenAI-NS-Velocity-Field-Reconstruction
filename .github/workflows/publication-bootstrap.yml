@@ -1,0 +1,67 @@
+name: publication-bootstrap
+on:
+  push:
+    branches: [release/st054-english-replacement]
+    paths:
+      - '.github/workflows/publication-bootstrap.yml'
+permissions:
+  contents: write
+jobs:
+  assemble-publication:
+    if: github.repository == 'Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/st054-english-replacement
+      - name: Record exact staging head
+        run: git rev-parse HEAD > /tmp/staging-head
+      - uses: actions/checkout@v4
+        with:
+          repository: Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction1
+          ref: c77492a48e9c0f13d4d51244987c57c28519409b
+          path: _science
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction1
+          ref: 5d49ccf07d097a4bffeb35f6398936493b062d00
+          path: _visual
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r release_work/payload/requirements.txt
+      - name: Build clean release and replay all four original scientific reports
+        run: |
+          test "$(git -C _science rev-parse HEAD)" = c77492a48e9c0f13d4d51244987c57c28519409b
+          test "$(git -C _visual rev-parse HEAD)" = 5d49ccf07d097a4bffeb35f6398936493b062d00
+          python release_work/build_release.py --science _science --visual _visual/visualization/matlab --out /tmp/ns-publication --staging release_work
+          cd /tmp/ns-publication
+          python ns_candidate.py verify
+          python ns_candidate.py evaluate
+          python -m pytest -q -W error tests
+      - name: Replace isolated branch working tree without rewriting history
+        shell: bash
+        run: |
+          test "$(git ls-remote origin refs/heads/release/st054-english-replacement | cut -f1)" = "$(cat /tmp/staging-head)"
+          git rm -r --ignore-unmatch .
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/ns-publication/. .
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --stat
+          git commit -m 'Replace legacy working tree with verified ST054 publication and English MATLAB tools'
+          git push origin HEAD:release/st054-english-replacement
+          git archive --format=zip --prefix=NS_Candidate_Lab/ HEAD > /tmp/NS_Candidate_Lab.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: complete-st054-publication
+          path: /tmp/NS_Candidate_Lab.zip
+          if-no-files-found: error
