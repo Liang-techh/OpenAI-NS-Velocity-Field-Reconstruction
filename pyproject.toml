@@ -1,23 +1,26 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "openai-ns-velocity-field-reconstruction"
-version = "0.2.0"
-description = "Auditable partial numerical reconstruction of the OpenAI NS velocity construction"
+name = "ns-field-reconstruction"
+version = "0.3.0"
+description = "Reproducible finite-window Navier-Stokes candidates and native MATLAB field visualization"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.24,<3", "scipy>=1.10,<2"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "matplotlib>=3.8"]
+test = ["pytest>=8,<10", "sympy>=1.12,<2"]
 
 [project.scripts]
-ns-reconstruct = "openai_ns_reconstruction.__main__:main"
+ns-field = "ns_reconstruction.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+ns_reconstruction = ["data/*.json"]
+
 [tool.pytest.ini_options]
-pythonpath = ["src"]
 testpaths = ["tests"]
+filterwarnings = ["error"]

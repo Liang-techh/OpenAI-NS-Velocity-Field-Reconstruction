@@ -1,0 +1,1 @@
+Reproducible Navier-Stokes velocity-field candidates with independent residual validation and interactive MATLAB visualization. ST054-Q2/M3; 1e-3 target not yet met. Unofficial research.
