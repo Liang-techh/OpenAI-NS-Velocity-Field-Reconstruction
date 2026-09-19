@@ -2,7 +2,7 @@
 
 **Reproducible velocity fields. Independent residual checks. Interactive MATLAB visualization.**
 
-This repository packages the strongest fully reproducible checkpoints selected from our constrained Navier–Stokes reconstruction project: **ST054-Q2**, the primary lower-L2 candidate, and **ST054-M3**, the lower-peak alternative. Both include velocity, pressure, a separately specified restricted force, frozen coefficients, and numerical evidence. No training or external data download is needed to evaluate them.
+This repository packages the strongest fully reproducible checkpoints selected from our constrained Navier–Stokes reconstruction project: **ST054-Q2**, the primary lower-L2 candidate, and **ST054-M3**, the lower-peak alternative. Both include velocity, pressure, a separately specified restricted force, frozen coefficients, and numerical evidence. No training is needed. A fresh source checkout restores checksum-verified assets from pinned research commits once; the complete downloadable bundle already includes them.
 
 > **Research status:** the complete `1e-3` momentum target is **not yet met**. These are finite-window numerical candidates, not accepted exact NS solutions, recovered OpenAI fields, or a blow-up proof. This is an independent project, not an OpenAI repository.
 
@@ -16,13 +16,17 @@ start_here('core')         % Densely re-sampled central core + geometry metrics
 start_here('full')         % Full interactive explorer without the preset
 ```
 
+**First launch:** `start_here` calls `prepare_matlab`, which downloads only missing pinned MATLAB files and verifies every SHA-256 digest. An internet connection is needed for that initial source-checkout setup. The complete release ZIP is already initialized and can be used offline. Existing files with different bytes are not overwritten.
+
 The native MATLAB viewers include a bottom time slider and playback, approximately 200 streamline seeds, vorticity surfaces, movable slices, pressure-force and full-residual displays, and PNG export. Q2 and M3 can be switched without rerunning a fit. The core viewer re-samples its local volume when the observation window changes; it does not merely enlarge a coarse full-domain grid.
 
-![Native MATLAB full-field explorer](assets/matlab_explorer.png)
+![Native MATLAB full-field explorer](https://raw.githubusercontent.com/Liang-techh/OpenAI-NS-Velocity-Field-Reconstruction1/5d49ccf07d097a4bffeb35f6398936493b062d00/visualization/matlab/tests/output/matlab_explorer.png)
 
 *Native MATLAB screenshot from the pinned upstream viewer test. It illustrates the same frozen ST054 field data. A screenshot is not a validation certificate. Streamlines are instantaneous curves, not material particle trajectories.*
 
 See the [visualization guide](docs/VISUALIZATION.md) for controls, the selected viewing preset, central-core sampling, geometry diagnostics, and limitations.
+
+**Verification boundary:** local Python tests, the installed wheel, and four full scientific replays have completed. The original full viewer has upstream native MATLAB tests. This release's modified core-view native tests are queued, not yet confirmed passed; the core view remains a new diagnostic tool pending that run.
 
 ## Current numerical results
 
@@ -37,13 +41,15 @@ Independent Cartesian finite-difference validation: 4,096 points per seed, six f
 
 Both momentum metrics must be below `0.001`. Neither candidate passes. The reported L2 is `sqrt(64 * mean(|R|^2))` at each time, **not** RMS or a space-time average. Sampled maxima are not continuous-domain upper bounds. Q2 is not better on every metric, and “primary” is not a global-best claim. ST055 is excluded because its complete frozen field/evidence bundle was not available for reproducible publication.
 
-Sources: [original frozen-study summary](evidence/upstream_ST054_results.json), [release validation protocol](docs/VALIDATION.md), and the release replay reports produced by `tools/replay_release.py`.
+Sources: the original frozen-study summary restored to `evidence/upstream_ST054_results.json`, [release validation protocol](docs/VALIDATION.md), and the release replay reports produced by `tools/replay_release.py`.
 
 ## Use the Python API
 
 Python 3.10+; install from the repository root:
 
 ```bash
+python -m pip install -r requirements.txt
+python tools/prepare_release.py  # One-time pinned setup; skips an intact initialized bundle
 python -m pip install -e ".[test]"
 ns-field verify
 ns-field evaluate --candidate ST054-Q2 --point 0.1 0 0.1 --time 0.5
@@ -74,9 +80,9 @@ ns-field validate --candidate ST054-Q2 --seed 9175491 --out outputs/Q2_check.jso
 
 | Location | Contents |
 |---|---|
-| `src/ns_reconstruction/` | Small installable field API, frozen Q2/M3 data and the pinned numerical runtime |
-| `visualization/matlab/` | Full-field and corrected dense-core viewers, native data, diagnostics and tests |
-| `evidence/` | Original study summary, import hashes and provenance; release replays are kept separately |
+| `src/ns_reconstruction/` | Installable API; pinned setup restores the frozen data and numerical runtime |
+| `visualization/matlab/` | Corrected core tools; pinned setup restores the full-field viewer and native data |
+| `evidence/` | Initialized bundles contain source/import records and four local replay reports; CI uploads new replays separately |
 | `tests/` | Numerical, packaging, identity, input and English-documentation checks |
 | `tools/` | Pinned import/replay tools; normal field/viewer use is offline |
 | `docs/` | Model, validation, visualization, provenance and migration documentation |
@@ -88,6 +94,10 @@ The field is axisymmetric with swirl, smooth and compactly supported in `r < 2`,
 Pressure direction and flow-direction checks apply to explicitly declared finite core grids. They do not establish whole-domain source correspondence. Neither the original source's full oscillatory construction nor a matched heat exterior is claimed here. Moving a camera, changing a seed radius or zooming the core cannot improve the PDE residual.
 
 Details: [model](docs/MODEL.md), [scientific status](docs/VALIDATION.md), [source and artifact provenance](docs/PROVENANCE.md).
+
+## Repository setup and evidence
+
+`tools/source_manifest.json` fixes each imported path, source commit and checksum. `prepare_matlab` initializes just the MATLAB components; `python tools/prepare_release.py` initializes the full Python/data/visualization release. Do not install an uninitialized source checkout and assume its external assets are present. The complete release ZIP contains the resolved files and local replay reports. CI independently repeats setup and validation, but queued jobs are not reported as completed.
 
 ## Repository transition
 

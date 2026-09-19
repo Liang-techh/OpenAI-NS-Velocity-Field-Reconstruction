@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - run: python -m pip install 'numpy>=1.24,<3' 'scipy>=1.10,<2'
+      - run: python tools/prepare_release.py
       - run: python -m pip install -e '.[test]' wheel
       - run: |
           python -m pytest -q -W error
@@ -63,7 +65,7 @@ jobs:
       - uses: matlab-actions/run-command@v3
         with:
           startup-options: -display :99
-          command: addpath('visualization/matlab'); f=fullfile(pwd,'visualization','matlab','data','st054_models.mat'); ns_selftest(f,true,fullfile(pwd,'outputs','matlab')); ns_callback_test(f,fullfile(pwd,'outputs','matlab')); ns_core_selftest(f,fullfile(pwd,'outputs','core'));
+          command: prepare_matlab; addpath('visualization/matlab'); f=fullfile(pwd,'visualization','matlab','data','st054_models.mat'); ns_selftest(f,true,fullfile(pwd,'outputs','matlab')); ns_callback_test(f,fullfile(pwd,'outputs','matlab')); ns_core_selftest(f,fullfile(pwd,'outputs','core'));
       - uses: actions/upload-artifact@v4
         if: always()
         with:

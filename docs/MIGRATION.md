@@ -8,7 +8,7 @@ The old main was observed at `065b67e9a3e8e22d697b49ccc67163db60a79783`. Before 
 archive/pre-st054-release-20260919
 ```
 
-The replacement is a normal descendant commit, not an orphan history or force-push. The release branch is `release/st054-english-rebuild`. Old experimental files are removed from the current release tree rather than mixed with the new API, but remain recoverable from Git history and the archive branch. Historical issues, pull requests and research branches are not deleted or marked scientifically complete. The source repository with trailing `1` is not replaced.
+The replacement is a normal descendant commit, not an orphan history or force-push. The release branch is `release/st054-ready`. Old experimental files are removed from the current release tree rather than mixed with the new API, but remain recoverable from Git history and the archive branch. Historical issues, pull requests and research branches are not deleted or marked scientifically complete. The source repository with trailing `1` is not replaced.
 
 ## Selection
 
@@ -17,6 +17,10 @@ ST054-Q2 is the primary packaged checkpoint because it has the lower recorded vo
 ## Included scope
 
 Frozen velocity/pressure/force arrays, a small installable Python runtime, original independent validation, four replay reports, native MATLAB visualization/data, corrected dense-core tools, software tests and English documentation. The old repository's many partial paper-construction layers and work-in-progress notes are historical, not dependencies of the release. They are not silently rebranded as numerical success.
+
+## Asset availability
+
+The initial cloud import remained queued. The source release therefore includes a deterministic setup path to restore its pinned assets once; the complete offline ZIP is already initialized. GitHub source files should not be described as containing resolved numerical binaries until those binaries have actually been committed. Local Python tests, wheel installation and all four full replays completed. Modified-core native tests remain queued.
 
 ## Description and final publication receipt
 

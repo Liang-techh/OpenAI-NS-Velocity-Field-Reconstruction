@@ -19,7 +19,7 @@ ns_explorer
 ns_core_explorer
 ```
 
-Normal operation needs base MATLAB and the included MAT data, not Python. The original viewer was natively tested on MATLAB R2024b. Release-specific tests, including corrected core tools, are recorded separately by the release workflow; do not infer new GUI testing solely from old receipts. R2021a+ is a compatibility target, not an exhaustive version certification.
+Normal operation needs base MATLAB and the resolved MAT data, not Python. On a fresh source checkout, `start_here` first runs `prepare_matlab` to download and SHA-256 verify missing pinned assets. The initialized complete ZIP needs no download. Run `prepare_matlab` once before calling a viewer directly from an uninitialized checkout. The original viewer was natively tested on MATLAB R2024b. Release-specific tests, including corrected core tools, are recorded separately by the release workflow; do not infer new GUI testing solely from old receipts. R2021a+ is a compatibility target, not an exhaustive version certification.
 
 ## Full-field controls
 
@@ -30,6 +30,8 @@ Color and arrow gains are explicit. A full-field radial zoom changes the display
 ## Corrected central-core tools
 
 `ns_core_explorer` evaluates a NEW local box when radius, half-height, time or candidate changes. It uses the separable evaluator rather than building huge per-point basis tensors. Seed radius and vertical span are independent and clamped inside the box. The time slider is below the plots, supports preview and playback, and all controls retain the frozen coefficients.
+
+**Release-native status:** the new core-view native tests are queued, not yet confirmed passed. The upstream full-viewer receipt does not certify these changes.
 
 The release repairs the earlier supplement's invalid temporary-result indexing, mistaken struct-method call, UI-layout construction and streamline vertex-budget calculation. It also removes redundant full-volume evaluation during every metric update. Imported sampled grids stay in the full viewer; the core viewer refuses them rather than inventing pressure/residual arrays or presenting interpolated data as spectral evaluation.
 

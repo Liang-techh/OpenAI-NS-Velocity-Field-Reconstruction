@@ -19,7 +19,7 @@ Both original momentum gates require values below `0.001`. Other gates check div
 
 ## Replays, not new holdouts or new optimization
 
-The original ST054 study froze its fields before seeds 9175491 and 9175492. This release reuses those seeds to test reproducibility. It does not pretend they are newly independent of all prior research. The source summary is preserved unchanged under `evidence/upstream_ST054_results.json`.
+The original ST054 study froze its fields before seeds 9175491 and 9175492. This release reuses those seeds to test reproducibility. It does not pretend they are newly independent of all prior research. One-time setup restores the source summary unchanged under `evidence/upstream_ST054_results.json`; the complete initialized ZIP already includes it.
 
 Run `python tools/replay_release.py --out outputs/full_release_replay` to repeat four complete validations. Each scientific result is a rejection. The replay script returns success only when the known rejected gate booleans and reference norms are reproduced within the stated `1e-5` cross-platform comparison tolerance. That tolerance is a comparison tolerance, not a new acceptance threshold.
 
