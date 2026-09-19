@@ -1,0 +1,7 @@
+{
+  "updated": false,
+  "http_status": 403,
+  "message": "Resource not accessible by integration",
+  "requested_description": "Reproducible Navier-Stokes velocity-field candidates with independent residual validation and interactive MATLAB visualization. ST054-Q2/M3; 1e-3 target not yet met. Unofficial research.",
+  "scope": "Standard workflow token lacks repository-administration access; no permission bypass attempted."
+}

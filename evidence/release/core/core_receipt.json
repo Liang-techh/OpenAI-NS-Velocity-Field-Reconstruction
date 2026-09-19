@@ -1,0 +1,1 @@
+{"matlab_version":"24.2.0.3212159 (R2024b) Update 9","local_sampling_pass":true,"metrics_pass":true,"arc_caps_pass":true,"time_series_pass":true,"gui_pass":true,"time_callbacks_pass":true,"playback_pass":true,"maximum_reference_error":9.1593399531575415E-16,"pde_validated":false,"scope":"Software/finite diagnostic tests only, not source geometry or PDE certification"}

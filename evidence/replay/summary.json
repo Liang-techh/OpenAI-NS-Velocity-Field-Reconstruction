@@ -1,0 +1,58 @@
+{
+  "rows": [
+    {
+      "candidate": "ST054-Q2",
+      "seed": 9175491,
+      "candidate_sha256": "4474e74361824cb7c37204ecbf6b094a459a0941eaa875e57f136b3ddf8e0616",
+      "max": 0.03730218929571529,
+      "volume_L2": 0.047619021010924724,
+      "failed_gates": [
+        "momentum_max",
+        "momentum_L2"
+      ],
+      "reference_tolerance": 1e-05
+    },
+    {
+      "candidate": "ST054-Q2",
+      "seed": 9175492,
+      "candidate_sha256": "4474e74361824cb7c37204ecbf6b094a459a0941eaa875e57f136b3ddf8e0616",
+      "max": 0.038455392348794755,
+      "volume_L2": 0.04770422712265099,
+      "failed_gates": [
+        "momentum_max",
+        "momentum_L2"
+      ],
+      "reference_tolerance": 1e-05
+    },
+    {
+      "candidate": "ST054-M3",
+      "seed": 9175491,
+      "candidate_sha256": "5cb85c21211e6d663e1cd6df66899b6c7e0ad4e4452a2b9981190e5279ee37a8",
+      "max": 0.036407650088905126,
+      "volume_L2": 0.04832320460538472,
+      "failed_gates": [
+        "momentum_max",
+        "momentum_L2"
+      ],
+      "reference_tolerance": 1e-05
+    },
+    {
+      "candidate": "ST054-M3",
+      "seed": 9175492,
+      "candidate_sha256": "5cb85c21211e6d663e1cd6df66899b6c7e0ad4e4452a2b9981190e5279ee37a8",
+      "max": 0.037124856193706327,
+      "volume_L2": 0.04789220830934127,
+      "failed_gates": [
+        "momentum_max",
+        "momentum_L2"
+      ],
+      "reference_tolerance": 1e-05
+    }
+  ],
+  "python": "3.11.16",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "full_replay_completed": true,
+  "pde_validated": false,
+  "scope": "Reproduction of known finite-sample rejections, not newly optimized fields or continuum validation"
+}

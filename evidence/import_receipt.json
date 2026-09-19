@@ -1,0 +1,169 @@
+{
+  "schema": "release_import_receipt_v1",
+  "imports": [
+    {
+      "path": "src/ns_reconstruction/_runtime/spacetime.py",
+      "upstream_sha256": "6c29b1ab2fc9c2d389be3f436b4ef1d2f5b9a00bf7526a8dcf254e8aa05edf34",
+      "release_sha256": "c7c058a6622bbfa1630e2051f57a7422f54987376a7ee573659e849bf3b6f09b",
+      "transform": "relative_imports"
+    },
+    {
+      "path": "src/ns_reconstruction/_runtime/hybrid_basis.py",
+      "upstream_sha256": "1004b5ba8d894d0cad78eedfa19af51e9427bfbdaea8c7a9af29176cd1c948f5",
+      "release_sha256": "f30fbc2f732b7a1fcdf68c0c269d1239045c4b1e0f6d725de4e952c56e205fcb",
+      "transform": "relative_imports"
+    },
+    {
+      "path": "src/ns_reconstruction/_runtime/asymmetric_basis.py",
+      "upstream_sha256": "03b23790b6fc9e733e2c150e8d1f3eda913c8bbc61fcbd0cfbcea986eb009305",
+      "release_sha256": "b8535e1ec5bde76b0b54a2a6db6cbbfa581f63e532e055b81222c83658befa50",
+      "transform": "relative_imports"
+    },
+    {
+      "path": "src/ns_reconstruction/_runtime/validate.py",
+      "upstream_sha256": "75f2e3beb965e6d90f15feb9fc61e3ee0b6685cb915e9c9a9263d6d960663e4a",
+      "release_sha256": "08841d8fcf75f3764456e4796fb034e421178a7213c5d581e45b9ff5387958f0",
+      "transform": "relative_imports"
+    },
+    {
+      "path": "visualization/matlab/ns_explorer.m",
+      "upstream_sha256": "d145344ea1f65b2e25ad2d98a2a3e4215f07dfc25487347263060b021b3d502f",
+      "release_sha256": "d145344ea1f65b2e25ad2d98a2a3e4215f07dfc25487347263060b021b3d502f",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_basis.m",
+      "upstream_sha256": "d76201694c86a2893e69d396eefa15ad461b11ab124e10a785435dca26fda050",
+      "release_sha256": "d76201694c86a2893e69d396eefa15ad461b11ab124e10a785435dca26fda050",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_cylindrical.m",
+      "upstream_sha256": "5278dc59f9c2b032d89b6b1554b9e78fa0cbdcfcb358852921b33b4c422a8567",
+      "release_sha256": "5278dc59f9c2b032d89b6b1554b9e78fa0cbdcfcb358852921b33b4c422a8567",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_evaluate.m",
+      "upstream_sha256": "69588a9c8cd8e582a29ff1d2adc43ddc45e53e0fd1d99504ad9fa7eec208f65a",
+      "release_sha256": "69588a9c8cd8e582a29ff1d2adc43ddc45e53e0fd1d99504ad9fa7eec208f65a",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_volume.m",
+      "upstream_sha256": "0fa278e51aadb9dc9f39e241546c6590693cc003e7583ac2f7c94fa13506d92b",
+      "release_sha256": "0fa278e51aadb9dc9f39e241546c6590693cc003e7583ac2f7c94fa13506d92b",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_render_scene.m",
+      "upstream_sha256": "a2ed78f4b1580e6a0021ce92af41d3000e80cbf33a04fe2736b6741e40d89d82",
+      "release_sha256": "a2ed78f4b1580e6a0021ce92af41d3000e80cbf33a04fe2736b6741e40d89d82",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_import_grid.m",
+      "upstream_sha256": "8e92c3a8f383092c14ef98b952fa7fab8e100b8dba6e6ceeb30386fa4f4eecf6",
+      "release_sha256": "8e92c3a8f383092c14ef98b952fa7fab8e100b8dba6e6ceeb30386fa4f4eecf6",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_selftest.m",
+      "upstream_sha256": "6aeb1153c8da9b50199630f26f05366eb567c292b7a463549c7446f97eae1771",
+      "release_sha256": "6aeb1153c8da9b50199630f26f05366eb567c292b7a463549c7446f97eae1771",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/ns_callback_test.m",
+      "upstream_sha256": "c57597feb806d474a01662588369f57eb4ece73e62529a5bace6f8a3705809d3",
+      "release_sha256": "c57597feb806d474a01662588369f57eb4ece73e62529a5bace6f8a3705809d3",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/data/st054_models.mat",
+      "upstream_sha256": "59d43fdc40cd4df1675c2191f85810b9351802b2f4b1e0ac25a3bccfd9914c62",
+      "release_sha256": "59d43fdc40cd4df1675c2191f85810b9351802b2f4b1e0ac25a3bccfd9914c62",
+      "transform": null
+    },
+    {
+      "path": "visualization/matlab/data/st054_models.json",
+      "upstream_sha256": "e1aa992dc63a0904f995eff6898750a76db9f89d57960ddbef4cea51275ef926",
+      "release_sha256": "e1aa992dc63a0904f995eff6898750a76db9f89d57960ddbef4cea51275ef926",
+      "transform": null
+    },
+    {
+      "path": "evidence/upstream_matlab/matlab_test_receipt.json",
+      "upstream_sha256": "1ac163884be9d3b93ef4f0e90cee4762566d20f53461d52b6432c78aad11c13a",
+      "release_sha256": "1ac163884be9d3b93ef4f0e90cee4762566d20f53461d52b6432c78aad11c13a",
+      "transform": null
+    },
+    {
+      "path": "evidence/upstream_matlab/callback_receipt.json",
+      "upstream_sha256": "425ed660f3d96baac315b4d3d690bdeb6f6b5acd6270377f9b827dea85b37a88",
+      "release_sha256": "425ed660f3d96baac315b4d3d690bdeb6f6b5acd6270377f9b827dea85b37a88",
+      "transform": null
+    },
+    {
+      "path": "assets/matlab_explorer.png",
+      "upstream_sha256": "7ab72f2470393cec549302b82f60368cbe82b15978560915bb7ebecf25881fac",
+      "release_sha256": "7ab72f2470393cec549302b82f60368cbe82b15978560915bb7ebecf25881fac",
+      "transform": null
+    },
+    {
+      "path": "evidence/upstream_ST054_results.json",
+      "upstream_sha256": "a269f6b8ce2f7145c2b1023f056e1e23494bf714ba56fb46b03fde3a3a337579",
+      "release_sha256": "a269f6b8ce2f7145c2b1023f056e1e23494bf714ba56fb46b03fde3a3a337579",
+      "transform": null
+    },
+    {
+      "path": "evidence/upstream_ST054_recipes.json",
+      "upstream_sha256": "c53ad5d01e869bbdefa6588608877d261b79badb4c8a25eb28747cd2aeb7cdfe",
+      "release_sha256": "c53ad5d01e869bbdefa6588608877d261b79badb4c8a25eb28747cd2aeb7cdfe",
+      "transform": null
+    },
+    {
+      "path": "evidence/source_reconstruction/pressure_deltas/M3.npy",
+      "upstream_sha256": "e1c0c15e91fbb718a68cabce9de6da79308df64287f20702a19095231521e6dd",
+      "release_sha256": "e1c0c15e91fbb718a68cabce9de6da79308df64287f20702a19095231521e6dd",
+      "transform": null
+    },
+    {
+      "path": "evidence/source_reconstruction/pressure_deltas/Q2.npy",
+      "upstream_sha256": "63407b7867e1e68de6952a7a1ee82e2bd442e73d122c9d5701f29800f7adcb59",
+      "release_sha256": "63407b7867e1e68de6952a7a1ee82e2bd442e73d122c9d5701f29800f7adcb59",
+      "transform": null
+    }
+  ],
+  "candidates": {
+    "ST054-Q2": {
+      "file": "ST054-Q2.json",
+      "sha256": "4474e74361824cb7c37204ecbf6b094a459a0941eaa875e57f136b3ddf8e0616",
+      "coefficient_array_sha256": "f5f4e74b1bb790157cef573816a6df0c14afb31c0533579a8217502c2de1c7c7",
+      "original_research_json_sha256": "d772949621e0f7703a9d6b36f28828532ba3e5ec678dec14db5ce14eb8b851d5",
+      "references": "ST054-Q2_references.json",
+      "reference_sha256": "7fc47e0ea17c91eec5b688166b6fea8a6858c58dd3d16042c0611266c3fa47cb",
+      "role": "primary: lower recorded volume L2",
+      "max_reference_errors": [
+        4.4075854077618715e-14,
+        4.07035516403198e-14,
+        5.024800020514419e-13
+      ],
+      "pde_validated": false
+    },
+    "ST054-M3": {
+      "file": "ST054-M3.json",
+      "sha256": "5cb85c21211e6d663e1cd6df66899b6c7e0ad4e4452a2b9981190e5279ee37a8",
+      "coefficient_array_sha256": "0a058817d3fba16b6820921fc93d9b9c15a7d0ca48b321b60c58b82b3d768737",
+      "original_research_json_sha256": "2b2b571986297b52bc884a2ee4808a7ade1ade86f38f938604f2a64118882df3",
+      "references": "ST054-M3_references.json",
+      "reference_sha256": "b589095fe6427c4f864ae850c04683b8d32b634c33721e6f2fc8733248e4fe5f",
+      "role": "alternative: lower recorded sampled peak",
+      "max_reference_errors": [
+        5.5344617777564054e-14,
+        4.095335182086046e-14,
+        4.951178356193964e-13
+      ],
+      "pde_validated": false
+    }
+  }
+}
